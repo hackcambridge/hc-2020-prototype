@@ -16,6 +16,10 @@ class Controller extends BaseController
         return view('welcome');
     }
 
+ 	public function about() {
+		return view('about');
+	}
+
     public function info() {
         ob_start();
         phpinfo();

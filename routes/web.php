@@ -12,6 +12,7 @@
 */
 
 Route::get( '/', 'Controller@index' )->name( 'home' );
+Route::get( '/about', 'Controller@about' )->name( 'about' );
 
 # Auth0
 Route::get( '/auth0/callback', '\Auth0\Login\Auth0Controller@callback' )->name( 'auth0-callback' );
