@@ -1,0 +1,124 @@
+/* General */
+body {
+    background-color: #000;
+}
+
+.container {
+    max-width: 960px;
+}
+
+.flex-equal > * {
+    -ms-flex: 1;
+    flex: 1;
+}
+@media (min-width: 768px) {
+    .flex-md-equal > * {
+        -ms-flex: 1;
+        flex: 1;
+    }
+}
+
+.btn:focus,.btn:active {
+   outline: none !important;
+   box-shadow: none;
+}
+
+.overflow-hidden { overflow: hidden; }
+
+
+/* Top Panel */
+.cover-body {
+    height: 100%;
+    display: flex;
+    color: #fff;
+    text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+    box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+}
+#hcf-header-particles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+
+    background: linear-gradient(270deg, #0b0b0b, #1b1b1b);
+    background-size: 400% 400%;
+
+    -webkit-animation: hcf-header-animation 7s ease infinite;
+    -moz-animation: hcf-header-animation 7s ease infinite;
+    animation: hcf-header-animation 7s ease infinite;
+}
+
+@-webkit-keyframes hcf-header-animation {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@-moz-keyframes hcf-header-animation {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes hcf-header-animation {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+.cover-container {
+    max-width: 42em;
+}
+
+.btn-contact {
+    color: #fff;
+}
+.btn-contact:hover {
+    color: #ccc;
+}
+
+@media (min-width: 48em) {
+    .masthead-brand {
+        float: left;
+    }
+    .nav-masthead {
+        float: right;
+    }
+}
+
+
+/*
+* Cover
+*/
+.cover {
+    padding: 6rem 1.5rem 2rem;
+}
+.cover .btn-lg {
+    padding: .75rem 1.25rem;
+    font-weight: 700;
+}
+
+/* Cards */
+#cards-container {
+    background-color: #ececec;
+    margin-top: -1rem;
+    padding-top: 0.01rem;
+    margin-bottom: -1rem;
+    padding-bottom: 0.01rem;
+}
+
+.badge-card-light {
+    color: #ffffff;
+}
+.badge-card-light:hover {
+    color: #ffffff50;
+}
+
+.badge-card-dark {
+    color: #000000;
+}
+.badge-card-dark:hover {
+    color: #00000050;
+}
+
+footer {
+    color: #e2e2e2;
+}
