@@ -48,6 +48,12 @@ body {
     animation: hcf-header-animation 7s ease infinite;
 }
 
+img#hcf {
+    max-width: 100%;
+    width:300px;
+    /* padding-bottom: 1rem; */
+}
+
 @-webkit-keyframes hcf-header-animation {
     0%{background-position:0% 50%}
     50%{background-position:100% 50%}
@@ -75,6 +81,9 @@ body {
     color: #ccc;
 }
 
+img.masthead-brand {
+    height:28px;
+}
 @media (min-width: 48em) {
     .masthead-brand {
         float: left;
