@@ -1,0 +1,196 @@
+<html>
+<head>
+    <title>Hack Cambridge</title>
+    <link href="https://fonts.googleapis.com/css?family=Darker+Grotesque&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <style>
+        body {
+            margin:0;
+            background-color: #000;
+        }
+        #particles {
+            background-color:#000;
+            /* background: linear-gradient(142deg, #000000, #130020, #050020, #200001, #000000);
+            background-size: 1000% 1000%;
+
+            -webkit-animation: AnimationName 20s ease infinite;
+            -moz-animation: AnimationName 20s ease infinite;
+            -o-animation: AnimationName 20s ease infinite;
+            animation: AnimationName 20s ease infinite; */
+
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+
+        @-webkit-keyframes AnimationName {
+            0%{background-position:40% 0%}
+            50%{background-position:61% 100%}
+            100%{background-position:40% 0%}
+        }
+        @-moz-keyframes AnimationName {
+            0%{background-position:40% 0%}
+            50%{background-position:61% 100%}
+            100%{background-position:40% 0%}
+        }
+        @-o-keyframes AnimationName {
+            0%{background-position:40% 0%}
+            50%{background-position:61% 100%}
+            100%{background-position:40% 0%}
+        }
+        @keyframes AnimationName {
+            0%{background-position:40% 0%}
+            50%{background-position:61% 100%}
+            100%{background-position:40% 0%}
+        }
+
+        .ml13 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1000px;
+            max-width: 80%;
+            /* padding: 20px; */
+            font-family: 'Darker Grotesque', sans-serif;
+            text-rendering: optimizeLegibility;
+            color:white;
+            font-size: 1.6rem;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0px;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .ml13 .letter {
+            display: inline-block;
+            line-height: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles"></div>
+    <h1 class="ml13"></h1>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS(
+        "particles",
+        {"particles":{"number":{"value":33,"density":{"enable":true,"value_area":552.4044389642416}},"color":{"value":"#ffffff"},"shape":{"type":"circle","stroke":{"width":0,"color":"#000000"},"polygon":{"nb_sides":5},"image":{"src":"img/github.svg","width":100,"height":100}},"opacity":{"value":0.5,"random":false,"anim":{"enable":false,"speed":1,"opacity_min":0.1,"sync":false}},"size":{"value":3,"random":true,"anim":{"enable":false,"speed":40,"size_min":0.1,"sync":false}},"line_linked":{"enable":true,"distance":63.13193588162762,"color":"#ffffff","opacity":0.2525277435265105,"width":1},"move":{"enable":true,"speed":0.4,"direction":"none","random":false,"straight":false,"out_mode":"out","bounce":false,"attract":{"enable":false,"rotateX":600,"rotateY":1200}}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":false,"mode":"repulse"},"onclick":{"enable":true,"mode":"push"},"resize":true},"modes":{"grab":{"distance":400,"line_linked":{"opacity":1}},"bubble":{"distance":400,"size":40,"duration":2,"opacity":8,"speed":3},"repulse":{"distance":200,"duration":0.4},"push":{"particles_nb":4},"remove":{"particles_nb":2}}},"retina_detect":true}
+        );
+
+
+        var current = 0;
+        const messages = [
+            "HackCambridge will be back soon",
+            "We can't wait to show you what we've got planned",
+            "It's going to be bigger and better than ever"
+        ];
+
+        // Wrap every letter in a span
+        function start_animate() {
+            var textWrapper = document.querySelector('.ml13');
+            textWrapper.innerHTML = messages[current];
+            current = (current + 1) % messages.length;
+            textWrapper.innerHTML = textWrapper.textContent.replace(/[a-zA-Z0-9\*']+/g, "<span class='letter'>$&</span>");
+            // textWrapper.innerHTML = textWrapper.textContent.replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>");
+            do_animate();
+        }
+        function do_animate() {
+            anime.timeline({
+                loop: false
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [50,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 800,
+                delay: function(el, i) {
+                    return 1 + 10 * i;
+                }
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-50],
+                opacity: [1,0],
+                easing: "easeInExpo",
+                duration: 2500,
+                delay: function(el, i) {
+                    return 1 + 10 * i;
+                },
+                complete: function(anim) {
+                    start_animate();
+                }
+            });
+
+        }
+        start_animate();
+
+
+
+
+
+        const colors = new Array([2,2,2],[3,26,45],[4,21,13],[16,4,21]);
+
+        var step = 0;
+        //color table indices for:
+        // current color left
+        // next color left
+        // current color right
+        // next color right
+        var colorIndices = [0,1,2,3];
+
+        //transition speed
+        var gradientSpeed = 0.002;
+
+        function updateGradient() {
+            // console.log(step);
+            // if ( $===undefined ) return;
+
+            var c0_0 = colors[colorIndices[0]];
+            var c0_1 = colors[colorIndices[1]];
+            var c1_0 = colors[colorIndices[2]];
+            var c1_1 = colors[colorIndices[3]];
+
+            var istep = 1 - step;
+            var r1 = Math.round(istep * c0_0[0] + step * c0_1[0]);
+            var g1 = Math.round(istep * c0_0[1] + step * c0_1[1]);
+            var b1 = Math.round(istep * c0_0[2] + step * c0_1[2]);
+            var color1 = "rgb("+r1+","+g1+","+b1+")";
+
+            var r2 = Math.round(istep * c1_0[0] + step * c1_1[0]);
+            var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
+            var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
+            var color2 = "rgb("+r2+","+g2+","+b2+")";
+
+            var particles = document.getElementById("particles");
+            particles.style.background = "-webkit-gradient(linear, left top, right top, from("+color1+"), to("+color2+"))";// -moz-linear-gradient(left, "+color1+" 0%, "+color2+" 100%)";
+            particles.style.background = "-moz-linear-gradient(left, "+color1+" 0%, "+color2+" 100%)";// -moz-linear-gradient(left, "+color1+" 0%, "+color2+" 100%)";
+
+            // $('#particles')
+            //     .css({background: "-webkit-gradient(linear, left top, right top, from("+color1+"), to("+color2+"))"})
+            //     .css({background: "-moz-linear-gradient(left, "+color1+" 0%, "+color2+" 100%)"});
+
+            step += gradientSpeed;
+            if (step >= 1) {
+                step %= 1;
+                colorIndices[0] = colorIndices[1];
+                colorIndices[2] = colorIndices[3];
+
+                //pick two new target color indices
+                //do not pick the same as the current one
+                colorIndices[1] = ( colorIndices[1] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
+                colorIndices[3] = ( colorIndices[3] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
+            }
+        }
+
+        setInterval(updateGradient,10);
+    </script>
+</body>
+</html>
