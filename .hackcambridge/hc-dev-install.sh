@@ -16,14 +16,16 @@ red () { echo "${RED}${PREFIX} $1 ${NC}"; }
 # Set the correct location to execute the script from.
 cd $SCRIPT_LOCATION;
 
+
 # Verify all dependencies are installed.
 hash vagrant 2>/dev/null || { echo >&2 "Vagrant needs to be installed.  Aborting."; exit 1; }
 hash composer 2>/dev/null || { echo >&2 "Composer needs to be installed.  Aborting."; exit 1; }
 hash php 2>/dev/null || { echo >&2 "PHP needs to be installed.  Aborting."; exit 1; }
 hash vboxmanage 2>/dev/null || { echo >&2 "VirtualBox needs to be installed.  Aborting."; exit 1; }
 hash git 2>/dev/null || { echo >&2 "Git needs to be installed.  Aborting."; exit 1; }
-echo "\n"
+echo ""
 green "All prerequisites met, starting installation.\n"
+
 
 # Add the Homestead Vagrant box.
 blue "Installing laravel/homestead..."
@@ -95,10 +97,19 @@ if [ $? -ne 0 ]; then
     >&2 red "Run 'vagrant ssh -c \"cd hackcambridge; php artisan migrate\"' in the $CODE_LOCATION/Homestead folder."
     exit 1;
 fi
-blue "Finished launching the Vagrant VM."
-echo "\n"
+blue "Finished launching the Vagrant VM.\n"
 
 
 # Complete.
 cd $ORIGINAL_LOCATION;
 green "The HC Dev environment is now setup."
+echo << EndOfMessage
+Next steps:
+    1. Add hackcambridge.test to your hosts file.
+       Check the file doesn't already contain the record before running the command below.
+       Run: 'sudo echo "192.168.10.10 hackcambridge.test" >> /etc/hosts'
+    2. Add environment secrets to .env.
+       This is explained on the 'Development > Setting up the Development Environment' page in Notion.
+
+Finally, go to http://hackcambridge.test in your browser to make sure everything works! 
+EndOfMessage
