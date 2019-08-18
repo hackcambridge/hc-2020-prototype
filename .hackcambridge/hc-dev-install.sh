@@ -27,6 +27,10 @@ echo ""
 green "All prerequisites met, starting installation.\n"
 
 
+# For moral support...
+python -mwebbrowser https://media.giphy.com/media/OCu7zWojqFA1W/source.gif > /dev/null 2>&1
+
+
 # Add the Homestead Vagrant box.
 blue "Installing laravel/homestead..."
 vagrant box add laravel/homestead --force
@@ -97,13 +101,18 @@ if [ $? -ne 0 ]; then
     >&2 red "Run 'vagrant ssh -c \"cd hackcambridge; php artisan migrate\"' in the $CODE_LOCATION/Homestead folder."
     exit 1;
 fi
-blue "Finished launching the Vagrant VM.\n"
+blue "Finished launching the Vagrant VM.\n\n"
 
 
 # Complete.
 cd $ORIGINAL_LOCATION;
 green "The HC Dev environment is now setup."
-echo << EndOfMessage
+echo "Stop the VM with 'cd $CODE_LOCATION/Homestead && vagrant halt'"
+echo "Remove the VM with 'cd $CODE_LOCATION/Homestead && vagrant destroy'"
+echo "Restart/reinstall the VM with 'cd $CODE_LOCATION/Homestead && vagrant up'"
+echo ""
+
+cat << EndOfMessage
 Next steps:
     1. Add hackcambridge.test to your hosts file.
        Check the file doesn't already contain the record before running the command below.
