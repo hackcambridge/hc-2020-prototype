@@ -1,4 +1,9 @@
 #!/bin/bash
+SCRIPT_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+CURRENT_DIR="$( pwd )"
+
+echo $SCRIPT_LOCATION;
+echo $CURRENT_DIR;
 
 # Install Homestead Vagrant box.
 vagrant box add laravel/homestead
