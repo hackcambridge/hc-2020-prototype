@@ -1,0 +1,23 @@
+---
+ip: "192.168.10.10"
+memory: 2048
+cpus: 2
+provider: virtualbox
+version: 8.0.1
+ssl: true
+
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+    - ~/.ssh/id_rsa
+
+folders:
+    - map: ~/Dev/HackCambridge/hc2020-prototype
+      to: /home/vagrant/hackcambridge
+
+sites:
+    - map: hackcambridge.test
+      to: /home/vagrant/hackcambridge/public
+
+databases:
+    - homestead
