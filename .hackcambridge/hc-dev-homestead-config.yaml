@@ -3,7 +3,7 @@ ip: "192.168.10.10"
 memory: 2048
 cpus: 2
 provider: virtualbox
-version: 8.0.1
+version: {{ HC.HOMESTEAD_VERSION }}
 ssl: true
 
 authorize: {{ HC.RSA_KEY }}.pub

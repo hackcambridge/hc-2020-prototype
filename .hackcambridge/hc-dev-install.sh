@@ -2,6 +2,7 @@
 SCRIPT_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CODE_LOCATION="$( cd $SCRIPT_LOCATION/../ >/dev/null 2>&1 && pwd )"
 ORIGINAL_LOCATION="$PWD"
+HOMESTEAD_VERSION="8.0.1"
 
 # Printing.
 PREFIX="[hc-dev]"
@@ -33,12 +34,17 @@ python -mwebbrowser https://media.giphy.com/media/OCu7zWojqFA1W/source.gif > /de
 
 # Add the Homestead Vagrant box.
 blue "Installing laravel/homestead..."
-vagrant box add laravel/homestead --force
+vagrant box list | grep -q "laravel/homestead (virtualbox, ${HOMESTEAD_VERSION})"
 if [ $? -ne 0 ]; then
-    >&2 red "Failed to add the laravel/homestead Vagrant box."
-    exit 1;
+    vagrant box add laravel/homestead --force --box-version $HOMESTEAD_VERSION
+    if [ $? -ne 0 ]; then
+        >&2 red "Failed to add the laravel/homestead Vagrant box."
+        exit 1;
+    fi
+    blue "Installed laravel/homestead."
+else
+    blue "laravel/homestead already installed."
 fi
-blue "Installed laravel/homestead."
 echo "\n--------------------"
 
 
@@ -85,6 +91,7 @@ cat /dev/zero | ssh-keygen -b 2048 -t rsa -f ./hc_rsa -q -N "" > /dev/null
 cp $SCRIPT_LOCATION/hc-dev-homestead-config.yaml ./Homestead.yaml
 sed -i '' -e "s^{{ HC.SOURCE_DIRECTORY }}^$CODE_LOCATION^g" ./Homestead.yaml
 sed -i '' -e "s^{{ HC.RSA_KEY }}^$CODE_LOCATION/Homestead/hc_rsa^g" ./Homestead.yaml
+sed -i '' -e "s^{{ HC.HOMESTEAD_VERSION }}^$HOMESTEAD_VERSION/Homestead/hc_rsa^g" ./Homestead.yaml
 
 
 # Bring the Vagrant box up for the first time.
@@ -107,6 +114,7 @@ blue "Finished launching the Vagrant VM.\n\n"
 # Complete.
 cd $ORIGINAL_LOCATION;
 green "The HC Dev environment is now setup."
+echo ""
 echo "Stop the VM with 'cd $CODE_LOCATION/Homestead && vagrant halt'"
 echo "Remove the VM with 'cd $CODE_LOCATION/Homestead && vagrant destroy'"
 echo "Restart/reinstall the VM with 'cd $CODE_LOCATION/Homestead && vagrant up'"
