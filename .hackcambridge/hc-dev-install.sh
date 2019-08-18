@@ -29,7 +29,7 @@ green "All prerequisites met, starting installation.\n"
 
 
 # For moral support...
-python -mwebbrowser https://media.giphy.com/media/OCu7zWojqFA1W/source.gif > /dev/null 2>&1
+# python -mwebbrowser https://media.giphy.com/media/OCu7zWojqFA1W/source.gif > /dev/null 2>&1
 
 
 # Add the Homestead Vagrant box.
@@ -91,7 +91,7 @@ cat /dev/zero | ssh-keygen -b 2048 -t rsa -f ./hc_rsa -q -N "" > /dev/null
 cp $SCRIPT_LOCATION/hc-dev-homestead-config.yaml ./Homestead.yaml
 sed -i '' -e "s^{{ HC.SOURCE_DIRECTORY }}^$CODE_LOCATION^g" ./Homestead.yaml
 sed -i '' -e "s^{{ HC.RSA_KEY }}^$CODE_LOCATION/Homestead/hc_rsa^g" ./Homestead.yaml
-sed -i '' -e "s^{{ HC.HOMESTEAD_VERSION }}^$HOMESTEAD_VERSION/Homestead/hc_rsa^g" ./Homestead.yaml
+sed -i '' -e "s^{{ HC.HOMESTEAD_VERSION }}^$HOMESTEAD_VERSION^g" ./Homestead.yaml
 
 
 # Bring the Vagrant box up for the first time.
