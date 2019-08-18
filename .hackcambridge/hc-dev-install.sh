@@ -124,7 +124,7 @@ cat << EndOfMessage
 Next steps:
     1. Add hackcambridge.test to your hosts file.
        Check the file doesn't already contain the record before running the command below.
-       Run: 'sudo echo "192.168.10.10 hackcambridge.test" >> /etc/hosts'
+       Run: sudo sh -c 'echo "192.168.10.10 hackcambridge.test" >> /etc/hosts'
     2. Add environment secrets to .env.
        This is explained on the 'Development > Setting up the Development Environment' page in Notion.
 
