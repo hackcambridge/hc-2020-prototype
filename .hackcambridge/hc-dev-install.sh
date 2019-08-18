@@ -22,18 +22,20 @@ hash composer 2>/dev/null || { echo >&2 "Composer needs to be installed.  Aborti
 hash php 2>/dev/null || { echo >&2 "PHP needs to be installed.  Aborting."; exit 1; }
 hash vboxmanage 2>/dev/null || { echo >&2 "VirtualBox needs to be installed.  Aborting."; exit 1; }
 hash git 2>/dev/null || { echo >&2 "Git needs to be installed.  Aborting."; exit 1; }
-green "\nAll prerequisites met, starting installation.\n"
+echo "\n"
+green "All prerequisites met, starting installation.\n"
 
 # Add the Homestead Vagrant box.
 blue "Installing laravel/homestead..."
-# vagrant box add laravel/homestead --force
-# if [ $? -ne 0 ]; then
-#     >&2 red "Failed to add the laravel/homestead Vagrant box."
-#     exit 1;
-# fi
+vagrant box add laravel/homestead --force
+if [ $? -ne 0 ]; then
+    >&2 red "Failed to add the laravel/homestead Vagrant box."
+    exit 1;
+fi
 blue "Installed laravel/homestead."
 echo "\n--------------------"
-exit 0;
+
+
 # Install PHP dependencies.
 cd ..
 blue "Installing Composer dependencies..."
