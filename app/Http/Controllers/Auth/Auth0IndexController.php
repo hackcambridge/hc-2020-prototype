@@ -17,6 +17,7 @@ class Auth0IndexController extends Controller
      */
     public function login($driver = "mymlh")
     {
+        \Firebase\JWT\JWT::$leeway = 60;
         $authorize_params = [
             'scope' => 'openid profile email',
             // Use the key below to get an access token for your API.

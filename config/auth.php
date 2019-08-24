@@ -46,6 +46,21 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'mymlh' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'committee' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'email' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*

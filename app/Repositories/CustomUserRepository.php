@@ -25,9 +25,18 @@ class CustomUserRepository extends Auth0UserRepository {
         // In not, add them to the database
         if (!$user) {
             $user = new User();
-            $user->setAttribute('email', $profile['email']);
             $user->setAttribute('sub', $profile['sub']);
+            $user->setAttribute('email', isset( $profile['email'] ) ? $profile['email'] : '');
             $user->setAttribute('name', isset( $profile['name'] ) ? $profile['name'] : '');
+
+            $sub_parts = explode("|", $profile['sub']);
+            $type = ($sub_parts[0] == "email") ? "sponsor" :
+                    (($sub_parts[1] == "MyMLH") ? "hacker" :
+                    (($sub_parts[0] == "google-apps" && strpos($sub_parts[1], "@hackcambridge.com") !== false)
+                        ? "committee" : "unknown")
+                    );
+            $user->setAttribute('type', $type);
+
             $user->save();
         }
         return $user;

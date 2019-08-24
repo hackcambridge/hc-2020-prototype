@@ -42,13 +42,18 @@
     @if (Route::has('login'))
         <div class="top-right links">
             @auth
-                <span>Hi <strong>{{ Auth::user()->name  }}</strong></span><a href="{{ route('logout') }}">Logout</a>
+                <span>Hi <strong>{{ Auth::user()->name  }}</strong></span><a href="{{ route('logout') }}">Logout</a><hr>
+
+                <strong>{{ Auth::user()->type  }}</strong><br>
+                <strong>{{ Auth::user()->sub  }}</strong><br>
             @else
-                <a href="{{ route('login', "mymlh") }}">MyMLH</a><br>
-                <a href="{{ route('login', "email") }}">Passwordless</a>
+                <a href="{{ route('login', "mymlh") }}">Hacker</a><br>
+                <a href="{{ route('login', "email") }}">Sponsor</a><br>
+                <a href="{{ route('login', "committee") }}">Committee</a>
             @endauth
         </div>
     @endif
+
 
     </body>
 </html>
