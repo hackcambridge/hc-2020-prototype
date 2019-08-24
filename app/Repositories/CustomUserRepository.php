@@ -28,16 +28,6 @@ class CustomUserRepository extends Auth0UserRepository {
             $user->setAttribute('email', $profile['email']);
             $user->setAttribute('sub', $profile['sub']);
             $user->setAttribute('name', isset( $profile['name'] ) ? $profile['name'] : '');
-//            $user->setAttribute('first_name', isset( $profile['first_name'] ) ? $profile['first_name'] : '');
-//            $user->setAttribute('last_name', isset($profile['last_name']) ? $profile['last_name'] : '');
-//            $user->setAttribute('level_of_study', isset($profile['level_of_study']) ? $profile['level_of_study'] : '');
-//            $user->setAttribute('major', isset($profile['major']) ? $profile['major'] : '');
-//            $user->setAttribute('shirt_size', isset($profile['shirt_size']) ? $profile['shirt_size'] : '');
-//            $user->setAttribute('dietary_restrictions', isset($profile['dietary_restrictions']) ? $profile['dietary_restrictions'] : '');
-//            $user->setAttribute('special_needs', isset($profile['special_needs']) ? $profile['special_needs'] : '');
-//            $user->setAttribute('date_of_birth', isset($profile['date_of_birth']) ? $profile['date_of_birth'] : '');
-//            $user->setAttribute('gender', isset($profile['gender']) ? $profile['gender'] : '');
-//            $user->setAttribute('school', isset($profile['school']) ? $profile['school']['name'] : '');
             $user->save();
         }
         return $user;

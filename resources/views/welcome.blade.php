@@ -44,7 +44,8 @@
             @auth
                 <span>Hi <strong>{{ Auth::user()->name  }}</strong></span><a href="{{ route('logout') }}">Logout</a>
             @else
-                <a href="{{ route('login') }}">Login/Signup</a>
+                <a href="{{ route('login', "mymlh") }}">MyMLH</a><br>
+                <a href="{{ route('login', "email") }}">Passwordless</a>
             @endauth
         </div>
     @endif

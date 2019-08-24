@@ -12,14 +12,16 @@ class Auth0IndexController extends Controller
     /**
      * Redirect to the Auth0 hosted login page
      *
+     * @param string $driver
      * @return mixed
      */
-    public function login()
+    public function login($driver = "mymlh")
     {
         $authorize_params = [
-            'scope' => 'openid profile event phone_number email demographics birthday education',
+            'scope' => 'openid profile email',
             // Use the key below to get an access token for your API.
-            // 'audience' => config('laravel-auth0.api_identifier'),
+            //'audience' => config('laravel-auth0.api_identifier'),
+            'driver' => $driver
         ];
         return App::make('auth0')->login(null, null, $authorize_params);
     }
