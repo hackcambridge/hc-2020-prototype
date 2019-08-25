@@ -1,8 +1,8 @@
-
 /Homestead
 /node_modules
 /public/hot
 /public/storage
+/public/assets
 /storage/*.key
 /vendor
 .env

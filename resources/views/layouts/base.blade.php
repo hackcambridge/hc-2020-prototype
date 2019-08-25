@@ -1,4 +1,4 @@
-<html>
+<html lang="{{ app()->getLocale() }}">
     <head>
         <title>App Name - @yield('title')</title>
         <meta charset="utf-8">
