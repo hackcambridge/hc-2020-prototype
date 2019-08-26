@@ -821,7 +821,7 @@
     lodash "^4.17.4"
     lodash-decorators "^4.3.5"
 
-"@shopify/polaris-icons@^3.3.0":
+"@shopify/polaris-icons@^3.3.0", "@shopify/polaris-icons@^3.5.1":
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/@shopify/polaris-icons/-/polaris-icons-3.5.1.tgz#8972c90dbf3ea02032af9e27a2eaeaf885c85792"
   integrity sha512-W6lfAkNSuvHgycufdUhI8guM8OWkdcUbb+o9PdRZvSjzqLJyA1i8vuX8KtgFL/n75LP3RuLIl4fFMOVwaZUi9w==

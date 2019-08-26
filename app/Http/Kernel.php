@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'type' => \App\Http\Middleware\CheckType::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'verifyCsrf' => \Illuminate\View\Middleware\ShareErrorsFromSession::class,
     ];
 
     /**

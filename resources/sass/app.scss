@@ -37,6 +37,20 @@
     }
 }
 
+
+
+.Polaris-Frame {
+    .Polaris-TopBar {
+        height: 6.2rem;
+    }
+    .Polaris-UserMenu-UserMenu__Details .Polaris-UserMenu-UserMenu__Name {
+        padding-left: 10px;
+    }
+}
+
+
+
+
 aside.ant-layout-sider {
     .ant-layout-sider-zero-width-trigger {
         top: 8px;
@@ -44,5 +58,27 @@ aside.ant-layout-sider {
     i.anticon {
         display: list-item;
         line-height: 48px;
+    }
+}
+
+main.committee-content-wrapper {
+    padding: 0 30px;
+    margin-top: 30px;
+
+    div.wrapper-inner {
+        background-color: #fff;
+        padding: 36px 48px;
+        min-height: 280px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    main.committee-content-wrapper {
+        padding: 0;
+        margin-top: 0;
+
+        div.wrapper-inner {
+            padding-top: 48px;
+        }
     }
 }

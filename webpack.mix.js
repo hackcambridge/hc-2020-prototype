@@ -52,5 +52,5 @@ mix
             extensions: ['*', '.js', '.jsx', '.vue', '.ts', '.tsx'],
         },
     })
-    .ts('resources/js/scenes/*.ts*', 'assets/js')
+    .ts('resources/js/scenes/sponsors.tsx', 'assets/js')
     .sass('resources/sass/app.scss', 'assets/css');

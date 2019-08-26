@@ -2,6 +2,8 @@
 
 use App\User;
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\Sponsor as SponsorResource;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,21 +26,30 @@ Route::middleware(['auth', 'type:hacker'])->group(function () {
 
 
 Route::middleware(['auth.passwordless', 'type:sponsor'])->group(function() {
-    Route::get('/sponsors/dashboard', 'Sponsors@dashboard')->name('sponsors_dashboard');
+
+    // React App
+    Route::get('/sponsors/dashboard/{path?}', [
+        'uses' => 'Sponsors@dashboard',
+        'as' => 'sponsors_dashboard',
+        'where' => ['path' => '.*']
+    ]);
+
 });
 
 Route::middleware(['auth.committee', 'type:committee'])->group(function() {
 
+    // React App
     Route::get('/committee/admin/{path?}', [
         'uses' => 'Committee@index',
         'as' => 'committee_dashboard',
         'where' => ['path' => '.*']
     ]);
 
-    Route::get('/committee/admin-api/get/all-users.json', function () {
-        return UserResource::collection(User::all());
-    });
-
+    // Private API
+    Route::get('/committee/admin-api/{path}.json', 'Committee@api_get')->name('committee_api_get');
+    Route::middleware(['verifyCsrf'])
+        ->post('/committee/admin-api/{path}.json', 'Committee@api_post')
+        ->name('committee_api_post');
 });
 
 # Auth0
