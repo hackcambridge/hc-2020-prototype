@@ -18,9 +18,33 @@ mix
             rules: [
                 {
                     test: /\.tsx?$/,
-                    loader: 'ts-loader',
-                    options: { appendTsSuffixTo: [/\.vue$/] },
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            [
+                                '@babel/preset-env',
+                                {
+                                    targets: {
+                                        node: true,
+                                    },
+                                },
+                            ],
+                            '@babel/typescript',
+                            '@babel/react'
+                        ],
+                        plugins: [["import", {
+                            "libraryName": "antd",
+                            "style": true,   // or 'css'
+                        }]]
+                    },
                     exclude: /node_modules/,
+                },
+                {
+                    test:/\.less$/,
+                    loader: "less-loader",
+                    options: {
+                        javascriptEnabled: true
+                    }
                 },
             ],
         },

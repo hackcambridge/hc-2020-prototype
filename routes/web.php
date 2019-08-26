@@ -1,5 +1,8 @@
 <?php
 
+use App\User;
+use App\Http\Resources\User as UserResource;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,8 +28,17 @@ Route::middleware(['auth.passwordless', 'type:sponsor'])->group(function() {
 });
 
 Route::middleware(['auth.committee', 'type:committee'])->group(function() {
-    Route::get('/committee/admin', 'Committee@dashboard')->name('committee_dashboard');
-    Route::get('/committee/admin/users', 'Committee@users')->name('admin_users');
+
+    Route::get('/committee/admin/{path?}', [
+        'uses' => 'Committee@index',
+        'as' => 'committee_dashboard',
+        'where' => ['path' => '.*']
+    ]);
+
+    Route::get('/committee/admin-api/get/all-users.json', function () {
+        return UserResource::collection(User::all());
+    });
+
 });
 
 # Auth0
