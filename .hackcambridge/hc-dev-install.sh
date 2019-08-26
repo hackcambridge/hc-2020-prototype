@@ -102,10 +102,10 @@ if [ $? -ne 0 ]; then
     exit 1;
 fi
 
-vagrant ssh -c "cd hackcambridge; php artisan migrate"
+vagrant ssh -c "cd hackcambridge; php artisan migrate; yarn; yarn prod"
 if [ $? -ne 0 ]; then
     >&2 red "Artisan database migration failed. This will need to be done manually."
-    >&2 red "Run 'vagrant ssh -c \"cd hackcambridge; php artisan migrate\"' in the $CODE_LOCATION/Homestead folder."
+    >&2 red "Run 'vagrant ssh -c \"cd hackcambridge; php artisan migrate; yarn; yarn prod\"' in the $CODE_LOCATION/Homestead folder."
     exit 1;
 fi
 blue "Finished launching the Vagrant VM.\n\n"
