@@ -12,6 +12,10 @@ interface ICommitteeAdminSidebarProps extends RouteComponentProps<any> {
     currentUrl: string,
 }
 
+interface ICommitteeAdminSidebarState {
+    currentLocation: string;
+}
+
 interface ISidebarMenuItem {
     title: string,
     url: string,
@@ -20,18 +24,21 @@ interface ISidebarMenuItem {
 }
 
 const menuItems : Array<ISidebarMenuItem> = [
-    { title: "Home", key: "home", url: "/", icon: "pic-center" },
-    { title: "Home 2", key: "home2",url: "/users", icon: "pic-left" }
+    { title: "Home", key: "home", url: "/", icon: "home" },
+    { title: "Sponsors", key: "sponsors", url: "/sponsors", icon: "crown" },
+    { title: "Attendees", key: "attendees", url: "/attendees", icon: "contacts" },
+    { title: "Committee", key: "committee", url: "/committee", icon: "fire" },
 ];
 
-class CommitteeAdminSidebar extends Component<ICommitteeAdminSidebarProps> {
+class CommitteeAdminSidebar extends Component<ICommitteeAdminSidebarProps, ICommitteeAdminSidebarState> {
+
     render() {
-        console.log("CommitteeAdminSidebar", this.props);
+        const currentLocation = this.props.location.pathname;
         const currentView = menuItems.find(item => {
-            return this.props.location.pathname == `${this.props.baseUrl}${item.url}`;
+            return currentLocation == `${this.props.baseUrl}${item.url}`;
         });
 
-       const currentViewKey = currentView ? currentView.key : menuItems[0].key;
+        const currentViewKey = currentView ? currentView.key : menuItems[0].key;
 
         return (
             <Sider
@@ -47,7 +54,7 @@ class CommitteeAdminSidebar extends Component<ICommitteeAdminSidebarProps> {
             >
                 <Menu
                     mode="inline"
-                    defaultSelectedKeys={[currentViewKey]}
+                    selectedKeys={[currentViewKey]}
                     defaultOpenKeys={['g1']}
                     style={{ height: '100%', borderRight: 0 }}
                     theme={"light"}
@@ -57,7 +64,7 @@ class CommitteeAdminSidebar extends Component<ICommitteeAdminSidebarProps> {
                         return (
                             <Menu.Item key={item.key} style={{ margin: "0px" }}>
                                 <Link to={`${this.props.baseUrl}${item.url}`}>
-                                    <Icon type={item.icon} style={{ display: "inline" }}/>
+                                    <Icon type={item.icon} theme={"filled"} style={{ display: "inline" }}/>
                                     {item.title}
                                 </Link>
                             </Menu.Item>

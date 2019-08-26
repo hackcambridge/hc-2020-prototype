@@ -17,7 +17,7 @@ import ReactDOM from "react-dom";
 import { Layout, Menu, Icon, Breadcrumb } from 'antd';
 import { AppProvider } from "@shopify/polaris";
 
-const { Header, Content, Sider } = Layout;
+const { Header, Content, Sider, Footer } = Layout;
 const { SubMenu } = Menu;
 export interface ICommitteeAdminProps {
     baseUrl: string;
@@ -44,8 +44,8 @@ class CommitteeAdmin extends Component<ICommitteeAdminProps> {
         return (
             <AppProvider>
                 <>
-                    <TopQuickNav {...this.props}/>
                     <Layout style={{ height: "100%" }}>
+                        <TopQuickNav {...this.props}/>
                         <Header className="header" style={{ backgroundColor: "#CC0000", padding: "0 25px" }}>
                             <div className="logo">
                                 <img src={"/images/101-white.png"} style={logo}/>
@@ -56,8 +56,8 @@ class CommitteeAdmin extends Component<ICommitteeAdminProps> {
                             <Router>
                                 <CommitteeAdminSidebar baseUrl={base} />
                                 <Switch>
-                                    <Route exact path={`${base}/`} component={ CommitteeNav } />
-                                    <Route exact path={`${base}/users`} component={ CommitteeNav2 } />
+                                    <Route exact path={`${base}/`} render={ (props) => <CommitteeNav {...props} user={this.props.user} /> } />
+                                    <Route exact path={`${base}/sponsors`} component={ CommitteeNav2 } />
                                     <Route component={ Committee404 } />
                                 </Switch>
                             </Router>
