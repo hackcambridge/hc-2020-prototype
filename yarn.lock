@@ -862,6 +862,13 @@
     hoist-non-react-statics "^3.0.1"
     tslib "^1.9.3"
 
+"@shopify/react-shopify-app-route-propagator@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@shopify/react-shopify-app-route-propagator/-/react-shopify-app-route-propagator-3.0.1.tgz#bb5f7bbae8d57f7b664544eff66ba57a3e0b771f"
+  integrity sha512-xc+fe0D2ORVrPa5owMqZIellvBLs92RuaqunDlx8bCqtOyvufpTzwI6Zv7p8oKaxSRJyBTBI0nkcK/3w9wgHrQ==
+  dependencies:
+    tslib "^1.9.3"
+
 "@shopify/useful-types@^1.2.4":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@shopify/useful-types/-/useful-types-1.3.0.tgz#79cfb6722d2cc192c05f14e55789bcfe2b40a6de"

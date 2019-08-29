@@ -19,11 +19,11 @@ import { AppProvider } from "@shopify/polaris";
 
 const { Header, Content, Sider, Footer } = Layout;
 const { SubMenu } = Menu;
+
 export interface ICommitteeAdminProps {
     baseUrl: string;
     user: { type: string, name: string }
 }
-
 
 class CommitteeAdmin extends Component<ICommitteeAdminProps> {
     render(): React.ReactNode {

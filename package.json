@@ -28,6 +28,7 @@
         "@babel/preset-typescript": "^7.3.3",
         "@shopify/polaris": "^3.21.1",
         "@shopify/polaris-icons": "^3.5.1",
+        "@shopify/react-shopify-app-route-propagator": "^3.0.1",
         "@types/react": "^16.9.2",
         "@types/react-dom": "^16.9.0",
         "@types/react-router-dom": "^4.3.5",
