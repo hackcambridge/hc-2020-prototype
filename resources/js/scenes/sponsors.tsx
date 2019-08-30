@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import SponsorDashboard from "../components/sponsors-dashboard/SponsorDashboard";
+import SponsorFrame from "../components/sponsors-dashboard/SponsorFrame";
 
 export interface ISponsorDashboardProps {
     baseUrl: string;
@@ -14,7 +14,7 @@ if (document.getElementById('sponsors-root')) {
         const props : ISponsorDashboardProps = JSON.parse(propsString ? propsString : "{}");
         delete element.dataset.props;
 
-        ReactDOM.render(<SponsorDashboard {...props}/>, element);
+        ReactDOM.render(<SponsorFrame {...props}/>, element);
         if(document.getElementById('loading')) {
             document.getElementById('loading').remove();
         }

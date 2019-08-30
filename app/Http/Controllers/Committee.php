@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Sponsor;
+use App\Models\Sponsor;
 use App\Http\Resources\Sponsor as SponsorResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
 
 class Committee extends Controller
 {
@@ -23,8 +24,8 @@ class Committee extends Controller
 
     public function api_get($path) {
         switch ($path) {
-            case 'add-sponsor': return $this->addSponsor("New Sponsor");
-            default: return $this->default();
+            case 'get-sponsors': return $this->getSponsors();
+            default: return $this->fail("Route not found");
         }
 
     }
@@ -33,22 +34,36 @@ class Committee extends Controller
         $r = $request->request;
         switch ($path) {
             case 'add-sponsor': return $this->addSponsor($r->get('name'));
-            default: return $this->default();
+            default: return $this->fail("Route not found");
         }
     }
 
     /**
      * Private Functions
      */
-    private function default() {
-        return $this->fail("Route not found");
+
+    private function response($success = true, $message = '') {
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 
     private function fail($message = '') {
-        return response()->json([
-            'success' => 'false',
-            'message' => $message
-        ]);
+        return $this->response(false, $message);
+    }
+
+    private function success($message = '') {
+        return $this->response(true, $message);
+    }
+
+
+    private function getSponsors() {
+        if(Sponsor::count() == 0) return $this->success("No sponsors");
+
+        $all = Sponsor::all();
+        if($all) return SponsorResource::collection($all);
+        else return $this->fail("Failed to get sponsors");
     }
 
     private function addSponsor($name) {

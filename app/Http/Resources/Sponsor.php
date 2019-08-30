@@ -6,6 +6,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class Sponsor extends JsonResource
 {
+
+    public function with($request)
+    {
+        return [
+            'success' => true,
+        ];
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -18,6 +26,7 @@ class Sponsor extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'privileges' => $this->privileges,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

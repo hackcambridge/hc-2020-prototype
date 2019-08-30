@@ -6,7 +6,7 @@ export class ResourceListExample extends React.Component {
     state = {
       selectedItems: [],
     };
-  
+
     handleSelectionChange = (selectedItems) => {
       this.setState({selectedItems});
     };

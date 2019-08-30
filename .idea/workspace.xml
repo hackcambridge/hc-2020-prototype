@@ -2,16 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95c2938b-ea6e-4366-9ff0-9ff179fb21f3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Models/SponsorAgent.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/SponsorDetail.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2019_08_29_185524_create_sponsor_agent_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2019_08_29_185727_create_sponsor_detail_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorContext.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorFrame.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorLoading.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/CreateSponsorForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/ExampleResourceList.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorHome.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorPeople.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Sponsors.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Sponsors.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/FrameExample.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorsDashboard.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/TopBarExample.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/scenes/committee.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/scenes/committee.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Committee.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Committee.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Resources/Sponsor.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/Sponsor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Sponsor.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Sponsor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2019_08_26_154720_create_sponsors_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_08_26_154720_create_sponsors_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/ExampleResourceList.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorHome.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorPeople.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/scenes/sponsors.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/scenes/sponsors.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/sponsors/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/sponsors/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/welcome.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/welcome.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -146,6 +158,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/Models" />
       <recent name="$PROJECT_DIR$/app/Http/Controllers" />
     </key>
   </component>

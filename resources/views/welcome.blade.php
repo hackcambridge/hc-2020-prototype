@@ -57,6 +57,7 @@
 
 
     <form method="POST" action="{{ route('committee_api_post', 'add-sponsor') }}">
+        @csrf
         <input type="text" name="name"><br>
         <input type="submit" value="Submit">
     </form>

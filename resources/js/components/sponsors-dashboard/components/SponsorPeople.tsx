@@ -3,6 +3,7 @@ import { Page, Badge, Card, DisplayText } from "@shopify/polaris";
 import { ResourceListExample } from "./ExampleResourceList";
 
 class SponsorPeople extends Component {
+
     render() {
         return (
             <Page

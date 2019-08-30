@@ -8,12 +8,20 @@ import {
     Navigation,
 } from "@shopify/polaris";
 import {AddMajorMonotone, ConversationMinor, DnsSettingsMajorMonotone, HomeMajorMonotone, OrdersMajorTwotone, OnlineStoreMajorTwotone, CirclePlusOutlineMinor, SmileyJoyMajorMonotone, SocialAdMajorMonotone, MentionMajorMonotone, ConfettiMajorMonotone, CodeMajorMonotone, DataVisualizationMajorMonotone, SandboxMajorMonotone, GamesConsoleMajorMonotone, MobileBackArrowMajorMonotone, LogOutMinor, MobileChevronMajorMonotone, TransferWithinShopifyMajorMonotone} from '@shopify/polaris-icons';
-import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Link, Switch, withRouter, RouteComponentProps, Redirect } from "react-router-dom";
 import { X, Y } from "./x";
 import { ISponsorDashboardProps } from "../../scenes/sponsors";
-import SponsorHome from "./SponsorHome"
-import SponsorPeople from "./SponsorPeople";
+import SponsorHome from "./components/SponsorHome"
+import SponsorPeople from "./components/SponsorPeople";
 import Sponsor404 from "./Sponsor404";
+import axios from 'axios';
+import SponsorContext from "./SponsorContext";
+import { throws } from "assert";
+import CreateSponsorForm from "./components/CreateSponsorForm";
+
+interface ISponsorDashboardAppendedProps extends ISponsorDashboardProps, RouteComponentProps {
+    validRoute: boolean
+}
 
 interface ISponsorDashboardState {
     isLoading: boolean,
@@ -21,9 +29,17 @@ interface ISponsorDashboardState {
     searchText: string,
     userMenuOpen: boolean,
     showMobileNavigation: boolean,
+    sponsors: ISponsorData[],
+    createSponsorFormShowing: boolean,
 }
 
-class SponsorDashboard extends Component<ISponsorDashboardProps, ISponsorDashboardState> {
+interface ISponsorData {
+    id: string,
+    name: string,
+    slug: string,
+}
+
+class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponsorDashboardState> {
 
     state = {
         isLoading: false,
@@ -31,7 +47,14 @@ class SponsorDashboard extends Component<ISponsorDashboardProps, ISponsorDashboa
         searchText: '',
         userMenuOpen: false,
         showMobileNavigation: false,
+        sponsors: [{ id: "", name: "Loading...", slug: "" }] as ISponsorData[],
+        createSponsorFormShowing: false,
     };
+
+
+    componentDidMount(): void {
+        this.getAllSponsors();
+    }
 
     render() {
         const {
@@ -41,6 +64,12 @@ class SponsorDashboard extends Component<ISponsorDashboardProps, ISponsorDashboa
             showMobileNavigation,
         } = this.state;
 
+        const isRoot = "sponsor" in this.props.match.params;
+        const sponsor = isRoot ? this.props.match.params["sponsor"] : undefined;
+        const section = this.props.match.params["uri"] || "";
+        if(section.length == 0 && sponsor > 0 && this.props.validRoute) {
+            return <Redirect to="overview" />;
+        }
 
         const userMenuActions = [
             {
@@ -56,17 +85,10 @@ class SponsorDashboard extends Component<ISponsorDashboardProps, ISponsorDashboa
             },
         ];
 
-        const navigationUserMenuMarkup = (
-            <Navigation.UserMenu
-                actions={userMenuActions}
-                avatarInitials={this.props.user.name.charAt(0)}
-            />
-        );
-
         const userMenuMarkup = (
             <TopBar.UserMenu
                 actions={userMenuActions}
-                name={this.props.user.name}
+                name={this.props.user.name.split(" ")[0]}
                 initials={this.props.user.name.charAt(0)}
                 open={userMenuOpen}
                 onToggle={this.toggleState('userMenuOpen')}
@@ -96,84 +118,46 @@ class SponsorDashboard extends Component<ISponsorDashboardProps, ISponsorDashboa
             <TopBar
                 showNavigationToggle={true}
                 userMenu={userMenuMarkup}
-                searchResultsVisible={searchActive}
-                searchField={searchFieldMarkup}
-                searchResults={searchResultsMarkup}
-                onSearchResultsDismiss={this.handleSearchResultsDismiss}
+                // searchResultsVisible={searchActive}
+                // searchField={searchFieldMarkup}
+                // searchResults={searchResultsMarkup}
+                // onSearchResultsDismiss={this.handleSearchResultsDismiss}
                 onNavigationToggle={this.toggleState('showMobileNavigation')}
             />
         );
 
-        const navigationMarkup = (
-            <Navigation location={`${this.props.baseUrl}/`} userMenu={navigationUserMenuMarkup}>
-                <Navigation.Section
+        const sponsorItems = this.state.sponsors.map(sponsor => {
+            return {
+                url: `${this.props.baseUrl}/${sponsor.slug}/`,
+                label: `${sponsor.name}`,
+            }
+        });
+
+        const sponsorSectionsNavMarkup = !sponsor ? <></> : (
+            <Navigation.Section
                     title="Sections"
-                    // https://polaris-icons.shopify.com/?icon=GamesConsoleMajor
-                    items={[
-                        {
-                            label: 'Dashboard', icon: HomeMajorMonotone,
-                            url: `${this.props.baseUrl}`
-                        },
-                        {
-                            label: 'People',
-                            icon: SmileyJoyMajorMonotone,
-                            url: `${this.props.baseUrl}/people`
-                        },
-                        {
-                            label: 'Swag',
-                            icon: ConfettiMajorMonotone,
-                            url: `${this.props.baseUrl}/swag`
-                        },
-                        {
-                            label: 'Hardware/API',
-                            icon: DnsSettingsMajorMonotone,
-                            url: `${this.props.baseUrl}/api`
-                        },
-                        {
-                            label: 'Social Media',
-                            icon: MentionMajorMonotone,
-                            url: `${this.props.baseUrl}/social-media`
-                        },
-                        {
-                            label: 'Prizes',
-                            icon: GamesConsoleMajorMonotone,
-                            url: `${this.props.baseUrl}/prizes`
-                        },
-                        {
-                            label: 'Demo Details',
-                            icon: CodeMajorMonotone,
-                            url: `${this.props.baseUrl}/demo-details`
-                        },
-                        {
-                            label: 'Workshop',
-                            icon: SandboxMajorMonotone,
-                            url: `${this.props.baseUrl}/workshop`
-                        },
-                        {
-                            label: 'Presentation',
-                            icon: DataVisualizationMajorMonotone,
-                            url: `${this.props.baseUrl}/presentation`
-                        },
-                    ]}
+                    items={this.privilegeStringToNavSections(sponsor, "")}
                 />
+        );
+
+        
+        const navigationMarkup = (
+            <Navigation location={`${this.props.location.pathname}`}>  
+                {sponsorSectionsNavMarkup}
                 <Navigation.Section
                     title="Sponsors"
-                    items={[
-                        {
-                            url: `${this.props.baseUrl}/`,
-                            label: 'Palantir',
-                        },
-                    ]}
+                    items={sponsorItems}
                     action={{
                         accessibilityLabel: 'Add new sponsor',
                         icon: CirclePlusOutlineMinor,
-                        onClick: () => {},
+                        // onClick: () => console.log("asdadadasdads"),
+                        onClick: () => this.setState({ createSponsorFormShowing: true }),
                     }}
                 />
             </Navigation>
         );
 
-
+        
 
         const theme = {
             colors: {
@@ -188,7 +172,7 @@ class SponsorDashboard extends Component<ISponsorDashboardProps, ISponsorDashboa
             logo: {
                 width: 144,
                 topBarSource: '/images/101-sponsors.png',
-                url: '/sponsors/dashboard/',
+                url: `${this.props.baseUrl}/`,
                 accessibilityLabel: 'Hack Cambridge',
             },
         };
@@ -203,22 +187,27 @@ class SponsorDashboard extends Component<ISponsorDashboardProps, ISponsorDashboa
         }
 
         return (
-            <BrowserRouter>
-                <AppProvider theme={theme} linkComponent={adapterLink}>
-                    <Frame
-                        topBar={topBarMarkup}
-                        navigation={navigationMarkup}
-                        showMobileNavigation={showMobileNavigation}
-                        onNavigationDismiss={this.toggleState('showMobileNavigation')}
-                    >
-                        <Switch>
-                            <Route exact path={`${this.props.baseUrl}/`} component={SponsorHome} />
-                            <Route exact path={`${this.props.baseUrl}/people`} component={SponsorPeople} />
-                            <Route path={``} component={Sponsor404} />
-                        </Switch>
-                    </Frame>
-                </AppProvider>
-            </BrowserRouter>
+            <AppProvider theme={theme} linkComponent={adapterLink}>
+                <Frame
+                    topBar={topBarMarkup}
+                    navigation={navigationMarkup}
+                    showMobileNavigation={showMobileNavigation}
+                    onNavigationDismiss={this.toggleState('showMobileNavigation')}
+                >
+                    {this.props.validRoute ? <SponsorHome {...this.props}/> : <Sponsor404 />}
+                    {this.state.createSponsorFormShowing ? 
+                        <CreateSponsorForm 
+                            active={true} 
+                            onCreateSponsor={(sponsor) => {
+                                this.getAllSponsors(() => {
+                                    this.props.history.push(`${this.props.baseUrl}/${sponsor}/overview`);
+                                });
+                            }}
+                            onClose={() => this.setState({ createSponsorFormShowing: false })}
+                        /> : <></>
+                    }
+                </Frame>
+            </AppProvider>
         );
     }
 
@@ -249,6 +238,103 @@ class SponsorDashboard extends Component<ISponsorDashboardProps, ISponsorDashboa
             };
         });
     };
+
+    private privilegeStringToNavSections(sponsor, privileges) {
+        // https://polaris-icons.shopify.com/
+        const sections = [];
+        sections.push({
+            label: 'Dashboard', icon: HomeMajorMonotone,
+            url: `${this.props.baseUrl}/${sponsor}/overview`
+        });
+
+        if(true || privileges.includes("mentors") || privileges.includes("recruiters")) {
+            sections.push({
+                label: 'People', icon: SmileyJoyMajorMonotone,
+                url: `${this.props.baseUrl}/${sponsor}/people`
+            });
+        }
+
+        if(privileges.includes("swag")) {
+            sections.push({
+                label: 'Swag', icon: ConfettiMajorMonotone,
+                url: `${this.props.baseUrl}/${sponsor}/swag`
+            });
+        }
+
+        if(privileges.includes("resources")) {
+            sections.push({
+                label: 'Hardware/API', icon: DnsSettingsMajorMonotone,
+                url: `${this.props.baseUrl}/api`
+            });
+        }
+
+        if(privileges.includes("resources")) {
+            sections.push({
+                label: 'Hardware/API', icon: DnsSettingsMajorMonotone,
+                url: `${this.props.baseUrl}/api`
+            });
+        }
+
+        if(privileges.includes("social_media")) {
+            sections.push({
+                label: 'Social Media', icon: MentionMajorMonotone,
+                url: `${this.props.baseUrl}/social-media`
+            });
+        }
+
+        if(privileges.includes("prizes")) {
+            sections.push({
+                label: 'Prizes', icon: GamesConsoleMajorMonotone,
+                url: `${this.props.baseUrl}/prizes`
+            });
+        }
+
+        if(privileges.includes("demo")) {
+            sections.push({
+                label: 'Demo Details', icon: CodeMajorMonotone,
+                url: `${this.props.baseUrl}/demo-details`
+            });
+        }
+
+        if(privileges.includes("workshop")) {
+            sections.push({
+                label: 'Workshop', icon: SandboxMajorMonotone,
+                url: `${this.props.baseUrl}/workshop`
+            });
+        }
+
+        if(privileges.includes("presentation")) {
+            sections.push({
+                label: 'Presentation', icon: DataVisualizationMajorMonotone,
+                url: `${this.props.baseUrl}/presentation`
+            });
+        }
+
+        return sections;
+    }
+
+    private getAllSponsors(then: () => void = () => {}) {
+        axios.get(`/committee/admin-api/get-sponsors.json`).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                // const data: { data: ISponsorData[] } = res.data;
+                const obj: object = res.data;
+                if("data" in obj) {
+                    const data: ISponsorData[] = obj["data"];
+                    this.setState({ sponsors: data.sort((a, b) => (a.name > b.name) ? 1 : -1) });
+                    then();
+                } else if ("success" in obj && obj["success"] == true) {
+                    const data: ISponsorData[] = [];
+                    this.setState({ sponsors: data })
+                } else {
+                    console.log("failed");
+                }
+            } else {
+                console.log(`Status: ${status}`);
+                console.log(res.data);
+            }
+        })
+    }
 }
 
-export default SponsorDashboard;
+export default withRouter(SponsorDashboard);
