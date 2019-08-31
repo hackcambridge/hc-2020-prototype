@@ -2,19 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95c2938b-ea6e-4366-9ff0-9ff179fb21f3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorAdmin.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/interfaces/sponsors.interfaces.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/101-sponsors-login.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/DestructiveConfirmation.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorAgentForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Sponsors.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Sponsors.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/Sponsor.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/Sponsor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2019_08_26_154720_create_sponsors_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_08_26_154720_create_sponsors_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2019_08_29_185524_create_sponsor_agent_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_08_29_185524_create_sponsor_agent_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2019_08_29_185727_create_sponsor_detail_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_08_29_185727_create_sponsor_detail_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorDashboard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorFrame.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorFrame.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorHome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorHome.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/scenes/sponsors.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/scenes/sponsors.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/sponsors/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/sponsors/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/CreateSponsorForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/CreateSponsorForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorAdmin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorAdmin.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorPeople.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorPeople.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/interfaces/sponsors.interfaces.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/interfaces/sponsors.interfaces.tsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

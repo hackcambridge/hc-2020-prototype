@@ -1,9 +1,11 @@
 import React, { Component, useState, useCallback } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Page, ChoiceList, TextField, Layout, Card, RangeSlider, Avatar, ResourceList, TextStyle, Button, Icon } from "@shopify/polaris";
 import { AddMajorMonotone } from '@shopify/polaris-icons';
-import { ISponsorData } from "../../../interfaces/sponsors.interfaces";
+import { ISponsorAgent, ISponsorData } from "../../../interfaces/sponsors.interfaces";
 import axios from "axios";
+import SponsorAgentForm from "./SponsorAgentForm";
+import DestructiveConfirmation from "./DestructiveConfirmation";
 
 interface ISponsorAdminProps extends RouteComponentProps {
     baseSponsorPath: string,
@@ -16,7 +18,12 @@ interface ISponsorAdminState {
     packageName: string,
     recruiters: number,
     mentors: number,
-    doingSave: boolean
+    doingSave: boolean,
+    loadingAgents: boolean,
+    agents: ISponsorAgent[],
+    sponsorAgentFormShowing: boolean,
+    isEditingSponsorAgent: ISponsorAgent | undefined,
+    showDestructiveForm: JSX.Element | undefined
 }
 
 class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
@@ -27,6 +34,11 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
         recruiters: this.getParameterisedPrivilege("recruiters"),
         mentors: this.getParameterisedPrivilege("mentors"),
         doingSave: false,
+        loadingAgents: true,
+        agents: [],
+        sponsorAgentFormShowing: false,
+        isEditingSponsorAgent: undefined,
+        showDestructiveForm: undefined
     };
 
     private privilegeTextOptions = [
@@ -47,32 +59,34 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             value: 'social_media',
         }
     ];
-  
+
+    componentDidMount() {
+        this.loadSponsorAgents();
+    }
     
     render() {
-        const { selected, packageName, recruiters, mentors, doingSave } = this.state;
+        const { 
+            selected, 
+            packageName, 
+            recruiters, 
+            mentors, 
+            doingSave, 
+            agents, 
+            loadingAgents, 
+            sponsorAgentFormShowing,
+            isEditingSponsorAgent,
+            showDestructiveForm
+        } = this.state;
         const resourceName = {
             singular: 'sponsor agent',
             plural: 'sponsor agents',
-          };
+        };
       
-          const items = [
-            {
-              id: 341,
-              name: 'Harri Bell-Thomas',
-              location: 'harribt@live.co.uk',
-            },
-            {
-              id: 256,
-              name: 'Tim Lazarus',
-              location: 'ahb36@cam.ac.uk',
-            },
-          ];
         return (
             <Page
-                breadcrumbs={[{content: `${this.props.sponsor.name}`, url: `${this.props.baseSponsorPath}/overview`}]}
+                breadcrumbs={[{content: `${this.props.sponsor.name}`, url: `${this.props.baseSponsorPath}overview`}]}
                 title="Admin"
-                primaryAction={{content: 'Save', onAction: this.handleSaveClicked, loading: doingSave}}
+                primaryAction={{content: 'Delete', onAction: this.handleDeleteClicked, destructive: true}}
             >
                 <Layout>
                     <Layout.Section oneHalf>
@@ -101,22 +115,46 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
                                     value={`${mentors}`}
                                     onChange={this.handleMentorNumberChange}
                                 />
+                                <br style={{ margin: "20px" }} />
+                                <Button onClick={this.handleSaveClicked} loading={doingSave} primary>Save</Button>
                             </Card.Section>
                         </Card>
                     </Layout.Section>
                     <Layout.Section oneHalf>
                         <Card title="Access">
-                            <Card.Section>
+                            {loadingAgents || agents.length > 0 ?
                                 <ResourceList
-                                    items={items}
+                                    loading={loadingAgents}
+                                    items={agents}
                                     renderItem={this.renderItem}
                                     resourceName={resourceName}
-                                    alternateTool={<Button plain icon={AddMajorMonotone} onClick={() => console.log("Adding a person...")}></Button>}
+                                    alternateTool={
+                                        <Button 
+                                            plain icon={AddMajorMonotone} 
+                                            onClick={() => this.setState({ sponsorAgentFormShowing: true })}>
+                                        </Button>}
                                 />
-                            </Card.Section>
+                            :  <Card.Section>
+                                    <Button 
+                                        icon={AddMajorMonotone} 
+                                        onClick={() => this.setState({ sponsorAgentFormShowing: true })}
+                                    >
+                                        &nbsp;Add a Sponsor Agent
+                                    </Button>
+                                </Card.Section>}
                         </Card>
                     </Layout.Section>
                 </Layout>
+                {sponsorAgentFormShowing ? 
+                    <SponsorAgentForm 
+                        active={true} 
+                        sponsor={this.props.sponsor}
+                        editing={isEditingSponsorAgent}
+                        onCreate={() => this.loadSponsorAgents()}
+                        onClose={() => this.setState({ sponsorAgentFormShowing: false, isEditingSponsorAgent: undefined })}
+                    /> : <></>
+                }
+                {showDestructiveForm || <></>}
             </Page>
         );
     }
@@ -152,6 +190,38 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
         });
     }
 
+    handleDeleteClicked = () => {
+        const destructor : JSX.Element = (
+            <DestructiveConfirmation 
+                title={`Are you sure you want to delete '${this.props.sponsor.name}'?`}
+                onConfirm={this.doDeleteSponsor}
+                onClose={() => this.setState({ showDestructiveForm: undefined })}
+            />
+        );
+
+        this.setState({ showDestructiveForm: destructor });
+    }
+
+    private doDeleteSponsor = () => {
+        axios.post(`/sponsors/dashboard-api/delete-sponsor.json`, {
+            sponsor_id: +this.props.sponsor.id,
+            sponsor_slug: this.props.sponsor.slug,
+        }).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                console.log(payload);
+                if("success" in payload && payload["success"]) {
+                    this.props.onUpdate();
+                    this.props.history.push('/sponsors/dashboard/');
+                    return;
+                }
+            }
+            console.log(status, res.data);
+            this.setState({ loadingAgents: false });
+        });
+    }
+
     private generatePrivilegeString() : string {
         const textOptions = this.state.selected.join(";");
         const optionsArray = [textOptions];
@@ -179,26 +249,94 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
         return 0;
     }
 
-    private renderItem = (item: { id: any; name: any; location: any; }) => {
-        const {id, name, location} = item;
+    private renderItem = (item: ISponsorAgent) => {
+        const {id, name, email} = item;
         const media = <Avatar customer size="medium" name={name} />;
     
         return (
           <ResourceList.Item
-            id={id}
+            id={`${id}`}
             url={this.props.location.pathname}
             media={media}
             accessibilityLabel={`View details for ${name}`}
-            shortcutActions={[{content: 'Edit', url: this.props.location.pathname}]}
+            shortcutActions={[
+                {
+                    content: 'Edit', 
+                    onAction: () => this.setState({ isEditingSponsorAgent: item, sponsorAgentFormShowing: true })
+                },
+                {
+                    content: 'Delete', 
+                    onAction: this.handleDeleteSponsorAgent(item)
+                },
+            ]}
           >
             <h3>
               <TextStyle variation="strong">{name}</TextStyle>
             </h3>
-            <div>{location}</div>
+            <div>{email}</div>
           </ResourceList.Item>
         );
-      };
+    };
+
+    handleDeleteSponsorAgent(agent: ISponsorAgent) {
+        return () => {
+            const destructor : JSX.Element = (
+                <DestructiveConfirmation 
+                    onConfirm={() => this.deleteSponsorAgent(agent)}
+                    onClose={() => this.setState({ showDestructiveForm: undefined })}
+                />
+            );
+    
+            this.setState({ showDestructiveForm: destructor });
+        }
+    }
+
+    loadSponsorAgents() {
+        if(!this.state.loadingAgents) {
+            this.setState({ loadingAgents: true });
+        }
+        axios.post(`/sponsors/dashboard-api/load-agents-access.json`, {
+            sponsor_id: +this.props.sponsor.id,
+            sponsor_slug: this.props.sponsor.slug,
+            type: "access"
+        }).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                console.log(res);
+                if(payload && "success" in payload && payload["success"] && "agents" in payload) {
+                    const agents : ISponsorAgent[] = payload["agents"];
+                    this.setState({ agents: agents, loadingAgents: false });
+                    return;
+                }
+            }
+            console.log(status, res.data);
+            this.setState({ loadingAgents: false });
+        });
+    }
+
+    private deleteSponsorAgent(agent: ISponsorAgent) {
+        if(!this.state.loadingAgents) {
+            this.setState({ loadingAgents: true });
+        }
+        axios.post(`/sponsors/dashboard-api/remove-agent-access.json`, {
+            sponsor_id: +this.props.sponsor.id,
+            sponsor_slug: this.props.sponsor.slug,
+            email: agent.email
+        }).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    this.loadSponsorAgents();
+                    return;
+                }
+            }
+            console.log(status, res.data);
+            this.setState({ loadingAgents: false });
+        });
+    }
     
 }
 
-export default SponsorAdmin;
+export default withRouter(SponsorAdmin);

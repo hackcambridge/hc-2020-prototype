@@ -22,7 +22,7 @@ class CreateSponsorDetailTable extends Migration
         });
 
         Schema::table('sponsor_detail', function($table) {
-            $table->foreign('sponsor_id')->references('id')->on('sponsors');
+            $table->foreign('sponsor_id')->references('id')->on('sponsors')->onDelete('cascade');
         });
     }
 

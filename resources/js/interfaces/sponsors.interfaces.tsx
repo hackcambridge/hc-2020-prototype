@@ -14,3 +14,10 @@ export interface ISponsorData {
     tier: string,
     privileges: string,
 }
+
+export interface ISponsorAgent {
+    id: number,
+    name: string,
+    email: string,
+    type: string,
+}

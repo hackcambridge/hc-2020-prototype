@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import SponsorDashboard from "./SponsorDashboard";
 import { ISponsorDashboardProps } from "../../interfaces/sponsors.interfaces";
-import SponsorHome from "./components/SponsorHome";
-import SponsorContext from "./SponsorContext";
-import Sponsor404 from "./Sponsor404";
+
 
 class SponsorFrame extends Component<ISponsorDashboardProps> {
     render() {

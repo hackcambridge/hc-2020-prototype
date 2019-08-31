@@ -43,26 +43,26 @@ class CreateSponsorForm extends Component<ICreateSponsorFormProps, ICreateSponso
                         </Stack.Item>
                     </Stack>
                 </Modal.Section>
-                </Modal>
+            </Modal>
         );
     }
 
     createSponsor = () => {
-        console.log(this.state);
         const value = this.state.value;
-        axios.post(`/committee/admin-api/add-sponsor.json`, {
+        axios.post(`/sponsors/dashboard-api/add-sponsor.json`, {
             name: value
         }).then(res => {
             const status = res.status;
             if(status >= 200 && status < 300) {
-                console.log("Success");
                 const data = res.data;
-                const sponsorSlug = data["data"]["slug"];
-                this.props.onCreateSponsor(sponsorSlug);
-            } else {
-                console.log(`Status: ${status}`);
-                console.log(res.data);
-            }
+                if("success" in data && data["success"]) {
+                    const sponsorSlug = data["data"]["slug"];
+                    this.props.onCreateSponsor(sponsorSlug);
+                    return;
+                }
+            } 
+            console.log(`Status: ${status}`);
+            console.log(res.data);
         })
         this.toggleModal();
     }

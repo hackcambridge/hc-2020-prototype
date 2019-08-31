@@ -5,6 +5,7 @@ import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.
 import SponsorHome from "./components/SponsorHome";
 import Sponsor404 from "./Sponsor404";
 import SponsorAdmin from "./components/SponsorAdmin";
+import SponsorPeople from "./components/SponsorPeople";
 
 interface ISponsorContextProps extends RouteComponentProps, ISponsorDashboardProps {
     sponsor: ISponsorData,
@@ -23,14 +24,17 @@ class SponsorContext extends Component<ISponsorContextProps, ISponsorContextStat
 
     render() {
         const sponsorSlug = this.props.match.params["sponsor"] || "";
-        const sponsorBaseUrl = `${this.props.baseUrl}/${sponsorSlug}`;
+        const sponsorBaseUrl = `${this.props.baseUrl}/${sponsorSlug}/`;
         console.log(sponsorSlug, sponsorBaseUrl);
         return (
             <div style={{ marginTop: "30px" }}>
                 <Switch>
-                    <Route exact path={`${sponsorBaseUrl}/overview`} component={SponsorHome} />
-                    <Route exact path={`${sponsorBaseUrl}/admin`} render={(props) => 
+                    <Route exact path={`${sponsorBaseUrl}overview`} component={SponsorHome} />
+                    <Route exact path={`${sponsorBaseUrl}admin`} render={(props) => 
                         <SponsorAdmin baseSponsorPath={sponsorBaseUrl} sponsor={this.props.sponsor} onUpdate={this.props.onUpdate} {...this.props} {...props}/>} 
+                    />
+                    <Route exact path={`${sponsorBaseUrl}people`} render={(props) => 
+                        <SponsorPeople baseSponsorPath={sponsorBaseUrl} sponsor={this.props.sponsor} {...this.props} {...props}/>} 
                     />
                     <Route component={SponsorLoading} />
                 </Switch>

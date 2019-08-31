@@ -13,13 +13,17 @@ class CreateSponsorAgentTable extends Migration
      */
     public function up()
     {
-        Schema::create('sponsor_agent', function (Blueprint $table) {
+        Schema::create('sponsor_agents', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string("first")->default("");
-            $table->string("last")->default("");
+            $table->string("name")->default("");
             $table->string('email');
-            $table->string('role');
+            $table->string('type');
+            $table->unsignedBigInteger('sponsor_id');
             $table->timestamps();
+        });
+
+        Schema::table('sponsor_agents', function($table) {
+            $table->foreign('sponsor_id')->references('id')->on('sponsors')->onDelete('cascade');
         });
     }
 

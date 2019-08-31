@@ -314,8 +314,6 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             });
         }
 
-        const allowedUrls = sections.map(s => s["url"]).join(";");
-        // this.setState({ allowedPaths: allowedUrls });
         return sections;
     }
 
