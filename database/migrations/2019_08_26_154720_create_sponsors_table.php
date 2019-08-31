@@ -17,6 +17,7 @@ class CreateSponsorsTable extends Migration
             $table->bigIncrements('id');
             $table->string("name")->unique();
             $table->string("slug")->unique();
+            $table->string("tier")->default("");
             $table->string("privileges")->default("");
             $table->timestamps();
         });

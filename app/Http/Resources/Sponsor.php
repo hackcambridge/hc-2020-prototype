@@ -26,6 +26,7 @@ class Sponsor extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'tier' => $this->tier,
             'privileges' => $this->privileges,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -34,6 +34,11 @@ Route::middleware(['auth.passwordless', 'type:sponsor'])->group(function() {
         'where' => ['path' => '.*']
     ]);
 
+    // Private API
+    Route::get('/sponsors/dashboard-api/{path}.json', 'Sponsors@api_get')->name('sponsors_api_get');
+    Route::middleware(['verifyCsrf'])
+        ->post('/sponsors/dashboard-api/{path}.json', 'Sponsors@api_post')
+        ->name('sponsors_api_post');
 });
 
 Route::middleware(['auth.committee', 'type:committee'])->group(function() {
