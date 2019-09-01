@@ -256,7 +256,7 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
         return (
           <ResourceList.Item
             id={`${id}`}
-            url={this.props.location.pathname}
+            onClick={() => this.setState({ isEditingSponsorAgent: item, sponsorAgentFormShowing: true })}
             media={media}
             accessibilityLabel={`View details for ${name}`}
             shortcutActions={[

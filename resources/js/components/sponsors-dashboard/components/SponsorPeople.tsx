@@ -83,13 +83,14 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
                                     alternateTool={
                                         <Button 
                                             plain icon={AddMajorMonotone} 
-                                            onClick={() => this.setState({ sponsorAgentFormShowing: true, sponsorAgentFormForType: "mentor" })}>
-                                        </Button>}
+                                            onClick={() => this.setState({ sponsorAgentFormForType: "mentor", sponsorAgentFormShowing: true })}>
+                                        </Button>
+                                    }
                                 />
                             :  <Card.Section>
                                     <Button 
                                         icon={AddMajorMonotone} 
-                                        onClick={() => this.setState({ sponsorAgentFormShowing: true, sponsorAgentFormForType: "mentor" })}
+                                        onClick={() => this.setState({ sponsorAgentFormForType: "mentor", sponsorAgentFormShowing: true })}
                                     >
                                         &nbsp;Add a Mentor
                                     </Button>
@@ -110,13 +111,13 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
                                     alternateTool={
                                         <Button 
                                             plain icon={AddMajorMonotone} 
-                                            onClick={() => this.setState({ sponsorAgentFormShowing: true, sponsorAgentFormForType: "recruiter" })}>
+                                            onClick={() => this.setState({ sponsorAgentFormForType: "recruiter", sponsorAgentFormShowing: true })}>
                                         </Button>}
                                 />
                             :  <Card.Section>
                                     <Button 
                                         icon={AddMajorMonotone} 
-                                        onClick={() => this.setState({ sponsorAgentFormShowing: true, sponsorAgentFormForType: "recruiter" })}
+                                        onClick={() => this.setState({ sponsorAgentFormForType: "recruiter", sponsorAgentFormShowing: true,  })}
                                     >
                                         &nbsp;Add a Recruiter
                                     </Button>
@@ -147,7 +148,7 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
         return (
           <ResourceList.Item
             id={`${id}`}
-            url={this.props.location.pathname}
+            onClick={() => this.setState({ isEditingSponsorAgent: item, sponsorAgentFormShowing: true })}
             media={media}
             accessibilityLabel={`View details for ${name}`}
             shortcutActions={[

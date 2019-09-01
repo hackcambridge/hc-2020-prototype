@@ -16,6 +16,7 @@ interface ISponsorFormState {
     name: string;
     email: string;
     type: string;
+    typeName: string;
 }
 
 class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
@@ -26,15 +27,16 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
         name: this.props.editing ? this.props.editing.name : "",
         email: this.props.editing ? this.props.editing.email : "",
         type: this.props.type || "access",
+        typeName: this.props.editing ? this.props.editing.type : "sponsor agent"
     }
 
     render() {
-        
+        const { typeName } = this.state;
         return (
             <Modal
                 open={this.state.isActive}
                 onClose={this.toggleModal}
-                title={this.props.editing ? "Edit sponsor agent" : "Add a new sponsor agent"}
+                title={this.props.editing ? `Edit ${typeName}` : `Add a new ${typeName}`}
                 primaryAction={{
                     content: this.props.editing ? "Amend" : "Add",
                     onAction: this.createSponsorAgent,

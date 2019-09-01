@@ -7,7 +7,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {DnsSettingsMajorMonotone, HomeMajorMonotone, OrdersMajorTwotone, OnlineStoreMajorTwotone, CirclePlusOutlineMinor, SmileyJoyMajorMonotone, SocialAdMajorMonotone, MentionMajorMonotone, ConfettiMajorMonotone, CodeMajorMonotone, DataVisualizationMajorMonotone, SandboxMajorMonotone, GamesConsoleMajorMonotone, MobileBackArrowMajorMonotone, LogOutMinor, MobileChevronMajorMonotone, TransferWithinShopifyMajorMonotone, PackageMajorMonotone, LockMajorMonotone} from '@shopify/polaris-icons';
+import {DnsSettingsMajorMonotone, HomeMajorMonotone, OrdersMajorTwotone, OnlineStoreMajorTwotone, CirclePlusOutlineMinor, SmileyJoyMajorMonotone, SocialAdMajorMonotone, MentionMajorMonotone, ConfettiMajorMonotone, CodeMajorMonotone, DataVisualizationMajorMonotone, SandboxMajorMonotone, GamesConsoleMajorMonotone, MobileBackArrowMajorMonotone, LogOutMinor, MobileChevronMajorMonotone, TransferWithinShopifyMajorMonotone, PackageMajorMonotone, LockMajorMonotone, IqMajorMonotone} from '@shopify/polaris-icons';
 import { BrowserRouter, Route, Link, Switch, withRouter, RouteComponentProps, Redirect } from "react-router-dom";
 import { X, Y } from "./x";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
@@ -185,6 +185,15 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         });
         const navigationMarkup = (
             <Navigation location={`${this.props.location.pathname}`}>  
+                <Navigation.Section
+                    title={''}
+                    items={[{ url: `${this.props.baseUrl}/overview`, label: "Overview", icon: IqMajorMonotone }]}
+                    action={{
+                        accessibilityLabel: 'Add new sponsor',
+                        icon: CirclePlusOutlineMinor,
+                        onClick: () => this.setState({ createSponsorFormShowing: true }),
+                    }}
+                />
                 {this.sponsorSectionsNavMarkup(navSection)}
                 <Navigation.Section
                     title="Sponsors"

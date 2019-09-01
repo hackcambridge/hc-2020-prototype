@@ -6,6 +6,7 @@ import SponsorHome from "./components/SponsorHome";
 import Sponsor404 from "./Sponsor404";
 import SponsorAdmin from "./components/SponsorAdmin";
 import SponsorPeople from "./components/SponsorPeople";
+import SponsorOverview from "./components/SponsorOverview";
 
 interface ISponsorContextProps extends RouteComponentProps, ISponsorDashboardProps {
     sponsor: ISponsorData,
@@ -29,7 +30,10 @@ class SponsorContext extends Component<ISponsorContextProps, ISponsorContextStat
         return (
             <div style={{ marginTop: "30px" }}>
                 <Switch>
-                    <Route exact path={`${sponsorBaseUrl}overview`} component={SponsorHome} />
+                    <Route exact path={`${this.props.baseUrl}/overview`} component={SponsorOverview} />
+                    <Route exact path={`${sponsorBaseUrl}overview`} render={(props) => 
+                        <SponsorHome baseSponsorPath={sponsorBaseUrl} sponsor={this.props.sponsor} {...this.props} {...props}/>} 
+                    />
                     <Route exact path={`${sponsorBaseUrl}admin`} render={(props) => 
                         <SponsorAdmin baseSponsorPath={sponsorBaseUrl} sponsor={this.props.sponsor} onUpdate={this.props.onUpdate} {...this.props} {...props}/>} 
                     />
