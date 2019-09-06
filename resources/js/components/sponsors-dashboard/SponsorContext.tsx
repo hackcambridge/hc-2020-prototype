@@ -7,6 +7,7 @@ import Sponsor404 from "./Sponsor404";
 import SponsorAdmin from "./components/SponsorAdmin";
 import SponsorPeople from "./components/SponsorPeople";
 import SponsorOverview from "./components/SponsorOverview";
+import SponsorHardwareAPI from "./components/HardwareAPI/SponsorHardwareAPI";
 
 interface ISponsorContextProps extends RouteComponentProps, ISponsorDashboardProps {
     sponsor: ISponsorData,
@@ -39,6 +40,9 @@ class SponsorContext extends Component<ISponsorContextProps, ISponsorContextStat
                     />
                     <Route exact path={`${sponsorBaseUrl}people`} render={(props) => 
                         <SponsorPeople baseSponsorPath={sponsorBaseUrl} sponsor={this.props.sponsor} {...this.props} {...props}/>} 
+                    />
+                    <Route exact path={`${sponsorBaseUrl}api`} render={(props) => 
+                        <SponsorHardwareAPI baseSponsorPath={sponsorBaseUrl} sponsor={this.props.sponsor} {...this.props} {...props}/>} 
                     />
                     <Route component={SponsorLoading} />
                 </Switch>

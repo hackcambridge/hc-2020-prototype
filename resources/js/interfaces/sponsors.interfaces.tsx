@@ -21,3 +21,10 @@ export interface ISponsorAgent {
     email: string,
     type: string,
 }
+
+export interface IHardwareAPIDefinition {
+    id: number,
+    urls: string[], 
+    name: string, 
+    location: string,
+}
