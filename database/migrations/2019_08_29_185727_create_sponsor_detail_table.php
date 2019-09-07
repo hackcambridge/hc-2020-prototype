@@ -13,15 +13,15 @@ class CreateSponsorDetailTable extends Migration
      */
     public function up()
     {
-        Schema::create('sponsor_detail', function (Blueprint $table) {
+        Schema::create('sponsor_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('detail_id')->unique();
-            $table->string("value")->default("");
+            $table->string("type");
+            $table->string("payload")->default("");
             $table->unsignedBigInteger('sponsor_id');
             $table->timestamps();
         });
 
-        Schema::table('sponsor_detail', function($table) {
+        Schema::table('sponsor_details', function($table) {
             $table->foreign('sponsor_id')->references('id')->on('sponsors')->onDelete('cascade');
         });
     }

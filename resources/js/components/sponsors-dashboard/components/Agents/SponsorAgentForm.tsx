@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Stack, TextContainer, TextField, Modal } from "@shopify/polaris";
+import { Modal, Stack, TextField } from "@shopify/polaris";
 import axios from "axios";
-import { ISponsorAgent, ISponsorData } from "../../../interfaces/sponsors.interfaces";
+import React, { Component } from "react";
+import { ISponsorAgent, ISponsorData } from "../../../../interfaces/sponsors.interfaces";
 
 interface ISponsorFormProps {
     sponsor: ISponsorData,

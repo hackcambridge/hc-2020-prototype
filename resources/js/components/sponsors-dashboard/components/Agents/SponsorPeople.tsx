@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Page, Badge, Card, DisplayText, Layout, ResourceList, Button, Avatar, TextStyle } from "@shopify/polaris";
-import { ISponsorData, ISponsorAgent } from "../../../interfaces/sponsors.interfaces";
-import { RouteComponentProps, withRouter } from "react-router";
-import SponsorAgentForm from "./SponsorAgentForm";
+import { Avatar, Button, Card, DisplayText, Layout, Page, ResourceList, TextStyle } from "@shopify/polaris";
 import { AddMajorMonotone } from "@shopify/polaris-icons";
 import axios from "axios";
-import DestructiveConfirmation from "./DestructiveConfirmation";
+import React, { Component } from "react";
+import { RouteComponentProps, withRouter } from "react-router";
+import { ISponsorAgent, ISponsorData } from "../../../../interfaces/sponsors.interfaces";
+import DestructiveConfirmation from "../common/DestructiveConfirmation";
+import SponsorAgentForm from "./SponsorAgentForm";
 
 interface ISponsorPeopleProps extends RouteComponentProps {
     baseSponsorPath: string,

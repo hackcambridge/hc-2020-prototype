@@ -18,6 +18,7 @@ class CreateSponsorAgentTable extends Migration
             $table->string("name")->default("");
             $table->string('email');
             $table->string('type');
+            $table->string("auth0_id")->nullable();
             $table->unsignedBigInteger('sponsor_id');
             $table->timestamps();
         });

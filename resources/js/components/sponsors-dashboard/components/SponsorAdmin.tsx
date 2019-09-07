@@ -4,8 +4,8 @@ import { Page, ChoiceList, TextField, Layout, Card, RangeSlider, Avatar, Resourc
 import { AddMajorMonotone } from '@shopify/polaris-icons';
 import { ISponsorAgent, ISponsorData } from "../../../interfaces/sponsors.interfaces";
 import axios from "axios";
-import SponsorAgentForm from "./SponsorAgentForm";
-import DestructiveConfirmation from "./DestructiveConfirmation";
+import SponsorAgentForm from "./Agents/SponsorAgentForm";
+import DestructiveConfirmation from "./common/DestructiveConfirmation";
 
 interface ISponsorAdminProps extends RouteComponentProps {
     baseSponsorPath: string,
@@ -57,6 +57,14 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
         {
             label: 'Can have a social media shoutout',
             value: 'social_media',
+        },
+        {
+            label: 'Can give a product prize',
+            value: 'prizes',
+        },
+        {
+            label: 'Can give a product demo',
+            value: 'demo',
         }
     ];
 

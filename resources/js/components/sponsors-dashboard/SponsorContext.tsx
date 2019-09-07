@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import SponsorLoading from "./SponsorLoading";
-import { Switch, Route, RouteComponentProps } from "react-router";
+import { Route, RouteComponentProps, Switch } from "react-router";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
-import SponsorHome from "./components/SponsorHome";
-import Sponsor404 from "./Sponsor404";
+import SponsorPeople from "./components/Agents/SponsorPeople";
+import SponsorResources from "./components/Resources/SponsorResources";
 import SponsorAdmin from "./components/SponsorAdmin";
-import SponsorPeople from "./components/SponsorPeople";
+import SponsorHome from "./components/SponsorHome";
 import SponsorOverview from "./components/SponsorOverview";
-import SponsorHardwareAPI from "./components/HardwareAPI/SponsorHardwareAPI";
+import SponsorLoading from "./SponsorLoading";
+import SingleItemForm from "./components/common/SingleItemForm";
 
 interface ISponsorContextProps extends RouteComponentProps, ISponsorDashboardProps {
     sponsor: ISponsorData,
@@ -42,8 +42,71 @@ class SponsorContext extends Component<ISponsorContextProps, ISponsorContextStat
                         <SponsorPeople baseSponsorPath={sponsorBaseUrl} sponsor={this.props.sponsor} {...this.props} {...props}/>} 
                     />
                     <Route exact path={`${sponsorBaseUrl}api`} render={(props) => 
-                        <SponsorHardwareAPI baseSponsorPath={sponsorBaseUrl} sponsor={this.props.sponsor} {...this.props} {...props}/>} 
-                    />
+                        <SponsorResources 
+                            key={"hw/api"}
+                            baseSponsorPath={sponsorBaseUrl} 
+                            sponsor={this.props.sponsor} 
+                            title={"Hardware / API"} 
+                            resourceNames={{ singular: "resource", plural: "resources" }} 
+                            {...this.props} {...props}
+                            types={[
+                                {label: 'Hardware Item', value: 'hardware'},
+                                {label: 'Open API Product', value: 'api'},
+                            ]}
+                            detailType={"hw/api"}
+                        />
+                    } />
+                    <Route exact path={`${sponsorBaseUrl}swag`} render={(props) => 
+                        <SponsorResources 
+                            key={"swag"}
+                            baseSponsorPath={sponsorBaseUrl} 
+                            sponsor={this.props.sponsor} 
+                            title={"Swag"} 
+                            resourceNames={{ singular: "item of swag", plural: "items of swag" }}
+                            detailType={"swag"} 
+                            {...this.props} {...props}
+                        />
+                    } />
+                    <Route exact path={`${sponsorBaseUrl}workshop`} render={(props) => 
+                        <SingleItemForm 
+                            baseSponsorPath={sponsorBaseUrl} 
+                            sponsor={this.props.sponsor} 
+                            pageTitle={"Workshop Information"}
+                            hasTitle hasDescription hasAssets
+                            detailType={"workshop"}
+                            {...this.props} {...props}
+                        />
+                    } />
+                    <Route exact path={`${sponsorBaseUrl}social-media`} render={(props) => 
+                        <SingleItemForm 
+                            baseSponsorPath={sponsorBaseUrl} 
+                            sponsor={this.props.sponsor} 
+                            pageTitle={"Social Media Shoutout Information"}
+                            hasTitle={false} hasDescription hasAssets
+                            detailType={"social-media"}
+                            {...this.props} {...props}
+                        />
+                    } />                    
+                    <Route exact path={`${sponsorBaseUrl}demo-details`} render={(props) => 
+                        <SingleItemForm 
+                            baseSponsorPath={sponsorBaseUrl} 
+                            sponsor={this.props.sponsor} 
+                            pageTitle={"Product Demo Details"}
+                            hasTitle hasDescription hasAssets
+                            detailType={"demo-details"}
+                            {...this.props} {...props}
+                        />
+                    } />                    
+                    <Route exact path={`${sponsorBaseUrl}prizes`} render={(props) => 
+                        <SingleItemForm 
+                            baseSponsorPath={sponsorBaseUrl} 
+                            sponsor={this.props.sponsor} 
+                            pageTitle={"Product Prize"}
+                            hasTitle hasDescription hasAssets
+                            detailType={"prizes"}
+                            {...this.props} {...props}
+                        />
+                    } />                    
                     <Route component={SponsorLoading} />
                 </Switch>
             </div>

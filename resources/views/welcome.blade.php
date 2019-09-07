@@ -48,19 +48,12 @@
                 <strong>{{ Auth::user()->type  }}</strong><br>
                 <strong>{{ Auth::user()->sub  }}</strong><br>
             @else
-                <a href="{{ route('login', "mymlh") }}">Hacker</a><br>
-                <a href="{{ route('login', "email") }}">Sponsor</a><br>
-                <a href="{{ route('login', "committee") }}">Committee</a>
+                <a href="{{ route('login', 'mymlh') }}">Hacker</a><br>
+                <a href="{{ route('login', 'email') }}">Sponsor</a><br>
+                <a href="{{ route('login', 'committee') }}">Committee</a>
             @endauth
         </div>
     @endif
-
-
-    <form method="POST" action="{{ route('committee_api_post', 'add-sponsor') }}">
-        @csrf
-        <input type="text" name="name"><br>
-        <input type="submit" value="Submit">
-    </form>
 
     </body>
 </html>

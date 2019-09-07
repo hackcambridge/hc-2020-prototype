@@ -1,5 +1,5 @@
+import { Button, Modal } from "@shopify/polaris";
 import React, { Component } from "react";
-import { Stack, TextField, Modal, Button } from "@shopify/polaris";
 
 interface IDestructiveConfirmationProps {
     show?: boolean,

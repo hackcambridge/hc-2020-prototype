@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Sponsor;
 use App\Models\SponsorAgent;
+use App\Models\SponsorDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\Sponsor as SponsorResource;
 
 class Sponsors extends Controller
@@ -27,6 +29,7 @@ class Sponsors extends Controller
     public function api_post(Request $request, $path) {
         $r = $request->request;
         switch ($path) {
+            case 'store-asset': return $this->storeAsset($request);
             case 'add-sponsor': return $this->addSponsor($r);
             case 'delete-sponsor': return $this->deleteSponsor($r);
             case 'update-sponsor': return $this->sponsorAdminDetailsUpdate($r);
@@ -39,6 +42,9 @@ class Sponsors extends Controller
             case 'remove-agent-access': return $this->removeSponsorAgent($r, "access");
             case 'remove-agent-mentor': return $this->removeSponsorAgent($r, "mentor", ["sponsor", "admin"]);
             case 'remove-agent-recruiter': return $this->removeSponsorAgent($r, "recruiter", ["sponsor", "admin"]);
+            case 'add-resource': return $this->addResource($r);
+            case 'load-resources': return $this->loadResources($r);
+            case 'delete-resource': return $this->deleteResource($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -88,6 +94,26 @@ class Sponsors extends Controller
                     "sponsors" => SponsorResource::collection(Sponsor::all())
                 ),
             ]);
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    public function storeAsset(Request $r) {
+        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+        if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug"])) {
+            $sponsor_slug = $r->request->get("sponsor_slug");
+//            $this->validate($r, [
+//                'asset' => 'required|image|max:2048'
+//            ]);
+            if ($r->hasFile('asset')) {
+                $file = $r->file('asset');
+                $name = time() . '-' . $file->getClientOriginalName();
+                $filePath = 'sponsors/' . $sponsor_slug . '/' . $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                return $this->success($url . $filePath);
+            }
+            return $this->fail("No file.");
         } else {
             return $this->fail("Checks failed.");
         }
@@ -266,7 +292,115 @@ class Sponsors extends Controller
         }
     }
 
+    private function addResource($r) {
+        if($this->canContinue(["admin", "sponsor"], $r, ["sponsor_id", "sponsor_slug", "payload", "detail_id", "detail_type"])) {
+            $id = $r->get("sponsor_id");
+            $slug = $r->get("sponsor_slug");
+            $payload = $r->get("payload");
+            $detail_id = $r->get("detail_id");
+            $detail_type = $r->get("detail_type");
 
+            $sponsor = Sponsor::where("id", $id)
+                              ->where("slug", $slug)
+                              ->first();
+            if ($sponsor) {
+                $sponsor_detail = null;
+                if($detail_id >= 0) {
+                    $sponsor_detail = $sponsor->details()
+                                              ->where("id", $detail_id)
+                                              ->where("type", $detail_type)
+                                              ->first();
+                }
+
+                if($sponsor_detail) {
+                    $sponsor_detail->setAttribute("payload", $payload);
+                }
+                else {
+                    $sponsor_detail = new SponsorDetail();
+                    $sponsor_detail->setAttribute("payload", $payload);
+                    $sponsor_detail->setAttribute("type", $detail_type);
+                    $sponsor_detail->setAttribute("sponsor_id", $sponsor->id);
+                }
+
+                if ($sponsor_detail->save()) {
+                    return response()->json([
+                        "success" => true,
+                        "detail" => array(
+                            "id" => $sponsor_detail->id,
+                            "payload" => $sponsor_detail->payload
+                        )
+                    ]);
+                } else {
+                    return $this->fail("Failed to save SponsorDetail");
+                }
+            } else {
+                $this->fail("Sponsor doesn't exist");
+            }
+        } else {
+            $this->fail("Checks failed");
+        }
+    }
+
+    private function loadResources($r) {
+        if($this->canContinue(["admin", "committee", "sponsor"], $r, ["sponsor_id", "sponsor_slug", "detail_type"])) {
+            $id = $r->get("sponsor_id");
+            $slug = $r->get("sponsor_slug");
+            $detail_type = $r->get("detail_type");
+            $sponsor = Sponsor::where("id", $id)
+                              ->where("slug", $slug)
+                              ->first();
+
+            if ($sponsor) {
+                $details = $sponsor->details()
+                                   ->where("type", $detail_type)
+                                   ->get();
+                if($details) {
+                    return response()->json([
+                        "success" => true,
+                        "details" => $details
+                    ]);
+                } else {
+                    $this->fail("No details found");
+                }
+            } else {
+                return $this->fail("Sponsor not found");
+            }
+        } else {
+            $this->fail("Checks failed");
+        }
+    }
+
+    private function deleteResource($r) {
+        if($this->canContinue(["admin", "sponsor"], $r, ["sponsor_id", "sponsor_slug", "detail_id", "detail_type"])) {
+            $detail_id = $r->get("detail_id");
+            $id = $r->get("sponsor_id");
+            $slug = $r->get("sponsor_slug");
+            $detail_type = $r->get("detail_type");
+
+            $sponsor = Sponsor::where("id", $id)
+                ->where("slug", $slug)
+                ->first();
+
+            if($sponsor) {
+                $detail = $sponsor->details()
+                                  ->where("id", $detail_id)
+                                  ->where("type", $detail_type)
+                                  ->first();
+                if($detail) {
+                    return response()->json([
+                        "success" => $detail->delete(),
+                        "message" => "Running delete"
+                    ]);
+                } else {
+                    return $this->success("Detail not found");
+                }
+            } else {
+                return $this->fail("Sponsor not found");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
 
     private static function slugify($text)
     {

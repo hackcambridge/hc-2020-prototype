@@ -7,17 +7,13 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {DnsSettingsMajorMonotone, HomeMajorMonotone, OrdersMajorTwotone, OnlineStoreMajorTwotone, CirclePlusOutlineMinor, SmileyJoyMajorMonotone, SocialAdMajorMonotone, MentionMajorMonotone, ConfettiMajorMonotone, CodeMajorMonotone, DataVisualizationMajorMonotone, SandboxMajorMonotone, GamesConsoleMajorMonotone, MobileBackArrowMajorMonotone, LogOutMinor, MobileChevronMajorMonotone, TransferWithinShopifyMajorMonotone, PackageMajorMonotone, LockMajorMonotone, IqMajorMonotone} from '@shopify/polaris-icons';
-import { BrowserRouter, Route, Link, Switch, withRouter, RouteComponentProps, Redirect } from "react-router-dom";
-import { X, Y } from "./x";
+import {DnsSettingsMajorMonotone, HomeMajorMonotone, CirclePlusOutlineMinor, SmileyJoyMajorMonotone, MentionMajorMonotone, ConfettiMajorMonotone, CodeMajorMonotone, DataVisualizationMajorMonotone, SandboxMajorMonotone, GamesConsoleMajorMonotone, MobileBackArrowMajorMonotone, LogOutMinor, MobileChevronMajorMonotone, TransferWithinShopifyMajorMonotone, PackageMajorMonotone, LockMajorMonotone, IqMajorMonotone} from '@shopify/polaris-icons';
+import { Link, withRouter, RouteComponentProps, Redirect } from "react-router-dom";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
-import SponsorHome from "./components/SponsorHome"
-import SponsorPeople from "./components/SponsorPeople";
 import Sponsor404 from "./Sponsor404";
 import axios from 'axios';
 import SponsorContext from "./SponsorContext";
-import { throws } from "assert";
-import CreateSponsorForm from "./components/CreateSponsorForm";
+import CreateSponsorForm from "./components/common/CreateSponsorForm";
 
 interface ISponsorDashboardAppendedProps extends ISponsorDashboardProps, RouteComponentProps {
     validRoute: boolean

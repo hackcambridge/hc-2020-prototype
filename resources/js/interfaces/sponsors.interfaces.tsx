@@ -22,9 +22,15 @@ export interface ISponsorAgent {
     type: string,
 }
 
-export interface IHardwareAPIDefinition {
+export interface IResourceDefinition {
     id: number,
     urls: string[], 
     name: string, 
-    location: string,
+    type: string,
+    description: string,
+}
+
+export interface IAssetInformation {
+    name: string, 
+    url: string
 }
