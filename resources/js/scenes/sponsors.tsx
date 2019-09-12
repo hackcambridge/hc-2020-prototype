@@ -12,7 +12,6 @@ if (document.getElementById('sponsors-root')) {
 
 
 function initialise(root: HTMLElement) {
-    console.log("Initialising Sponsors Dashboard...");
     axios.get(`/sponsors/dashboard-api/init.json`).then(res => {
         const status = res.status;
         if(status == 200) {
