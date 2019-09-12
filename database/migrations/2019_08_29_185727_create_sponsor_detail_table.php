@@ -17,6 +17,7 @@ class CreateSponsorDetailTable extends Migration
             $table->bigIncrements('id');
             $table->string("type");
             $table->string("payload")->default("");
+            $table->string("complete")->default("unknown");
             $table->unsignedBigInteger('sponsor_id');
             $table->timestamps();
         });

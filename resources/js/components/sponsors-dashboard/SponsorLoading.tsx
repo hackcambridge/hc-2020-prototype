@@ -2,8 +2,7 @@ import React, {Component} from "react";
 
 class SponsorLoading extends Component {
     render() {
-        console.log("in loading");
-        return <h1>Loading...</h1>;
+        return <h1 style={{ padding: "40px" }}>Loading...</h1>;
     }
 }
 

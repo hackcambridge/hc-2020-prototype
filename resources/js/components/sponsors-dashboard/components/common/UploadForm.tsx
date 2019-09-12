@@ -78,7 +78,7 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
 
     handleFormSubmit = () => {
         this.setState({ isSaving: true });
-        console.log(this.state.files)
+
         if(this.state.files.length > 0) {
             const first = this.state.files[0];
             let formData = new FormData();

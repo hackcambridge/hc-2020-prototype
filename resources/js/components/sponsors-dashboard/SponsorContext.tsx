@@ -27,7 +27,6 @@ class SponsorContext extends Component<ISponsorContextProps, ISponsorContextStat
     render() {
         const sponsorSlug = this.props.match.params["sponsor"] || "";
         const sponsorBaseUrl = `${this.props.baseUrl}/${sponsorSlug}/`;
-        console.log(sponsorSlug, sponsorBaseUrl);
         return (
             <div style={{ marginTop: "30px" }}>
                 <Switch>
@@ -53,7 +52,7 @@ class SponsorContext extends Component<ISponsorContextProps, ISponsorContextStat
                                 {label: 'Hardware Item', value: 'hardware'},
                                 {label: 'Open API Product', value: 'api'},
                             ]}
-                            detailType={"hw/api"}
+                            detailType={"resources"}
                         />
                     } />
                     <Route exact path={`${sponsorBaseUrl}swag`} render={(props) => 
@@ -69,6 +68,7 @@ class SponsorContext extends Component<ISponsorContextProps, ISponsorContextStat
                     } />
                     <Route exact path={`${sponsorBaseUrl}workshop`} render={(props) => 
                         <SingleItemForm 
+                            key={"workshop"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Workshop Information"}
@@ -79,26 +79,29 @@ class SponsorContext extends Component<ISponsorContextProps, ISponsorContextStat
                     } />
                     <Route exact path={`${sponsorBaseUrl}social-media`} render={(props) => 
                         <SingleItemForm 
+                            key={"social-media"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Social Media Shoutout Information"}
                             hasTitle={false} hasDescription hasAssets
-                            detailType={"social-media"}
+                            detailType={"social_media"}
                             {...this.props} {...props}
                         />
                     } />                    
                     <Route exact path={`${sponsorBaseUrl}demo-details`} render={(props) => 
                         <SingleItemForm 
+                            key={"demo-details"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Product Demo Details"}
                             hasTitle hasDescription hasAssets
-                            detailType={"demo-details"}
+                            detailType={"demo"}
                             {...this.props} {...props}
                         />
                     } />                    
                     <Route exact path={`${sponsorBaseUrl}prizes`} render={(props) => 
                         <SingleItemForm 
+                            key={"prizes"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Product Prize"}
@@ -106,7 +109,18 @@ class SponsorContext extends Component<ISponsorContextProps, ISponsorContextStat
                             detailType={"prizes"}
                             {...this.props} {...props}
                         />
-                    } />                    
+                    } />       
+                    <Route exact path={`${sponsorBaseUrl}presentation`} render={(props) => 
+                        <SingleItemForm 
+                            key={"presentation"}
+                            baseSponsorPath={sponsorBaseUrl} 
+                            sponsor={this.props.sponsor} 
+                            pageTitle={"Opening Ceremony Presentation"}
+                            hasTitle hasAssets hasDescription={false}
+                            detailType={"presentation"}
+                            {...this.props} {...props}
+                        />
+                    } />            
                     <Route component={SponsorLoading} />
                 </Switch>
             </div>

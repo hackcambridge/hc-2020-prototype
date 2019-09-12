@@ -18,10 +18,11 @@ function initialise(root: HTMLElement) {
             const obj = res.data;
             if ("success" in obj && obj["success"]) {
                 const payload : ISponsorDashboardProps = obj["payload"];
-                console.log(payload);
                 ReactDOM.render(<SponsorFrame {...payload}/>, root);
-                if(document.getElementById('loading')) {
-                    document.getElementById('loading').remove();
+
+                const loadingElement = document.getElementById('loading');
+                if(loadingElement) {
+                    loadingElement.remove();
                 }
             }
         } else {

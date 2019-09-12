@@ -293,10 +293,11 @@ class Sponsors extends Controller
     }
 
     private function addResource($r) {
-        if($this->canContinue(["admin", "sponsor"], $r, ["sponsor_id", "sponsor_slug", "payload", "detail_id", "detail_type"])) {
+        if($this->canContinue(["admin", "sponsor"], $r, ["sponsor_id", "sponsor_slug", "payload", "detail_id", "detail_type", "complete"])) {
             $id = $r->get("sponsor_id");
             $slug = $r->get("sponsor_slug");
             $payload = $r->get("payload");
+            $complete = $r->get("complete");
             $detail_id = $r->get("detail_id");
             $detail_type = $r->get("detail_type");
 
@@ -314,10 +315,12 @@ class Sponsors extends Controller
 
                 if($sponsor_detail) {
                     $sponsor_detail->setAttribute("payload", $payload);
+                    $sponsor_detail->setAttribute("complete", $complete);
                 }
                 else {
                     $sponsor_detail = new SponsorDetail();
                     $sponsor_detail->setAttribute("payload", $payload);
+                    $sponsor_detail->setAttribute("complete", $complete);
                     $sponsor_detail->setAttribute("type", $detail_type);
                     $sponsor_detail->setAttribute("sponsor_id", $sponsor->id);
                 }
@@ -327,7 +330,8 @@ class Sponsors extends Controller
                         "success" => true,
                         "detail" => array(
                             "id" => $sponsor_detail->id,
-                            "payload" => $sponsor_detail->payload
+                            "payload" => $sponsor_detail->payload,
+                            "complete" => $sponsor_detail->complete,
                         )
                     ]);
                 } else {
@@ -342,7 +346,7 @@ class Sponsors extends Controller
     }
 
     private function loadResources($r) {
-        if($this->canContinue(["admin", "committee", "sponsor"], $r, ["sponsor_id", "sponsor_slug", "detail_type"])) {
+        if($this->canContinue(["admin", "committee", "sponsor"], $r, ["sponsor_id", "sponsor_slug"])) {
             $id = $r->get("sponsor_id");
             $slug = $r->get("sponsor_slug");
             $detail_type = $r->get("detail_type");
@@ -351,9 +355,11 @@ class Sponsors extends Controller
                               ->first();
 
             if ($sponsor) {
-                $details = $sponsor->details()
-                                   ->where("type", $detail_type)
-                                   ->get();
+                if($detail_type)
+                    $details = $sponsor->details()->where("type", $detail_type)->get();
+                else
+                    $details = $sponsor->details()->get();
+
                 if($details) {
                     return response()->json([
                         "success" => true,

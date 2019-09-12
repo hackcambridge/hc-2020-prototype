@@ -49,7 +49,7 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
             newURLError, 
             titleError 
         } = this.state;
-        console.log(this.props.detailType);
+
         return (
             <Modal
                 open={isActive}
@@ -154,13 +154,13 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
             sponsor_slug: this.props.sponsor.slug,
             payload: JSON.stringify(payload),
             detail_type: this.props.detailType,
-            detail_id: this.props.item ? this.props.item.id : -1
+            detail_id: this.props.item ? this.props.item.id : -1,
+            complete: "unknown",
         }).then(res => {
             const status = res.status;
             if(status >= 200 && status < 300) {
                 const data = res.data;
                 if("success" in data && data["success"]) {
-                    console.log(data);
                     this.toggleModal();
                     this.props.onCreate();
                 }

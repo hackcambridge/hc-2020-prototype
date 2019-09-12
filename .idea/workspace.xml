@@ -2,47 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95c2938b-ea6e-4366-9ff0-9ff179fb21f3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Helpers/Auth0ManagementAPI.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/Agents/SponsorAgentForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/Agents/SponsorPeople.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/Resources/SponsorResourceForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/Resources/SponsorResources.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/common/CreateSponsorForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/common/DestructiveConfirmation.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/common/SingleItemForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/common/UploadForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/common/url_helpers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/hc2020-prototype.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hc2020-prototype.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.env.swp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/common/descriptions.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Sponsors.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Sponsors.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2019_08_29_185524_create_sponsor_agent_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_08_29_185524_create_sponsor_agent_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/migrations/2019_08_29_185727_create_sponsor_detail_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_08_29_185727_create_sponsor_detail_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/404.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/TopQuickNav.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/committee-admin/Committee404.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/committee-admin/CommitteeAdminSidebar.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/committee-admin/CommitteeContentWrapper.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/committee-admin/CommitteeNav.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/committee-admin/CommitteeNav2.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/committee-admin/CommitteeUsersOverview.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorDashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/CreateSponsorForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/DestructiveConfirmation.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/ExampleResourceList.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/HardwareAPI/SponsorHardwareAPI.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/HardwareAPI/SponsorResourceForm.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorLoading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/SponsorLoading.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/Resources/SponsorResourceForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/Resources/SponsorResourceForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorAdmin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorAdmin.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorAgentForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorPeople.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/x.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorHome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/SponsorHome.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/common/SingleItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/common/SingleItemForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/common/UploadForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/sponsors-dashboard/components/common/UploadForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/interfaces/sponsors.interfaces.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/interfaces/sponsors.interfaces.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/scenes/committee.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/welcome.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/welcome.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/scenes/sponsors.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/scenes/sponsors.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -216,7 +192,9 @@
       <workItem from="1563126900911" duration="1668000" />
       <workItem from="1566153820673" duration="5937000" />
       <workItem from="1566661114749" duration="17779000" />
-      <workItem from="1567808375728" duration="7192000" />
+      <workItem from="1567808375728" duration="7938000" />
+      <workItem from="1568161884186" duration="776000" />
+      <workItem from="1568240374773" duration="3198000" />
     </task>
     <servers />
   </component>
@@ -238,16 +216,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/Http/Controllers/Sponsors.php</url>
-          <line>119</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

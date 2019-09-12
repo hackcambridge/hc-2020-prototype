@@ -44,6 +44,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         sponsors: this.props.sponsors.sort((a, b) => (a.name > b.name) ? 1 : -1),
         createSponsorFormShowing: false,
         currentLocation: this.props.location.pathname,
+        
     };
 
     private toggleState = (key: string) => {
@@ -69,7 +70,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         {
             id: "links",
             items: [
-                {content: 'Go to Dashboard', url: "/", icon: TransferWithinShopifyMajorMonotone},
+                {content: 'Go to Dashboard', url: "/dashboard", icon: TransferWithinShopifyMajorMonotone},
                 {content: 'Go to Homepage', url: "/", icon: TransferWithinShopifyMajorMonotone},
             ],
         },
@@ -125,9 +126,9 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
     private navSections = (sponsor: ISponsorData) => !sponsor ? [] : this.privilegeStringToNavSections(sponsor);
     private sponsorSectionsNavMarkup = (items: INavMenuItem[]) => items.length == 0 ? <></> : (
         <Navigation.Section
-                title="Sections"
-                items={items}
-            />
+            title="Sections"
+            items={items}
+        />
     );    
 
     private theme = {
@@ -179,11 +180,16 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
                 label: `${sponsor.name}`,
             }
         });
+
+        const renderAdminMenuItems = this.props.user ? ["committee", "admin"].includes(this.props.user.type) : false;
         const navigationMarkup = (
             <Navigation location={`${this.props.location.pathname}`}>  
+                
                 <Navigation.Section
                     title={''}
-                    items={[{ url: `${this.props.baseUrl}/overview`, label: "Overview", icon: IqMajorMonotone }]}
+                    items={renderAdminMenuItems ? [
+                        { url: `${this.props.baseUrl}/overview`, label: "Overview", icon: IqMajorMonotone }
+                    ] : []}
                     action={{
                         accessibilityLabel: 'Add new sponsor',
                         icon: CirclePlusOutlineMinor,
@@ -194,11 +200,11 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
                 <Navigation.Section
                     title="Sponsors"
                     items={sponsorItems}
-                    action={{
+                    action={renderAdminMenuItems ? {
                         accessibilityLabel: 'Add new sponsor',
                         icon: CirclePlusOutlineMinor,
                         onClick: () => this.setState({ createSponsorFormShowing: true }),
-                    }}
+                    } : undefined}
                 />
             </Navigation>
         );
@@ -211,6 +217,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
                 onToggle={this.toggleState('userMenuOpen')}
             />
         );
+
 
         if(section.length == 0 && sponsor && this.props.validRoute) {
             return <Redirect to="overview" />;
@@ -251,7 +258,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         // https://polaris-icons.shopify.com/
         const sections : INavMenuItem[] = [];
         if(sponsor) { 
-            if(this.props.user.type == "committee") {
+            if(["committee", "admin"].includes(this.props.user.type)) {
                 sections.push({
                     label: 'Admin', icon: LockMajorMonotone,
                     url: `${this.props.baseUrl}/${sponsorSlug}/admin`
@@ -328,7 +335,6 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             if(status == 200) {
                 // const data: { data: ISponsorData[] } = res.data;
                 const obj: object = res.data;
-                console.log(res);
                 if("data" in obj) {
                     const data: ISponsorData[] = obj["data"];
                     this.setState({ sponsors: data.sort((a, b) => (a.name > b.name) ? 1 : -1) });

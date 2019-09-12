@@ -65,6 +65,10 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
         {
             label: 'Can give a product demo',
             value: 'demo',
+        },
+        {
+            label: 'Can give opening ceremony presentation',
+            value: 'presentation',
         }
     ];
 
@@ -218,7 +222,6 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             const status = res.status;
             if(status == 200) {
                 const payload = res.data;
-                console.log(payload);
                 if("success" in payload && payload["success"]) {
                     this.props.onUpdate();
                     this.props.history.push('/sponsors/dashboard/');
@@ -311,7 +314,6 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             const status = res.status;
             if(status == 200) {
                 const payload = res.data;
-                console.log(res);
                 if(payload && "success" in payload && payload["success"] && "agents" in payload) {
                     const agents : ISponsorAgent[] = payload["agents"];
                     this.setState({ agents: agents, loadingAgents: false });

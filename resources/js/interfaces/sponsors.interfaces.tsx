@@ -34,3 +34,9 @@ export interface IAssetInformation {
     name: string, 
     url: string
 }
+
+export interface SingleItemFormFields {
+    title: string,
+    description: string,
+    files: IAssetInformation[],
+}
