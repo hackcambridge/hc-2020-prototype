@@ -184,19 +184,16 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         const renderAdminMenuItems = this.props.user ? ["committee", "admin"].includes(this.props.user.type) : false;
         const navigationMarkup = (
             <Navigation location={`${this.props.location.pathname}`}>  
-                
+                { renderAdminMenuItems ? 
                 <Navigation.Section
-                    title={''}
-                    items={renderAdminMenuItems ? [
-                        { url: `${this.props.baseUrl}/overview`, label: "Overview", icon: IqMajorMonotone }
-                    ] : []}
-                    action={{
-                        accessibilityLabel: 'Add new sponsor',
-                        icon: CirclePlusOutlineMinor,
-                        onClick: () => this.setState({ createSponsorFormShowing: true }),
-                    }}
-                />
+                    items={[{
+                        url: `${this.props.baseUrl}/overview`,
+                        label: "Overview",
+                        icon: IqMajorMonotone
+                    }]}
+                /> : <></> }
                 {this.sponsorSectionsNavMarkup(navSection)}
+                {this.props.sponsors.length > 1 ? 
                 <Navigation.Section
                     title="Sponsors"
                     items={sponsorItems}
@@ -205,7 +202,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
                         icon: CirclePlusOutlineMinor,
                         onClick: () => this.setState({ createSponsorFormShowing: true }),
                     } : undefined}
-                />
+                /> : <></>}
             </Navigation>
         );
         const userMenuMarkup = (
@@ -218,8 +215,10 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             />
         );
 
-
-        if(section.length == 0 && sponsor && this.props.validRoute) {
+        if(isRoot && this.props.user.type == "sponsor" && this.props.sponsors.length > 0) {
+            return <Redirect to={`${this.props.sponsors[0].slug}/overview`} />;
+        }
+        else if(section.length == 0 && sponsor && this.props.validRoute) {
             return <Redirect to="overview" />;
         }
 

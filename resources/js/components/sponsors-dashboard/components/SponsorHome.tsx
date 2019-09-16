@@ -47,6 +47,11 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
                     </Layout.Section>
                     <Layout.Section secondary>
                         <Card sectioned>
+                            <Subheading>Package:</Subheading>
+                            <div style={{ textAlign: "center", marginTop: "-20px" }}><DisplayText size="medium"><TextStyle variation="strong">{this.props.sponsor.tier}</TextStyle></DisplayText></div>
+                        </Card>
+                        <br />
+                        <Card sectioned>
                             <DisplayText size="small"><TextStyle variation="strong">{Math.round(completeness)}%</TextStyle> completed.</DisplayText>
                             <br />
                             <ProgressBar progress={completeness} size="small" />
@@ -100,8 +105,6 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
     private calculateCompletenessPercentage(details: SponsorDetailModelObject[]): number {
         if(details) {
             const keys = this.props.sponsor.privileges.split(";").filter(p => !p.includes("[") && p.length > 0);
-            const foundKeys = details.map(d => d.type);
-            const missing = keys.filter(item => foundKeys.indexOf(item) < 0);
             const allowedObjects = details.filter(d => keys.includes(d.type));
 
             let count = 0;
