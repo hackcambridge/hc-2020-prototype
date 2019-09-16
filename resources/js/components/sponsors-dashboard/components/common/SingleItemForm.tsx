@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { ISponsorData, IAssetInformation, SingleItemFormFields } from "../../../../interfaces/sponsors.interfaces";
 import { Button, Page, Card, TextField, ResourceList, Thumbnail, TextStyle, Badge } from "@shopify/polaris";
-import { AddMajorMonotone } from "@shopify/polaris-icons";
+import { AddMajorMonotone, AttachmentMajorMonotone } from "@shopify/polaris-icons";
 import UploadForm from "./UploadForm";
 import DestructiveConfirmation from "./DestructiveConfirmation";
 import axios from "axios";
@@ -98,7 +98,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                                 </Button>
                             }
                         />
-                    : <Button onClick={() => this.setState({ uploadFormShowing: true })}>Add asset</Button>}
+                    : <Button icon={AttachmentMajorMonotone} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset</Button>}
 
                     <hr style={{ borderStyle: "solid", borderColor: "#dedede94", margin: "20px 0" }} />
                     <div style={{ float: "right", marginBottom: "20px" }}>
@@ -112,17 +112,18 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                     </div>
                 </Card>
                 {uploadFormShowing ? <UploadForm 
+                    sponsor={this.props.sponsor}
                     onClose={() => this.setState({ uploadFormShowing: false })}
                     onSubmit={(urls: string[]) => {
-                        urls.forEach(url => {
+                        const newURLs: IAssetInformation[] = urls.map(url => {
                             const parts = url.split("/");
-                            const newFields = fields;
-                            newFields.files = [
-                                { name: parts[parts.length - 1], url: url },
-                                ...files
-                            ]
-                            this.setState({ fields: newFields });
+                            return { name: parts[parts.length - 1], url: url };
                         });
+                        
+                        const oldFiles: IAssetInformation[] = files; 
+                        const newFields = fields;
+                        newFields.files = oldFiles.concat(newURLs);
+                        this.setState({ fields: newFields });
                     }}
                 /> : <></>}
                 {showDestructiveForm || <></>}
@@ -235,9 +236,11 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             const status = res.status;
             if(status == 200) {
                 const payload = res.data;
+                console.log(res.data);
                 if("success" in payload && payload["success"]) {
                     const detail = payload["details"];
                     if(Array.isArray(detail) && detail.length > 0) {
+                        console.log(detail);
                         const details: {
                             title: string,
                             description: string,

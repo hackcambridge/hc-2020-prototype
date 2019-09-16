@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Button, DropZone, Stack, Thumbnail, Caption, Modal } from "@shopify/polaris";
 import axios from "axios";
-import { throws } from "assert";
+import { ISponsorData } from "../../../../interfaces/sponsors.interfaces";
 
 interface IUploadFormProps {
     onClose: () => void,
-    onSubmit: (urls: string[]) => void
+    onSubmit: (urls: string[]) => void,
+    sponsor: ISponsorData
 }
 
 interface IUploadFormState {
@@ -78,28 +79,42 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
 
     handleFormSubmit = () => {
         this.setState({ isSaving: true });
+        this.uploadFiles(this.state.files, []);
+    }
 
-        if(this.state.files.length > 0) {
-            const first = this.state.files[0];
+    private uploadFiles(files: File[], urls: string[]) {
+        if(files.length > 0) {
             let formData = new FormData();
-            formData.append('asset', first);
-            formData.append('sponsor_slug', "palantir");
+            formData.append('asset', files[0]);
+            formData.append('sponsor_id', this.props.sponsor.id);
+            formData.append('sponsor_slug', this.props.sponsor.slug);
             axios.post(`/sponsors/dashboard-api/store-asset.json`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(res => {
+                const currentURLs = urls;
                 if(res.status == 200) {
                     const response = res.data;
                     if("success" in response && response["success"]) {
-                        const url = response["message"];
-                        this.props.onSubmit([url]);
+                        currentURLs.push(response["message"]);
                     } else {
-                        console.log(res);
+                        console.log(res.data);
                     }
+                } else {
+                    console.log(res.status, res.data);
                 }
-                this.toggleModal();
+
+                if(files.length > 1) {
+                    this.uploadFiles(files.splice(1), urls);
+                } else {
+                    this.props.onSubmit(urls);
+                    this.toggleModal();
+                }
             });
+        } else {
+            this.props.onSubmit(urls);
+            this.toggleModal();
         }
     }
 }

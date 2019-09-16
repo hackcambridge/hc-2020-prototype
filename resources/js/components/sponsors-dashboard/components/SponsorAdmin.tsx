@@ -190,7 +190,8 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
     handleSaveClicked = () => {
         this.setState({ doingSave: true });
         axios.post(`/sponsors/dashboard-api/update-sponsor.json`, {
-            slug: this.props.sponsor.slug || "",
+            sponsor_id: this.props.sponsor.id,
+            sponsor_slug: this.props.sponsor.slug,
             tier: this.state.packageName || "",
             privileges: this.generatePrivilegeString()
         }).then(res => {

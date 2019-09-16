@@ -68,8 +68,11 @@ class Sponsors extends Controller
         return $this->response(true, $message);
     }
 
-    private function canContinue($allowed = [], $r = null, $stringChecks = []) {
-        array_push($allowed, "committee");
+    private function canContinue($allowed = [], $r, $stringChecks = []) {
+        array_push($allowed, "committee", "admin"); // TODO "committee" temporary
+
+        // Check the request provides all required arguments.
+        array_push($stringChecks, "sponsor_id", "sponsor_slug");
         if(Auth::check() && in_array(Auth::user()->type, $allowed)) {
             if($r) {
                 foreach ($stringChecks as $param) {
@@ -77,12 +80,46 @@ class Sponsors extends Controller
                     if(!$val || strlen($val) == 0) return false;
                 }
             }
-            return true;
+        } else {
+            // Not logged in or user type not allowed.
+            return false;
         }
+
+        $id = $r->get("sponsor_id");
+        $slug = $r->get("sponsor_slug");
+        $sponsor = Sponsor::where("id", $id)
+            ->where("slug", $slug)
+            ->first();
+
+        if($sponsor) {
+            if(in_array(Auth::user()->type, ["admin", "committee"])) return true;
+
+            // Try to find agent record.
+            $agent = $sponsor->agents()
+                              ->where("type", "agent")
+                              ->where("email", Auth::user()->email)
+                              ->get();
+            if($agent && Auth::user()->type == "sponsor") {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function initSession() {
-        if($this->canContinue(["admin", "committee", "sponsor"])) {
+        if(Auth::check()) {
+            $sponsors = array();
+            if(in_array(Auth::user()->type, ["admin", "committee"])) {
+                $sponsors = Sponsor::all();
+            } else {
+                $sponsors = Sponsor::whereIn('id', function($query){
+                    $query->select('sponsor_id')
+                        ->from(with(new SponsorAgent)->getTable())
+                        ->where("email", Auth::user()->email);
+                })->get();
+            }
+
             return response()->json([
                 "success" => true,
                 "payload" => array(
@@ -91,11 +128,9 @@ class Sponsors extends Controller
                         "type" => Auth::user()->type,
                         "name" => Auth::user()->name,
                     ),
-                    "sponsors" => SponsorResource::collection(Sponsor::all())
+                    "sponsors" => $sponsors
                 ),
             ]);
-        } else {
-            return $this->fail("Checks failed.");
         }
     }
 
@@ -120,7 +155,8 @@ class Sponsors extends Controller
     }
 
     private function addSponsor($r) {
-        if($this->canContinue(["admin"])) {
+        // TODO "committee" is temporary.
+        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee"])) {
             $name = $r->get("name");
             $slug = $this->slugify($name);
             if (strlen($slug) > 0) {
@@ -169,16 +205,20 @@ class Sponsors extends Controller
     }
 
     private function sponsorAdminDetailsUpdate($r) {
-        if($this->canContinue(["admin"], $r, ["slug"])) {
+        if($this->canContinue(["admin"], $r, ["sponsor_slug"])) {
+            $id = $r->get("sponsor_id");
+            $slug = $r->get("sponsor_slug");
             $tier = $r->get("tier");
             $privileges = $r->get("privileges");
-            $slug = $r->get("slug");
-            $sponsor = Sponsor::where("slug", $slug)->first();
+
+            $sponsor = Sponsor::where("id", $id)
+                ->where("slug", $slug)
+                ->first();
             if($sponsor) {
                 if($tier) $sponsor->setAttribute("tier", $tier);
                 if($privileges) $sponsor->setAttribute("privileges", $privileges);
                 if($sponsor->save()) {
-                    return $this->success("");
+                    return $this->success("Details updated.");
                 } else {
                     return $this->fail("Save failed");
                 }
@@ -408,8 +448,7 @@ class Sponsors extends Controller
         }
     }
 
-    private static function slugify($text)
-    {
+    private static function slugify($text) {
         // replace non letter or digits by -
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
 

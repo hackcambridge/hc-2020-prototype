@@ -14,15 +14,7 @@ interface ISponsorContextProps extends RouteComponentProps, ISponsorDashboardPro
     onUpdate: () => void
 }
 
-interface ISponsorContextState {
-    access: boolean,
-}
-
-class SponsorContext extends Component<ISponsorContextProps, ISponsorContextState> {
-
-    state = {
-        access: false
-    }
+class SponsorContext extends Component<ISponsorContextProps> {
 
     render() {
         const sponsorSlug = this.props.match.params["sponsor"] || "";
