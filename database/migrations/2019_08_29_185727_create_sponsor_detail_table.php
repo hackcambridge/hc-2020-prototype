@@ -16,7 +16,7 @@ class CreateSponsorDetailTable extends Migration
         Schema::create('sponsor_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string("type");
-            $table->string("payload")->default("");
+            $table->longText("payload");
             $table->string("complete")->default("unknown");
             $table->unsignedBigInteger('sponsor_id');
             $table->timestamps();
