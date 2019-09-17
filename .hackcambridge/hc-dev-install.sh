@@ -132,4 +132,4 @@ Finally, go to http://hackcambridge.test in your browser to make sure everything
 EndOfMessage
 
 echo ""
-red "Don't forget that the VM is now running. Don't forget to turn it off when you're done."
+red "Don't forget that the VM is now running. Remember to turn it off when you're done."
