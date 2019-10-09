@@ -11,6 +11,8 @@ export interface IApplicationRecord {
     cvUrl: string,
     questionResponses: { [key: string]: string },
     isSubmitted: boolean,
+
+    reviewed: boolean,
     invited: boolean,
     confirmed: boolean,
     rejected: boolean,
