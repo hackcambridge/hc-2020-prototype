@@ -15,6 +15,7 @@ import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
 import TeamApplication from "./components/TeamApplication";
+import axios from 'axios';
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -25,9 +26,10 @@ interface IDashboardState {
     showMobileNavigation: boolean,
     createSponsorFormShowing: boolean,
     currentLocation: string,
+    application?: IApplicationRecord | undefined,
 }
 
-const applicationsOpen = false;
+const applicationsOpen = true;
 
 class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
@@ -39,7 +41,12 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         showMobileNavigation: false,
         createSponsorFormShowing: false,
         currentLocation: this.props.location.pathname,
+        application: this.props.user.application,
     };
+
+    componentDidMount() {
+        this.loadApplicationRecord();
+    }
 
     private theme = {
         colors: {
@@ -90,7 +97,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
     render() {
         const showApplicationItems = true;
-        const { showMobileNavigation } = this.state;
+        const { showMobileNavigation, application } = this.state;
         const userMenuMarkup = (
             <TopBar.UserMenu
                 actions={[]}//{this.userMenuActions}
@@ -111,7 +118,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 />
 
                 {showApplicationItems ? 
-                <>{this.renderApplicationBanner()}
+                <>{this.renderApplicationBanner(application)}
                 <div style={{ marginTop: "-1.6rem" }}>
                     <Navigation.Section
                         items={[
@@ -135,7 +142,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 /> : <></>} */}
             </Navigation>
         );
-        console.log(this.props);
+
         return (
             <AppProvider theme={this.theme} linkComponent={this.adapterLink}>
                 <Frame
@@ -156,14 +163,14 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props}/>} />
                 <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />
-                <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(props) => <Apply canEdit={applicationsOpen} />} />
+                <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationsOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} />}/>
                 <Route exact path={`${this.props.baseUrl}/apply/team`} component={TeamApplication} />
                 <Route component={Dashboard404}></Route>
             </Switch>
         );
     }
 
-    private renderApplicationBanner(): JSX.Element {
+    private renderApplicationBanner(application: IApplicationRecord | undefined): JSX.Element {
         const states: { [key: string]: { 
             status: "warning" | "info" | "critical" | "success" | undefined, 
             text: string,
@@ -176,7 +183,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             "invited": { status: "warning", text: "Accept Invite" },
             "confirmed": { status: "success", text: "Place Confirmed", noLink: true },
         }
-        const currentState = states[this.getApplicationStateKey(undefined, applicationsOpen)];
+        const currentState = states[this.getApplicationStateKey(application, applicationsOpen)];
 
         if(currentState) {
             const banner = (
@@ -210,15 +217,36 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 else return "rejected";
             }
 
-            var complete = record.cvFilename.length > 0 && record.cvUrl.length > 0;
-            for (let key in record.questionResponses) {
-                complete = complete && record.questionResponses[key].length > 0;
+            var complete = record.cvFilename && record.cvUrl && true;
+            const responses = JSON.parse(record.questionResponses) as { [key: string]: string };
+            for (let key in responses) {
+                complete = complete && responses[key].length > 0;
             }
 
-            return complete ? "pending" : "started";
+
+            return record.isSubmitted ? (complete ? "pending" : "started") : "started";
         }
 
         return canEdit ? "notStarted" : "rejected";
+    }
+
+    private loadApplicationRecord() {
+        axios.get(`/dashboard-api/application-record.json`).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const obj = res.data;
+                if ("success" in obj && obj["success"]) {
+                    const record: IApplicationRecord = obj["record"];
+                    this.updateApplicationRecord(record);
+                    return;
+                }
+            }
+            console.log("fail");
+        });
+    }
+
+    private updateApplicationRecord = (record: IApplicationRecord) => {
+        this.setState({ application: record });
     }
 }
 

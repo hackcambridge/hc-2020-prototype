@@ -3,17 +3,20 @@ export interface IDashboardProps {
     user: {
         name: string,
         type: string,
+        application: IApplicationRecord | undefined,
     }
 }
 
-export interface IApplicationRecord {
-    cvFilename: string,
-    cvUrl: string,
-    questionResponses: { [key: string]: string },
-    isSubmitted: boolean,
-
+export interface IApplicationRecord extends IApplicationRecordContent {
     reviewed: boolean,
     invited: boolean,
     confirmed: boolean,
     rejected: boolean,
+}
+
+export interface IApplicationRecordContent {
+    cvFilename: string,
+    cvUrl: string,
+    questionResponses: string,
+    isSubmitted: boolean,
 }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends Controller
@@ -11,15 +14,25 @@ class Dashboard extends Controller
         return view('dashboard/index');
     }
 
-    public function api_get($path) {
+    public function api_get(Request $request, $path) {
+        $r = $request->request;
         switch ($path) {
             case "init": return $this->initSession();
+            case "application-record": return $this->getApplicationRecord($r);
+            default: return $this->fail("Route not found");
+        }
+    }
+
+    public function api_post(Request $request, $path) {
+        $r = $request->request;
+        switch ($path) {
+            case "update-application": return $this->updateApplicationRecord($r);
             default: return $this->fail("Route not found");
         }
     }
 
 
-        /**
+    /**
      * Private Functions
      */
 
@@ -47,51 +60,23 @@ class Dashboard extends Controller
             if($r) {
                 foreach ($stringChecks as $param) {
                     $val = $r->get($param);
-                    if(!$val || strlen($val) == 0) return false;
+                    if(!$r->has($param)) return false;
+                    // if(!$val || strlen($val) == 0) return false;
                 }
                 // flag
                 return true;
             }
-        } else {
-            // Not logged in or user type not allowed.
-            return false;
-        }
-
-        // $id = $r->get("sponsor_id");
-        // $slug = $r->get("sponsor_slug");
-        // $sponsor = Sponsor::where("id", $id)
-        //     ->where("slug", $slug)
-        //     ->first();
-
-        // if($sponsor) {
-        //     if(in_array(Auth::user()->type, ["admin", "committee"])) return true;
-
-        //     // Try to find agent record.
-        //     $agent = $sponsor->agents()
-        //                       ->where("type", "agent")
-        //                       ->where("email", Auth::user()->email)
-        //                       ->get();
-        //     if($agent && Auth::user()->type == "sponsor") {
-        //         return true;
-        //     }
+        } 
+        // else {
+        //     // Not logged in or user type not allowed.
+        //     return false;
         // }
-
         return false;
     }
 
     private function initSession() {
         if(Auth::check()) {
-            // $sponsors = array();
-            // if(in_array(Auth::user()->type, ["admin", "committee", "hacker"])) {
-            //     $sponsors = Sponsor::all();
-            // } else {
-            //     $sponsors = Sponsor::whereIn('id', function($query){
-            //         $query->select('sponsor_id')
-            //             ->from(with(new SponsorAgent)->getTable())
-            //             ->where("email", Auth::user()->email);
-            //     })->get();
-            // }
-
+            $app = Application::where("user_id", Auth::user()->id)->first();
             return response()->json([
                 "success" => true,
                 "payload" => array(
@@ -99,9 +84,58 @@ class Dashboard extends Controller
                     "user" => array(
                         "type" => Auth::user()->type,
                         "name" => Auth::user()->name,
+                        "application" => $app ? $app : null,
                     ),
                 ),
             ]);
+        }
+        else {
+            return $this->fail("Not logged in");
+        }
+    }
+
+    private function updateApplicationRecord($r) {
+        if($this->canContinue(["hacker"], $r, ["cvFilename", "cvUrl", "questionResponses", "isSubmitted"])) {
+            $app = Application::where("user_id", Auth::user()->id)->first();
+            if(!$app) {
+                $app = new Application();
+                $app->setAttribute("user_id", Auth::user()->id);
+            }
+
+            $app->setAttribute("cvFilename", $r->get("cvFilename"));
+            $app->setAttribute("cvUrl", $r->get("cvUrl"));
+            $app->setAttribute("questionResponses", $r->get("questionResponses"));
+            $app->setAttribute("isSubmitted", $r->get("isSubmitted"));
+
+            if($app->save()) {
+                return response()->json([
+                    "success" => true,
+                    "payload" => $app,
+                ]);
+            } else {
+                return $this->fail("Failed to save record");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function getApplicationRecord($r) {
+        if($this->canContinue(["hacker", "committee", "admin"], $r)) {
+            $app = Application::where("user_id", Auth::user()->id)->first();
+            if($app) {
+                return response()->json([
+                    "success" => true,
+                    "record" => $app,
+                ]);
+            } else {
+                return response()->json([
+                    "success" => true,
+                ]);
+            }
+        }
+        else {
+            return $this->fail("Checks failed.");
         }
     }
 }

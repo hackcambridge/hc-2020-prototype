@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions } from "@shopify/polaris";
-
+import axios from 'axios';
+import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
 
 interface IApplyProps {
-    canEdit: boolean
+    canEdit: boolean,
+    initialRecord: IApplicationRecord | undefined,
+    updateApplication: (application: IApplicationRecord) => void,
 }
 
 interface IApplyState {
     uploadedFileURL?: string | undefined,
     uploadedFileName?: string | undefined,
     isUploadingFile: boolean,
+    isSaving: boolean,
     questionValues: { [key: string]: string },
     isSubmitted: boolean,
 }
@@ -22,10 +26,11 @@ class Apply extends Component<IApplyProps, IApplyState> {
 
     state = {
         isUploadingFile: false,
-        uploadedFileName: undefined,
-        uploadedFileURL: undefined,
-        questionValues: {} as { [key: string]: string },
-        isSubmitted: false,
+        isSaving: false,
+        uploadedFileName: this.props.initialRecord ? (this.props.initialRecord.cvFilename || "") : "",
+        uploadedFileURL: this.props.initialRecord ? (this.props.initialRecord.cvUrl || "") : "",
+        questionValues: (this.props.initialRecord ? JSON.parse(this.props.initialRecord.questionResponses) : {}) as { [key: string]: string },
+        isSubmitted: this.props.initialRecord ? this.props.initialRecord.isSubmitted : false,
     }
 
 
@@ -64,6 +69,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
     private fileSelector: HTMLElement;
     componentDidMount(){
         this.fileSelector = this.buildFileSelector();
+        this.loadApplicationRecord();
     }
 
     handleFileSelect = () => {
@@ -73,20 +79,14 @@ class Apply extends Component<IApplyProps, IApplyState> {
 
     handleCVRemove = () => {
         this.setState({
-            uploadedFileName: undefined,
-            uploadedFileURL: undefined,
+            uploadedFileName: "",
+            uploadedFileURL: "",
         });
     }
 
     private saveForm(submitted: boolean) {
-        const questionValues = this.state.questionValues;
-        const questions: { [key : string]: string } = {};
-        this.textFieldQuestions.forEach(q => {
-            questions[q.id] = q.id in questionValues ? questionValues[q.id] : ""
-        });
-        console.log(questions);
-
-        this.setState({ isSubmitted: submitted });
+        this.setState({ isSaving: true });
+        this.updateRecordInDatabase(submitted);
     }
 
     render() {
@@ -96,7 +96,9 @@ class Apply extends Component<IApplyProps, IApplyState> {
             uploadedFileURL, 
             questionValues,
             isSubmitted,
+            isSaving,
         } = this.state;
+
         return (
             <Page title={"Apply for Hack Cambridge"}>
                 <Card sectioned>
@@ -106,17 +108,17 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             : <p>Application have now closed.</p>
                         }
                     </Banner>
+
                     <div style={{ paddingBottom: "12px", paddingTop: "30px" }}>
                         <Heading>CV / Resume</Heading>
                     </div>
-                    {uploadedFileName 
+                    {uploadedFileName.length > 0 
                         ?   <ButtonGroup segmented>
                                 <Button outline size="slim" url={uploadedFileURL}>{uploadedFileName}</Button>
-                                <Button destructive size="slim" onClick={this.handleCVRemove} disabled={!this.props.canEdit}>Remove</Button>
+                                <Button destructive size="slim" onClick={this.handleCVRemove} disabled={!this.props.canEdit || isSaving}>Remove</Button>
                             </ButtonGroup>
                         :   <Button size="slim" loading={isUploadingFile} onClick={this.handleFileSelect} disabled={!this.props.canEdit}>Upload CV</Button>
                     }
-
 
                     {this.textFieldQuestions.map(q => {
                         return (
@@ -146,12 +148,12 @@ class Apply extends Component<IApplyProps, IApplyState> {
                         <div style={{ float: "right", padding: "30px 0" }}>
                             {isSubmitted 
                                 ? <ButtonGroup segmented>
-                                    <Button onClick={() => this.saveForm(true)}>Update</Button>
-                                    <Button destructive onClick={() => this.saveForm(false)}>Revoke</Button>
+                                    <Button loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
+                                    <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Update</Button>
                                 </ButtonGroup>
                                 : <ButtonGroup segmented>
-                                    <Button onClick={() => this.saveForm(false)}>Save Draft</Button>
-                                    <Button primary onClick={() => this.saveForm(true)}>Submit</Button>
+                                    <Button loading={isSaving} onClick={() => this.saveForm(false)}>Save Draft</Button>
+                                    <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Submit</Button>
                                 </ButtonGroup>
                             }
                         </div>
@@ -159,6 +161,53 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 </Card>
             </Page>
         );
+    }
+
+    private updateRecordInDatabase(isSubmitted: boolean) {
+        const questionValues = this.state.questionValues;
+        const questions: { [key : string]: string } = {};
+        this.textFieldQuestions.forEach(q => {
+            questions[q.id] = q.id in questionValues ? questionValues[q.id] : ""
+        });
+
+        axios.post(`/dashboard-api/update-application.json`, {
+            cvFilename: this.state.uploadedFileName || "",
+            cvUrl: this.state.uploadedFileURL || "",
+            questionResponses: JSON.stringify(questions),
+            isSubmitted: isSubmitted,
+        }).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    const record: IApplicationRecord = payload["payload"];
+                    this.props.updateApplication(record);
+                    this.setState({ isSubmitted: isSubmitted, isSaving: false });
+                    return;
+                }
+            }
+            console.log(status, res.data);
+            this.setState({ isSaving: false });
+        });
+    }
+
+    private loadApplicationRecord() {
+        axios.get(`/dashboard-api/application-record.json`).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const obj = res.data;
+                if ("success" in obj && obj["success"]) {
+                    const record: IApplicationRecord = obj["record"] as IApplicationRecord;
+                    this.setState({
+                        uploadedFileName: record.cvFilename || "",
+                        uploadedFileURL: record.cvFilename || "",
+                        questionValues: JSON.parse(record.questionResponses) as { [key: string]: string },
+                        isSubmitted: record.isSubmitted,
+                    });
+                    return;
+                }
+            }
+        });
     }
 }
 
