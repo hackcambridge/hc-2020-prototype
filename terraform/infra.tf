@@ -7,6 +7,10 @@ resource "aws_launch_template" "hc-instance" {
   image_id = "ami-04de2b60dd25fbb2e"
   instance_type = "t2.micro"
 
+  tags = {
+    Deploy_Site = "True"
+  }
+
   lifecycle {
     create_before_destroy = true
   }
