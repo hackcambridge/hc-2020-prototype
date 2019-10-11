@@ -63,6 +63,9 @@ class Apply extends Component<IApplyProps, IApplyState> {
 
             this.setState({ isUploadingFile: false });
         }
+        fileSelector.onclick = (_) => {
+            fileSelector.value = "";
+        }
         return fileSelector;
     }
 
@@ -101,15 +104,15 @@ class Apply extends Component<IApplyProps, IApplyState> {
 
         return (
             <Page title={"Apply for Hack Cambridge"}>
+                <Banner status="info">
+                    {this.props.canEdit 
+                        ? <p>You change this information at any time before the 10th November application deadline.</p>
+                        : <p>Application have now closed.</p>
+                    }
+                </Banner>
+                <br />
                 <Card sectioned>
-                    <Banner status="info">
-                        {this.props.canEdit 
-                            ? <p>You change this information at any time before the 10th November application deadline.</p>
-                            : <p>Application have now closed.</p>
-                        }
-                    </Banner>
-
-                    <div style={{ paddingBottom: "12px", paddingTop: "30px" }}>
+                    <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
                         <Heading>CV / Resume</Heading>
                     </div>
                     {uploadedFileName.length > 0 
@@ -144,20 +147,30 @@ class Apply extends Component<IApplyProps, IApplyState> {
                         );
                     })}
 
-                    {this.props.canEdit ? 
-                        <div style={{ float: "right", padding: "30px 0" }}>
-                            {isSubmitted 
-                                ? <ButtonGroup segmented>
-                                    <Button loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
+                    {this.props.canEdit ? <>
+                        {/* <div style={{ float: "right", padding: "30px 0" }}> */}
+                        {isSubmitted 
+                            ? <div>
+                                <div style={{ float: "left", padding: "30px 0" }}>
+                                    <Button destructive loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
+                                </div>
+                                <div style={{ float: "right", padding: "30px 0" }}>
                                     <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Update</Button>
-                                </ButtonGroup>
-                                : <ButtonGroup segmented>
+                                </div>
+                            </div>
+                            // <ButtonGroup segmented>
+                            //     <Button loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
+                            //     <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Update</Button>
+                            // </ButtonGroup>
+                            : <div style={{ float: "right", padding: "30px 0" }}>
+                                <ButtonGroup segmented>
                                     <Button loading={isSaving} onClick={() => this.saveForm(false)}>Save Draft</Button>
                                     <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Submit</Button>
                                 </ButtonGroup>
-                            }
-                        </div>
-                    : <></>}
+                            </div>
+                        }
+                        {/* // </div> */}
+                    </> : <></>}
                 </Card>
             </Page>
         );
@@ -198,12 +211,14 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 const obj = res.data;
                 if ("success" in obj && obj["success"]) {
                     const record: IApplicationRecord = obj["record"] as IApplicationRecord;
-                    this.setState({
-                        uploadedFileName: record.cvFilename || "",
-                        uploadedFileURL: record.cvFilename || "",
-                        questionValues: JSON.parse(record.questionResponses) as { [key: string]: string },
-                        isSubmitted: record.isSubmitted,
-                    });
+                    if(record) {
+                        this.setState({
+                            uploadedFileName: record.cvFilename || "",
+                            uploadedFileURL: record.cvFilename || "",
+                            questionValues: JSON.parse(record.questionResponses) as { [key: string]: string },
+                            isSubmitted: record.isSubmitted,
+                        });
+                    }
                     return;
                 }
             }

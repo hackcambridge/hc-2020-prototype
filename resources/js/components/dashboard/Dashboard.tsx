@@ -151,7 +151,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                     showMobileNavigation={showMobileNavigation}
                     onNavigationDismiss={this.toggleState('showMobileNavigation')}
                 >
-                    {this.renderContent()}
+                    <div style={{ paddingTop: "30px" }}>
+                        {this.renderContent()}
+                    </div>
                 </Frame>
             </AppProvider>
         );
@@ -223,8 +225,11 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 complete = complete && responses[key].length > 0;
             }
 
-
-            return record.isSubmitted ? (complete ? "pending" : "started") : "started";
+            if(canEdit) {
+                return record.isSubmitted ? (complete ? "pending" : "started") : "started";
+            } else {
+                return record.isSubmitted ? (complete ? "pending" : "rejected") : "rejected";
+            }
         }
 
         return canEdit ? "notStarted" : "rejected";
