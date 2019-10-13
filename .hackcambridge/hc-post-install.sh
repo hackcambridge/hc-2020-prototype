@@ -4,7 +4,6 @@
 SCRIPT_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CODE_LOCATION="$( cd $SCRIPT_LOCATION/../ >/dev/null 2>&1 && pwd )"
 ORIGINAL_LOCATION="$PWD"
-cd $SCRIPT_LOCATION;
 
 
 
