@@ -17,4 +17,4 @@ phases:
       - "echo Entered the pre_build phase..."
       - yarn
       - "yarn install"
-version: 0.0
+version: 0.2
