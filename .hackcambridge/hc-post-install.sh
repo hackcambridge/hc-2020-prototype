@@ -56,3 +56,8 @@ echo "--------------------"
 # fi
 # echo "Completed database migration."
 # echo "--------------------"
+
+
+
+# Restart Apache.
+sudo /opt/bitnami/ctlscript.sh restart apache

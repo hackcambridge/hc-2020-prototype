@@ -32,8 +32,3 @@ rm composer-setup.php
 SITE_CONF_DIR="/opt/bitnami/apache2/conf/bitnami"
 mv $SITE_CONF_DIR/bitnami.conf $SITE_CONF_DIR/bitnami.conf.backup.$TIME
 cp $SCRIPT_LOCATION/conf/bitnami.conf $SITE_CONF_DIR/bitnami.conf
-
-
-
-# Restart Apache.
-sudo /opt/bitnami/ctlscript.sh restart apache
