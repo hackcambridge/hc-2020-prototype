@@ -193,7 +193,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
                     }]}
                 /> : <></> }
                 {this.sponsorSectionsNavMarkup(navSection)}
-                {this.props.sponsors.length >=0 ? 
+                {(this.props.sponsors.length > 1 || renderAdminMenuItems) ? 
                 <Navigation.Section
                     title="Sponsors"
                     items={sponsorItems}
