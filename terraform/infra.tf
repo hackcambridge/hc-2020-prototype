@@ -23,6 +23,9 @@ resource "aws_launch_template" "hc-instance" {
   lifecycle {
     create_before_destroy = true
   }
+  iam_instance_profile {
+    name = "CodeDeployAgentRole"
+  }
   user_data = "${base64encode(data.template_file.user_data.rendered)}"
 }
 
