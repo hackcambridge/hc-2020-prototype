@@ -8,6 +8,13 @@ cd $SCRIPT_LOCATION;
 
 
 
+# Permissions
+sudo chown -R bitnami:daemon $CODE_LOCATION
+sudo chmod -R 0774 $CODE_LOCATION/storage
+sudo chmod -R 0774 $CODE_LOCATION/storage/bootstrap/cache
+
+
+
 # Verify PHP and Composer are present.
 hash php 2>/dev/null || { echo >&2 "PHP needs to be installed.  Aborting."; exit 1; }
 hash composer 2>/dev/null || { echo >&2 "Composer needs to be installed.  Aborting."; exit 1; }
@@ -16,17 +23,18 @@ hash composer 2>/dev/null || { echo >&2 "Composer needs to be installed.  Aborti
 
 # Composer Install
 echo "Installing Composer dependencies..."
+cd $CODE_LOCATION;
 composer install
 if [ $? -ne 0 ]; then
-    >&2 red "Composer dependency installation failed."
+    >&2 echo "Composer dependency installation failed."
     exit 1;
 fi
 echo "Installed Composer dependencies."
-echo "\n--------------------"
+echo "--------------------"
 
 
 
-# Artisan Key Generation
+# Artisan Environment Setup
 echo "Running Artisan key generation..."
 cp $SCRIPT_LOCATION/.env.base .env
 php artisan key:generate
@@ -35,15 +43,15 @@ if [ $? -ne 0 ]; then
     exit 1;
 fi
 echo "Completed Artisan key generation."
-echo "\n--------------------"
+echo "--------------------"
 
 
 
 # Migrate Database (force to skip confirmation prompt).
-php artisan migrate --force
-if [ $? -ne 0 ]; then
-    >&2 echo "Database migration failed."
-    exit 1;
-fi
-echo "Completed database migration."
-echo "\n--------------------"
+# php artisan migrate --force
+# if [ $? -ne 0 ]; then
+#     >&2 echo "Database migration failed."
+#     exit 1;
+# fi
+# echo "Completed database migration."
+# echo "--------------------"
