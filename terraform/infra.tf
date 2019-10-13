@@ -16,7 +16,7 @@ EOF
 
 resource "aws_launch_template" "hc-instance" {
   name_prefix = "hc-instance"
-  image_id = "ami-04de2b60dd25fbb2e"
+  image_id = "ami-021d9e6f25ab5bdfc"
   instance_type = "t2.micro"
   key_name = "Default"
   vpc_security_group_ids = ["${aws_security_group.hc-sg-web.id}"]
