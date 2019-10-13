@@ -1,6 +1,5 @@
 --- 
 artifacts: 
-  base-directory: dist
   discard-paths: false
   files: 
     - "**/*"
