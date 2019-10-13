@@ -56,6 +56,15 @@ resource "aws_lb_target_group" "front-end-lb-target-group" {
   port = "80"
   protocol = "TCP"
   vpc_id = "${aws_default_vpc.default.id}"
+  deregistration_delay = 0
+  health_check {
+    interval = 10
+    protocol = "HTTP"
+    path = "/"
+    port = 80
+    healthy_threshold = 2
+    unhealthy_threshold = 2
+  }
 }
 
 resource "aws_alb_listener" "front_end-lb-listener" {
