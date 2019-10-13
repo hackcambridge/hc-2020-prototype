@@ -19,3 +19,46 @@ resource "aws_default_subnet" "default_B" {
     Name = "Default subnet for eu-west-2b"
   }
 }
+
+resource "aws_security_group" "hc-sg-web" {
+  name = "hc-sg-web"
+  description = "Hack Cambridge Web Servers"
+  vpc_id = "${aws_default_vpc.default.id}"
+
+  ingress {
+    # TLS (change to whatever ports you need)
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    # Please restrict your ingress to only necessary IPs and ports.
+    # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
+    cidr_blocks = ["0.0.0.0/0", "::/0"]
+  }
+
+  ingress {
+    # TLS (change to whatever ports you need)
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    # Please restrict your ingress to only necessary IPs and ports.
+    # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
+    cidr_blocks = ["0.0.0.0/0", "::/0"]
+  }
+
+  ingress {
+    # TLS (change to whatever ports you need)
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    # Please restrict your ingress to only necessary IPs and ports.
+    # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
+    cidr_blocks = ["0.0.0.0/0", "::/0"]
+  }
+
+  egress {
+    from_port       = 0
+    to_port         = 65535
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0", "::/0"]
+  }
+}
