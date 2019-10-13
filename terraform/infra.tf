@@ -2,14 +2,28 @@ provider "aws" {
   region = "eu-west-2"
 }
 
+data "template_file" "user_data" {
+  template = <<EOF
+  #!/bin/bash
+  yum -y update
+  yum install -y ruby
+  cd /home/ec2-user
+  curl -O https://aws-codedeploy-eu-west-2.s3.amazonaws.com/latest/install
+  chmod +x ./install
+  ./install auto
+EOF
+}
+
 resource "aws_launch_template" "hc-instance" {
   name_prefix = "hc-instance"
   image_id = "ami-04de2b60dd25fbb2e"
   instance_type = "t2.micro"
   key_name = "Default"
+  vpc_security_group_ids = ["${aws_security_group.hc-sg-web.id}"]
   lifecycle {
     create_before_destroy = true
   }
+  user_data = "${base64encode(data.template_file.user_data.rendered)}"
 }
 
 resource "aws_autoscaling_group" "front-end" {
