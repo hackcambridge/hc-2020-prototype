@@ -5,13 +5,13 @@ provider "aws" {
 data "template_file" "user_data" {
   template = <<EOF
     #!/bin/bash
-    sudo apt-get -y update
-    sudo apt-get -y install ruby
-    sudo apt-get -y install wget
-    cd /home/bitnami
-    wget https://aws-codedeploy-eu-west-2.s3.amazonaws.com/latest/install
-    sudo chmod +x ./install
-    sudo ./install auto
+    sudo apt-get -y update;
+    sudo apt-get -y install ruby;
+    sudo apt-get -y install wget;
+    cd /home/bitnami;
+    wget https://aws-codedeploy-eu-west-2.s3.amazonaws.com/latest/install;
+    sudo chmod +x ./install;
+    sudo ./install auto;
   EOF
 }
 
@@ -35,6 +35,7 @@ resource "aws_autoscaling_group" "front-end" {
   min_size = 1
   max_size = 2
   desired_capacity = 2
+  health_check_grace_period = 30
 
   launch_template {
     id = "${aws_launch_template.hc-instance.id}"
