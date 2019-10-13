@@ -1,40 +1,20 @@
-version: 0.0.1
-
-phases:
-  # install:
-  #   commands:
-  #     - echo Entered the install phase...
-  #     - apt-get update -y
-  #     - apt-get install apt-transport-https
-  #     # Setup for Yarn
-  #     - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-  #     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-  #     # Setup for Chrome
-  #     - apt-get install -y software-properties-common
-  #     - add-apt-repository -y ppa:canonical-chromium-builds/stage
-  #     # Do it!
-  #     - apt-get update -y
-  #     - apt-get install -y chromium-browser 
-  #     - apt-get install -y yarn
-  pre_build:
-    commands:
-      - echo Entered the pre_build phase...
-      - yarn
-      - yarn install
-  build:
-    commands:
-      - echo Entered the build phase...
-	    # - yarn run lint
-      # - yarn run test
-      - yarn prod
-  post_build:
-    commands:
-      - echo Entered the post_build phase...
-      # - cp index.html dist/index.html
-      # - cp -R static dist/static
-      # - echo Build completed on `date`
-artifacts:
-  files:
-    - '**/*'
-  discard-paths: no
+--- 
+artifacts: 
   base-directory: dist
+  discard-paths: false
+  files: 
+    - "**/*"
+phases: 
+  build: 
+    commands: 
+      - "echo Entered the build phase..."
+      - "yarn prod"
+  post_build: 
+    commands: 
+      - "echo Entered the post_build phase..."
+  pre_build: 
+    commands: 
+      - "echo Entered the pre_build phase..."
+      - yarn
+      - "yarn install"
+version: "0.0.1"
