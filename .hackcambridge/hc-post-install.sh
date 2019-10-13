@@ -8,9 +8,11 @@ ORIGINAL_LOCATION="$PWD"
 
 
 # Permissions
-sudo chown -R bitnami:daemon $CODE_LOCATION
+echo "Code Location: $CODE_LOCATION"
+cd $CODE_LOCATION
+sudo chown -R bitnami:daemon .
 sudo chmod -R 0774 $CODE_LOCATION/storage
-sudo chmod -R 0774 $CODE_LOCATION/storage/bootstrap/cache
+sudo chmod -R 0774 $CODE_LOCATION/bootstrap/cache
 
 
 
