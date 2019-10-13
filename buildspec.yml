@@ -4,16 +4,16 @@ artifacts:
   files: 
     - "**/*"
 phases: 
+  pre_build: 
+    commands: 
+      - "echo Entered the pre_build phase..."
+      - "yarn"
+      - "yarn install"
   build: 
     commands: 
       - "echo Entered the build phase..."
       - "yarn prod"
   post_build: 
     commands: 
-      - "echo Entered the post_build phase..."
-  pre_build: 
-    commands: 
-      - "echo Entered the pre_build phase..."
-      - yarn
-      - "yarn install"
+      - "echo Reached the post_build phase."
 version: 0.2
