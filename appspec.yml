@@ -5,7 +5,7 @@ files:
     destination: /home/bitnami/htdocs
 hooks:
   AfterInstall:
-    - location: /home/bitnami/htdocs/.hackcambridge/hc-post-install.sh
+    - location: .hackcambridge/hc-post-install.sh
       timeout: 300
   # ApplicationStop:
   #   - location: .hackcambridge/hc-stop-application.sh
