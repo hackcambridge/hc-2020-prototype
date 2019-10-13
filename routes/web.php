@@ -21,7 +21,19 @@ Route::get('/foundation', 'Foundation@index')->name('foundation_index');
 
 // Protected routes - login will be forced.
 Route::middleware(['auth', 'type:hacker'])->group(function () {
-    Route::get('/dashboard', 'Dashboard@index')->name('dashboard_index');
+
+    // React App
+    Route::get('/dashboard/{path?}', [
+        'uses' => 'Dashboard@index',
+        'as' => 'dashboard_index',
+        'where' => ['path' => '.*']
+    ]);
+
+    // Private API
+    Route::get('/dashboard-api/{path}.json', 'Dashboard@api_get')->name('dashboard_api_get');
+    Route::middleware(['verifyCsrf'])
+        ->post('/dashboard-api/{path}.json', 'Dashboard@api_post')
+        ->name('dashboard_api_post');
 });
 
 
