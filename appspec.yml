@@ -3,3 +3,12 @@ os: linux
 files:
   - source: /
     destination: /home/bitnami/htdocs
+hooks:
+  ApplicationStart:
+    - location: .hackcambridge/hc-post-install.sh
+      timeout: 300
+      runas: bitnami
+  ApplicationStop:
+    - location: .hackcambridge/hc-stop-application.sh
+      timeout: 300
+      runas: bitnami

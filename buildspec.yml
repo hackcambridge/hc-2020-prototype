@@ -13,6 +13,7 @@ phases:
     commands: 
       - "echo Entered the build phase..."
       - "yarn prod"
+      - "rm -rf node_modules"
   post_build: 
     commands: 
       - "echo Reached the post_build phase."
