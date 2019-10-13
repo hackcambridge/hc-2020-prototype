@@ -6,6 +6,7 @@ data "template_file" "user_data" {
   template = <<EOF
   #!/bin/bash
 sudo su
+/opt/bitnami/ctlscript.sh stop
 apt-get -y update
 apt-get -y install ruby
 apt-get -y install wget
