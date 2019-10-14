@@ -3,19 +3,7 @@ provider "aws" {
 }
 
 data "template_file" "user_data" {
-  template = <<EOF
-  #!/bin/bash
-sudo su
-/opt/bitnami/ctlscript.sh stop
-apt-get -y update
-apt-get -y install ruby
-apt-get -y install wget
-cd /home/bitnami
-wget https://aws-codedeploy-eu-west-2.s3.amazonaws.com/latest/install
-chmod +x ./install
-./install auto
-exit
-EOF
+  template = "${file("init-script.sh")}"
 }
 
 resource "aws_launch_template" "hc-instance" {
