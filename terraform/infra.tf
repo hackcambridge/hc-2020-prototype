@@ -26,6 +26,7 @@ resource "aws_autoscaling_group" "front-end" {
   min_size = 1
   max_size = 2
   desired_capacity = 2
+  health_check_grace_period = 30
 
   launch_template {
     id = "${aws_launch_template.hc-instance.id}"
@@ -46,6 +47,7 @@ resource "aws_lb_target_group" "front-end-lb-target-group" {
   port = "80"
   protocol = "TCP"
   vpc_id = "${aws_default_vpc.default.id}"
+  deregistration_delay = 30
 }
 
 resource "aws_alb_listener" "front_end-lb-listener" {

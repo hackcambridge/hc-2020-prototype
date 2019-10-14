@@ -32,10 +32,10 @@ mix
                             '@babel/typescript',
                             '@babel/react'
                         ],
-                        plugins: [["import", {
-                            "libraryName": "antd",
-                            "style": true,   // or 'css'
-                        }]]
+                        // plugins: [["import", {
+                        //     "libraryName": "antd",
+                        //     "style": true,   // or 'css'
+                        // }]]
                     },
                     exclude: /node_modules/,
                 },
@@ -52,5 +52,6 @@ mix
             extensions: ['*', '.js', '.jsx', '.vue', '.ts', '.tsx'],
         },
     })
+    .ts('resources/js/scenes/dashboard.tsx', 'assets/js')
     .ts('resources/js/scenes/sponsors.tsx', 'assets/js')
     .sass('resources/sass/app.scss', 'assets/css');
