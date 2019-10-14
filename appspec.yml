@@ -4,7 +4,7 @@ files:
   - source: /
     destination: /home/bitnami/htdocs
 hooks:
-  AfterInstall:
+  ApplicationStart:
     - location: .hackcambridge/hc-post-install.sh
       timeout: 300
   # ApplicationStop:
