@@ -2,6 +2,10 @@ provider "aws" {
   region = "eu-west-2"
 }
 
+variable "harri" {
+  type = string
+}
+
 data "template_file" "user_data" {
   template = "${file("init-script.tpl")}"
   vars = {
