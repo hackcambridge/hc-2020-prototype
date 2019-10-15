@@ -57,6 +57,11 @@ resource "aws_lb_target_group" "front-end-lb-target-group" {
   protocol = "TCP"
   vpc_id = "${aws_default_vpc.default.id}"
   deregistration_delay = 30
+
+  health_check {
+    interval = 10
+    healthy_threshold = 2
+  }
 }
 
 resource "aws_alb_listener" "front_end-lb-listener" {

@@ -63,16 +63,17 @@ echo "--------------------"
 
 
 # Copy secrets into .env
-echo "APP_DEBUG=\"${APP_DEBUG}\"" >> .env
-echo "APP_ENV=\"${APP_ENV}\"" >> .env
-echo "APP_URL=\"${APP_URL}\"" >> .env
-echo "DB_HOST=\"${DB_HOST}\"" >> .env
-echo "DB_DATABASE=\"${DB_DATABASE}\"" >> .env
-echo "DB_USERNAME=\"${DB_USERNAME}\"" >> .env
-echo "DB_PASSWORD=\"${DB_PASSWORD}\"" >> .env
-echo "AWS_ACCESS_KEY_ID=\"${AWS_ACCESS_KEY_ID}\"" >> .env
-echo "AWS_SECRET_ACCESS_KEY=\"${AWS_SECRET_ACCESS_KEY}\"" >> .env
-echo "AWS_BUCKET=\"${AWS_BUCKET}\"" >> .env
+source /etc/profile.d/hc-deployment-vars.sh
+echo "APP_DEBUG=\"$APP_DEBUG\"" >> .env
+echo "APP_ENV=\"$APP_ENV\"" >> .env
+echo "APP_URL=\"$APP_URL\"" >> .env
+echo "DB_HOST=\"$DB_HOST\"" >> .env
+echo "DB_DATABASE=\"$DB_DATABASE\"" >> .env
+echo "DB_USERNAME=\"$DB_USERNAME\"" >> .env
+echo "DB_PASSWORD=\"$DB_PASSWORD\"" >> .env
+echo "AWS_ACCESS_KEY_ID=\"$AWS_ACCESS_KEY_ID\"" >> .env
+echo "AWS_SECRET_ACCESS_KEY=\"$AWS_SECRET_ACCESS_KEY\"" >> .env
+echo "AWS_BUCKET=\"$AWS_BUCKET\"" >> .env
 
 
 # Restart Apache.
