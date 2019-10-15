@@ -39,7 +39,7 @@ resource "aws_autoscaling_group" "front-end" {
   min_size = 1
   max_size = 2
   desired_capacity = 2
-
+  # asg_recreate_on_change = false
   launch_template {
     id = "${aws_launch_template.hc-instance.id}"
     version = "$Latest"
