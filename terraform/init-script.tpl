@@ -1,17 +1,21 @@
 #!/bin/bash
 
-# Sets up server ready for deployment
+# Sets up server ready for deployment.
 sudo su
 /opt/bitnami/ctlscript.sh stop
 apt-get -y update
 apt-get -y install ruby
 apt-get -y install wget
 cd /home/bitnami
-echo "${harri}" >> /home/bitnami/harri.txt
-touch /home/bitnami/test.txt
 wget https://aws-codedeploy-eu-west-2.s3.amazonaws.com/latest/install
 chmod +x ./install
 ./install auto
+
+# Set environment variables.
+touch /etc/profile.d/hc-deployment-vars.sh
+chmod +x /etc/profile.d/hc-deployment-vars.sh
+echo "export HARRI=\"${harri}\""
+
 exit
 
 # Assumes we're using the Bitnami AMI.
@@ -38,7 +42,3 @@ fi
 sudo mv /opt/bitnami/php/bin/composer.phar /opt/bitnami/php/bin/composer.phar.old
 sudo mv composer.phar /opt/bitnami/php/bin/
 rm composer-setup.php
-
-
-# Load environment variables
-export HARRI="${harri}"
