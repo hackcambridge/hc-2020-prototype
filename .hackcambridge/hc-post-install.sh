@@ -65,3 +65,4 @@ echo "--------------------"
 
 # Restart Apache.
 sudo /opt/bitnami/ctlscript.sh restart apache
+sudo /opt/bitnami/ctlscript.sh restart php-fpm
