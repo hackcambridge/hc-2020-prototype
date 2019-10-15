@@ -39,4 +39,4 @@ rm composer-setup.php
 
 
 # Load environment variables
-echo "HARRI=\"${harri}\"" > /etc/environment
+export HARRI="${harri}"
