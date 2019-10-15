@@ -14,7 +14,7 @@ chmod +x ./install
 # Set environment variables.
 touch /etc/profile.d/hc-deployment-vars.sh
 chmod +x /etc/profile.d/hc-deployment-vars.sh
-echo "export HARRI=\"${harri}\""
+echo "export HARRI=\"${harri}\"" >> /etc/profile.d/hc-deployment-vars.sh
 
 exit
 
