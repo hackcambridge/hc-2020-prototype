@@ -7,7 +7,9 @@ hooks:
   ApplicationStart:
     - location: .hackcambridge/hc-post-install.sh
       timeout: 300
-  # ApplicationStop:
-  #   - location: .hackcambridge/hc-stop-application.sh
-  #     timeout: 300
-  #     runas: bitnami
+  BeforeInstall:
+    - location: .hackcambridge/hc-check-config.sh
+      timeout: 300
+  ApplicationStop:
+    - location: .hackcambridge/hc-stop-application.sh
+      timeout: 300

@@ -1,4 +1,6 @@
 #!/bin/bash
+
+#Sets up server ready for deployment
 sudo su
 /opt/bitnami/ctlscript.sh stop
 apt-get -y update
@@ -11,11 +13,7 @@ chmod +x ./install
 exit
 
 # Assumes we're using the Bitnami AMI.
-
 export PATH="/opt/bitnami/php/bin/:$PATH"
-
-SCRIPT_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-TIME="$(date +%s)"
 
 # Install Composer (not required in latest version)
 hash php 2>/dev/null || { echo >&2 "PHP needs to be installed.  Aborting."; exit 1; }
@@ -38,10 +36,3 @@ fi
 sudo mv /opt/bitnami/php/bin/composer.phar /opt/bitnami/php/bin/composer.phar.old
 sudo mv composer.phar /opt/bitnami/php/bin/
 rm composer-setup.php
-
-
-
-# Configure Apache.
-SITE_CONF_DIR="/opt/bitnami/apache2/conf/bitnami"
-mv $SITE_CONF_DIR/bitnami.conf $SITE_CONF_DIR/bitnami.conf.backup.$TIME
-cp $SCRIPT_LOCATION/conf/bitnami.conf $SITE_CONF_DIR/bitnami.conf
