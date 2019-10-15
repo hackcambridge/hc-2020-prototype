@@ -22,3 +22,12 @@ variable "AWS_SECRET_ACCESS_KEY" {
 variable "AWS_BUCKET" {
   default = ""
 }
+variable "AUTH0_DOMAIN" {
+  default = ""
+}
+variable "AUTH0_CLIENT_ID" {
+  default = ""
+}
+variable "AUTH0_CLIENT_SECRET" {
+  default = ""
+}

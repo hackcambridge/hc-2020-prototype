@@ -22,6 +22,9 @@ echo "export DB_PASSWORD=\"${DB_PASSWORD}\"" >> /etc/profile.d/hc-deployment-var
 echo "export AWS_ACCESS_KEY_ID=\"${AWS_ACCESS_KEY_ID}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export AWS_SECRET_ACCESS_KEY=\"${AWS_SECRET_ACCESS_KEY}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export AWS_BUCKET=\"${AWS_BUCKET}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export AUTH0_DOMAIN=\"${AUTH0_DOMAIN}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export AUTH0_CLIENT_ID=\"${AUTH0_CLIENT_ID}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export AUTH0_CLIENT_SECRET=\"${AUTH0_CLIENT_SECRET}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export APP_ENV=\"staging\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export APP_DEBUG=\"true\"" >> /etc/profile.d/hc-deployment-vars.sh
 

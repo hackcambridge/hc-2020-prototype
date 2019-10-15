@@ -74,6 +74,9 @@ echo "DB_PASSWORD=\"$DB_PASSWORD\"" >> .env
 echo "AWS_ACCESS_KEY_ID=\"$AWS_ACCESS_KEY_ID\"" >> .env
 echo "AWS_SECRET_ACCESS_KEY=\"$AWS_SECRET_ACCESS_KEY\"" >> .env
 echo "AWS_BUCKET=\"$AWS_BUCKET\"" >> .env
+echo "AUTH0_DOMAIN=\"$AUTH0_DOMAIN\"" >> .env
+echo "AUTH0_CLIENT_ID=\"$AUTH0_CLIENT_ID\"" >> .env
+echo "AUTH0_CLIENT_SECRET=\"$AUTH0_CLIENT_SECRET\"" >> .env
 
 
 # Restart Apache.

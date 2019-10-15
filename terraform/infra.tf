@@ -13,6 +13,9 @@ data "template_file" "user_data" {
     AWS_ACCESS_KEY_ID = "${var.AWS_ACCESS_KEY_ID}"
     AWS_SECRET_ACCESS_KEY = "${var.AWS_SECRET_ACCESS_KEY}"
     AWS_BUCKET = "${var.AWS_BUCKET}"
+    AUTH0_DOMAIN = "${var.AUTH0_DOMAIN}"
+    AUTH0_CLIENT_ID = "${var.AUTH0_CLIENT_ID}"
+    AUTH0_CLIENT_SECRET = "${var.AUTH0_CLIENT_SECRET}"
   }
 }
 
