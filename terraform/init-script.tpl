@@ -8,6 +8,7 @@ apt-get -y install ruby
 apt-get -y install wget
 cd /home/bitnami
 echo "${harri}" >> /home/bitnami/harri.txt
+touch /home/bitnami/test.txt
 wget https://aws-codedeploy-eu-west-2.s3.amazonaws.com/latest/install
 chmod +x ./install
 ./install auto
