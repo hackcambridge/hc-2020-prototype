@@ -2,14 +2,17 @@ provider "aws" {
   region = "eu-west-2"
 }
 
-variable "harri" {
-  type = string
-}
-
 data "template_file" "user_data" {
   template = "${file("init-script.tpl")}"
   vars = {
-    harri = "${var.harri}" # Testing
+    APP_URL = "${var.APP_URL}"
+    DB_HOST = "${var.DB_HOST}"
+    DB_DATABASE = "${var.DB_DATABASE}"
+    DB_USERNAME = "${var.DB_USERNAME}"
+    DB_PASSWORD = "${var.DB_PASSWORD}"
+    AWS_ACCESS_KEY_ID = "${var.AWS_ACCESS_KEY_ID}"
+    AWS_SECRET_ACCESS_KEY = "${var.AWS_SECRET_ACCESS_KEY}"
+    AWS_BUCKET = "${var.AWS_BUCKET}"
   }
 }
 

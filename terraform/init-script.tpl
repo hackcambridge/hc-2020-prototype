@@ -14,7 +14,16 @@ chmod +x ./install
 # Set environment variables.
 touch /etc/profile.d/hc-deployment-vars.sh
 chmod +x /etc/profile.d/hc-deployment-vars.sh
-echo "export HARRI=\"${harri}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export APP_URL=\"${APP_URL}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export DB_HOST=\"${DB_HOST}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export DB_DATABASE=\"${DB_DATABASE}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export DB_USERNAME=\"${DB_USERNAME}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export DB_PASSWORD=\"${DB_PASSWORD}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export AWS_ACCESS_KEY_ID=\"${AWS_ACCESS_KEY_ID}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export AWS_SECRET_ACCESS_KEY=\"${AWS_SECRET_ACCESS_KEY}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export AWS_BUCKET=\"${AWS_BUCKET}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export APP_ENV=\"staging\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export APP_DEBUG=\"true\"" >> /etc/profile.d/hc-deployment-vars.sh
 
 exit
 

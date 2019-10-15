@@ -165,7 +165,7 @@ class Sponsors extends Controller
                     $sponsor = new Sponsor();
                     $sponsor->setAttribute("slug", $slug);
                     $sponsor->setAttribute("name", $name);
-                    $sponsor->save();
+                    // $sponsor->save();
                     if ($sponsor->save()) {
                         return SponsorResource::make($sponsor);
                     } else {
