@@ -59,9 +59,12 @@ resource "aws_lb_target_group" "front-end-lb-target-group" {
   deregistration_delay = 30
 
   health_check {
-    interval = 10
     healthy_threshold = 2
     unhealthy_threshold = 2
+    timeout = 3
+    protocol = "TCP"
+    port = 80
+    interval = 10
   }
 }
 
