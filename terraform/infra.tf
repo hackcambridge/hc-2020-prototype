@@ -3,7 +3,10 @@ provider "aws" {
 }
 
 data "template_file" "user_data" {
-  template = "${file("init-script.sh")}"
+  template = "${file("init-script.tpl")}"
+  vars = {
+    harri = "${var.harri}" # Testing
+  }
 }
 
 resource "aws_launch_template" "hc-instance" {

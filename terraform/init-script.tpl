@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Sets up server ready for deployment
+# Sets up server ready for deployment
 sudo su
 /opt/bitnami/ctlscript.sh stop
 apt-get -y update
@@ -36,3 +36,7 @@ fi
 sudo mv /opt/bitnami/php/bin/composer.phar /opt/bitnami/php/bin/composer.phar.old
 sudo mv composer.phar /opt/bitnami/php/bin/
 rm composer-setup.php
+
+
+# Load environment variables
+echo "HARRI=\"${harri}\"" > /etc/environment
