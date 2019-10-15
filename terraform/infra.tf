@@ -61,6 +61,7 @@ resource "aws_lb_target_group" "front-end-lb-target-group" {
   health_check {
     interval = 10
     healthy_threshold = 2
+    unhealthy_threshold = 2
   }
 }
 
