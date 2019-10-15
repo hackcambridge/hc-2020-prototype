@@ -1,6 +1,9 @@
 #!/bin/bash
 # Assumes we're using the Bitnami AMI.
 
+# Environment variables
+export PATH="/opt/bitnami/php/bin/:$PATH"
+
 # SCRIPT_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 SCRIPT_LOCATION="/home/bitnami/htdocs/.hackcambridge"
 CODE_LOCATION="$( cd $SCRIPT_LOCATION/../ >/dev/null 2>&1 && pwd )"
