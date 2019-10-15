@@ -3,16 +3,7 @@ provider "aws" {
 }
 
 data "template_file" "user_data" {
-  template = <<EOF
-    #!/bin/bash
-    sudo apt-get -y update;
-    sudo apt-get -y install ruby;
-    sudo apt-get -y install wget;
-    cd /home/bitnami;
-    wget https://aws-codedeploy-eu-west-2.s3.amazonaws.com/latest/install;
-    sudo chmod +x ./install;
-    sudo ./install auto;
-  EOF
+  template = "${file("init-script.sh")}"
 }
 
 resource "aws_launch_template" "hc-instance" {
