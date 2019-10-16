@@ -80,7 +80,7 @@ resource "aws_lb_target_group" "front-end-lb-target-group" {
 resource "aws_alb_listener" "front_end-lb-listener" {
   load_balancer_arn = "${aws_lb.front-end-lb.arn}"
   port              = 80
-  protocol          = "TCP"
+  protocol          = "HTTP"
 
   default_action {
     target_group_arn = "${aws_lb_target_group.front-end-lb-target-group.arn}"
