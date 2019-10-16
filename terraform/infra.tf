@@ -89,7 +89,7 @@ resource "aws_alb_listener" "front_end-lb-listener" {
 }
 
 resource "aws_lb_listener" "front_end-https-lb-listener" {
-  load_balancer_arn = "${aws_lb.front-end.arn}"
+  load_balancer_arn = "${aws_lb.front-end-lb.arn}"
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
