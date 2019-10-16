@@ -61,11 +61,11 @@ resource "aws_lb_target_group" "front-end-lb-target-group" {
   vpc_id               = "${aws_default_vpc.default.id}"
   deregistration_delay = 30
 
-  # stickiness {
-  #   type            = "lb_cookie"
-  #   cookie_duration = 3600
-  #   enabled         = true
-  # }
+  stickiness {
+    type            = "lb_cookie"
+    cookie_duration = 3600
+    enabled         = true
+  }
 
   # health_check {
   #   healthy_threshold = 2
