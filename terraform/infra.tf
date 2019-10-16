@@ -57,7 +57,7 @@ resource "aws_lb" "front-end-lb" {
 resource "aws_lb_target_group" "front-end-lb-target-group" {
   name                 = "front-end-lb-target-group"
   port                 = "80"
-  protocol             = "TCP"
+  protocol             = "HTTP"
   vpc_id               = "${aws_default_vpc.default.id}"
   deregistration_delay = 30
 
