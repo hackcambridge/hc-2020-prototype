@@ -57,15 +57,15 @@ resource "aws_lb" "front-end-lb" {
 resource "aws_lb_target_group" "front-end-lb-target-group" {
   name                 = "front-end-lb-target-group"
   port                 = "80"
-  protocol             = "TCP"
+  protocol             = "HTTP"
   vpc_id               = "${aws_default_vpc.default.id}"
   deregistration_delay = 30
 
-  # stickiness {
-  #   type            = "lb_cookie"
-  #   cookie_duration = 3600
-  #   enabled         = true
-  # }
+  stickiness {
+    type            = "lb_cookie"
+    cookie_duration = 3600
+    enabled         = true
+  }
 
   # health_check {
   #   healthy_threshold = 2
@@ -80,7 +80,7 @@ resource "aws_lb_target_group" "front-end-lb-target-group" {
 resource "aws_alb_listener" "front_end-lb-listener" {
   load_balancer_arn = "${aws_lb.front-end-lb.arn}"
   port              = 80
-  protocol          = "TCP"
+  protocol          = "HTTP"
 
   default_action {
     target_group_arn = "${aws_lb_target_group.front-end-lb-target-group.arn}"
