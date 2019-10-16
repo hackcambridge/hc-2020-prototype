@@ -88,6 +88,19 @@ resource "aws_alb_listener" "front_end-lb-listener" {
   }
 }
 
+resource "aws_lb_listener" "front_end-https-lb-listener" {
+  load_balancer_arn = "${aws_lb.front-end-lb.arn}"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "arn:aws:acm:eu-west-2:987408907490:certificate/b9b6c6fe-0adc-4541-8b20-50a74cb8169b"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.front-end-lb-target-group.arn}"
+  }
+}
+
 resource "aws_autoscaling_attachment" "front-end-lb-autoscaling" {
   alb_target_group_arn   = "${aws_lb_target_group.front-end-lb-target-group.arn}"
   autoscaling_group_name = "${aws_autoscaling_group.front-end.id}"
