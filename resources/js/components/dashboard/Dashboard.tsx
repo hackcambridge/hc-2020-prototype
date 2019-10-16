@@ -166,7 +166,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props}/>} />
                 <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />
                 <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationsOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} />}/>
-                <Route exact path={`${this.props.baseUrl}/apply/team`} component={TeamApplication} />
+                <Route exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner}/>} />
                 <Route component={Dashboard404}></Route>
             </Switch>
         );
