@@ -135,6 +135,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                         doingAction: false,
                         teamID: teamID,
                         teamMembers: teamMembers,
+                        teamOwner: true,
                     });
                     console.log(payload);
                     return;
@@ -152,7 +153,13 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
             if(status == 200) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
-                    this.setState({ initialState: true, doingAction: false, teamID: "Loading...", teamMembers: [] });
+                    this.setState({ 
+                        initialState: true, 
+                        doingAction: false, 
+                        teamID: "Loading...", 
+                        teamMembers: [],
+                        teamOwner: false,
+                    });
                     console.log(payload);
                     return;
                 }
