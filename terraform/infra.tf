@@ -49,7 +49,7 @@ resource "aws_autoscaling_group" "front-end" {
 resource "aws_lb" "front-end-lb" {
   name                             = "front-end-lb"
   internal                         = false
-  load_balancer_type               = "network"
+  load_balancer_type               = "application"
   subnets                          = ["${aws_default_subnet.default_A.id}", "${aws_default_subnet.default_B.id}"]
   enable_cross_zone_load_balancing = true
 }
@@ -60,6 +60,12 @@ resource "aws_lb_target_group" "front-end-lb-target-group" {
   protocol             = "TCP"
   vpc_id               = "${aws_default_vpc.default.id}"
   deregistration_delay = 30
+
+  # stickiness {
+  #   type            = "lb_cookie"
+  #   cookie_duration = 3600
+  #   enabled         = true
+  # }
 
   # health_check {
   #   healthy_threshold = 2
