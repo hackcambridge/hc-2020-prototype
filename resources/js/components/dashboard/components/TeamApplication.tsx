@@ -1,21 +1,39 @@
 import React, { Component } from "react";
-import { Page, Card, Banner, DropZone, Layout, Subheading, FormLayout, TextField, Button, Stack, Heading, TextStyle, DisplayText, ResourceList, Avatar } from "@shopify/polaris";
+import { Page, Card, Banner, DropZone, Layout, Subheading, FormLayout, TextField, Button, Stack, Heading, TextStyle, DisplayText, ResourceList, Avatar, Badge } from "@shopify/polaris";
 import { MobilePlusMajorMonotone, CirclePlusMajorMonotone } from "@shopify/polaris-icons";
+import axios from 'axios';
+import { ITeamMember } from "../../../interfaces/dashboard.interfaces";
+import DestructiveConfirmation from "../../common/DestructiveConfirmation";
 
+interface ITeamApplicationProps {
+    teamID: string,
+    teamMembers: ITeamMember[] | undefined,
+    teamOwner: boolean | undefined,
+}
 
 interface ITeamApplicationState {
     initialState: boolean,
     doingAction: boolean,
+    teamID: string,
+    teamMembers: ITeamMember[],
+    joinTeamID: string,
+    teamOwner: boolean,
+    showDestructiveForm: JSX.Element | undefined
 }
 
-class TeamApplication extends Component<{}, ITeamApplicationState> {
+class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationState> {
 
     state = {
-        initialState: true,
+        initialState: !this.props.teamMembers || this.props.teamMembers.length == 0,
         doingAction: false,
+        teamMembers: this.props.teamMembers || [],
+        teamID: this.props.teamID || "Loading...",
+        joinTeamID: "",
+        teamOwner: this.props.teamOwner || false,
+        showDestructiveForm: undefined,
     }
     render() {
-        const { initialState, doingAction } = this.state;
+        const { initialState, doingAction, showDestructiveForm } = this.state;
         return (
             <Page title={"Team Information"}>
                 <Banner status="info">
@@ -23,11 +41,13 @@ class TeamApplication extends Component<{}, ITeamApplicationState> {
                 </Banner>
                 <br />
                 {initialState ? this.buildInitialStateForm(doingAction) : this.buildTeamOverview(doingAction)}
+                {showDestructiveForm || <></>}
             </Page>
         );
     }
 
     private buildInitialStateForm(busyState: boolean) {
+        const { joinTeamID } = this.state;
         return (
             <Layout>
                 <Layout.Section oneHalf>
@@ -47,11 +67,11 @@ class TeamApplication extends Component<{}, ITeamApplicationState> {
                         <TextField
                             label=""
                             placeholder="Team ID"
-                            value={""}
-                            onChange={() => ""}
+                            value={joinTeamID}
+                            onChange={(s) => this.setState({ joinTeamID: s })}
                             disabled={busyState}
                             connectedRight={
-                                <Button loading={busyState} primary icon={MobilePlusMajorMonotone} />
+                                <Button onClick={this.setTeam} loading={busyState} primary icon={MobilePlusMajorMonotone} />
                             }
                         />
                     </Card>
@@ -61,47 +81,40 @@ class TeamApplication extends Component<{}, ITeamApplicationState> {
     }
 
     private buildTeamOverview(busyState: boolean) {
+        const { teamID, teamMembers, teamOwner } = this.state;        
         return (
             <Card>
                 <div style={{ padding: "22px" }}>
                     <div style={{ float: "right", color: '#bf0711' }}>
-                        <Button onClick={() => this.setState({ initialState: true })} monochrome outline>Leave Team</Button>
+                        <Button onClick={this.leaveTeam} monochrome outline loading={busyState} size="slim">Leave Team</Button>
                     </div>
-                    <DisplayText size="large">Team <TextStyle variation="code">absNeh4Fa</TextStyle></DisplayText>
+                    <DisplayText size="medium">
+                        <TextStyle variation="strong">
+                            Team <TextStyle variation="code"><span style={{ padding: "0 5px" }}>{teamID}</span></TextStyle>
+                        </TextStyle>
+                    </DisplayText>
                 </div>
                 <ResourceList
-                    resourceName={{singular: 'customer', plural: 'customers'}}
-                    items={[
-                    {
-                        id: 341,
-                        url: 'customers/341',
-                        name: 'Mae Jemison',
-                        location: 'Decatur, USA',
-                    },
-                    {
-                        id: 256,
-                        url: 'customers/256',
-                        name: 'Ellen Ochoa',
-                        location: 'Los Angeles, USA',
-                    },
-                    ]}
-                    renderItem={(item) => {
-                    const {id, url, name, location} = item;
-                    const media = <Avatar customer size="medium" name={name} />;
-
-                    return (
-                        <ResourceList.Item
-                        id={id}
-                        url={url}
-                        media={media}
-                        accessibilityLabel={`View details for ${name}`}
-                        >
-                        <h3>
-                            <TextStyle variation="strong">{name}</TextStyle>
-                        </h3>
-                        <div>{location}</div>
-                        </ResourceList.Item>
-                    );
+                    resourceName={{singular: 'team member', plural: 'team members'}}
+                    items={teamMembers}
+                    renderItem={(member: ITeamMember) => {
+                        const shortcutActions = teamOwner ? [{
+                            content: 'Remove',
+                            accessibilityLabel: `Remove`,
+                            onClick: () => this.removeTeamMember(member)
+                        }] : [];
+                        return (
+                            <ResourceList.Item
+                                id={`${member.user_id}`}
+                                onClick={() => this.removeTeamMember(member)}
+                                shortcutActions={shortcutActions}
+                            >
+                            <h3>
+                                <TextStyle variation="strong">{member.user_name} ({member.user_id})</TextStyle>
+                                { member.team_owner ? <>&nbsp;<Badge status="info">Owner</Badge></> : <></> }
+                            </h3>
+                            </ResourceList.Item>
+                        );
                     }}
                 />
             </Card>
@@ -109,7 +122,145 @@ class TeamApplication extends Component<{}, ITeamApplicationState> {
     }
 
     private createNewTeam = () => {
-        this.setState({ initialState: false });
+        this.setState({ doingAction: true });
+        axios.post(`/dashboard-api/create-team.json`, {}).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    const teamMembers: ITeamMember[] = payload["team"];
+                    const teamID: string = payload["team_id"];
+                    this.setState({ 
+                        initialState: false, 
+                        doingAction: false,
+                        teamID: teamID,
+                        teamMembers: teamMembers,
+                        teamOwner: true,
+                    });
+                    return;
+                }
+            }
+            console.log(status, res.data);
+            this.setState({ doingAction: false });
+        });   
+    }
+
+    private leaveTeam = () => {
+        const destructor : JSX.Element = (
+            <DestructiveConfirmation 
+                onConfirm={() => this.handleLeaveTeam()}
+                onClose={() => this.setState({ showDestructiveForm: undefined })}
+                confirmText={"Yes, leave group"}
+            />
+        );
+        this.setState({ showDestructiveForm: destructor });
+    }
+
+    private handleLeaveTeam = () => {
+        this.setState({ doingAction: true });
+        axios.post(`/dashboard-api/leave-team.json`, {}).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    this.setState({ 
+                        initialState: true, 
+                        doingAction: false, 
+                        teamID: "Loading...", 
+                        teamMembers: [],
+                        teamOwner: false,
+                    });
+                    return;
+                }
+            }
+            console.log(status, res.data);
+            this.setState({ doingAction: false });
+        });
+    }
+
+    private getTeam = () => {
+        this.setState({ doingAction: true });
+        axios.post(`/dashboard-api/get-team.json`, {}).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    this.setState({ doingAction: false });
+                    return;
+                }
+            }
+            console.log(status, res.data);
+            this.setState({ doingAction: false });
+        });
+    }
+
+    private setTeam = () => {
+        const { joinTeamID } = this.state;
+        this.setState({ doingAction: true });
+        axios.post(`/dashboard-api/set-team.json`, {
+            "team_id": joinTeamID
+        }).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    const teamMembers: ITeamMember[] = payload["team"];
+                    const teamID: string = joinTeamID;
+                    this.setState({ 
+                        initialState: false, 
+                        doingAction: false,
+                        teamID: teamID,
+                        teamMembers: teamMembers,
+                        joinTeamID: "",
+                    });
+                    return;
+                }
+            }
+            console.log(status, res.data);
+            this.setState({ doingAction: false });
+        });
+    }
+
+    private removeTeamMember = (member: ITeamMember) => {
+        if(!member.team_owner) {
+            const destructor : JSX.Element = (
+                <DestructiveConfirmation 
+                    onConfirm={() => this.handleTeamMemberRemoval(member)}
+                    onClose={() => this.setState({ showDestructiveForm: undefined })}
+                    title={`Remove ${member.user_name} from this group?`}
+                    confirmText={"Yes, remove them"}
+                />
+            );
+
+            this.setState({ showDestructiveForm: destructor });
+        } else {
+            // TODO: Convert to toast.
+            console.log("You can't remove youself!");
+        }
+    }
+
+    private handleTeamMemberRemoval = (member: ITeamMember) => {
+        this.setState({ doingAction: true });
+        axios.post(`/dashboard-api/remove-team-member.json`, {
+            "team_id": member.team_id,
+            "user_id": member.user_id,
+        }).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    const teamMembers: ITeamMember[] = payload["team"];
+                    this.setState({ 
+                        initialState: false, 
+                        doingAction: false,
+                        teamMembers: teamMembers,
+                    });
+                    return;
+                }
+            }
+            console.log(status, res.data);
+            this.setState({ doingAction: false });
+        });
     }
 }
 

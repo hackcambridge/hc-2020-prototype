@@ -4,6 +4,11 @@ export interface IDashboardProps {
         name: string,
         type: string,
         application: IApplicationRecord | undefined,
+        team: {
+            members: ITeamMember[] | undefined,
+            id: string,
+            owner: boolean,
+        }
     }
 }
 
@@ -19,4 +24,11 @@ export interface IApplicationRecordContent {
     cvUrl: string,
     questionResponses: string,
     isSubmitted: boolean,
+}
+
+export interface ITeamMember {
+    user_id: number,
+    user_name: string,
+    team_id: string,
+    team_owner: boolean,
 }
