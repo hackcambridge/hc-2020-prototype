@@ -137,7 +137,6 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                         teamMembers: teamMembers,
                         teamOwner: true,
                     });
-                    console.log(payload);
                     return;
                 }
             }
@@ -147,6 +146,17 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
     }
 
     private leaveTeam = () => {
+        const destructor : JSX.Element = (
+            <DestructiveConfirmation 
+                onConfirm={() => this.handleLeaveTeam()}
+                onClose={() => this.setState({ showDestructiveForm: undefined })}
+                confirmText={"Yes, leave group"}
+            />
+        );
+        this.setState({ showDestructiveForm: destructor });
+    }
+
+    private handleLeaveTeam = () => {
         this.setState({ doingAction: true });
         axios.post(`/dashboard-api/leave-team.json`, {}).then(res => {
             const status = res.status;
@@ -160,7 +170,6 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                         teamMembers: [],
                         teamOwner: false,
                     });
-                    console.log(payload);
                     return;
                 }
             }
@@ -177,7 +186,6 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
                     this.setState({ doingAction: false });
-                    console.log(payload);
                     return;
                 }
             }
@@ -205,7 +213,6 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                         teamMembers: teamMembers,
                         joinTeamID: "",
                     });
-                    console.log(payload);
                     return;
                 }
             }
@@ -226,6 +233,9 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
             );
 
             this.setState({ showDestructiveForm: destructor });
+        } else {
+            // TODO: Convert to toast.
+            console.log("You can't remove youself!");
         }
     }
 
@@ -245,7 +255,6 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                         doingAction: false,
                         teamMembers: teamMembers,
                     });
-                    console.log(payload);
                     return;
                 }
             }
