@@ -2,7 +2,8 @@
 SCRIPT_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CODE_LOCATION="$( cd $SCRIPT_LOCATION/../ >/dev/null 2>&1 && pwd )"
 ORIGINAL_LOCATION="$PWD"
-HOMESTEAD_VERSION="8.0.1"
+HOMESTEAD_BOX_VERSION="8.2.1"
+HOMESTEAD_GIT_RELEASE="v9.2.2"
 
 # Printing.
 PREFIX="[hc-dev]"
@@ -34,9 +35,9 @@ green "All prerequisites met, starting installation.\n"
 
 # Add the Homestead Vagrant box.
 blue "Installing laravel/homestead..."
-vagrant box list | grep -q "laravel/homestead (virtualbox, ${HOMESTEAD_VERSION})"
+vagrant box list | grep -q "laravel/homestead (virtualbox, ${HOMESTEAD_BOX_VERSION})"
 if [ $? -ne 0 ]; then
-    vagrant box add laravel/homestead --force --box-version $HOMESTEAD_VERSION
+    vagrant box add laravel/homestead --force --box-version $HOMESTEAD_BOX_VERSION
     if [ $? -ne 0 ]; then
         >&2 red "Failed to add the laravel/homestead Vagrant box."
         exit 1;
@@ -81,7 +82,7 @@ if [ $? -ne 0 ]; then
     exit 1;
 fi
 cd Homestead
-git checkout release
+git checkout $HOMESTEAD_GIT_RELEASE
 blue "Completed Homestead source clone."
 echo "\n--------------------"
 
