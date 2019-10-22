@@ -16,6 +16,7 @@ import Overview from "./components/Overview";
 import Apply from "./components/Apply";
 import TeamApplication from "./components/TeamApplication";
 import axios from 'axios';
+import { ToastContainer, cssTransition } from "react-toastify";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -143,6 +144,13 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             </Navigation>
         );
 
+        const Zoom = cssTransition({
+            enter: 'Slide',
+            exit: 'Slide',
+            // default to 750ms, can be omitted
+            duration: 150,
+          });
+
         return (
             <AppProvider theme={this.theme} linkComponent={this.adapterLink}>
                 <Frame
@@ -154,6 +162,15 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                     <div style={{ paddingTop: "30px" }}>
                         {this.renderContent()}
                     </div>
+                    <ToastContainer 
+                        position="top-right"
+                        autoClose={4000}
+                        transition={Zoom}
+                        newestOnTop
+                        closeOnClick
+                        draggable
+                        pauseOnHover
+                    />
                 </Frame>
             </AppProvider>
         );

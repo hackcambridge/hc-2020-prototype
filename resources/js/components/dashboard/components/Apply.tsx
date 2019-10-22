@@ -1,7 +1,11 @@
 import React, { Component } from "react";
-import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions } from "@shopify/polaris";
+import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout } from "@shopify/polaris";
 import axios from 'axios';
 import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
+import countryList from 'country-list';
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 interface IApplyProps {
     canEdit: boolean,
@@ -16,6 +20,7 @@ interface IApplyState {
     isSaving: boolean,
     questionValues: { [key: string]: string },
     isSubmitted: boolean,
+    countrySelection: string,
 }
 
 function RequiredStar() {
@@ -31,12 +36,15 @@ class Apply extends Component<IApplyProps, IApplyState> {
         uploadedFileURL: this.props.initialRecord ? (this.props.initialRecord.cvUrl || "") : "",
         questionValues: (this.props.initialRecord ? JSON.parse(this.props.initialRecord.questionResponses) : {}) as { [key: string]: string },
         isSubmitted: this.props.initialRecord ? this.props.initialRecord.isSubmitted : false,
+        countrySelection: this.props.initialRecord ? this.props.initialRecord.country : "GB",
     }
 
 
     private textFieldQuestions: { id: string, title: string, placeholder: string }[] = [
-        { id: "1", title: "This is question 1", placeholder: "111" },
-        { id: "2", title: "This is question 2", placeholder: "222" },
+        { id: "1", title: "What do you want to get out of this event?", placeholder: "" },
+        { id: "2", title: "What are you interested in?", placeholder: "Mention anything you want -- it doesn’t have to be technology-related!" },
+        { id: "3", title: "Tell us about a recent accomplishment you’re proud of.", placeholder: "" },
+        { id: "4", title: "Are there any links you’d like to share so we can get to know you better?", placeholder: "For example GitHub, LinkedIn or your website. Put each link on a new line. " },
     ]
 
     private buildFileSelector() {
@@ -52,6 +60,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
             if(fileSelector.files) {
                 const file = fileSelector.files.item(0);
                 if(file) {
+                    toast("Wow so easy !");
                     this.setState({ 
                         isUploadingFile: false,
                         uploadedFileName: file.name,
@@ -69,7 +78,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
         return fileSelector;
     }
 
-    private fileSelector: HTMLElement;
+    private fileSelector: HTMLElement
     componentDidMount(){
         this.fileSelector = this.buildFileSelector();
         this.loadApplicationRecord();
@@ -100,7 +109,18 @@ class Apply extends Component<IApplyProps, IApplyState> {
             questionValues,
             isSubmitted,
             isSaving,
+            countrySelection,
         } = this.state;
+
+        const countriesNoGB = countryList().getData()
+            .filter(({ code }: { code: string }) => code !== "GB")
+            .map(({ code, name }: { code: string, name: string }) => {
+                return { label: name, value: code };
+            });
+        const countries: { value: string, label: string }[] = [
+            { value: "GB", label: "United Kingdom" },
+            ...countriesNoGB
+        ]
 
         return (
             <Page title={"Apply for Hack Cambridge"}>
@@ -112,21 +132,40 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 </Banner>
                 <br />
                 <Card sectioned>
-                    <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
-                        <Heading>CV / Resume</Heading>
-                    </div>
-                    {uploadedFileName.length > 0 
-                        ?   <ButtonGroup segmented>
-                                <Button outline size="slim" url={uploadedFileURL}>{uploadedFileName}</Button>
-                                <Button destructive size="slim" onClick={this.handleCVRemove} disabled={!this.props.canEdit || isSaving}>Remove</Button>
-                            </ButtonGroup>
-                        :   <Button size="slim" loading={isUploadingFile} onClick={this.handleFileSelect} disabled={!this.props.canEdit}>Upload CV</Button>
-                    }
+                    <FormLayout>
+                        <FormLayout.Group>
+                            <>
+                            <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
+                                <Heading>CV / Resume</Heading>
+                            </div>
+                            {uploadedFileName.length > 0 
+                                ?   <ButtonGroup segmented>
+                                        <Button outline size="slim" url={uploadedFileURL}>{uploadedFileName}</Button>
+                                        <Button destructive size="slim" onClick={this.handleCVRemove} disabled={!this.props.canEdit || isSaving}>Remove</Button>
+                                    </ButtonGroup>
+                                :   <Button size="slim" loading={isUploadingFile} onClick={this.handleFileSelect} disabled={!this.props.canEdit}>Upload CV</Button>
+                            }
+                            </>
+                            <>
+                            <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
+                                <Heading>Country Travelling From</Heading>
+                            </div>
+                            <Select
+                                label=""
+                                options={countries}
+                                onChange={(value) => this.setState({ countrySelection: value })}
+                                value={countrySelection}
+                            />
+                            </>
+                        </FormLayout.Group>
+                    </FormLayout>
+                </Card>
 
-                    {this.textFieldQuestions.map(q => {
+                <Card sectioned>
+                    {this.textFieldQuestions.map((q, index) => {
                         return (
                             <div key={q.id}>
-                                <div style={{ paddingBottom: "12px", paddingTop: "40px" }}>
+                                <div style={{ paddingBottom: "12px", paddingTop: (index == 0 ? "0" : "20px") }}>
                                     <Heading>{q.title}</Heading>
                                 </div>
                                 <TextField
@@ -146,32 +185,27 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             </div>
                         );
                     })}
-
-                    {this.props.canEdit ? <>
-                        {/* <div style={{ float: "right", padding: "30px 0" }}> */}
-                        {isSubmitted 
-                            ? <div>
-                                <div style={{ float: "left", padding: "30px 0" }}>
-                                    <Button destructive loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
-                                </div>
-                                <div style={{ float: "right", padding: "30px 0" }}>
-                                    <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Update</Button>
-                                </div>
-                            </div>
-                            // <ButtonGroup segmented>
-                            //     <Button loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
-                            //     <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Update</Button>
-                            // </ButtonGroup>
-                            : <div style={{ float: "right", padding: "30px 0" }}>
-                                <ButtonGroup segmented>
-                                    <Button loading={isSaving} onClick={() => this.saveForm(false)}>Save Draft</Button>
-                                    <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Submit</Button>
-                                </ButtonGroup>
-                            </div>
-                        }
-                        {/* // </div> */}
-                    </> : <></>}
                 </Card>
+
+                {this.props.canEdit ? <>
+                    {isSubmitted 
+                        ? <div>
+                            <div style={{ float: "left", padding: "30px 0" }}>
+                                <Button destructive loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
+                            </div>
+                            <div style={{ float: "right", padding: "30px 0" }}>
+                                <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Update</Button>
+                            </div>
+                        </div>
+                        : <div style={{ float: "right", padding: "30px 0" }}>
+                            <ButtonGroup segmented>
+                                <Button loading={isSaving} onClick={() => this.saveForm(false)}>Save Draft</Button>
+                                <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Submit</Button>
+                            </ButtonGroup>
+                        </div>
+                    }
+                    
+                </> : <></>}
             </Page>
         );
     }
@@ -187,8 +221,10 @@ class Apply extends Component<IApplyProps, IApplyState> {
             cvFilename: this.state.uploadedFileName || "",
             cvUrl: this.state.uploadedFileURL || "",
             questionResponses: JSON.stringify(questions),
+            country: this.state.countrySelection,
             isSubmitted: isSubmitted,
         }).then(res => {
+            console.log(res);
             const status = res.status;
             if(status == 200) {
                 const payload = res.data;
@@ -216,6 +252,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             uploadedFileName: record.cvFilename || "",
                             uploadedFileURL: record.cvFilename || "",
                             questionValues: JSON.parse(record.questionResponses) as { [key: string]: string },
+                            countrySelection: record.country,
                             isSubmitted: record.isSubmitted,
                         });
                     }
