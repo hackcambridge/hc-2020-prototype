@@ -52,8 +52,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private theme = {
         colors: {
             topBar: {
-                background: '#4B0082',
-                backgroundLighter: '#8A2BE2',
+                background: '#212b36',
+                backgroundLighter: '#334150',
                 color: '#FFFFFF',
             },
         },
@@ -84,6 +84,13 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         };
     };
 
+    private userMenuActions = [
+        {
+            id: "logout",
+            items: [{content: 'Logout', url: "/logout", icon: LogOutMinor}],
+        },
+    ];
+
     private topBarMarkup = (userMenuMarkup: ReactNode) => (
         <TopBar
             showNavigationToggle={true}
@@ -101,7 +108,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         const { showMobileNavigation, application } = this.state;
         const userMenuMarkup = (
             <TopBar.UserMenu
-                actions={[]}//{this.userMenuActions}
+                actions={this.userMenuActions}
                 name={this.props.user.name.split(" ")[0]}
                 initials={this.props.user.name.charAt(0)}
                 open={this.state.userMenuOpen}
