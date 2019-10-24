@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 class Home extends Controller
 {
     public function index() {
-        return view('welcome');
+        return view('layouts/home');
     }
 
  	public function about() {
