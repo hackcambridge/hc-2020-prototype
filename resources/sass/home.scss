@@ -6,12 +6,27 @@
 html {
     overflow: hidden;
     height: 100%;
+    background-color: #0F2027;
 }
 
 body {
     height: 100%;
     overflow: auto;
+    background: transparent;
 }
+
+// html,
+// body {
+//   position: fixed;
+//   overflow: hidden;
+
+//   & .inner {
+//     width: 100vw;
+//     height: 100vh;
+//     overflow-y: scroll;
+//     -webkit-overflow-scrolling: touch; /* enables “momentum” (smooth) scrolling */
+//   }
+// }
 
 .section-diagonal, .section-diagonal-top, .section-diagonal-bottom {
     position: relative;
@@ -53,7 +68,7 @@ body {
     .section-diagonal-bottom::before {
         height: calc(100% + var(--hero-diagonal-offset));
         top: 0;
-        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% calc(100% - var(--hero-diagonal-offset)));
+        clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - var(--hero-diagonal-offset)), 0% 100%);
     }
 
     .static-section.section-diagonal::before,
@@ -63,6 +78,7 @@ body {
 }
 
 #header-section, #footer-section {
+
     &::before {
         z-index: -2;
         background: linear-gradient(-45deg, #0F2027, #203A43, #2C5364);
