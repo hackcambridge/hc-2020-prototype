@@ -2,6 +2,8 @@
 <html lang="{{ app()->getLocale() }}">
     <head>
         <title>@yield('title')</title>
+        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
