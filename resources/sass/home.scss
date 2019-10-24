@@ -104,7 +104,7 @@ body {
     --card-logo-width: 8rem;
 
     position: absolute;
-    bottom: calc(-0.5*var(--hero-diagonal-offset) - (0.12*var(--card-logo-width) + 0rem + 2*var(--card-vertical-padding)));
+    bottom: calc(-0.5*var(--hero-diagonal-offset) - 0.15*var(--card-logo-width) - 0rem - 2*var(--card-vertical-padding));
     left: 0;
     width: 100%;
 
