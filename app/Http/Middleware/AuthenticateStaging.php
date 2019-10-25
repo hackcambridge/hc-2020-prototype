@@ -20,8 +20,6 @@ class AuthenticateStaging extends Middleware
             if (! $request->expectsJson()) {
                 return route('login', 'committee');
             }
-        } else {
-            return $next($request);
         }
     }
 }

@@ -16,7 +16,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => ['auth.staging']], function () {
+# Auth0
+Route::get('/auth0/callback', '\Auth0\Login\Auth0Controller@callback')->name('auth0-callback');
+Route::get('/logout', 'Auth\Auth0IndexController@logout')->name('logout')->middleware('auth');
+Route::get('/login/{driver?}', 'Auth\Auth0IndexController@login')->name('login');
+
+Route::middleware(['auth.check_staging'])->group(function() {
     Route::get('/', 'Home@index')->name('home');
     Route::get('/foundation', 'Foundation@index')->name('foundation_index');
 
@@ -69,9 +74,4 @@ Route::group(['middleware' => ['auth.staging']], function () {
             ->post('/committee/admin-api/{path}.json', 'Committee@api_post')
             ->name('committee_api_post');
     });
-
-    # Auth0
-    Route::get('/auth0/callback', '\Auth0\Login\Auth0Controller@callback')->name('auth0-callback');
-    Route::get('/logout', 'Auth\Auth0IndexController@logout')->name('logout')->middleware('auth');
-    Route::get('/login/{driver?}', 'Auth\Auth0IndexController@login')->name('login');
 });

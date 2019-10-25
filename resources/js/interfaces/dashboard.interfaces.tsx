@@ -2,6 +2,7 @@ export interface IDashboardProps {
     baseUrl: string,
     user: {
         name: string,
+        email: string,
         type: string,
         application: IApplicationRecord | undefined,
         team: {
