@@ -55,6 +55,7 @@ class Kernel extends HttpKernel
         'auth.passwordless' => \App\Http\Middleware\AuthenticatePasswordless::class,
         'auth.committee' => \App\Http\Middleware\AuthenticateCommittee::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.staging' => \Illuminate\Auth\Middleware\AuthenticateStaging::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
