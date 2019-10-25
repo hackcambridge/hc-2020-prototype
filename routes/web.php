@@ -16,61 +16,62 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', 'Home@index')->name('home');
-Route::get('/foundation', 'Foundation@index')->name('foundation_index');
+Route::group(['middleware' => ['auth.staging']], function () {
+    Route::get('/', 'Home@index')->name('home');
+    Route::get('/foundation', 'Foundation@index')->name('foundation_index');
 
-// Protected routes - login will be forced.
-Route::middleware(['auth', 'type:hacker'])->group(function () {
+    // Protected routes - login will be forced.
+    Route::middleware(['auth', 'type:hacker'])->group(function () {
 
-    // React App
-    Route::get('/dashboard/{path?}', [
-        'uses' => 'Dashboard@index',
-        'as' => 'dashboard_index',
-        'where' => ['path' => '.*']
-    ]);
+        // React App
+        Route::get('/dashboard/{path?}', [
+            'uses' => 'Dashboard@index',
+            'as' => 'dashboard_index',
+            'where' => ['path' => '.*']
+        ]);
 
-    // Private API
-    Route::get('/dashboard-api/{path}.json', 'Dashboard@api_get')->name('dashboard_api_get');
-    Route::middleware(['verifyCsrf'])
-        ->post('/dashboard-api/{path}.json', 'Dashboard@api_post')
-        ->name('dashboard_api_post');
+        // Private API
+        Route::get('/dashboard-api/{path}.json', 'Dashboard@api_get')->name('dashboard_api_get');
+        Route::middleware(['verifyCsrf'])
+            ->post('/dashboard-api/{path}.json', 'Dashboard@api_post')
+            ->name('dashboard_api_post');
+    });
+
+
+    Route::middleware(['auth.passwordless', 'type:sponsor'])->group(function() {
+
+        // React App
+        Route::get('/sponsors/dashboard/{path?}', [
+            'uses' => 'Sponsors@dashboard',
+            'as' => 'sponsors_dashboard',
+            'where' => ['path' => '.*']
+        ]);
+
+        // Private API
+        Route::get('/sponsors/dashboard-api/{path}.json', 'Sponsors@api_get')->name('sponsors_api_get');
+        Route::middleware(['verifyCsrf'])
+            ->post('/sponsors/dashboard-api/{path}.json', 'Sponsors@api_post')
+            ->name('sponsors_api_post');
+    });
+
+    Route::middleware(['auth.committee', 'type:committee'])->group(function() {
+
+        // React App
+        Route::get('/committee/admin/{path?}', [
+            'uses' => 'Committee@index',
+            'as' => 'committee_dashboard',
+            'where' => ['path' => '.*']
+        ]);
+
+        // Private API
+        Route::get('/committee/admin-api/{path}.json', 'Committee@api_get')->name('committee_api_get');
+        Route::middleware(['verifyCsrf'])
+            ->post('/committee/admin-api/{path}.json', 'Committee@api_post')
+            ->name('committee_api_post');
+    });
+
+    # Auth0
+    Route::get('/auth0/callback', '\Auth0\Login\Auth0Controller@callback')->name('auth0-callback');
+    Route::get('/logout', 'Auth\Auth0IndexController@logout')->name('logout')->middleware('auth');
+    Route::get('/login/{driver?}', 'Auth\Auth0IndexController@login')->name('login');
 });
-
-
-Route::middleware(['auth.passwordless', 'type:sponsor'])->group(function() {
-
-    // React App
-    Route::get('/sponsors/dashboard/{path?}', [
-        'uses' => 'Sponsors@dashboard',
-        'as' => 'sponsors_dashboard',
-        'where' => ['path' => '.*']
-    ]);
-
-    // Private API
-    Route::get('/sponsors/dashboard-api/{path}.json', 'Sponsors@api_get')->name('sponsors_api_get');
-    Route::middleware(['verifyCsrf'])
-        ->post('/sponsors/dashboard-api/{path}.json', 'Sponsors@api_post')
-        ->name('sponsors_api_post');
-});
-
-Route::middleware(['auth.committee', 'type:committee'])->group(function() {
-
-    // React App
-    Route::get('/committee/admin/{path?}', [
-        'uses' => 'Committee@index',
-        'as' => 'committee_dashboard',
-        'where' => ['path' => '.*']
-    ]);
-
-    // Private API
-    Route::get('/committee/admin-api/{path}.json', 'Committee@api_get')->name('committee_api_get');
-    Route::middleware(['verifyCsrf'])
-        ->post('/committee/admin-api/{path}.json', 'Committee@api_post')
-        ->name('committee_api_post');
-});
-
-# Auth0
-Route::get('/auth0/callback', '\Auth0\Login\Auth0Controller@callback')->name('auth0-callback');
-Route::get('/logout', 'Auth\Auth0IndexController@logout')->name('logout')->middleware('auth');
-Route::get('/login/{driver?}', 'Auth\Auth0IndexController@login')->name('login');
-

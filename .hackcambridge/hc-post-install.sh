@@ -69,6 +69,11 @@ echo "AUTH0_CLIENT_ID=\"$AUTH0_CLIENT_ID\"" >> .env
 echo "AUTH0_CLIENT_SECRET=\"$AUTH0_CLIENT_SECRET\"" >> .env
 
 
+# Set htpasswd.
+# echo "AuthUserFile /etc/profile.d/.htpasswd" >> public/.htaccess
+# echo "AuthType Basic" >> public/.htaccess
+# echo "require valid-user" >> public/.htaccess
+
 
 # Migrate Database (force to skip confirmation prompt).
 php artisan migrate --force
