@@ -16,6 +16,11 @@ use Illuminate\Http\Request;
 |
 */
 
+# Status page for health checks.
+Route::get('/health', function () {
+    return 'Application is up.';
+});
+
 # Auth0
 Route::get('/auth0/callback', '\Auth0\Login\Auth0Controller@callback')->name('auth0-callback');
 Route::get('/logout', 'Auth\Auth0IndexController@logout')->name('logout')->middleware('auth');
