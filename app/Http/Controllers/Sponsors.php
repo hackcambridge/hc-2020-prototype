@@ -20,7 +20,7 @@ class Sponsors extends Controller
     public function api_get($path) {
         switch ($path) {
             case "init": return $this->initSession();
-            case 'get-sponsors': return $this->getSponsors();
+            // case 'get-sponsors': return $this->getSponsors();
             default: return $this->fail("Route not found");
         }
 
@@ -68,6 +68,7 @@ class Sponsors extends Controller
         return $this->response(true, $message);
     }
 
+    // 4 roles: hacker, sponsor, committee, admin
     private function canContinue($allowed = [], $r, $stringChecks = []) {
         array_push($allowed, "committee", "admin"); // TODO "committee" temporary
 
@@ -79,6 +80,8 @@ class Sponsors extends Controller
                     $val = $r->get($param);
                     if(!$val || strlen($val) == 0) return false;
                 }
+            } else if (!$r && len($stringChecks) > 0) {
+              return false;
             }
         } else {
             // Not logged in or user type not allowed.
@@ -135,6 +138,36 @@ class Sponsors extends Controller
     }
 
     public function storeAsset(Request $r) {
+        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+        if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug"])) {
+            $sponsor_slug = $r->request->get("sponsor_slug");
+            // Do validate tho
+            if ($r->hasFile('asset')) {
+                if ($r->file('asset')->isValid()){
+                    $file = $r->file('asset');
+                    if (strlen($file->getClientOriginalName()) > 0){
+                      $name = time() . '-' . slugify($file->getClientOriginalName());
+                      $filePath = 'sponsors/' . $sponsor_slug . '/' . $name;
+                      if (Storage::disk('s3')->put($filePath, file_get_contents($file))){
+                        return $this->success($url . $filePath);
+                      }else{
+                        return $this->fail("Failed to upload.");
+                      }
+                    }else{
+                      return $this->fail("Invalid name.")
+                    }
+                }else{
+                    return $this->fail("Malformed file.");
+                }
+            }
+            return $this->fail("No file.");
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+
+    public function deleteAsset(Request $r) {
         $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
         if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug"])) {
             $sponsor_slug = $r->request->get("sponsor_slug");
@@ -433,6 +466,7 @@ class Sponsors extends Controller
                                   ->where("type", $detail_type)
                                   ->first();
                 if($detail) {
+
                     return response()->json([
                         "success" => $detail->delete(),
                         "message" => "Running delete"
