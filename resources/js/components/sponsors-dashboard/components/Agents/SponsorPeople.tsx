@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, DisplayText, Layout, Page, ResourceList, TextStyle } from "@shopify/polaris";
+import { Avatar, Button, Card, DisplayText, Layout, Page, ResourceList, TextStyle, Banner } from "@shopify/polaris";
 import { AddMajorMonotone } from "@shopify/polaris-icons";
 import axios from "axios";
 import React, { Component } from "react";
@@ -29,7 +29,9 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
         loadingMentors: true,
         loadingRecruiters: true,
         mentors: [],
+        mentorsLimit: this.getParameterisedPrivilege("mentors"),
         recruiters: [],
+        recruitersLimit: this.getParameterisedPrivilege("recruiters"),
         sponsorAgentFormShowing: false,
         sponsorAgentFormForType: ("mentor" as "mentor" | "recruiter"),
         isEditingSponsorAgent: undefined,
@@ -43,13 +45,13 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
     render() {
         const { 
             loadingMentors,
-            loadingRecruiters, 
-            mentors, 
+            loadingRecruiters,
+            mentors,
             recruiters,
             sponsorAgentFormShowing,
             isEditingSponsorAgent,
             showDestructiveForm,
-            sponsorAgentFormForType
+            sponsorAgentFormForType,
         } = this.state;
         return (
             <Page
@@ -71,6 +73,11 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
                 <Layout>
                     <Layout.Section oneHalf>
                         <Card title="Mentors">
+                            <Card.Section>
+                                {this.state.mentors.length >= this.state.mentorsLimit ?
+                                    <Banner status="warning">Mentor limit reached.</Banner>
+                                 :  <Banner status="info">You are allowed {this.state.mentorsLimit} mentors.</Banner>}
+                            </Card.Section>
                             {loadingMentors || mentors.length > 0 ?
                                 <ResourceList
                                     loading={loadingMentors}
@@ -80,25 +87,20 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
                                         singular: 'mentor',
                                         plural: 'mentors',
                                     }}
-                                    alternateTool={
-                                        <Button 
-                                            plain icon={AddMajorMonotone} 
-                                            onClick={() => this.setState({ sponsorAgentFormForType: "mentor", sponsorAgentFormShowing: true })}>
-                                        </Button>
-                                    }
+                                    alternateTool={this.getAddMentorOrLimitButton(false)}
                                 />
                             :  <Card.Section>
-                                    <Button 
-                                        icon={AddMajorMonotone} 
-                                        onClick={() => this.setState({ sponsorAgentFormForType: "mentor", sponsorAgentFormShowing: true })}
-                                    >
-                                        &nbsp;Add a Mentor
-                                    </Button>
+                                    {this.getAddMentorOrLimitButton(true)}
                                 </Card.Section>}
                         </Card>
                     </Layout.Section>
                     <Layout.Section oneHalf>
-                    <Card title="Recruiters">
+                        <Card title="Recruiters">
+                            <Card.Section>
+                                {this.state.recruiters.length >= this.state.recruitersLimit ?
+                                    <Banner status="warning">Recruiter limit reached.</Banner>
+                                 :  <Banner status="info">You are allowed {this.state.recruitersLimit} recruiters.</Banner>}
+                            </Card.Section>
                             {loadingRecruiters || recruiters.length > 0 ?
                                 <ResourceList
                                     loading={loadingRecruiters}
@@ -108,19 +110,10 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
                                         singular: 'recruiter',
                                         plural: 'recruiters',
                                     }}
-                                    alternateTool={
-                                        <Button 
-                                            plain icon={AddMajorMonotone} 
-                                            onClick={() => this.setState({ sponsorAgentFormForType: "recruiter", sponsorAgentFormShowing: true })}>
-                                        </Button>}
+                                    alternateTool={this.getAddRecruiterOrLimitButton(false)}
                                 />
                             :  <Card.Section>
-                                    <Button 
-                                        icon={AddMajorMonotone} 
-                                        onClick={() => this.setState({ sponsorAgentFormForType: "recruiter", sponsorAgentFormShowing: true,  })}
-                                    >
-                                        &nbsp;Add a Recruiter
-                                    </Button>
+                                    {this.getAddRecruiterOrLimitButton(true)}
                                 </Card.Section>}
                         </Card>
                     </Layout.Section>
@@ -234,6 +227,55 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
             console.log(status, res.data);
             if(agent.type == "mentor") { this.setState({ loadingMentors: false }) }
             else if(agent.type == "recruiter") { this.setState({ loadingRecruiters: false }) }        });
+    }
+
+    private getParameterisedPrivilege(name: string) : number {
+        const option = this.props.sponsor.privileges.split(";").filter(i => i.startsWith(name));
+        if(option.length > 0) {
+            const parts = (option[0].split(/\[([^\]]*)\]/));
+            if(parts.length == 3) {
+                return +(parts[1]);
+            }
+        }
+        return 0;
+    }
+
+    private getAddMentorOrLimitButton(inBody: boolean) {
+        const currentQuantity = this.state.loadingMentors ? 0 : this.state.mentors.length;
+        if (currentQuantity < this.state.mentorsLimit) {
+            return (
+                <Button
+                    plain={inBody ? undefined : true} icon={AddMajorMonotone}
+                    onClick={() => this.setState({ sponsorAgentFormForType: "mentor", sponsorAgentFormShowing: true })}>
+                    {inBody ? "\xa0Add a Mentor" : ""}
+                </Button>
+            );
+        } else {
+            return (
+                <Button disabled
+                    plain={inBody ? undefined : true} icon={AddMajorMonotone}>{inBody ? "\xa0Add a Mentor" : ""}
+                </Button>
+            );
+        }
+    }
+
+    private getAddRecruiterOrLimitButton(inBody: boolean) {
+        const currentQuantity = this.state.loadingRecruiters ? 0 : this.state.recruiters.length;
+        if (currentQuantity < this.state.recruitersLimit) {
+            return (
+                <Button
+                    plain={inBody ? undefined : true} icon={AddMajorMonotone}
+                    onClick={() => this.setState({ sponsorAgentFormForType: "recruiter", sponsorAgentFormShowing: true })}>
+                    {inBody ? "\xa0Add a Recruiter" : ""}
+                </Button>
+            );
+        } else {
+            return (
+                <Button disabled
+                    plain={inBody ? undefined : true} icon={AddMajorMonotone}>{inBody ? "\xa0Add a Recruiter" : ""}
+                </Button>
+            );
+        }
     }
 }
 
