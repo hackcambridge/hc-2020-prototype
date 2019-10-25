@@ -106,6 +106,7 @@ body {
     }
 
     &.section-cam-bg::before {
+        z-index: 2;
         background-image: url(https://miro.medium.com/max/12000/1*1SnGVpXWAyOyMpjbsJrPDA.jpeg);
         background-repeat: no-repeat;
         background-position: center center;
