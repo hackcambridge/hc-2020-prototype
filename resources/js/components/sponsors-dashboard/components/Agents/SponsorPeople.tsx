@@ -76,7 +76,7 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
                             <Card.Section>
                                 {this.state.mentors.length >= this.state.mentorsLimit ?
                                     <Banner status="warning">Mentor limit reached.</Banner>
-                                 :  <Banner status="info">You are allowed {this.state.mentorsLimit} mentors.</Banner>}
+                                 :  <Banner status="info">You are allowed {this.state.mentorsLimit} mentor{this.state.mentorsLimit != 1 ? "s" : ""}.</Banner>}
                             </Card.Section>
                             {loadingMentors || mentors.length > 0 ?
                                 <ResourceList
@@ -99,7 +99,7 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
                             <Card.Section>
                                 {this.state.recruiters.length >= this.state.recruitersLimit ?
                                     <Banner status="warning">Recruiter limit reached.</Banner>
-                                 :  <Banner status="info">You are allowed {this.state.recruitersLimit} recruiters.</Banner>}
+                                 :  <Banner status="info">You are allowed {this.state.recruitersLimit} recruiter{this.state.recruitersLimit != 1 ? "s" : ""}.</Banner>}
                             </Card.Section>
                             {loadingRecruiters || recruiters.length > 0 ?
                                 <ResourceList
