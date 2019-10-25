@@ -113,7 +113,7 @@ class Dashboard extends Controller
     }
 
     private function updateApplicationRecord($r) {
-        if($this->canContinue(["hacker"], $r, ["cvFilename", "cvUrl", "questionResponses", "isSubmitted"])) {
+        if($this->canContinue(["hacker"], $r, ["cvFilename", "cvUrl", "questionResponses", "country", "isSubmitted"])) {
             $app = Application::where("user_id", Auth::user()->id)->first();
             if(!$app) {
                 $app = new Application();
@@ -123,6 +123,7 @@ class Dashboard extends Controller
             $app->setAttribute("cvFilename", $r->get("cvFilename"));
             $app->setAttribute("cvUrl", $r->get("cvUrl"));
             $app->setAttribute("questionResponses", $r->get("questionResponses"));
+            $app->setAttribute("country", $r->get("country"));
             $app->setAttribute("isSubmitted", $r->get("isSubmitted"));
 
             if($app->save()) {

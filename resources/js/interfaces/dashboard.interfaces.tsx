@@ -24,6 +24,7 @@ export interface IApplicationRecordContent {
     cvFilename: string,
     cvUrl: string,
     questionResponses: string,
+    country: string,
     isSubmitted: boolean,
 }
 
