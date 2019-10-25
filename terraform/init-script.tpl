@@ -28,6 +28,10 @@ echo "export AUTH0_CLIENT_SECRET=\"${AUTH0_CLIENT_SECRET}\"" >> /etc/profile.d/h
 echo "export APP_ENV=\"staging\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export APP_DEBUG=\"true\"" >> /etc/profile.d/hc-deployment-vars.sh
 
+# Set htpasswd file.
+# touch /etc/profile.d/.htpasswd
+# echo 'canary:$apr1$.6lFfhed$opJtcT7xrgfDqT7BBPbu5/' >> /etc/profile.d/.htpasswd
+
 exit
 
 # Assumes we're using the Bitnami AMI.

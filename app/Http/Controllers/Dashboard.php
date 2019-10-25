@@ -95,6 +95,7 @@ class Dashboard extends Controller
                     "baseUrl" => route("dashboard_index", array(), false),
                     "user" => array(
                         "type" => Auth::user()->type,
+                        "email" => Auth::user()->email,
                         "name" => Auth::user()->name,
                         "application" => $app ? $app : null,
                         "team" => array(
