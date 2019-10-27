@@ -3,9 +3,7 @@ import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, T
 import axios from 'axios';
 import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
 import countryList from 'country-list';
-
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
 
 interface IApplyProps {
     canEdit: boolean,
@@ -60,12 +58,11 @@ class Apply extends Component<IApplyProps, IApplyState> {
             if(fileSelector.files) {
                 const file = fileSelector.files.item(0);
                 if(file) {
-                    toast("Wow so easy !");
                     this.setState({ 
                         isUploadingFile: false,
                         uploadedFileName: file.name,
                         uploadedFileURL: "https://google.com"
-                    });
+                    }, () => this.saveForm(this.state.isSubmitted, () => toast.success("CV uploaded.")));
                     return;
                 } 
             }
@@ -93,12 +90,12 @@ class Apply extends Component<IApplyProps, IApplyState> {
         this.setState({
             uploadedFileName: "",
             uploadedFileURL: "",
-        });
+        }, () => this.saveForm(this.state.isSubmitted, () => toast.info("CV removed.")));
     }
 
-    private saveForm(submitted: boolean) {
+    private saveForm(submitted: boolean, customToast?: () => void) {
         this.setState({ isSaving: true });
-        this.updateRecordInDatabase(submitted);
+        this.updateRecordInDatabase(submitted, customToast);
     }
 
     render() {
@@ -127,7 +124,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 <Banner status="info">
                     {this.props.canEdit 
                         ? <p>You change this information at any time before the 10th November application deadline.</p>
-                        : <p>Application have now closed.</p>
+                        : <p>Applications have now closed.</p>
                     }
                 </Banner>
                 <br />
@@ -155,6 +152,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                 options={countries}
                                 onChange={(value) => this.setState({ countrySelection: value })}
                                 value={countrySelection}
+                                disabled={!this.props.canEdit || isSaving}
                             />
                             </>
                         </FormLayout.Group>
@@ -210,7 +208,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
         );
     }
 
-    private updateRecordInDatabase(isSubmitted: boolean) {
+    private updateRecordInDatabase(isSubmitted: boolean, toaster?: () => void) {
         const questionValues = this.state.questionValues;
         const questions: { [key : string]: string } = {};
         this.textFieldQuestions.forEach(q => {
@@ -231,10 +229,14 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 if("success" in payload && payload["success"]) {
                     const record: IApplicationRecord = payload["payload"];
                     this.props.updateApplication(record);
+
+                    if(toaster) { toaster(); }
+                    else { toast.success("Application saved."); }
                     this.setState({ isSubmitted: isSubmitted, isSaving: false });
                     return;
                 }
             }
+            toast.error("An error occurred.");
             console.log(status, res.data);
             this.setState({ isSaving: false });
         });
