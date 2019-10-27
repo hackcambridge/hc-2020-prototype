@@ -108,9 +108,12 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                                 id={`${member.user_id}`}
                                 onClick={() => this.removeTeamMember(member)}
                                 shortcutActions={shortcutActions}
+                                media={
+                                    <Avatar customer size="small" name={member.user_name} source={`https://www.gravatar.com/avatar/${member.user_email_hash}?d=retro`} />
+                                }
                             >
                             <h3>
-                                <TextStyle variation="strong">{member.user_name} ({member.user_id})</TextStyle>
+                                <TextStyle variation="strong">{member.user_name}</TextStyle>
                                 { member.team_owner ? <>&nbsp;<Badge status="info">Owner</Badge></> : <></> }
                             </h3>
                             </ResourceList.Item>

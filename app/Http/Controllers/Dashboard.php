@@ -171,7 +171,6 @@ class Dashboard extends Controller
             if(!$team || ($team && $team->team_id != $team_id)) {
                 $team = new TeamMember();
                 $team->setAttribute("user_id", Auth::user()->id);
-                $team->setAttribute("user_name", Auth::user()->name);
                 $team->setAttribute("team_id", $team_id);
                 $team->setAttribute("owner", false);
                 
@@ -238,7 +237,6 @@ class Dashboard extends Controller
 
                 $team = new TeamMember();
                 $team->setAttribute("user_id", Auth::user()->id);
-                $team->setAttribute("user_name", Auth::user()->name);
                 $team->setAttribute("team_id", $team_id);
                 $team->setAttribute("owner", true);
                 if($team->save()) {

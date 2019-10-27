@@ -31,6 +31,7 @@ export interface IApplicationRecordContent {
 export interface ITeamMember {
     user_id: number,
     user_name: string,
+    user_email_hash: string,
     team_id: string,
     team_owner: boolean,
 }
