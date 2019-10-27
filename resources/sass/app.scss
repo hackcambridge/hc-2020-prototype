@@ -46,6 +46,29 @@
     .Polaris-UserMenu-UserMenu__Details .Polaris-UserMenu-UserMenu__Name {
         padding-left: 10px;
     }
+    .Polaris-Navigation {
+        background: #fdfeff;
+    }
+    main.Polaris-Frame__Main::before {
+        content: "";
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        background-image: url(/images/hc_backdrop_tessalating.png);
+        background-size: 80px;
+        opacity: 0.5;
+        z-index: 0;
+    }
+    .Polaris-Frame__Content {
+        z-index: 1;
+    }
+    .inner-wrapper {
+        z-index: 2;
+        padding-top: 30px;
+        padding-bottom: 60px;
+    }
 }
 
 
@@ -71,6 +94,53 @@ main.committee-content-wrapper {
         min-height: 280px;
     }
 }
+
+// For react-toastify
+.zoomIn {
+    animation-name: zoomIn;
+    animation-timing-function: ease-out;
+}
+@keyframes zoomIn {
+    from {
+        transform: translateX(300%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
+.zoomOut {
+    animation-name: zoomOut;
+    animation-timing-function: ease-out;
+}
+@keyframes zoomOut {
+    from {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(300%);
+        opacity: 0;
+    }
+}
+
+div.Toastify {
+    div.Toastify__toast {
+        min-height: 62px;
+        padding: 20px;
+        border-radius: 4px;
+        font-size: 1.5rem;
+    }
+    @media only screen and (max-width: 480px) {
+        div.Toastify__toast {
+            border-radius: 0px;
+        }
+    }
+}
+
+
 
 @media only screen and (max-width: 992px) {
     main.committee-content-wrapper {

@@ -2,21 +2,20 @@ import React, { Component, ReactNode } from "react";
 import { withRouter, RouteComponentProps, Link, Switch, Route, Redirect } from "react-router-dom";
 import { IDashboardProps, IApplicationRecord } from "../../interfaces/dashboard.interfaces";
 import {
-    ActionList,
     AppProvider,
-    Card,
     Frame,
     TopBar,
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import {DnsSettingsMajorMonotone, HomeMajorMonotone, CirclePlusOutlineMinor, SmileyJoyMajorMonotone, MentionMajorMonotone, ConfettiMajorMonotone, CodeMajorMonotone, DataVisualizationMajorMonotone, SandboxMajorMonotone, GamesConsoleMajorMonotone, MobileBackArrowMajorMonotone, LogOutMinor, MobileChevronMajorMonotone, TransferWithinShopifyMajorMonotone, PackageMajorMonotone, LockMajorMonotone, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone} from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
 import TeamApplication from "./components/TeamApplication";
 import axios from 'axios';
 import { ToastContainer, cssTransition } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css';
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -151,35 +150,34 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             </Navigation>
         );
 
-        const Zoom = cssTransition({
-            enter: 'Slide',
-            exit: 'Slide',
-            // default to 750ms, can be omitted
-            duration: 150,
-          });
-
         return (
-            <AppProvider theme={this.theme} linkComponent={this.adapterLink}>
-                <Frame
-                    topBar={this.topBarMarkup(userMenuMarkup)}
-                    navigation={navigationMarkup}
-                    showMobileNavigation={showMobileNavigation}
-                    onNavigationDismiss={this.toggleState('showMobileNavigation')}
-                >
-                    <div style={{ paddingTop: "30px" }}>
-                        {this.renderContent()}
-                    </div>
-                    <ToastContainer 
-                        position="top-right"
-                        autoClose={4000}
-                        transition={Zoom}
-                        newestOnTop
-                        closeOnClick
-                        draggable
-                        pauseOnHover
-                    />
-                </Frame>
-            </AppProvider>
+            <>
+                <AppProvider theme={this.theme} linkComponent={this.adapterLink}>
+                    <Frame
+                        topBar={this.topBarMarkup(userMenuMarkup)}
+                        navigation={navigationMarkup}
+                        showMobileNavigation={showMobileNavigation}
+                        onNavigationDismiss={this.toggleState('showMobileNavigation')}
+                    >
+                        <div className={"inner-wrapper"}>
+                            {this.renderContent()}
+                        </div>
+                    </Frame>
+                </AppProvider>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={3000}
+                    transition={cssTransition({
+                        enter: 'zoomIn',
+                        exit: 'zoomOut',
+                        duration: 400
+                    })}
+                    newestOnTop
+                    closeOnClick
+                    draggable
+                    pauseOnHover
+                />
+            </>
         );
     }
 

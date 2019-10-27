@@ -4,6 +4,7 @@ import { MobilePlusMajorMonotone, CirclePlusMajorMonotone } from "@shopify/polar
 import axios from 'axios';
 import { ITeamMember } from "../../../interfaces/dashboard.interfaces";
 import DestructiveConfirmation from "../../common/DestructiveConfirmation";
+import { toast } from 'react-toastify';
 
 interface ITeamApplicationProps {
     teamID: string,
@@ -140,9 +141,11 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                         teamMembers: teamMembers,
                         teamOwner: true,
                     });
+                    toast.success("Created team.");
                     return;
                 }
             }
+            toast.error("An error occurred.");
             console.log(status, res.data);
             this.setState({ doingAction: false });
         });   
@@ -173,9 +176,11 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                         teamMembers: [],
                         teamOwner: false,
                     });
+                    toast.info("Left team.");
                     return;
                 }
             }
+            toast.error("An error occurred.");
             console.log(status, res.data);
             this.setState({ doingAction: false });
         });
@@ -216,9 +221,11 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                         teamMembers: teamMembers,
                         joinTeamID: "",
                     });
+                    toast.success("Successfully joined team.");
                     return;
                 }
             }
+            toast.error("An error occurred.");
             console.log(status, res.data);
             this.setState({ doingAction: false });
         });
@@ -237,8 +244,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
 
             this.setState({ showDestructiveForm: destructor });
         } else {
-            // TODO: Convert to toast.
-            console.log("You can't remove youself!");
+            toast.error("You can't remove youself");
         }
     }
 
