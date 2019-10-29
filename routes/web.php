@@ -26,8 +26,8 @@ Route::get('/auth0/callback', '\Auth0\Login\Auth0Controller@callback')->name('au
 Route::get('/logout', 'Auth\Auth0IndexController@logout')->name('logout')->middleware('auth');
 Route::get('/login/{driver?}', 'Auth\Auth0IndexController@login')->name('login');
 
-Route::middleware(['auth.check_staging'])->group(function() {
-    Route::get('/', 'Home@index')->name('home');
+Route::middleware([])->group(function() {
+    Route::get('/', 'Home@index')->name('home')->middleware('auth.check_staging');
     Route::get('/foundation', 'Foundation@index')->name('foundation_index');
 
     // Protected routes - login will be forced.
