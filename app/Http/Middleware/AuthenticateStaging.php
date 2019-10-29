@@ -2,24 +2,31 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
+use Illuminate\Support\Facades\Auth;
 
-class AuthenticateStaging extends Middleware
-{
+class AuthenticateStaging {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
+     * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param string $driver
-     * @return string
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      */
-    protected function redirectTo($request)
-    {
-        // Force committee auth for all routes if we're in the staging environment.
-        if(in_array(config('app.env'), array('staging'))) {
-            if (! $request->expectsJson()) {
-                return route('login', 'committee');
+    public function handle($request, Closure $next) {
+        if(!Auth::check()) {
+            if(in_array(config('app.env'), array('staging'))) {
+                if (!$request->expectsJson()) {
+                    return redirect()->route('login', ['committee']);
+                } else {
+                    return response([
+                        'success' => false,
+                        'message' => 'Unauthorized'
+                    ], 401);
+                }
             }
         }
+
+        return $next($request);
     }
 }
