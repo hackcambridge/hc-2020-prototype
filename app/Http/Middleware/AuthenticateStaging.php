@@ -15,7 +15,7 @@ class AuthenticateStaging {
      */
     public function handle($request, Closure $next) {
         if(!Auth::check()) {
-            if(in_array(config('app.env'), array('developmentr'))) {
+            if(in_array(config('app.env'), array('staging'))) {
                 if (!$request->expectsJson()) {
                     return redirect()->route('login', ['committee']);
                 } else {
