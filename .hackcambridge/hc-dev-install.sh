@@ -93,6 +93,7 @@ cp $SCRIPT_LOCATION/hc-dev-homestead-config.yaml ./Homestead.yaml
 sed -i '' -e "s^{{ HC.SOURCE_DIRECTORY }}^$CODE_LOCATION^g" ./Homestead.yaml
 sed -i '' -e "s^{{ HC.RSA_KEY }}^$CODE_LOCATION/Homestead/hc_rsa^g" ./Homestead.yaml
 sed -i '' -e "s^{{ HC.HOMESTEAD_VERSION }}^$HOMESTEAD_VERSION^g" ./Homestead.yaml
+cp $SCRIPT_LOCATION/hc-dev-homestead-after.sh after.sh
 
 
 # Bring the Vagrant box up for the first time.
