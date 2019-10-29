@@ -16,6 +16,7 @@ import TeamApplication from "./components/TeamApplication";
 import axios from 'axios';
 import { ToastContainer, cssTransition } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
+import md5 from "md5";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -110,6 +111,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 actions={this.userMenuActions}
                 name={this.props.user.name.split(" ")[0]}
                 initials={this.props.user.name.charAt(0)}
+                avatar={`https://www.gravatar.com/avatar/${md5(this.props.user.email.toLowerCase())}?d=retro`}
                 open={this.state.userMenuOpen}
                 onToggle={this.toggleState('userMenuOpen')}
             />
