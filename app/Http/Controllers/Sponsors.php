@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\Sponsor as SponsorResource;
+use Illuminate\Support\Facades\Log;
 
 class Sponsors extends Controller
 {
@@ -188,14 +189,14 @@ class Sponsors extends Controller
       curl_close($ch);
 
       // TODO: Check if this is present!
-      $accessToken = json_decode($result)["access_token"]
+      $accessToken = json_decode($result)->access_token;
 
       $ch = curl_init();
 
       curl_setopt($ch, CURLOPT_URL, 'https://hackcambridge.eu.auth0.com/api/v2/users');
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
       curl_setopt($ch, CURLOPT_POST, 1);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"email\":\".$email.\",\"user_metadata\":{},\"blocked\":false,\"email_verified\":true,\"app_metadata\":{},\"name\":\"".$name."\",\"connection\":\"email\",\"verify_email\":false}");
+      curl_setopt($ch, CURLOPT_POSTFIELDS, '{"email":"'.$email.'","user_metadata":{},"blocked":false,"email_verified":true,"app_metadata":{},"name":"'.$name.'","connection":"email","verify_email":false}');
 
       $headers = array();
       $headers[] = 'Content-Type: application/json';
@@ -204,8 +205,9 @@ class Sponsors extends Controller
 
       // TODO: Handle failure properly!
       $result = curl_exec($ch);
+      Log::info($result);
       if (curl_errno($ch)) {
-          echo 'Error:' . curl_error($ch);
+          Log::error('Error:' . curl_error($ch));
       }
       curl_close($ch);
     }
