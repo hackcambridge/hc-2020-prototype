@@ -170,6 +170,7 @@ class Sponsors extends Controller
     }
 
     public function addAllowedEmail($email, $name){
+      // TODO: Handle failure by returning false
       // We generate a token:
       $ch = curl_init();
 
@@ -210,6 +211,7 @@ class Sponsors extends Controller
           Log::error('Error:' . curl_error($ch));
       }
       curl_close($ch);
+      print $result;
     }
 
 
