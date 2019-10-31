@@ -29,7 +29,7 @@ class Sponsors extends Controller
     public function api_post(Request $request, $path) {
         $r = $request->request;
         switch ($path) {
-            case 'store-asset': return $this->storeAsset($request);
+            case 'store-asset': return $this->storeAsset($request, "pdf", 5000000);
             case 'add-sponsor': return $this->addSponsor($r);
             case 'delete-sponsor': return $this->deleteSponsor($r);
             case 'update-sponsor': return $this->sponsorAdminDetailsUpdate($r);
@@ -148,7 +148,7 @@ class Sponsors extends Controller
                         'asset' => 'required|mimes:'.$mimes.'|max:'.$maxSize
                     ]);
                     if (strlen($file->getClientOriginalName()) > 0){
-                      $name = time() . '-' . slugify($file->getClientOriginalName());
+                      $name = time() . '-' . $this->slugify($file->getClientOriginalName());
                       $filePath = 'sponsors/' . $sponsor_slug . '/' . $name;
                       if (Storage::disk('s3')->put($filePath, file_get_contents($file))){
                         return $this->success($url . $filePath);
@@ -156,7 +156,7 @@ class Sponsors extends Controller
                         return $this->fail("Failed to upload.");
                       }
                     }else{
-                      return $this->fail("Invalid name.")
+                      return $this->fail("Invalid name.");
                     }
                 }else{
                     return $this->fail("Malformed file.");
@@ -212,11 +212,11 @@ class Sponsors extends Controller
           $length = strlen($url);
           $region = substr($url, 11, $index_aws - 11);
           $bucket = substr($url, $index_aws + 15, $length - $index_aws - 16);
-          $filePath = subtr($url, $length - $index_aws - 15)
+          $filePath = subtr($url, $length - $index_aws - 15);
 
           if (($region != env('AWS_DEFAULT_REGION')) || ($bucket != env("AWS_BUCKET"))){
             // Here we would have to change the region or bucket of S3 to delete
-            // ----> Probably a misktake
+            // ----> Probably a mistake
             return $this->fail("File path invalid.");
           }
 
@@ -236,6 +236,7 @@ class Sponsors extends Controller
             return $this->fail("Unable to find resource.");
           }
           Storage::disk('s3')->delete($filePath);
+        }
     }
 
     private function addSponsor($r) {
@@ -358,6 +359,10 @@ class Sponsors extends Controller
                     $new_agent->setAttribute("name", $name ? $name : "");
                     $new_agent->setAttribute("email", $email);
                     $new_agent->setAttribute("type", $type);
+
+                    if($type == "access") {
+                        $this->addAllowedEmail($email, $name);
+                    }
                     if($new_agent->save()) {
                         return response()->json([
                             "success" => true,
