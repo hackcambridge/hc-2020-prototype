@@ -223,7 +223,7 @@ class Sponsors extends Controller
           $length = strlen($url);
           $region = substr($url, 11, $index_aws - 11);
           $bucket = substr($url, $index_aws + 15, $length - $index_aws - 16);
-          $filePath = subtr($url, $length - $index_aws - 15);
+          $filePath = substr($url, $length - $index_aws - 15);
 
           if (($region != env('AWS_DEFAULT_REGION')) || ($bucket != env("AWS_BUCKET"))){
             // Here we would have to change the region or bucket of S3 to delete
