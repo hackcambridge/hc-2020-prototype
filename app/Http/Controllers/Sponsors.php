@@ -137,14 +137,16 @@ class Sponsors extends Controller
         }
     }
 
-    public function storeAsset(Request $r) {
+    public function storeAsset(Request $r, $mimes, $maxSize) {
         $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
         if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug"])) {
             $sponsor_slug = $r->request->get("sponsor_slug");
-            // Do validate tho
             if ($r->hasFile('asset')) {
                 if ($r->file('asset')->isValid()){
                     $file = $r->file('asset');
+                    $this->validate($r, [
+                        'asset' => 'required|mimes:'.$mimes.'|max:'.$maxSize
+                    ]);
                     if (strlen($file->getClientOriginalName()) > 0){
                       $name = time() . '-' . slugify($file->getClientOriginalName());
                       $filePath = 'sponsors/' . $sponsor_slug . '/' . $name;
@@ -166,25 +168,73 @@ class Sponsors extends Controller
         }
     }
 
+    public function addAllowedEmail($email, $name, $username, $password){
+      // TODO: Add Bearer/auth
+      // ---> Maybe don't use cURL
+      $ch = curl_init();
+
+      curl_setopt($ch, CURLOPT_URL, 'https://login.auth0.com/api/v2/users');
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_POST, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"email\":\"".$email."\",\"user_metadata\":{},\"blocked\":false,\"name\":\"".$name."\",\"user_id\":\"abc\",\"connection\":\"Initial-Connection\",\"password\":\"".$password."\",\"verify_email\":true,\"username\":\"".$username."\"}");
+
+      $headers = array();
+      $headers[] = 'Content-Type: application/json';
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+      $result = curl_exec($ch);
+      if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
+      }
+      curl_close($ch);
+    }
+
+
+    public function getUser($userid){
+      // TODO: Finish this
+      $ch = curl_init();
+
+      // Use 'fields' param in request to specifically get user metadata
+      curl_setopt($ch, CURLOPT_URL, 'https://login.auth0.com/api/v2/users/'.$userid);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+      $result = curl_exec($ch);
+      if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
+      }
+      curl_close($ch);
+    }
 
     public function deleteAsset(Request $r) {
-        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
         if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug"])) {
-            $sponsor_slug = $r->request->get("sponsor_slug");
-//            $this->validate($r, [
-//                'asset' => 'required|image|max:2048'
-//            ]);
-            if ($r->hasFile('asset')) {
-                $file = $r->file('asset');
-                $name = time() . '-' . $file->getClientOriginalName();
-                $filePath = 'sponsors/' . $sponsor_slug . '/' . $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                return $this->success($url . $filePath);
-            }
-            return $this->fail("No file.");
-        } else {
-            return $this->fail("Checks failed.");
-        }
+          $index_aws = strpos($url,".amazonaws.com/");
+          $length = strlen($url);
+          $region = substr($url, 11, $index_aws - 11);
+          $bucket = substr($url, $index_aws + 15, $length - $index_aws - 16);
+          $filePath = subtr($url, $length - $index_aws - 15)
+
+          if (($region != env('AWS_DEFAULT_REGION')) || ($bucket != env("AWS_BUCKET"))){
+            // Here we would have to change the region or bucket of S3 to delete
+            // ----> Probably a misktake
+            return $this->fail("File path invalid.");
+          }
+
+          // Need to make sure the sponsor slug matches the path
+          // We have:
+          //  $filePath = 'sponsors/' . $sponsor_slug . '/' . $name;
+
+          // So, explode on path: note this is unambigious since
+          // we use slugify...
+          $components = explode("/", $path);
+          if ($components[0] != "sponsors"){
+            return $this->fail("Invalid resource.");
+          }
+
+          if ($r->request->get("sponsor_slug") != $components[1]){
+            // Not your resource...
+            return $this->fail("Unable to find resource.");
+          }
+          Storage::disk('s3')->delete($filePath);
     }
 
     private function addSponsor($r) {
