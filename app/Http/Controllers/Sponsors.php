@@ -235,7 +235,11 @@ class Sponsors extends Controller
             // Not your resource...
             return $this->fail("Unable to find resource.");
           }
-          Storage::disk('s3')->delete($filePath);
+          if(Storage::disk('s3')->delete($filePath)) {
+              return $this->success("File removed successfully.");
+          } else {
+              return $this->fail("Failed to remove file.");
+          }
         }
     }
 
