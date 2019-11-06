@@ -42,7 +42,11 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
                     <Layout.Section>
                         <Card sectioned>
                             <DisplayText size="small"><TextStyle variation="strong">Welcome to Hack Cambridge!</TextStyle></DisplayText>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Posuere urna nec tincidunt praesent semper feugiat. Sagittis eu volutpat odio facilisis. In metus vulputate eu scelerisque felis imperdiet proin fermentum. Vitae congue eu consequat ac felis. A erat nam at lectus urna duis convallis convallis tellus. Facilisi morbi tempus iaculis urna id volutpat lacus laoreet non. Diam vel quam elementum pulvinar etiam non quam lacus. Amet consectetur adipiscing elit duis. Donec et odio pellentesque diam. Ut lectus arcu bibendum at varius vel pharetra vel turpis. Amet luctus venenatis lectus magna fringilla urna porttitor rhoncus. Commodo ullamcorper a lacus vestibulum sed arcu non odio euismod. Eget mauris pharetra et ultrices neque ornare. Ut sem nulla pharetra diam sit amet. Enim ut tellus elementum sagittis vitae et. Ultrices in iaculis nunc sed.</p>
+                            <p>
+                                Here is the Sponsors dashboard, where you can fill in info about yourself and your organisation.
+                                There are separate sections for each part, and each of them should have a progress bar which will
+                                let you know how close you are to finishing!
+                            </p>
                         </Card>
                     </Layout.Section>
                     <Layout.Section secondary>
