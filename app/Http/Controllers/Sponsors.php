@@ -169,8 +169,52 @@ class Sponsors extends Controller
         }
     }
 
+
+    public function removeAllowedUser($user_id){
+      // We generate a token:
+      $ch = curl_init();
+
+      curl_setopt($ch, CURLOPT_URL, 'https://hackcambridge.eu.auth0.com/oauth/token');
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_POST, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"client_id\":\"w2KXmkt0WcfDfsn2xZUA7LSVntpv9NdS\",\"client_secret\":\"6EIwE0DM-F-1hVHtbbD8cjQAv4LvLnITEPiTCd02-5nB0er4h5mLyqH9hplWmrrX\",\"audience\":\"https://hackcambridge.eu.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}");
+
+      $headers = array();
+      $headers[] = 'Content-Type: application/json';
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+      $result = curl_exec($ch);
+      if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
+      }
+      curl_close($ch);
+
+      // TODO: Check if this is present!
+      $accessToken = json_decode($result)->access_token;
+
+      $ch = curl_init();
+
+      curl_setopt($ch, CURLOPT_URL, 'https://hackcambridge.eu.auth0.com/api/v2/users/'.$user_id);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_DELETE, 1);
+
+      $headers = array();
+      $headers[] = 'Content-Type: application/json';
+      $headers[] = 'Authorization: Bearer '.$accessToken;
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+      // TODO: Handle failure properly!
+      $result = curl_exec($ch);
+      Log::info($result);
+      if (curl_errno($ch)) {
+          Log::error('Error:' . curl_error($ch));
+      }
+      $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      curl_close($ch);
+      return ($httpcode == "200");
+    }
+
     public function addAllowedEmail($email, $name){
-      // TODO: Handle failure by returning false
       // We generate a token:
       $ch = curl_init();
 
@@ -210,13 +254,57 @@ class Sponsors extends Controller
       if (curl_errno($ch)) {
           Log::error('Error:' . curl_error($ch));
       }
+      $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
       curl_close($ch);
-      print $result;
+      return ($httpcode == "200");
     }
 
 
-    public function getUser($userid){
-      // TODO: this
+    public function getUser($user_id){
+      // We generate a token:
+      $ch = curl_init();
+
+      curl_setopt($ch, CURLOPT_URL, 'https://hackcambridge.eu.auth0.com/oauth/token');
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_POST, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"client_id\":\"w2KXmkt0WcfDfsn2xZUA7LSVntpv9NdS\",\"client_secret\":\"6EIwE0DM-F-1hVHtbbD8cjQAv4LvLnITEPiTCd02-5nB0er4h5mLyqH9hplWmrrX\",\"audience\":\"https://hackcambridge.eu.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}");
+
+      $headers = array();
+      $headers[] = 'Content-Type: application/json';
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+      $result = curl_exec($ch);
+      if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
+      }
+      curl_close($ch);
+
+      // TODO: Check if this is present!
+      $accessToken = json_decode($result)->access_token;
+
+      $ch = curl_init();
+
+      curl_setopt($ch, CURLOPT_URL, 'https://hackcambridge.eu.auth0.com/api/v2/users/'.$user_id);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_GET, 1);
+
+      $headers = array();
+      $headers[] = 'Content-Type: application/json';
+      $headers[] = 'Authorization: Bearer '.$accessToken;
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+      $result = curl_exec($ch);
+      Log::info($result);
+      if (curl_errno($ch)) {
+          Log::error('Error:' . curl_error($ch));
+      }
+      $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      curl_close($ch);
+      if ($httpcode != "200"){
+        return false;
+      }else{
+        return $result;
+      }
     }
 
     public function deleteAsset(Request $r) {
