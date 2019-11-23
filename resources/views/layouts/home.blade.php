@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
         <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}" />
+        <link rel="shortcut icon" type="image/png" href="/images/favicon.png"/>
 
         <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700|Overpass&display=swap" rel="stylesheet">    </head>
     <body>

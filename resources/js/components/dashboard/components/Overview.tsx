@@ -22,7 +22,7 @@ class Overview extends Component<IDashboardPropsWithRouter> {
                     
                     <Card sectioned title={``}>
                         <div style={{ textAlign: "center", padding: "1rem", color: "#8e8e8e" }}>
-                            <DisplayText size="large">More Coming Soon...</DisplayText>
+                            <DisplayText size="medium">More Coming Soon...</DisplayText>
                             <br />
                             <TextContainer>Hey {this.props.user.name.split(" ")[0]}, we'll be adding more information here closer to the event. Stay tuned!</TextContainer>
                         </div>

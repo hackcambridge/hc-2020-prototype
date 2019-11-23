@@ -113,9 +113,8 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     this.setState({
                         uploadedFileName: "",
                         uploadedFileURL: "",
-                        isSaving: false,
                     });
-                    toast.info("CV removed");
+                    this.saveForm(this.state.isSubmitted, () => toast.info("CV removed"));
                 } else {
                     toast.error("Failed to remove CV.")
                     this.setState({ isSaving: false });
@@ -171,7 +170,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             </div>
                             {uploadedFileName.length > 0 
                                 ?   <ButtonGroup segmented>
-                                        <Button outline size="slim" url={uploadedFileURL}>{uploadedFileName}</Button>
+                                        <Button outline size="slim" url={uploadedFileURL} external={true}>{uploadedFileName}</Button>
                                         <Button destructive size="slim" onClick={this.handleCVRemove} disabled={!this.props.canEdit || isSaving}>Remove</Button>
                                     </ButtonGroup>
                                 :   <Button size="slim" loading={isUploadingFile} onClick={this.handleFileSelect} disabled={!this.props.canEdit}>Upload CV</Button>
@@ -193,41 +192,6 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     </FormLayout>
                 </Card>
                 <br />
-
-                <Card sectioned title={"Visas"}>
-                    <TextContainer>
-                        We understand that some of our participants will need more time than others to organise a visa for their trip to Hack Cambridge. If this affects you we are are willing to help, ensuring we give you a decision on an invitation in time to start the process of requesting one.
-                    </TextContainer>
-                    <br />
-                    <FormLayout>
-                        <FormLayout.Group>
-                            <>
-                            <div style={{ paddingBottom: "10px", paddingTop: "10px" }}>
-                                <Subheading>Visa required?</Subheading>
-                            </div>
-                            <Checkbox
-                                label="Will you need to get a visa to attend?"
-                                checked={visaRequired}
-                                onChange={(val) => this.setState({ visaRequired: val })}
-                            />
-                            </>
-                            {visaRequired ?
-                                <>
-                                <div style={{ paddingBottom: "8px", paddingTop: "10px" }}>
-                                    <Subheading>When do you need to start sorting a visa?</Subheading>
-                                </div>
-                            <Button size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
-                                {visaDate 
-                                    ? `${visaDate.getDate()} ${visaDate.toLocaleString('default', { month: 'long' })} ${visaDate.getFullYear()}`
-                                    : "(No date selected)"
-                                }
-                            </Button>
-                            </>
-                            : <></>}
-                        </FormLayout.Group>
-                        
-                    </FormLayout>
-                </Card>
 
                 <Card sectioned>
                     {this.textFieldQuestions.map((q, index) => {
@@ -256,6 +220,40 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     })}
                 </Card>
 
+                <Card sectioned title={"Visas"}>
+                    <TextContainer>
+                        We understand that some of our participants will need more time than others to organise a visa for their trip to Hack Cambridge. If this affects you we are are willing to help, ensuring we give you a decision on an invitation in time to start the process of requesting one.
+                    </TextContainer>
+                    <br />
+                    <FormLayout>
+                        <FormLayout.Group>
+                            <>
+                            <div style={{ paddingBottom: "10px", paddingTop: "10px" }}>
+                                <Subheading>Visa required?</Subheading>
+                            </div>
+                            <Checkbox
+                                label="I will need a visa to attend."
+                                checked={visaRequired}
+                                onChange={(val) => this.setState({ visaRequired: val })}
+                            />
+                            </>
+                            {visaRequired ?
+                                <>
+                                <div style={{ paddingBottom: "8px", paddingTop: "10px" }}>
+                                    <Subheading>What is the deadline for organising a visa?</Subheading>
+                                </div>
+                            <Button size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
+                                {visaDate 
+                                    ? `${visaDate.getDate()} ${visaDate.toLocaleString('default', { month: 'long' })} ${visaDate.getFullYear()}`
+                                    : "(No date selected)"
+                                }
+                            </Button>
+                            </>
+                            : <></>}
+                        </FormLayout.Group>    
+                    </FormLayout>
+                </Card>
+
                 {this.props.canEdit ? <>
                     {isSubmitted 
                         ? <div id="save-button-group">
@@ -266,18 +264,17 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                 <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Update</Button>
                             </div>
                         </div>
-                        : <div style={{ float: "right", padding: "30px 0" }}>
+                        : <div id="save-button-group" style={{ float: "right", padding: "30px 0" }}>
                             <ButtonGroup segmented>
                                 <Button loading={isSaving} onClick={() => this.saveForm(false)}>Save Draft</Button>
                                 <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Submit</Button>
                             </ButtonGroup>
                         </div>
                     }
-
                 </> : <></>}
 
                 <Modal
-                    title={"Date to start sorting visa"}
+                    title={"Deadline for organising a visa"}
                     open={showingVisaDateSelector}
                     onClose={() => this.setState({ 
                         showingVisaDateSelector: false,
