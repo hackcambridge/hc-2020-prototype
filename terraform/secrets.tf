@@ -1,10 +1,3 @@
-variable "APP_URL" {
-  default = "https://canary.hackcambridge.com"
-}
-
-variable "APP_URL_PROD" {
-  default = "https://www.hackcambridge.com"
-}
 variable "DB_HOST" {
   default = "127.0.0.1"
 }
