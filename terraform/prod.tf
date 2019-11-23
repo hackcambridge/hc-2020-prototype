@@ -5,7 +5,7 @@ resource "aws_autoscaling_group" "front-end-prod" {
   desired_capacity   = 2
   # asg_recreate_on_change = false
   launch_template {
-    id      = "${aws_launch_template.hc-instance.id}"
+    id      = "${aws_launch_template.hc-instance-prod.id}"
     version = "$Latest"
   }
 }
@@ -68,6 +68,38 @@ resource "aws_lb_listener" "front_end-https-lb-listener-prod" {
 resource "aws_autoscaling_attachment" "front-end-lb-autoscaling-prod" {
   alb_target_group_arn   = "${aws_lb_target_group.front-end-lb-target-group-prod.arn}"
   autoscaling_group_name = "${aws_autoscaling_group.front-end-prod.id}"
+}
+
+data "template_file" "user_data-prod" {
+  template = "${file("init-script.tpl")}"
+  vars = {
+    APP_URL               = "${var.APP_URL_PROD}"
+    DB_HOST               = "${var.DB_HOST}"
+    DB_DATABASE           = "${var.DB_DATABASE}"
+    DB_USERNAME           = "${var.DB_USERNAME}"
+    DB_PASSWORD           = "${var.DB_PASSWORD}"
+    AWS_ACCESS_KEY_ID     = "${var.AWS_ACCESS_KEY_ID}"
+    AWS_SECRET_ACCESS_KEY = "${var.AWS_SECRET_ACCESS_KEY}"
+    AWS_BUCKET            = "${var.AWS_BUCKET}"
+    AUTH0_DOMAIN          = "${var.AUTH0_DOMAIN}"
+    AUTH0_CLIENT_ID       = "${var.AUTH0_CLIENT_ID}"
+    AUTH0_CLIENT_SECRET   = "${var.AUTH0_CLIENT_SECRET}"
+  }
+}
+
+resource "aws_launch_template" "hc-instance-prod" {
+  name_prefix            = "hc-instance-prod"
+  image_id               = "ami-040eaa068dbe2517d"
+  instance_type          = "t2.micro"
+  key_name               = "Default"
+  vpc_security_group_ids = ["${aws_security_group.hc-sg-web.id}"]
+  lifecycle {
+    create_before_destroy = true
+  }
+  iam_instance_profile {
+    name = "CodeDeployAgentRole"
+  }
+  user_data = "${base64encode(data.template_file.user_data-prod.rendered)}"
 }
 
 output "lb-domain-prod" {
