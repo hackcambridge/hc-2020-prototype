@@ -31,14 +31,14 @@ resource "aws_lb_target_group" "front-end-lb-target-group-prod" {
     enabled         = true
   }
 
-  # health_check {
-  #   healthy_threshold = 2
-  #   unhealthy_threshold = 2
-  #   timeout = 3
-  #   protocol = "TCP"
-  #   port = 80
-  #   interval = 10
-  # }
+  health_check {
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+    path                = "/health"
+    timeout             = 5
+    protocol            = "HTTP"
+    interval            = 30
+  }
 }
 
 resource "aws_alb_listener" "front_end-lb-listener-prod" {
