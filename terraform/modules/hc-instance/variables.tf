@@ -8,8 +8,8 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "vpc" {
-  description = "The vpc for the security group to exist in"
+variable "security_group" {
+  description = "The security group for the instances"
   default     = ""
 }
 # --------------------------------------------
