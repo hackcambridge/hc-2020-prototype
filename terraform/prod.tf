@@ -8,6 +8,12 @@ resource "aws_autoscaling_group" "front-end-prod" {
     id      = "${aws_launch_template.hc-instance-prod.id}"
     version = "$Latest"
   }
+
+  tag {
+    key                 = "Name"
+    value               = "hc-prod"
+    propagate_at_launch = true
+  }
 }
 
 resource "aws_lb" "front-end-lb-prod" {
