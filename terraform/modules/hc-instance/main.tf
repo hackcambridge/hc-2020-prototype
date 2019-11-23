@@ -20,7 +20,7 @@ resource "aws_launch_template" "hc-instance" {
   image_id               = "ami-040eaa068dbe2517d"
   instance_type          = var.instance_type
   key_name               = "Default"
-  vpc_security_group_ids = ["${aws_security_group.hc-instance-security-group.id}"]
+  vpc_security_group_ids = [var.security_group]
   lifecycle {
     create_before_destroy = true
   }
@@ -28,51 +28,4 @@ resource "aws_launch_template" "hc-instance" {
     name = "CodeDeployAgentRole"
   }
   user_data = base64encode(data.template_file.user_data.rendered)
-}
-
-resource "aws_security_group" "hc-instance-security-group" {
-  name        = "hc-instance-security-group"
-  description = "Hack Cambridge Web Servers"
-  vpc_id      = var.vpc
-
-  ingress {
-    # TLS (change to whatever ports you need)
-    from_port = 443
-    to_port   = 443
-    protocol  = "tcp"
-    # Please restrict your ingress to only necessary IPs and ports.
-    # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  ingress {
-    # TLS (change to whatever ports you need)
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
-    # Please restrict your ingress to only necessary IPs and ports.
-    # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  ingress {
-    # TLS (change to whatever ports you need)
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-    # Please restrict your ingress to only necessary IPs and ports.
-    # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
 }

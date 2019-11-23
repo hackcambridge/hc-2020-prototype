@@ -10,6 +10,7 @@ provider "aws" {
 module "hc-staging-instance" {
   source                = "./modules/hc-instance"
   name                  = "hc-staging-instance"
+  security_group        = "${aws_security_group.hc-instance-security-group.id}"
   APP_URL               = "https://canary.hackcambridge.com"
   DB_HOST               = "${var.DB_HOST}"
   DB_DATABASE           = "${var.DB_DATABASE}"
@@ -21,6 +22,7 @@ module "hc-staging-instance" {
   AUTH0_DOMAIN          = "${var.AUTH0_DOMAIN}"
   AUTH0_CLIENT_ID       = "${var.AUTH0_CLIENT_ID}"
   AUTH0_CLIENT_SECRET   = "${var.AUTH0_CLIENT_SECRET}"
+
 }
 
 module "hc-staging-cluster" {
@@ -38,6 +40,7 @@ module "hc-staging-cluster" {
 module "hc-prod-instance" {
   source                = "./modules/hc-instance"
   name                  = "hc-prod-instance"
+  security_group        = "${aws_security_group.hc-instance-security-group.id}"
   APP_URL               = "https://www.hackcambridge.com"
   DB_HOST               = "${var.DB_HOST}"
   DB_DATABASE           = "${var.DB_DATABASE}"
