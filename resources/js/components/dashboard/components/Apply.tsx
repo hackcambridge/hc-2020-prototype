@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout } from "@shopify/polaris";
+import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker } from "@shopify/polaris";
 import axios from 'axios';
 import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
 import countryList from 'country-list';
@@ -19,6 +19,12 @@ interface IApplyState {
     questionValues: { [key: string]: string },
     isSubmitted: boolean,
     countrySelection: string,
+
+    showingVisaDateSelector: boolean,
+    visaRequired: boolean,
+    visaPickerMonthYear: { month: number, year: number },
+    visaDate: Date,
+    visaDateTemp: Date,
 }
 
 function RequiredStar() {
@@ -35,6 +41,11 @@ class Apply extends Component<IApplyProps, IApplyState> {
         questionValues: (this.props.initialRecord ? JSON.parse(this.props.initialRecord.questionResponses) : {}) as { [key: string]: string },
         isSubmitted: this.props.initialRecord ? this.props.initialRecord.isSubmitted : false,
         countrySelection: this.props.initialRecord ? this.props.initialRecord.country : "GB",
+        showingVisaDateSelector: false,
+        visaRequired: true,
+        visaPickerMonthYear: { month: new Date().getMonth(), year: new Date().getFullYear() },
+        visaDate: new Date(),
+        visaDateTemp: new Date(),
     }
 
 
@@ -107,6 +118,9 @@ class Apply extends Component<IApplyProps, IApplyState> {
             isSubmitted,
             isSaving,
             countrySelection,
+            showingVisaDateSelector,
+            visaRequired,
+            visaDate,
         } = this.state;
 
         const countriesNoGB = countryList().getData()
@@ -145,7 +159,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             </>
                             <>
                             <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
-                                <Heading>Country Travelling From</Heading>
+                                <Heading>Country travelling from:</Heading>
                             </div>
                             <Select
                                 label=""
@@ -156,6 +170,39 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             />
                             </>
                         </FormLayout.Group>
+                    </FormLayout>
+                </Card>
+                <br />
+
+                <Card sectioned title={"Visas"}>
+                    <TextContainer>
+                        We understand that some of our participants will need more time than others to organise a visa for their trip to Hack Cambridge. If this affects you we are are willing to help, ensuring we give you a decision on an invitation in time to start the process of requesting one.
+                    </TextContainer>
+                    <br />
+                    <FormLayout>
+                        <FormLayout.Group>
+                            <>
+                            <div style={{ paddingBottom: "10px", paddingTop: "10px" }}>
+                                <Subheading>Visa required?</Subheading>
+                            </div>
+                            <Checkbox
+                                label="Will you need to get a visa to attend?"
+                                checked={visaRequired}
+                                onChange={(val) => this.setState({ visaRequired: val })}
+                            />
+                            </>
+                            {visaRequired ?
+                                <>
+                                <div style={{ paddingBottom: "8px", paddingTop: "10px" }}>
+                                    <Subheading>When do you need to start sorting a visa?</Subheading>
+                                </div>
+                            <Button size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
+                                {`${visaDate.getDate()} ${visaDate.toLocaleString('default', { month: 'long' })} ${visaDate.getFullYear()}`}
+                            </Button>
+                            </>
+                            : <></>}
+                        </FormLayout.Group>
+                        
                     </FormLayout>
                 </Card>
 
@@ -178,6 +225,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                     multiline={4}
                                     placeholder={q.placeholder}
                                     disabled={!this.props.canEdit}
+                                    maxLength={200}
                                     showCharacterCount
                                 />
                             </div>
@@ -202,8 +250,33 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             </ButtonGroup>
                         </div>
                     }
-                    
+
                 </> : <></>}
+
+                <Modal
+                    title={"Date to start sorting visa"}
+                    open={showingVisaDateSelector}
+                    onClose={() => this.setState({ 
+                        showingVisaDateSelector: false,
+                        visaDateTemp: this.state.visaDate,
+                        visaPickerMonthYear: { month: new Date().getMonth(), year: new Date().getFullYear() },
+                    })}
+                    primaryAction={{
+                        content: 'Save Date',
+                        onAction: () => this.setState({ 
+                            showingVisaDateSelector: false,
+                            visaDate: this.state.visaDateTemp,
+                            visaPickerMonthYear: { month: this.state.visaDateTemp.getMonth(), year: this.state.visaDateTemp.getFullYear() },
+                        }),
+                    }}
+                >
+                    <Modal.Section>
+                        <TextContainer>
+                            {this.buildDatePicker()}
+                        </TextContainer>
+                    </Modal.Section>
+                </Modal>
+
             </Page>
         );
     }
@@ -263,6 +336,24 @@ class Apply extends Component<IApplyProps, IApplyState> {
             }
         });
     }
+
+    private buildDatePicker() {
+        const { visaPickerMonthYear, visaDateTemp } = this.state;
+        return (
+            <DatePicker
+                disableDatesBefore={new Date()}
+                disableDatesAfter={new Date('Fri Jan 17 2020 00:00:00 GMT')} // The event date
+                month={visaPickerMonthYear.month}
+                year={visaPickerMonthYear.year}
+                onChange={(dates) => this.setState({ visaDateTemp: dates.start })}
+                onMonthChange={(month, year) => this.setState({ visaPickerMonthYear: { month: month, year: year } })}
+                selected={{
+                    start: visaDateTemp,
+                    end: visaDateTemp,
+                }}
+            />
+        );
+      }
 }
 
 export default Apply;
