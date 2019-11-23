@@ -1,3 +1,7 @@
+# -------------------------------
+# ------- User file script ------
+# -------------------------------
+
 data "template_file" "user_data" {
   template = "${file("init-script.tpl")}"
   vars = {
@@ -14,6 +18,10 @@ data "template_file" "user_data" {
     AUTH0_CLIENT_SECRET   = "${var.AUTH0_CLIENT_SECRET}"
   }
 }
+
+# -------------------------------
+# ------- Launch Template -------
+# -------------------------------
 
 resource "aws_launch_template" "hc-instance" {
   name                   = var.name
