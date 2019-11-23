@@ -23,8 +23,8 @@ interface IApplyState {
     showingVisaDateSelector: boolean,
     visaRequired: boolean,
     visaPickerMonthYear: { month: number, year: number },
-    visaDate: Date,
-    visaDateTemp: Date,
+    visaDate: Date | undefined,
+    visaDateTemp: Date | undefined,
 }
 
 function RequiredStar() {
@@ -36,16 +36,20 @@ class Apply extends Component<IApplyProps, IApplyState> {
     state = {
         isUploadingFile: false,
         isSaving: false,
+        showingVisaDateSelector: false,
         uploadedFileName: this.props.initialRecord ? (this.props.initialRecord.cvFilename || "") : "",
         uploadedFileURL: this.props.initialRecord ? (this.props.initialRecord.cvUrl || "") : "",
         questionValues: (this.props.initialRecord ? JSON.parse(this.props.initialRecord.questionResponses) : {}) as { [key: string]: string },
         isSubmitted: this.props.initialRecord ? this.props.initialRecord.isSubmitted : false,
         countrySelection: this.props.initialRecord ? this.props.initialRecord.country : "GB",
-        showingVisaDateSelector: false,
-        visaRequired: true,
+        visaRequired: this.props.initialRecord ? this.props.initialRecord.visaRequired : false,
         visaPickerMonthYear: { month: new Date().getMonth(), year: new Date().getFullYear() },
-        visaDate: new Date(),
-        visaDateTemp: new Date(),
+        visaDate: this.props.initialRecord 
+            ? (this.props.initialRecord.visaRequiredDate ? new Date(this.props.initialRecord.visaRequiredDate) : undefined)
+            : undefined,
+        visaDateTemp: this.props.initialRecord 
+            ? (this.props.initialRecord.visaRequiredDate ? new Date(this.props.initialRecord.visaRequiredDate) : undefined)
+            : undefined,
     }
 
 
@@ -69,15 +73,16 @@ class Apply extends Component<IApplyProps, IApplyState> {
             if(fileSelector.files) {
                 const file = fileSelector.files.item(0);
                 if(file) {
-                    this.setState({ 
-                        isUploadingFile: false,
-                        uploadedFileName: file.name,
-                        uploadedFileURL: "https://google.com"
-                    }, () => this.saveForm(this.state.isSubmitted, () => toast.success("CV uploaded.")));
+                    // Upload file.
+                    this.saveForm(
+                        this.state.isSubmitted, 
+                        () => toast.success("CV uploaded."),
+                        file
+                    );
                     return;
                 } 
             }
-
+            toast.error("An error occurred while uploading the file.");
             this.setState({ isUploadingFile: false });
         }
         fileSelector.onclick = (_) => {
@@ -98,15 +103,30 @@ class Apply extends Component<IApplyProps, IApplyState> {
     }
 
     handleCVRemove = () => {
-        this.setState({
-            uploadedFileName: "",
-            uploadedFileURL: "",
-        }, () => this.saveForm(this.state.isSubmitted, () => toast.info("CV removed.")));
+        this.setState({ isSaving: true });
+        axios.post(`/dashboard-api/remove-cv.json`, {}).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                console.log(payload);
+                if("success" in payload && payload["success"]) {
+                    this.setState({
+                        uploadedFileName: "",
+                        uploadedFileURL: "",
+                        isSaving: false,
+                    });
+                    toast.info("CV removed");
+                } else {
+                    toast.error("Failed to remove CV.")
+                    this.setState({ isSaving: false });
+                }
+            }
+        });
     }
 
-    private saveForm(submitted: boolean, customToast?: () => void) {
+    private saveForm(submitted: boolean, customToast?: () => void, cv?: File) {
         this.setState({ isSaving: true });
-        this.updateRecordInDatabase(submitted, customToast);
+        this.updateRecordInDatabase(submitted, customToast, cv);
     }
 
     render() {
@@ -137,7 +157,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
             <Page title={"Apply for Hack Cambridge"}>
                 <Banner status="info">
                     {this.props.canEdit 
-                        ? <p>You change this information at any time before the 10th November application deadline.</p>
+                        ? <p>You change this information at any time before the application deadline.</p>
                         : <p>Applications have now closed.</p>
                     }
                 </Banner>
@@ -197,7 +217,10 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                     <Subheading>When do you need to start sorting a visa?</Subheading>
                                 </div>
                             <Button size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
-                                {`${visaDate.getDate()} ${visaDate.toLocaleString('default', { month: 'long' })} ${visaDate.getFullYear()}`}
+                                {visaDate 
+                                    ? `${visaDate.getDate()} ${visaDate.toLocaleString('default', { month: 'long' })} ${visaDate.getFullYear()}`
+                                    : "(No date selected)"
+                                }
                             </Button>
                             </>
                             : <></>}
@@ -235,7 +258,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
 
                 {this.props.canEdit ? <>
                     {isSubmitted 
-                        ? <div>
+                        ? <div id="save-button-group">
                             <div style={{ float: "left", padding: "30px 0" }}>
                                 <Button destructive loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
                             </div>
@@ -266,7 +289,10 @@ class Apply extends Component<IApplyProps, IApplyState> {
                         onAction: () => this.setState({ 
                             showingVisaDateSelector: false,
                             visaDate: this.state.visaDateTemp,
-                            visaPickerMonthYear: { month: this.state.visaDateTemp.getMonth(), year: this.state.visaDateTemp.getFullYear() },
+                            visaPickerMonthYear: { 
+                                month: (this.state.visaDateTemp || new Date()).getMonth(), 
+                                year: (this.state.visaDateTemp || new Date()).getFullYear()
+                            },
                         }),
                     }}
                 >
@@ -281,19 +307,35 @@ class Apply extends Component<IApplyProps, IApplyState> {
         );
     }
 
-    private updateRecordInDatabase(isSubmitted: boolean, toaster?: () => void) {
+    private updateRecordInDatabase(isSubmitted: boolean, toaster?: () => void, cv?: File) {
         const questionValues = this.state.questionValues;
         const questions: { [key : string]: string } = {};
         this.textFieldQuestions.forEach(q => {
             questions[q.id] = q.id in questionValues ? questionValues[q.id] : ""
         });
 
-        axios.post(`/dashboard-api/update-application.json`, {
-            cvFilename: this.state.uploadedFileName || "",
-            cvUrl: this.state.uploadedFileURL || "",
-            questionResponses: JSON.stringify(questions),
-            country: this.state.countrySelection,
-            isSubmitted: isSubmitted,
+        let formData = new FormData();
+        formData.append('questionResponses', JSON.stringify(questions));
+        formData.append('country', this.state.countrySelection);
+        formData.append('visaRequired', this.state.visaRequired ? "true" : "false");
+        formData.append('visaRequiredDate', (this.state.visaDate || "").toString());
+        formData.append('isSubmitted', isSubmitted ? "true" : "false");
+        if(cv) formData.append('cvFile', cv);
+        // const payload: any = {
+        //     questionResponses: JSON.stringify(questions),
+        //     country: this.state.countrySelection,
+        //     visaRequired: this.state.visaRequired,
+        //     visaRequiredDate: (this.state.visaDate || "").toString(),
+        //     isSubmitted: isSubmitted,
+        // };
+        // if(cv) payload.cvFile = cv;
+        // formData.forEach((val,key,p) => {
+        //     console.log(`${key}: ${val}`);
+        // });
+        axios.post(`/dashboard-api/update-application.json`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         }).then(res => {
             console.log(res);
             const status = res.status;
@@ -305,13 +347,19 @@ class Apply extends Component<IApplyProps, IApplyState> {
 
                     if(toaster) { toaster(); }
                     else { toast.success("Application saved."); }
-                    this.setState({ isSubmitted: isSubmitted, isSaving: false });
+                    this.setState({ 
+                        isSubmitted: isSubmitted, 
+                        isSaving: false, 
+                        isUploadingFile: false, 
+                        uploadedFileURL: record.cvUrl,
+                        uploadedFileName: record.cvFilename,
+                    });
                     return;
                 }
             }
             toast.error("An error occurred.");
             console.log(status, res.data);
-            this.setState({ isSaving: false });
+            this.setState({ isSaving: false, isUploadingFile: false, });
         });
     }
 
@@ -325,7 +373,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     if(record) {
                         this.setState({
                             uploadedFileName: record.cvFilename || "",
-                            uploadedFileURL: record.cvFilename || "",
+                            uploadedFileURL: record.cvUrl || "",
                             questionValues: JSON.parse(record.questionResponses) as { [key: string]: string },
                             countrySelection: record.country,
                             isSubmitted: record.isSubmitted,
@@ -348,8 +396,8 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 onChange={(dates) => this.setState({ visaDateTemp: dates.start })}
                 onMonthChange={(month, year) => this.setState({ visaPickerMonthYear: { month: month, year: year } })}
                 selected={{
-                    start: visaDateTemp,
-                    end: visaDateTemp,
+                    start: visaDateTemp || new Date(),
+                    end: visaDateTemp || new Date(),
                 }}
             />
         );

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\TeamMember;
-
+use App\Helpers\S3Management;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +31,8 @@ class Dashboard extends Controller
     public function api_post(Request $request, $path) {
         $r = $request->request;
         switch ($path) {
-            case "update-application": return $this->updateApplicationRecord($r);
+            case "update-application": return $this->updateApplicationRecord($request);
+            case "remove-cv": return $this->removeCV($r);
             case "create-team": return $this->createTeam($r);
             case "set-team": return $this->setTeam($r);
             case "leave-team": return $this->leaveTeam($r);
@@ -112,19 +113,36 @@ class Dashboard extends Controller
         }
     }
 
-    private function updateApplicationRecord($r) {
-        if($this->canContinue(["hacker"], $r, ["cvFilename", "cvUrl", "questionResponses", "country", "isSubmitted"])) {
+    private function updateApplicationRecord($request) {
+        $r = $request->request;
+        if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "visaRequired", "visaRequiredDate"])) {
             $app = Application::where("user_id", Auth::user()->id)->first();
             if(!$app) {
                 $app = new Application();
                 $app->setAttribute("user_id", Auth::user()->id);
             }
 
-            $app->setAttribute("cvFilename", $r->get("cvFilename"));
-            $app->setAttribute("cvUrl", $r->get("cvUrl"));
+            if($request->hasFile("cvFile")) {
+                if($app->cvUrl != null) {
+                    $old = S3Management::deleteAsset($app->cvUrl);
+                    if(!$old["success"]) {
+                        $this->fail("Failed to remove old");
+                    }
+                }
+                $result = S3Management::storeAsset($request, 'hackers/cvs', 'pdf', 5000000, 'cvFile');
+                if($result["success"]) {
+                    $app->setAttribute("cvFilename", $result["originalName"]);
+                    $app->setAttribute("cvUrl", $result["data"]);
+                } else {
+                    return $this->fail("Failed to save file: " . $result["data"]);
+                }
+            }
+
             $app->setAttribute("questionResponses", $r->get("questionResponses"));
             $app->setAttribute("country", $r->get("country"));
-            $app->setAttribute("isSubmitted", $r->get("isSubmitted"));
+            $app->setAttribute("isSubmitted", $r->get("isSubmitted") == 'true');
+            $app->setAttribute("visaRequired", $r->get("visaRequired") == 'true');
+            $app->setAttribute("visaRequiredDate", $r->get("visaRequiredDate"));
 
             if($app->save()) {
                 return response()->json([
@@ -154,6 +172,28 @@ class Dashboard extends Controller
             }
         }
         else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function removeCV($r) {
+        if($this->canContinue(["hacker"], $r, [])) {
+            $app = Application::where("user_id", Auth::user()->id)->first();
+            if($app->cvUrl) {
+                $removal = S3Management::deleteAsset($app->cvUrl);
+                if($removal["success"]) {
+                    $app->setAttribute("cvFilename", "");
+                    $app->setAttribute("cvUrl", "");
+                    $app->save();
+                    return $this->success("Removed CV");
+                } else {
+                    return $this->fail("Failed to remove CV");
+                }
+
+            } else {
+                return $this->success("Removed CV");
+            }
+        } else {
             return $this->fail("Checks failed.");
         }
     }
@@ -299,6 +339,15 @@ class Dashboard extends Controller
             }
         } else {
             return $this->fail("Checks failed.");
+        }
+    }
+
+
+    public function storeCV(Request $r) {
+        if($this->canContinue(["admin", "sponsor", "hacker"], $r->request, ["sponsor_slug"])) {
+        
+        } else {
+            $this->fail("Checks failed");
         }
     }
 

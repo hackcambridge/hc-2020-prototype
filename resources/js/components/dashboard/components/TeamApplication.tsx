@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Page, Card, Banner, DropZone, Layout, Subheading, FormLayout, TextField, Button, Stack, Heading, TextStyle, DisplayText, ResourceList, Avatar, Badge } from "@shopify/polaris";
+import { Page, Card, Banner, DropZone, Layout, Subheading, FormLayout, TextField, Button, Stack, Heading, TextStyle, DisplayText, ResourceList, Avatar, Badge, TextContainer } from "@shopify/polaris";
 import { MobilePlusMajorMonotone, CirclePlusMajorMonotone } from "@shopify/polaris-icons";
 import axios from 'axios';
 import { ITeamMember } from "../../../interfaces/dashboard.interfaces";
@@ -38,8 +38,12 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
         return (
             <Page title={"Team Information"}>
                 <Banner status="info">
-                    <p>You change this information at any time before the 10th November application deadline.</p>
+                    <p>You change this information at any time before the application deadline.</p>
                 </Banner>
+                <br />
+                <Card sectioned title={"Specifying a Team is Optional"}>
+                    <TextContainer>You don't need to already be part of a team to apply for Hack Cambridge (most teams are formed on the first day!), but if you already know who you want to be working with you can all have your applications reviewed together. Not specifying a team will not impact your chance of being accepted.</TextContainer>
+                </Card>
                 <br />
                 {initialState ? this.buildInitialStateForm(doingAction) : this.buildTeamOverview(doingAction)}
                 {showDestructiveForm || <></>}

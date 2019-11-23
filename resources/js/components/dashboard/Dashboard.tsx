@@ -270,7 +270,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                     return;
                 }
             }
-            console.log("fail");
+            // console.log("fail");
         });
     }
 

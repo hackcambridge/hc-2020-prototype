@@ -26,6 +26,8 @@ export interface IApplicationRecordContent {
     questionResponses: string,
     country: string,
     isSubmitted: boolean,
+    visaRequired: boolean,
+    visaRequiredDate: string,
 }
 
 export interface ITeamMember {
