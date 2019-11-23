@@ -17,7 +17,7 @@ resource "aws_autoscaling_group" "hc-asg" {
 }
 
 resource "aws_lb" "hc-load_balancer" {
-  name                             = "${var.name}-load_balancer"
+  name                             = "${var.name}-load-balancer"
   internal                         = false
   load_balancer_type               = "application"
   subnets                          = var.subnets
@@ -25,7 +25,7 @@ resource "aws_lb" "hc-load_balancer" {
 }
 
 resource "aws_lb_target_group" "hc-load_balancer_target_group" {
-  name                 = "${var.name}-load_balancer_target_group"
+  name                 = "${var.name}-load-balancer-tg"
   port                 = "80"
   protocol             = "HTTP"
   vpc_id               = var.vpc
