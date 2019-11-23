@@ -68,7 +68,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
             if(!this.state.isUploadingFile) {
                 this.setState({ isUploadingFile: true });
             }
-            console.log(fileSelector.files);
+            // console.log(fileSelector.files);
 
             if(fileSelector.files) {
                 const file = fileSelector.files.item(0);
@@ -108,7 +108,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
             const status = res.status;
             if(status == 200) {
                 const payload = res.data;
-                console.log(payload);
+                // console.log(payload);
                 if("success" in payload && payload["success"]) {
                     this.setState({
                         uploadedFileName: "",
@@ -334,7 +334,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 'Content-Type': 'multipart/form-data'
             }
         }).then(res => {
-            console.log(res);
+            // console.log(res);
             const status = res.status;
             if(status == 200) {
                 const payload = res.data;
@@ -355,7 +355,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 }
             }
             toast.error("An error occurred.");
-            console.log(status, res.data);
+            // console.log(status, res.data);
             this.setState({ isSaving: false, isUploadingFile: false, });
         });
     }

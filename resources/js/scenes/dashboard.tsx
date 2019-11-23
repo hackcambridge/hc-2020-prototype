@@ -19,7 +19,6 @@ function initialise(root: HTMLElement) {
             const obj = res.data;
             if ("success" in obj && obj["success"]) {
                 const payload : IDashboardProps = obj["payload"];
-                console.log(payload);
                 ReactDOM.render(
                     <BrowserRouter>
                         <Dashboard {...payload}/>

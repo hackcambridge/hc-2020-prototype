@@ -150,7 +150,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                 }
             }
             toast.error("An error occurred.");
-            console.log(status, res.data);
+            // console.log(status, res.data);
             this.setState({ doingAction: false });
         });   
     }
@@ -185,7 +185,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                 }
             }
             toast.error("An error occurred.");
-            console.log(status, res.data);
+            // console.log(status, res.data);
             this.setState({ doingAction: false });
         });
     }
@@ -201,7 +201,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                     return;
                 }
             }
-            console.log(status, res.data);
+            // console.log(status, res.data);
             this.setState({ doingAction: false });
         });
     }
@@ -230,7 +230,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                 }
             }
             toast.error("An error occurred.");
-            console.log(status, res.data);
+            // console.log(status, res.data);
             this.setState({ doingAction: false });
         });
     }
@@ -271,7 +271,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                     return;
                 }
             }
-            console.log(status, res.data);
+            // console.log(status, res.data);
             this.setState({ doingAction: false });
         });
     }

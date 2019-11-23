@@ -7,7 +7,7 @@ type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 
 class Overview extends Component<IDashboardPropsWithRouter> {
     render() {
-        console.log(this.props);
+        // console.log(this.props);
         return (
             <>
                 <img src="/images/HC-HackerHeader-bg.png" style={{ position: "absolute", width: "100%", marginTop: "-30px", zIndex: -1000 }}/>
