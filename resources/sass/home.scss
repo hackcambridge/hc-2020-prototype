@@ -1,0 +1,264 @@
+:root {
+    --hero-diagonal-offset: 4rem;
+    --title-font: 'Libre Baskerville', serif;
+    --body-font: 'Overpass', sans-serif;
+}
+
+*:focus { 
+    outline-style:none;
+    outline: none
+}
+
+html {
+    overflow: hidden;
+    height: 100%;
+    // background: linear-gradient(-45deg, #0F2027, #203A43, #2C5364);
+    background: linear-gradient(-45deg, #141e30, #132131, #282044);
+    background-size: 400% 400%;
+    -webkit-animation: gradientBG 10s ease infinite;
+            animation: gradientBG 10s ease infinite;
+
+    -webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    -o-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color:transparent;
+    font-family: var(--body-font);
+}
+
+body {
+    height: 100%;
+    overflow: auto;
+    background: transparent;
+    overflow-x: hidden;
+}
+
+/** Sections **/
+
+.section-diagonal, .section-diagonal-top, .section-diagonal-bottom {
+    position: relative;
+    background-color: transparent;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        // if bg = img
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    .section_content {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+@supports (clip-path: inset(50%)) {
+    .section-diagonal {
+        margin-top: var(--hero-diagonal-offset);
+        &::before {
+            height: calc(100% + var(--hero-diagonal-offset)*2);
+            top: calc(var(--hero-diagonal-offset) * -1);
+            clip-path: polygon(0% var(--hero-diagonal-offset), 100% 0%, 100% calc(100% - var(--hero-diagonal-offset)), 0% 100%);
+        }
+    }
+
+    .section-diagonal-top {
+        margin-top: var(--hero-diagonal-offset);
+        &::before {
+            height: calc(100% + var(--hero-diagonal-offset));
+            top: calc(var(--hero-diagonal-offset) * -1);
+            clip-path: polygon(0% var(--hero-diagonal-offset), 100% 0%, 100% 100%, 0% 100%);
+        }
+    }
+
+    .section-diagonal-bottom::before {
+        height: calc(100% + var(--hero-diagonal-offset));
+        top: 0;
+        margin-top: calc(-1*var(--hero-diagonal-offset));
+        clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - var(--hero-diagonal-offset)), 0% 100%);
+    }
+}
+
+#header-section, #footer-section {
+    &::before {
+        z-index: -2;
+    }
+    .container {
+        min-height: 100px;
+    }
+}
+
+.static-section {
+    &::before {
+        z-index: -2;
+        background: #f8f8ff;
+    }
+
+    &.section-blue::before {
+        background: #0F2027;
+    }
+
+    &.section-cam-bg::before {
+        background-image: url(https://miro.medium.com/max/12000/1*1SnGVpXWAyOyMpjbsJrPDA.jpeg);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        background-attachment: fixed;
+        background-color: black;
+    }
+
+    .container {
+        min-height: calc(var(--hero-diagonal-offset));
+    }
+}
+
+#background-particles {
+    position: fixed;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+
+#header-bottom-card {
+    --card-horizontal-padding: 30px;
+    --card-vertical-padding: 15px;
+    --card-logo-width: 8rem;
+
+    position: absolute;
+    bottom: calc(-0.5*var(--hero-diagonal-offset) - 0.15*var(--card-logo-width) - 0rem - 2*var(--card-vertical-padding));
+    left: 0;
+    width: 100%;
+    z-index: 3;
+
+    #header-bottom-card-content {
+        // Height: 2.07rem + 1rem + 2*var(--card-vertical-padding)
+        background-color: #ffffff;
+        text-align: center;
+        max-width: 70%;
+        width: calc(var(--card-logo-width) + 2*var(--card-horizontal-padding));
+        margin: 0 auto;
+        padding: var(--card-vertical-padding) var(--card-horizontal-padding);
+        box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+
+        img {
+            width: var(--card-logo-width);
+        }
+
+        p {
+            font-size: 0.6rem;
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+            line-height: 1rem;
+            color: #0000009d;
+            letter-spacing: 0.02rem;
+        }
+    }
+}
+
+/** End Sections **/
+
+
+#header-logo {
+    -webkit-animation: rotation 1.5s ease-out;
+    animation: rotation 1.5s ease-out;
+    width:200px;
+}
+
+#top-menu {
+    font-family: var(--body-font);
+    font-weight: 400;
+    padding: 0.8rem;
+    li > a {
+        text-decoration: none;
+        color: #a9b4c5;
+        & > #logo {
+            width: 2rem;
+            height: 2rem;
+            background-size: cover;
+            margin-bottom: -0.9rem;
+            filter: invert(10%) opacity(0.8);
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+        &:hover {
+        //    color: #8b99af; 
+            opacity: 0.8;
+        }
+        &:focus {
+            border:none;
+            outline: 0;
+        }
+    }
+}
+
+#intro-container {
+    padding: 4rem 10px 2rem;
+
+    & #intro-title {
+        font-family: var(--body-font);
+        font-weight: 700;
+        text-align: center;
+        color: white;
+    }
+
+    & #intro-description {
+        font-family: var(--title-font);
+        font-weight: 400;
+        text-align: center;
+        color: white;
+        font-size: 1rem;
+        
+        & p {
+            margin: 0;
+        }
+
+        & span.superscript {
+            vertical-align: super;
+            font-size: 0.6rem;
+        }
+    }
+}
+/** Animations **/
+
+@-webkit-keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+@keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate3d(5, 1, 0, 60deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: rotate3d(5, 1, 0, 0deg);
+        opacity: 1;
+    }
+}

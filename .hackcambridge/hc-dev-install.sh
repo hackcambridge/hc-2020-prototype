@@ -2,7 +2,8 @@
 SCRIPT_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CODE_LOCATION="$( cd $SCRIPT_LOCATION/../ >/dev/null 2>&1 && pwd )"
 ORIGINAL_LOCATION="$PWD"
-HOMESTEAD_VERSION="8.0.1"
+HOMESTEAD_BOX_VERSION="8.2.1"
+HOMESTEAD_GIT_RELEASE="v9.2.2"
 
 # Printing.
 PREFIX="[hc-dev]"
@@ -34,9 +35,9 @@ green "All prerequisites met, starting installation.\n"
 
 # Add the Homestead Vagrant box.
 blue "Installing laravel/homestead..."
-vagrant box list | grep -q "laravel/homestead (virtualbox, ${HOMESTEAD_VERSION})"
+vagrant box list | grep -q "laravel/homestead (virtualbox, ${HOMESTEAD_BOX_VERSION})"
 if [ $? -ne 0 ]; then
-    vagrant box add laravel/homestead --force --box-version $HOMESTEAD_VERSION
+    vagrant box add laravel/homestead --force --box-version $HOMESTEAD_BOX_VERSION
     if [ $? -ne 0 ]; then
         >&2 red "Failed to add the laravel/homestead Vagrant box."
         exit 1;
@@ -81,7 +82,7 @@ if [ $? -ne 0 ]; then
     exit 1;
 fi
 cd Homestead
-git checkout release
+git checkout $HOMESTEAD_GIT_RELEASE
 blue "Completed Homestead source clone."
 echo "\n--------------------"
 
@@ -92,6 +93,7 @@ cp $SCRIPT_LOCATION/hc-dev-homestead-config.yaml ./Homestead.yaml
 sed -i '' -e "s^{{ HC.SOURCE_DIRECTORY }}^$CODE_LOCATION^g" ./Homestead.yaml
 sed -i '' -e "s^{{ HC.RSA_KEY }}^$CODE_LOCATION/Homestead/hc_rsa^g" ./Homestead.yaml
 sed -i '' -e "s^{{ HC.HOMESTEAD_VERSION }}^$HOMESTEAD_VERSION^g" ./Homestead.yaml
+cp $SCRIPT_LOCATION/hc-dev-homestead-after.sh after.sh
 
 
 # Bring the Vagrant box up for the first time.
@@ -102,10 +104,10 @@ if [ $? -ne 0 ]; then
     exit 1;
 fi
 
-vagrant ssh -c "cd hackcambridge; php artisan migrate"
+vagrant ssh -c "cd hackcambridge; php artisan migrate; yarn; yarn prod"
 if [ $? -ne 0 ]; then
     >&2 red "Artisan database migration failed. This will need to be done manually."
-    >&2 red "Run 'vagrant ssh -c \"cd hackcambridge; php artisan migrate\"' in the $CODE_LOCATION/Homestead folder."
+    >&2 red "Run 'vagrant ssh -c \"cd hackcambridge; php artisan migrate; yarn; yarn prod\"' in the $CODE_LOCATION/Homestead folder."
     exit 1;
 fi
 blue "Finished launching the Vagrant VM.\n\n"
@@ -130,3 +132,6 @@ Next steps:
 
 Finally, go to http://hackcambridge.test in your browser to make sure everything works! 
 EndOfMessage
+
+echo ""
+red "Don't forget that the VM is now running. Remember to turn it off when you're done."

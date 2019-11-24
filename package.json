@@ -1,4 +1,5 @@
 {
+    "license": "MIT",
     "private": true,
     "scripts": {
         "dev": "npm run development",
@@ -11,6 +12,7 @@
     },
     "devDependencies": {
         "@babel/preset-react": "^7.0.0",
+        "@types/country-list": "^2.1.0",
         "axios": "^0.19",
         "cross-env": "^5.1",
         "laravel-mix": "^4.0.7",
@@ -19,14 +21,28 @@
         "react-dom": "^16.2.0",
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
-        "sass-loader": "^7.1.0"
+        "sass-loader": "^7.1.0",
+        "ts-loader": "^6.0.4"
     },
     "dependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
+        "@babel/preset-typescript": "^7.3.3",
+        "@shopify/polaris": "^3.21.1",
+        "@shopify/polaris-icons": "^3.5.1",
+        "@shopify/react-shopify-app-route-propagator": "^3.0.1",
         "@types/react": "^16.9.2",
         "@types/react-dom": "^16.9.0",
-        "antd": "^3.22.0",
-        "ts-loader": "^6.0.4",
-        "tslint": "^5.19.0",
-        "typescript": "^3.5.3"
+        "@types/react-router-dom": "^4.3.5",
+        "babel-plugin-import": "^1.12.0",
+        "country-list": "https://github.com/mbale/country-list/archive/v1.1.0.tar.gz",
+        "less": "^3.10.3",
+        "less-loader": "^5.0.0",
+        "moize": "^5.4.4",
+        "react-router-dom": "^5.0.1",
+        "react-toastify": "^5.4.0",
+        "source-map-loader": "^0.2.4",
+        "tslint": "^5.20.0",
+        "tslint-react": "^4.0.0",
+        "typescript": "^3.6.3"
     }
 }

@@ -18,9 +18,33 @@ mix
             rules: [
                 {
                     test: /\.tsx?$/,
-                    loader: 'ts-loader',
-                    options: { appendTsSuffixTo: [/\.vue$/] },
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            [
+                                '@babel/preset-env',
+                                {
+                                    targets: {
+                                        node: true,
+                                    },
+                                },
+                            ],
+                            '@babel/typescript',
+                            '@babel/react'
+                        ],
+                        // plugins: [["import", {
+                        //     "libraryName": "antd",
+                        //     "style": true,   // or 'css'
+                        // }]]
+                    },
                     exclude: /node_modules/,
+                },
+                {
+                    test:/\.less$/,
+                    loader: "less-loader",
+                    options: {
+                        javascriptEnabled: true
+                    }
                 },
             ],
         },
@@ -28,5 +52,7 @@ mix
             extensions: ['*', '.js', '.jsx', '.vue', '.ts', '.tsx'],
         },
     })
-    .ts('resources/js/scenes/*.ts*', 'assets/js')
-    .sass('resources/sass/app.scss', 'assets/css');
+    .ts('resources/js/scenes/dashboard.tsx', 'assets/js')
+    .ts('resources/js/scenes/sponsors.tsx', 'assets/js')
+    .sass('resources/sass/app.scss', 'assets/css')
+    .sass('resources/sass/home.scss', 'assets/css');

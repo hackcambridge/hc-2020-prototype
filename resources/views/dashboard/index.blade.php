@@ -1,5 +1,10 @@
-@extends('layouts/dashboard')
+@extends('layouts.base')
 
-@section('dashboard.content')
-    <p>content</p>
+@section('title', 'Dashboard')
+
+@section('content')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/app.css') }}">
+    <div id="loading" class="lds-ripple"><div></div><div></div></div>
+    <div id="dashboard-root"></div>
+    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 @endsection

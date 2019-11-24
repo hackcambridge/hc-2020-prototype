@@ -1,0 +1,20 @@
+--- 
+artifacts: 
+  discard-paths: false
+  files: 
+    - "**/*"
+phases: 
+  pre_build: 
+    commands: 
+      - "echo Entered the pre_build phase..."
+      - "yarn"
+      - "yarn install"
+  build: 
+    commands: 
+      - "echo Entered the build phase..."
+      - "yarn prod"
+      - "rm -rf node_modules"
+  post_build: 
+    commands: 
+      - "echo Reached the post_build phase."
+version: 0.2

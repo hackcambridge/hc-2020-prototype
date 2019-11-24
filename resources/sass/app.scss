@@ -1,1 +1,181 @@
-@import '~antd/dist/antd.css';
+
+/* Page Loading Spinner */
+.lds-ripple {
+    display: inline-block;
+    width: 128px;
+    height: 128px;
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -64px;
+    margin-left: -64px;
+}
+.lds-ripple div {
+    position: absolute;
+    border: 4px solid #222222;
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+    animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+    0% {
+        top: 56px;
+        left: 56px;
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    100% {
+        top: -1px;
+        left: -1px;
+        width: 116px;
+        height: 116px;
+        opacity: 0;
+    }
+}
+
+
+
+.Polaris-Frame {
+    .Polaris-TopBar {
+        height: 6.2rem;
+    }
+    .Polaris-UserMenu-UserMenu__Details .Polaris-UserMenu-UserMenu__Name {
+        padding-left: 10px;
+    }
+    .Polaris-Navigation {
+        background: #fdfeff;
+    }
+    main.Polaris-Frame__Main::before {
+        content: "";
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        background-image: url(/images/hc_backdrop_tessalating.png);
+        background-size: 80px;
+        opacity: 0.5;
+        z-index: 0;
+    }
+    .Polaris-Frame__Content {
+        z-index: 1;
+    }
+    .inner-wrapper {
+        z-index: 2;
+        padding-top: 30px;
+        padding-bottom: 60px;
+    }
+    #hacker-header-fg {
+        max-width: 100%;
+        /* margin-bottom: -5rem; */
+        width: 55rem;
+        margin: 0 auto;
+        display: block;
+    }
+    #apply-banner {
+        height: 20rem;
+        background-image: url(/images/apply-background.jpg);
+        background-size: cover;
+        background-position: center;
+
+        img {
+            padding: 0;
+            width: 60rem;
+            max-width: 120%;
+        }
+    }
+}
+
+
+
+
+aside.ant-layout-sider {
+    .ant-layout-sider-zero-width-trigger {
+        top: 8px;
+    }
+    i.anticon {
+        display: list-item;
+        line-height: 48px;
+    }
+}
+
+main.committee-content-wrapper {
+    padding: 0 30px;
+    margin-top: 30px;
+
+    div.wrapper-inner {
+        background-color: #fff;
+        padding: 36px 48px;
+        min-height: 280px;
+    }
+}
+
+// For react-toastify
+.zoomIn {
+    animation-name: zoomIn;
+    animation-timing-function: ease-out;
+}
+@keyframes zoomIn {
+    from {
+        transform: translateX(300%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
+.zoomOut {
+    animation-name: zoomOut;
+    animation-timing-function: ease-out;
+}
+@keyframes zoomOut {
+    from {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(300%);
+        opacity: 0;
+    }
+}
+
+#save-button-group {
+    padding-bottom: 80px !important;
+}
+
+div.Toastify {
+    div.Toastify__toast {
+        min-height: 62px;
+        padding: 20px;
+        border-radius: 4px;
+        font-size: 1.5rem;
+    }
+    @media only screen and (max-width: 480px) {
+        div.Toastify__toast {
+            border-radius: 0px;
+        }
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    #save-button-group {
+        padding: 10px 15px 40px 15px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    main.committee-content-wrapper {
+        padding: 0;
+        margin-top: 0;
+
+        div.wrapper-inner {
+            padding-top: 48px;
+        }
+    }
+}

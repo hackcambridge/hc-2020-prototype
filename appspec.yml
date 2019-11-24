@@ -1,0 +1,15 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/bitnami/htdocs
+hooks:
+  ApplicationStart:
+    - location: .hackcambridge/hc-post-install.sh
+      timeout: 300
+  BeforeInstall:
+    - location: .hackcambridge/hc-check-config.sh
+      timeout: 300
+  ApplicationStop:
+    - location: .hackcambridge/hc-stop-application.sh
+      timeout: 300

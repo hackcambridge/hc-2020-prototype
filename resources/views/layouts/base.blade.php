@@ -1,10 +1,12 @@
 <html lang="{{ app()->getLocale() }}">
     <head>
-        <title>App Name - @yield('title')</title>
+        <title>@yield('title') — Hack Cambridge</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
-        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" />
+        <link rel="stylesheet" href="https://unpkg.com/@shopify/polaris@4.0.0-rc.6/styles.min.css" />
+        <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}"/>
     </head>
     <body>
         @yield('content')

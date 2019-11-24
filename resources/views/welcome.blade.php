@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Hack Cambridge</title>
 
@@ -47,13 +48,12 @@
                 <strong>{{ Auth::user()->type  }}</strong><br>
                 <strong>{{ Auth::user()->sub  }}</strong><br>
             @else
-                <a href="{{ route('login', "mymlh") }}">Hacker</a><br>
-                <a href="{{ route('login', "email") }}">Sponsor</a><br>
-                <a href="{{ route('login', "committee") }}">Committee</a>
+                <a href="{{ route('login', 'mymlh') }}">Hacker</a><br>
+                <a href="{{ route('login', 'email') }}">Sponsor</a><br>
+                <a href="{{ route('login', 'committee') }}">Committee</a>
             @endauth
         </div>
     @endif
-
 
     </body>
 </html>
