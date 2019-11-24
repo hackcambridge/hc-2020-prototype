@@ -1,4 +1,9 @@
+# -------------------------------
+# ------------- ASG -------------
+# -------------------------------
+
 resource "aws_autoscaling_group" "hc-asg" {
+  name               = var.name
   availability_zones = ["eu-west-2a", "eu-west-2b"]
   min_size           = var.min_size
   max_size           = var.desired_capacity
@@ -16,6 +21,15 @@ resource "aws_autoscaling_group" "hc-asg" {
   }
 }
 
+resource "aws_autoscaling_attachment" "hc-autoscaling_attachment" {
+  alb_target_group_arn   = aws_lb_target_group.hc-load_balancer_target_group.arn
+  autoscaling_group_name = aws_autoscaling_group.hc-asg.id
+}
+
+# -------------------------------
+# -------- Load Balancer --------
+# -------------------------------
+
 resource "aws_lb" "hc-load_balancer" {
   name                             = "${var.name}-load-balancer"
   internal                         = false
@@ -23,6 +37,10 @@ resource "aws_lb" "hc-load_balancer" {
   subnets                          = var.subnets
   enable_cross_zone_load_balancing = true
 }
+
+# -------------------------------
+# --------- Target Group --------
+# -------------------------------
 
 resource "aws_lb_target_group" "hc-load_balancer_target_group" {
   name                 = "${var.name}-load-balancer-tg"
@@ -47,6 +65,10 @@ resource "aws_lb_target_group" "hc-load_balancer_target_group" {
   }
 }
 
+# -------------------------------
+# ---------- Listeners ----------
+# -------------------------------
+
 resource "aws_alb_listener" "hc-http_load_balancer_listener" {
   load_balancer_arn = aws_lb.hc-load_balancer.arn
   port              = 80
@@ -69,9 +91,4 @@ resource "aws_lb_listener" "hc-https_load_balancer_listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.hc-load_balancer_target_group.arn
   }
-}
-
-resource "aws_autoscaling_attachment" "hc-autoscaling_attachment" {
-  alb_target_group_arn   = aws_lb_target_group.hc-load_balancer_target_group.arn
-  autoscaling_group_name = aws_autoscaling_group.hc-asg.id
 }
