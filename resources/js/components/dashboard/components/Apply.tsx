@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker } from "@shopify/polaris";
+import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton } from "@shopify/polaris";
 import axios from 'axios';
 import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
 import countryList from 'country-list';
@@ -44,10 +44,10 @@ class Apply extends Component<IApplyProps, IApplyState> {
         countrySelection: this.props.initialRecord ? this.props.initialRecord.country : "GB",
         visaRequired: this.props.initialRecord ? this.props.initialRecord.visaRequired : false,
         visaPickerMonthYear: { month: new Date().getMonth(), year: new Date().getFullYear() },
-        visaDate: this.props.initialRecord 
+        visaDate: this.props.initialRecord
             ? (this.props.initialRecord.visaRequiredDate ? new Date(this.props.initialRecord.visaRequiredDate) : undefined)
             : undefined,
-        visaDateTemp: this.props.initialRecord 
+        visaDateTemp: this.props.initialRecord
             ? (this.props.initialRecord.visaRequiredDate ? new Date(this.props.initialRecord.visaRequiredDate) : undefined)
             : undefined,
     }
@@ -75,12 +75,12 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 if(file) {
                     // Upload file.
                     this.saveForm(
-                        this.state.isSubmitted, 
+                        this.state.isSubmitted,
                         () => toast.success("CV uploaded."),
                         file
                     );
                     return;
-                } 
+                }
             }
             toast.error("An error occurred while uploading the file.");
             this.setState({ isUploadingFile: false });
@@ -129,10 +129,10 @@ class Apply extends Component<IApplyProps, IApplyState> {
     }
 
     render() {
-        const { 
-            isUploadingFile, 
-            uploadedFileName, 
-            uploadedFileURL, 
+        const {
+            isUploadingFile,
+            uploadedFileName,
+            uploadedFileURL,
             questionValues,
             isSubmitted,
             isSaving,
@@ -155,7 +155,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
         return (
             <Page title={"Apply for Hack Cambridge"}>
                 <Banner status="info">
-                    {this.props.canEdit 
+                    {this.props.canEdit
                         ? <p>You change this information at any time before the application deadline.</p>
                         : <p>Applications have now closed.</p>
                     }
@@ -168,7 +168,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
                                 <Heading>CV / Resume</Heading>
                             </div>
-                            {uploadedFileName.length > 0 
+                            {uploadedFileName.length > 0
                                 ?   <ButtonGroup segmented>
                                         <Button outline size="slim" url={uploadedFileURL} external={true}>{uploadedFileName}</Button>
                                         <Button destructive size="slim" onClick={this.handleCVRemove} disabled={!this.props.canEdit || isSaving}>Remove</Button>
@@ -229,13 +229,24 @@ class Apply extends Component<IApplyProps, IApplyState> {
                         <FormLayout.Group>
                             <>
                             <div style={{ paddingBottom: "10px", paddingTop: "10px" }}>
-                                <Subheading>Visa required?</Subheading>
+                                <Subheading>Do you require a visa?</Subheading>
                             </div>
-                            <Checkbox
-                                label="I will need a visa to attend."
+                            <Stack>
+                              <RadioButton
+                                label="No"
+                                checked={!visaRequired}
+                                id="visa_no"
+                                name="visa_radio"
+                                onChange={(val, id) => this.setState({visaRequired: !val})}
+                              />
+                              <RadioButton
+                                label="Yes"
+                                id="visa_yes"
+                                name="visa_radio"
                                 checked={visaRequired}
-                                onChange={(val) => this.setState({ visaRequired: val })}
-                            />
+                                onChange={(val, id) => this.setState({visaRequired: val})}
+                              />
+                            </Stack>
                             </>
                             {visaRequired ?
                                 <>
@@ -243,19 +254,19 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                     <Subheading>What is the deadline for organising a visa?</Subheading>
                                 </div>
                             <Button size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
-                                {visaDate 
+                                {visaDate
                                     ? `${visaDate.getDate()} ${visaDate.toLocaleString('default', { month: 'long' })} ${visaDate.getFullYear()}`
                                     : "(No date selected)"
                                 }
                             </Button>
                             </>
                             : <></>}
-                        </FormLayout.Group>    
+                        </FormLayout.Group>
                     </FormLayout>
                 </Card>
 
                 {this.props.canEdit ? <>
-                    {isSubmitted 
+                    {isSubmitted
                         ? <div id="save-button-group">
                             <div style={{ float: "left", padding: "30px 0" }}>
                                 <Button destructive loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
@@ -276,18 +287,18 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 <Modal
                     title={"Deadline for organising a visa"}
                     open={showingVisaDateSelector}
-                    onClose={() => this.setState({ 
+                    onClose={() => this.setState({
                         showingVisaDateSelector: false,
                         visaDateTemp: this.state.visaDate,
                         visaPickerMonthYear: { month: new Date().getMonth(), year: new Date().getFullYear() },
                     })}
                     primaryAction={{
                         content: 'Save Date',
-                        onAction: () => this.setState({ 
+                        onAction: () => this.setState({
                             showingVisaDateSelector: false,
                             visaDate: this.state.visaDateTemp,
-                            visaPickerMonthYear: { 
-                                month: (this.state.visaDateTemp || new Date()).getMonth(), 
+                            visaPickerMonthYear: {
+                                month: (this.state.visaDateTemp || new Date()).getMonth(),
                                 year: (this.state.visaDateTemp || new Date()).getFullYear()
                             },
                         }),
@@ -344,10 +355,10 @@ class Apply extends Component<IApplyProps, IApplyState> {
 
                     if(toaster) { toaster(); }
                     else { toast.success("Application saved."); }
-                    this.setState({ 
-                        isSubmitted: isSubmitted, 
-                        isSaving: false, 
-                        isUploadingFile: false, 
+                    this.setState({
+                        isSubmitted: isSubmitted,
+                        isSaving: false,
+                        isUploadingFile: false,
                         uploadedFileURL: record.cvUrl,
                         uploadedFileName: record.cvFilename,
                     });
