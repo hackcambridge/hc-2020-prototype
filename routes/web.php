@@ -28,6 +28,7 @@ Route::get('/login/{driver?}', 'Auth\Auth0IndexController@login')->name('login')
 
 Route::middleware(['auth.check_staging'])->group(function() {
     Route::get('/', 'Home@index')->name('home');
+    Route::get('/apply', 'Home@apply')->name('apply');
     Route::get('/foundation', 'Foundation@index')->name('foundation_index');
 
     // Protected routes - login will be forced.

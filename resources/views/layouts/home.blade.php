@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width">
         <meta name="viewport" content="initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+        <!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"> -->
         <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}" />
         <link rel="shortcut icon" type="image/png" href="/images/favicon.png"/>
 
@@ -26,12 +26,12 @@
                 <div class="container grid-lg" style="min-height:200px;">  
                     <ul id="top-menu" class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="#">
+                            <a href="/">
                                 <div id="logo" style="background-image: url({{ asset('images/hc101_icon_white.svg') }});"></div>
                             </a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="#">Apply</a>
+                            <a href="{{ route('apply') }}">Apply</a>
                         </li>
                         <li class="breadcrumb-item">
                             @if (Auth::check())
@@ -52,7 +52,7 @@
                 <div class="container grid-lg">
                     <ul id="top-menu" class="breadcrumb" style="text-align: right;">
                         <li class="breadcrumb-item">
-                            <a href="#">
+                            <a href="/">
                                 <div id="logo" style="background-image: url({{ asset('images/hc101_icon_white.svg') }});"></div>
                             </a>
                         </li>
@@ -60,7 +60,7 @@
                             <a href="{{route('sponsors_dashboard')}}">Sponsors Portal</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{route('dashboard_index')}}">Committee Portal</a>
+                            <a href="/login/committee">Committee Portal</a>
                         </li>
                     </ul>
                     <!-- <p style="text-align:right;color: white;">Designed and built with <span class="text-error">♥</span> by Harri.</p> -->
@@ -74,21 +74,52 @@
         <!-- </div> -->
 
         <!-- <script src="//cdn.jsdelivr.net/npm/vivus@latest/dist/vivus.min.js"></script> -->
-        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script> -->
         <script>
-            particlesJS.load('background-particles', "{{ asset('assets/js/particlesjs-config.json') }}", function() {
-                console.log('callback - particles.js config loaded');
-            });
-
-            // new Vivus('header-logo', {
-            //     type: 'delayed',
-            //     duration: 200,
-            //     animTimingFunction: Vivus.EASE
-            // }, null);
-        
-            // particlesJS.load('footer-particles', "{{ asset('assets/js/particlesjs-config.json') }}", function() {
-            //     console.log('callback - particles.js config loaded');
+            // particlesJS.load('background-particles', "{{ asset('assets/js/particlesjs-config.json') }}", function() {
+            //     //console.log('callback - particles.js config loaded');
             // });
+
+            var gradients = [
+                [[15,32,39], [44,83,100]],
+                [[15,12,41], [48,43,99]],
+                [[11,11,11], [45,52,54]],
+            ];
+
+            const fps = 25;
+            const changeCadence = 5; // s
+            const refreshCadence = (1000 / fps); // ms
+            const gradientSpeed = 1 / (fps * changeCadence);
+            const html = document.getElementsByTagName("html")[0];
+
+            var currentGradient = 0; // Math.floor(Math.random() * (gradients.length));;
+            var transitionTick = 0;
+            function nextGradient() {
+                if(transitionTick >= 1) {
+                    currentGradient = (currentGradient + 1) % gradients.length;
+                    transitionTick = 0;
+                }
+                
+                if(html) {
+                    html.style.cssText = "background: linear-gradient(0deg, "+calculateIntermediaryColour(0)+", "+calculateIntermediaryColour(1)+");"
+                    transitionTick += gradientSpeed;
+                }
+            }
+
+            function calculateIntermediaryColour(component) {
+                var nextGradient = (currentGradient + 1) % gradients.length;
+                var r = (1 - transitionTick) * gradients[currentGradient][component][0] + transitionTick * gradients[nextGradient][component][0];
+                var g = (1 - transitionTick) * gradients[currentGradient][component][1] + transitionTick * gradients[nextGradient][component][1];
+                var b = (1 - transitionTick) * gradients[currentGradient][component][2] + transitionTick * gradients[nextGradient][component][2];
+                // if(component == 0) console.log(`${fmt(r)}  ${fmt(g)}  ${fmt(b)}`);
+                return "rgb("+r+","+g+","+b+")";
+            }
+
+            function fmt(x) {
+                return parseFloat(Math.round(x * 100) / 100).toFixed(2).padStart(5, " ");
+            }
+
+            setInterval(nextGradient, refreshCadence);
         </script>
     </body>
 </html>

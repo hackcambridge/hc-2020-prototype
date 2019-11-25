@@ -12,12 +12,8 @@
 html {
     overflow: hidden;
     height: 100%;
-    // background: linear-gradient(-45deg, #0F2027, #203A43, #2C5364);
-    background: linear-gradient(-45deg, #141e30, #132131, #282044);
-    background-size: 400% 400%;
-    -webkit-animation: gradientBG 10s ease infinite;
-            animation: gradientBG 10s ease infinite;
-
+    background: linear-gradient(45deg, rgb(15,32,39), rgb(44,83,100));
+    background-size: 100% 100%;
     -webkit-user-select: none; /* Chrome/Safari */        
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+ */
@@ -93,6 +89,8 @@ body {
     .container {
         min-height: 100px;
     }
+
+
 }
 
 .static-section {
@@ -107,6 +105,15 @@ body {
 
     &.section-cam-bg::before {
         background-image: url(https://miro.medium.com/max/12000/1*1SnGVpXWAyOyMpjbsJrPDA.jpeg);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        background-attachment: fixed;
+        background-color: black;
+    }
+
+    &.section-speaker::before {
+        background-image: url(/images/frontpage-speaker.jpg);
         background-repeat: no-repeat;
         background-position: center center;
         background-size: cover;
@@ -203,6 +210,13 @@ body {
 #intro-container {
     padding: 4rem 10px 2rem;
 
+    & #top-logo {
+        margin: 0 auto;
+        width: 25rem;
+        display: block;
+        padding-bottom: 2rem;
+    }
+    
     & #intro-title {
         font-family: var(--body-font);
         font-weight: 700;
@@ -231,25 +245,37 @@ body {
 
 @-webkit-keyframes gradientBG {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0% 0%;
 	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+	25% {
+		background-position: 100% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+	75% {
+		background-position: 0% 100%;
+    }
+    100% {
+		background-position: 0% 0%;
+    }
 }
 @keyframes gradientBG {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0% 0%;
 	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+	25% {
+		background-position: 100% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+	75% {
+		background-position: 0% 100%;
+    }
+    100% {
+		background-position: 0% 0%;
+    }
 }
 
 @keyframes rotation {

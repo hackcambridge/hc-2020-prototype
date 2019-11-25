@@ -10,6 +10,10 @@ class Home extends Controller
         return view('frontpages/index');
     }
 
+    public function apply() {
+        return view('frontpages/apply');
+    }
+
  	public function about() {
 		return view('about');
 	}
