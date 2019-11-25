@@ -47,7 +47,7 @@ module "hc-prod-instance" {
   APP_URL               = "https://asdf.hackcambridge.com"
   APP_DEBUG             = "false"
   APP_ENV               = "production"
-  DB_PREFIX             = "staging_"
+  DB_PREFIX             = "prod_"
   DB_HOST               = "${var.DB_HOST}"
   DB_DATABASE           = "${var.DB_DATABASE}"
   DB_USERNAME           = "${var.DB_USERNAME}"
