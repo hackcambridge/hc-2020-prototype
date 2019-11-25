@@ -12,6 +12,15 @@
 
         <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700|Overpass&display=swap" rel="stylesheet">    </head>
     <body>
+
+        @env('production')
+            // Nothing in prod.
+        @elseenv('testing')
+            <div style="width: 100%;background-color: #3b7b00;text-align: center;padding: 4px;color: wheat;font-weight: 700;font-size: 0.5rem;">STAGING</div>
+        @elseenv('development')
+            <div style="width: 100%;background-color: #bd0000;text-align: center;padding: 4px;color: wheat;font-weight: 700;font-size: 0.5rem;">DEVELOPMENT</div>
+        @endenv
+
         <div id="background-particles"></div>
             <section id="header-section" class="section-diagonal-bottom">
                 <div class="container grid-lg" style="min-height:200px;">  

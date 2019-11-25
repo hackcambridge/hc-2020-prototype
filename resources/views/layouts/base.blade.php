@@ -9,6 +9,14 @@
         <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}"/>
     </head>
     <body>
+        @env('production')
+            // Nothing in prod.
+        @elseenv('testing')
+            <div style="width: 100%;background-color: #3b7b00;text-align: center;padding: 4px;color: wheat;font-weight: 700;font-size: 0.9rem;bottom: 0;position: absolute;z-index: 100;">STAGING</div>
+        @elseenv('development')
+            <div style="width: 100%;background-color: #bd0000;text-align: center;padding: 4px;color: wheat;font-weight: 700;font-size: 0.9rem;bottom: 0;position: absolute;z-index: 100;">DEVELOPMENT</div>
+        @endenv
+
         @yield('content')
     </body>
 </html>
