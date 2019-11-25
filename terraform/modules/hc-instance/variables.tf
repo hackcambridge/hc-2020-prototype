@@ -18,6 +18,15 @@ variable "security_group" {
 variable "APP_URL" {
   default = ""
 }
+variable "APP_DEBUG" {
+  default = ""
+}
+variable "APP_ENV" {
+  default = ""
+}
+variable "DB_PREFIX" {
+  default = ""
+}
 variable "DB_HOST" {
   default = "127.0.0.1"
 }

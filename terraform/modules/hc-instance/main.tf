@@ -6,6 +6,9 @@ data "template_file" "user_data" {
   template = "${file("init-script.tpl")}"
   vars = {
     APP_URL               = "${var.APP_URL}"
+    APP_DEBUG             = "${var.APP_DEBUG}"
+    APP_ENV               = "${var.APP_ENV}"
+    DB_PREFIX             = "${var.DB_PREFIX}"
     DB_HOST               = "${var.DB_HOST}"
     DB_DATABASE           = "${var.DB_DATABASE}"
     DB_USERNAME           = "${var.DB_USERNAME}"
