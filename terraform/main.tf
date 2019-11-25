@@ -41,7 +41,7 @@ module "hc-prod-instance" {
   source                = "./modules/hc-instance"
   name                  = "hc-prod-instance"
   security_group        = "${aws_security_group.hc-instance-security-group.id}"
-  APP_URL               = "https://www.hackcambridge.com"
+  APP_URL               = "https://asdf.hackcambridge.com"
   DB_HOST               = "${var.DB_HOST}"
   DB_DATABASE           = "${var.DB_DATABASE}"
   DB_USERNAME           = "${var.DB_USERNAME}"
