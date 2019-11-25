@@ -15,6 +15,9 @@ chmod +x ./install
 touch /etc/profile.d/hc-deployment-vars.sh
 chmod +x /etc/profile.d/hc-deployment-vars.sh
 echo "export APP_URL=\"${APP_URL}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export APP_DEBUG=\"${APP_DEBUG}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export APP_ENV=\"${APP_ENV}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export DB_PREFIX=\"${DB_PREFIX}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export DB_HOST=\"${DB_HOST}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export DB_DATABASE=\"${DB_DATABASE}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export DB_USERNAME=\"${DB_USERNAME}\"" >> /etc/profile.d/hc-deployment-vars.sh
@@ -25,8 +28,6 @@ echo "export AWS_BUCKET=\"${AWS_BUCKET}\"" >> /etc/profile.d/hc-deployment-vars.
 echo "export AUTH0_DOMAIN=\"${AUTH0_DOMAIN}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export AUTH0_CLIENT_ID=\"${AUTH0_CLIENT_ID}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export AUTH0_CLIENT_SECRET=\"${AUTH0_CLIENT_SECRET}\"" >> /etc/profile.d/hc-deployment-vars.sh
-echo "export APP_ENV=\"staging\"" >> /etc/profile.d/hc-deployment-vars.sh
-echo "export APP_DEBUG=\"true\"" >> /etc/profile.d/hc-deployment-vars.sh
 
 # Set htpasswd file.
 # touch /etc/profile.d/.htpasswd
