@@ -15,7 +15,7 @@ chmod +x ./install
 touch /etc/profile.d/hc-deployment-vars.sh
 chmod +x /etc/profile.d/hc-deployment-vars.sh
 echo "export APP_URL=\"${APP_URL}\"" >> /etc/profile.d/hc-deployment-vars.sh
-echo "export APP_DEBUG=\"${APP_DEBUG}\\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export APP_DEBUG=\"${APP_DEBUG}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export APP_ENV=\"${APP_ENV}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export DB_PREFIX=\"${DB_PREFIX}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export DB_HOST=\"${DB_HOST}\"" >> /etc/profile.d/hc-deployment-vars.sh

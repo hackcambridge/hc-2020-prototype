@@ -57,6 +57,7 @@ source /etc/profile.d/hc-deployment-vars.sh
 echo "APP_DEBUG=\"$APP_DEBUG\"" >> .env
 echo "APP_ENV=\"$APP_ENV\"" >> .env
 echo "APP_URL=\"$APP_URL\"" >> .env
+echo "DB_PREFIX=\"$DB_PREFIX\"" >> .env
 echo "DB_HOST=\"$DB_HOST\"" >> .env
 echo "DB_DATABASE=\"$DB_DATABASE\"" >> .env
 echo "DB_USERNAME=\"$DB_USERNAME\"" >> .env
