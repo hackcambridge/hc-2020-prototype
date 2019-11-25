@@ -16,7 +16,10 @@ variable "AWS_ACCESS_KEY_ID" {
 variable "AWS_SECRET_ACCESS_KEY" {
   default = ""
 }
-variable "AWS_BUCKET" {
+variable "STAGING_AWS_BUCKET" {
+  default = ""
+}
+variable "PROD_AWS_BUCKET" {
   default = ""
 }
 variable "AUTH0_DOMAIN" {
