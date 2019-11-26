@@ -25,7 +25,7 @@
 @section('content')
     <section id="" class="section-diagonal static-section section-paper">
         <div class="container grid-lg large-description" style="padding: 3rem 30px 0.25rem;">
-            <p>Hack Cambridge is back for its fifth year! In January 2020, the University of Cambridge’s annual hackathon will yet again bring together 300 outstanding hackers, programmers, designers and more from universities all over the world to create truly awesome projects. For 24 hours they will build, break and innovate to produce projects that push the boundaries of technology.</p>
+            <p>Hack Cambridge is back for its fifth year! In January 2020, the University of Cambridge’s annual hackathon will yet again bring together 300 outstanding hackers, programmers, designers and more from universities all over the world. For 24 hours, they will build, break and innovate to produce genuinely remarkable projects that push the boundaries of technology.</p>
             <button onclick="window.location.href = '{{ route('apply') }}';" class="apply-button">Apply for 101 →</button>
         </div>
     </section>
@@ -39,10 +39,10 @@
     <section id="" class="section-diagonal static-section section-floral">
         <div class="container grid-lg large-description" style="padding: 0.1rem 30px 0.5rem;">
             <h5 class="intro-subtitle">That sounds awesome, but isn't it expensive?</h5>
-            <p>Nope! That's the best part! Hack Cambridge is totally <strong>FREE!</strong> Even more, you'll get unlimited free food and drinks. With 4 free meals and a constant supply of snacks, we'll make sure you're never hungry and you don't even have to pay a penny. You'll have access to free hardware and some of the top tech companies will be sending their engineers to help you realise your vision.</p>
+            <p>Nope! That's the best part! Hack Cambridge is totally <strong>FREE!</strong> Even more, you'll get unlimited free food and drinks. With 4 free meals and a constant supply of snacks, we'll make sure you're never hungry, and you don't even have to pay a penny. You'll have access to free hardware and, some of the top tech companies will be sending their engineers to help you realise your vision.</p>
 
             <h5 class="intro-subtitle">Ok, what's the catch? Surely I have to be a programming genius?</h5>
-            <p>Nope! We're looking for enthusiastic people with a desire to make something cool. Hackathon projects take more than just software development, teams with hardware engineers, designers and project managers all help make a hack great! No software development experience is necessary (some people even learn to code at the event itself)</p>
+            <p>Nope! We're looking for enthusiastic people with a desire to make something cool. Hackathon projects take more than just software development, teams with hardware engineers, designers and project managers all help make a hack great! No software development experience is necessary (some people even learn to code during the event itself)</p>
 
             <h5 class="intro-subtitle">How do I sign up?</h5>
             <button onclick="window.location.href = '{{ route('apply') }}';" class="apply-button" style="margin:25px 0 15px;">Apply for 101 →</button>
@@ -64,7 +64,7 @@
                     <i class="icon icon-arrow-right mr-1"></i> What is a hackathon?
                 </label>
                 <div class="accordion-body faq-body">
-                    <div class="inner">A hackathon is an invention marathon. Thoughts become things. Attendees work in teams of up to five people to hack together a prototype to solve a problem; this could be a webapp, hardware-hack, or something completely different.</div>
+                    <div class="inner">A hackathon is an invention marathon. Thoughts become things. Attendees work in teams of up to five people to hack together a prototype to solve a problem; this could be a web app, hardware-hack, or something completely different.</div>
                 </div>
             </div>
             <div class="accordion">
@@ -74,7 +74,7 @@
                     <i class="icon icon-arrow-right mr-1"></i> Do I need a team?
                 </label>
                 <div class="accordion-body faq-body">
-                    <div class="inner">Nope! You are of course welcome to apply in a pre-formed team (you can easily tell us about this when you apply), but some of our hackers will meet their team when they arrive on the first day.</div>
+                    <div class="inner">Nope! You are of course welcome to apply in a pre-formed team but some of our hackers will meet their team when they arrive on the first day.</div>
                 </div>
             </div>
             <div class="accordion">
@@ -114,7 +114,7 @@
                     <i class="icon icon-arrow-right mr-1"></i> Do you have a code of conduct?
                 </label>
                 <div class="accordion-body faq-body">
-                    <div class="inner"><a href="{{ route('conduct') }}">Yes</a>. tl;dr be pleasant and respectful to everyone at the event.</div>
+                    <div class="inner"><a href="{{ route('conduct') }}">Yes</a>. TL;DR be pleasant and respectful to everyone at the event.</div>
                 </div>
             </div>
             <div class="accordion">
@@ -124,7 +124,7 @@
                     <i class="icon icon-arrow-right mr-1"></i> Do you guys offer travel reimbursements?
                 </label>
                 <div class="accordion-body faq-body">
-                    <div class="inner">Yes. If you're traveling from outside of Cambridge you can apply for an amount of money back. This will be considered on a case by case basis. (Only travel costs will be considered and applying does not guarantee reimbursement)</div>
+                    <div class="inner">Yes. If you're travelling from outside of Cambridge, you can apply for an amount of money back. This will be considered on a case by case basis. (Only travel costs will be considered and applying does not guarantee reimbursement)</div>
                 </div>
             </div>
             <div class="accordion">
