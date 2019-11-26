@@ -17,7 +17,7 @@
             </p>
 
             <p>
-              <i><b>TL;DR.</b>Be respectful. Harassment and abuse are never tolerated.
+              <i><b>TL;DR.</b> Be respectful. Harassment and abuse are never tolerated.
               If you are in a situation that makes you uncomfortable at an MLH Member Event,
               if the event itself is creating an unsafe or inappropriate environment,
               or if interacting with a MLH representative or event organizer makes you

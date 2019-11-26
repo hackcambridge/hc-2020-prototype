@@ -23,7 +23,7 @@
 
         <div id="background-particles"></div>
             <section id="header-section" class="section-diagonal-bottom">
-                <div class="container grid-lg" style="min-height:200px;">  
+                <div class="container grid-lg" style="min-height:200px;">
                     <ul id="top-menu" class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="/">
@@ -45,7 +45,7 @@
                     @yield('header-content')
                 </div>
             </section>
-            
+
             @yield('content')
 
             <section id="footer-section" class="section-diagonal-top" >
@@ -66,7 +66,7 @@
                             <a href="{{route('privacy')}}">Privacy Policy</a>
                         </li>
                     </ul>
-                    <p id="copyright">© Hack Cambridge 2019-2020. Hack Cambridge is UK registered charity #1177223.</p>
+                    <p id="copyright">© Hack Cambridge 2016-2020. Hack Cambridge is UK registered charity #1177223.</p>
                 </div>
             </section>
 
@@ -102,7 +102,7 @@
                     currentGradient = (currentGradient + 1) % gradients.length;
                     transitionTick = 0;
                 }
-                
+
                 if(html) {
                     html.style.cssText = "background: linear-gradient(0deg, "+calculateIntermediaryColour(0, 0.7)+", "+calculateIntermediaryColour(1, 0.7)+"), url(/images/hc_backdrop_tessalating_small.png) center center, #000;"
                     transitionTick += gradientSpeed;
