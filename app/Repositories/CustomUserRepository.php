@@ -34,7 +34,7 @@ class CustomUserRepository extends Auth0UserRepository {
                         ? "committee" : "unknown")
                     );
             $user->setAttribute('type', $type);
-            $user->setAttribute('payload', '{}');
+            $user->setAttribute('profile', '{}');
         }
 
         $user->setAttribute('email', isset( $profile['email'] ) ? $profile['email'] : '');
