@@ -101,7 +101,7 @@
                 <!-- Question 5 -->
                 <input type="checkbox" id="accordion-5" name="accordion-checkbox-5" hidden>
                 <label class="accordion-header" for="accordion-5">
-                    <i class="icon icon-arrow-right mr-1"></i> If Hack Cambridge free to attend?
+                    <i class="icon icon-arrow-right mr-1"></i> Is Hack Cambridge free to attend?
                 </label>
                 <div class="accordion-body faq-body">
                     <div class="inner">Absolutely! The weekend is free for all accepted hackers. We provide WiFi, meals, swag, and the workspace.</div>
