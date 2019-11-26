@@ -1,6 +1,10 @@
 
 provider "aws" {
   region = "eu-west-2"
+
+  endpoints {
+    sts = "https://sts.eu-west-2.amazonaws.com"
+  }
 }
 
 # -------------------------------
