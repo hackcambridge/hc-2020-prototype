@@ -122,7 +122,7 @@
                 return parseFloat(Math.round(x * 100) / 100).toFixed(2).padStart(5, " ");
             }
 
-            setInterval(nextGradient, refreshCadence);
+            // setInterval(nextGradient, refreshCadence);
         </script>
         
         <!-- Global site tag (gtag.js) - Google Analytics -->

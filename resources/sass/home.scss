@@ -113,9 +113,9 @@ body {
     }
 
     &.section-pink::before {
-        background: #f9cbd1;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #ffecee, #f9cbd1);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #ffecee, #f9cbd1); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: #f7d7db;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #fff2f4, #f7d7db);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #fff2f4, #f7d7db); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         color: black;
     }
 
@@ -390,6 +390,40 @@ body {
     bottom: 0;
     position: fixed;
     z-index: 100;
+}
+
+#register-button {
+    width: 25rem;
+    max-width: 90%;
+    background-color: #ffffff75;
+    padding: 0.75rem 1.5rem;
+    border-color: #121212ba;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    animation: background-color 2s;
+    cursor: pointer;
+    display: block;
+    margin: 2rem auto 0;
+
+    &:hover {
+        background-color: #ffffff; 
+    }
+}
+
+.legal-text {
+    text-align: center;
+    font-family: var(--title-font);
+    margin-top: 2rem;
+}
+
+.body-text {
+    font-family: var(--title-font);
+}
+
+.title-text {
+    font-family: var(--body-font);
+    margin-top: 3rem;
 }
 
 /** Animations **/

@@ -9,10 +9,13 @@
 
 @section('content')
     <section id="" class="section-diagonal static-section section-pink">
-        <div class="container grid-lg" style="padding:2rem 30px 1rem;height:400px;">
+        <div class="container grid-lg" style="padding:2rem 30px 1rem;">
             <h1 class="section-header">Apply for Hack Cambridge</h1>
-            <p>To start of continue your application, log in with MyMLH.</p>
-            <p>By authorising Hack Cambridge to view your MyMLH profile you agree to our <a href="{{ route('privacy') }}">Privacy Policy</a> and Terms and Conditions.
+            <a href="{{ route('dashboard_index') }}">
+                <img id="register-button" src="{{ asset('images/101-register.png') }}" />
+            </a>
+            <!-- <p>To start of continue your application, log in with MyMLH.</p> -->
+            <p class="legal-text">By authorising Hack Cambridge to view your MyMLH profile you agree to our <a href="{{ route('privacy') }}">Privacy Policy</a> and Terms and Conditions.
         </div>
     </section>
 @endsection
