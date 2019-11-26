@@ -86,6 +86,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     );
                     return;
                 } else {
+                    this.setState({ isUploadingFile: false });
                     toast.error("Invalid file! It must be a PDF no larger than 5 MB.");
                     return;
                 }
@@ -122,7 +123,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                         uploadedFileName: "",
                         uploadedFileURL: "",
                     });
-                    this.saveForm(this.state.isSubmitted, () => toast.info("CV removed"));
+                    this.saveForm(this.state.isSubmitted, () => toast.info("CV removed."));
                 } else {
                     toast.error("Failed to remove CV.")
                     this.setState({ isSaving: false });
@@ -180,7 +181,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                         <FormLayout.Group>
                             <>
                             <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
-                                <Heading>CV / Resume</Heading>
+                                <Heading>CV / Resume (PDF under 5MB)</Heading>
                             </div>
                             {uploadedFileName && uploadedFileName.length > 0
                                 ?   <ButtonGroup segmented>
