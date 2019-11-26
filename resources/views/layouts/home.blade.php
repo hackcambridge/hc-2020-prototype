@@ -104,7 +104,7 @@
                 }
                 
                 if(html) {
-                    html.style.cssText = "background: linear-gradient(0deg, "+calculateIntermediaryColour(0, 0.7)+", "+calculateIntermediaryColour(1, 0.7)+"), url(/images/hc_backdrop_tessalating_small.png), #000;"
+                    html.style.cssText = "background: linear-gradient(0deg, "+calculateIntermediaryColour(0, 0.7)+", "+calculateIntermediaryColour(1, 0.7)+"), url(/images/hc_backdrop_tessalating_small.png) center center, #000;"
                     transitionTick += gradientSpeed;
                 }
             }

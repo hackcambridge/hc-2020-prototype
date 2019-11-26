@@ -12,8 +12,7 @@
 html {
     overflow: hidden;
     height: 100%;
-    background: linear-gradient(45deg, rgb(15,32,39), rgb(44,83,100));
-    background-size: 100% 100%;
+    background: linear-gradient(0deg, rgba(15,32,39,0.7), rgba(44,83,100,0.7)), url(/images/hc_backdrop_tessalating_small.png) center center, #000;;
     // -webkit-user-select: none; /* Chrome/Safari */        
     // -moz-user-select: none; /* Firefox */
     // -ms-user-select: none; /* IE10+ */
@@ -252,7 +251,7 @@ body {
         font-family: 'Courier', sans-serif;
         font-weight: 400;
         font-size: 0.8rem;
-        margin-left: -0.2rem;
+        margin-left: -0.15rem;
         line-height: 1rem;
         vertical-align: text-bottom;
 
@@ -285,7 +284,7 @@ body {
         margin: 0 auto;
         width: 6rem;
         display: block;
-        padding: 23px 0 2rem 0;
+        padding: 0 0 2rem 0;
         max-width: 90%;
     }
 
@@ -294,6 +293,7 @@ body {
         width: 6rem;
         display: block;
         max-width: 90%;
+        // padding-top: 23px;
     }
 
     & #top-tagline {
