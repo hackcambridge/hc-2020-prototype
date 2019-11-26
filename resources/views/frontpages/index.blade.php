@@ -91,10 +91,10 @@
                 <!-- Question 4 -->
                 <input type="checkbox" id="accordion-4" name="accordion-checkbox-4" hidden>
                 <label class="accordion-header" for="accordion-4">
-                    <i class="icon icon-arrow-right mr-1"></i> I am under 18, am I allowed to attend?
+                    <i class="icon icon-arrow-right mr-1"></i> Am I allowed to attend?
                 </label>
                 <div class="accordion-body faq-body">
-                    <div class="inner">Sadly we can't accommodate anyone under the age of 18 this year.</div>
+                    <div class="inner">Anyone who is currently a registered student or has graduated after 18th January 2018 is eligible to attend. Sadly we can't accommodate anyone under the age of 18 this year.</div>
                 </div>
             </div>
             <div class="accordion">
