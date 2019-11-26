@@ -134,16 +134,16 @@ body {
         background-repeat: no-repeat;
         background-position: center center;
         background-size: cover;
-        background-attachment: fixed;
+        // background-attachment: fixed;
         // background-color: black;
     }
 
     &.section-speaker::before {
         background-image: url(/images/frontpage-speaker.jpg);
         background-repeat: no-repeat;
-        background-position: center center;
+        background-position: center 30%;
         background-size: cover;
-        background-attachment: fixed;
+        // background-attachment: fixed;
         // background-color: black;
     }
 
@@ -152,7 +152,7 @@ body {
         background-repeat: no-repeat;
         background-position: center center;
         background-size: cover;
-        background-attachment: fixed;
+        // background-attachment: fixed;
         // background-color: black;
     }
 
@@ -249,16 +249,20 @@ body {
     li > a {
         text-decoration: none;
         color: #a9b4c5;
-        font-family: var(--body-font);
+        font-family: 'Courier', sans-serif;
         font-weight: 400;
-        // margin-right: 0.2rem;
+        font-size: 0.8rem;
+        margin-left: -0.2rem;
+        line-height: 1rem;
+        vertical-align: text-bottom;
 
         & > #logo {
-            width: 2rem;
-            height: 2rem;
+            width: 1.8rem;
+            height: 1.8rem;
             background-size: cover;
-            margin-bottom: -0.9rem;
+            margin: 0 -0.3rem -0.7rem 0;
             filter: invert(10%) opacity(0.8);
+            display: inline-block;
             &:hover {
                 opacity: 0.8;
             }
@@ -281,7 +285,7 @@ body {
         margin: 0 auto;
         width: 6rem;
         display: block;
-        padding-bottom: 2rem;
+        padding: 23px 0 2rem 0;
         max-width: 90%;
     }
 
