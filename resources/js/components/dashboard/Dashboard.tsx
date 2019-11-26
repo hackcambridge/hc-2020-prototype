@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone} from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
@@ -91,7 +91,10 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private userMenuActions = [
         {
             id: "logout",
-            items: [{content: 'Logout', url: "/logout", icon: LogOutMinor}],
+            items: [
+                {content: 'Frontpage', url: "/", icon: HomeMajorMonotone},
+                {content: 'Logout', url: "/logout", icon: LogOutMinor},
+            ],
         },
     ];
 
