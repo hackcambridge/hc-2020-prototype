@@ -16,9 +16,9 @@
         @env('production')
             // Nothing in prod.
         @elseenv('staging')
-            <div style="width: 100%;background-color: #3b7b00;text-align: center;padding: 4px;color: wheat;font-weight: 700;font-size: 0.5rem;">STAGING</div>
+            <div class="env-banner" style="background-color: #3b7b00;">STAGING</div>
         @elseenv('development')
-            <div style="width: 100%;background-color: #bd0000;text-align: center;padding: 4px;color: wheat;font-weight: 700;font-size: 0.5rem;">DEVELOPMENT</div>
+            <div class="env-banner" style="background-color: #bd0000;">DEVELOPMENT</div>
         @endenv
 
         <div id="background-particles"></div>

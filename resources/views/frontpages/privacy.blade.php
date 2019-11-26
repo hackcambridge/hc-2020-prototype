@@ -1,5 +1,5 @@
 @extends('layouts.home')
-@section('title', 'Hack Cambridge 101')
+@section('title', 'Privacy Policy — Hack Cambridge 101')
 
 @section('header-content')
     <div id="intro-container">
