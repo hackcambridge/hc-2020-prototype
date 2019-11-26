@@ -127,7 +127,7 @@
                 MLH reserves the right to revise, make exceptions to, or otherwise
                 amend these policies in whole or in part. If you have any
                 questions regarding these policies, please contact MLH by
-                h​i@mlh.io​.
+                <a href=mailto:hi@mlh.io>hi@mlh.io</a>.
               </p>
 
               <p style="text-align:center">
