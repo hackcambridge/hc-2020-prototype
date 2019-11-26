@@ -3,7 +3,8 @@
 
 @section('header-content')
     <div id="intro-container">
-        <img id="top-logo-solo" src="{{ asset('images/101-white.png') }}" />
+        <!-- <h1 id="intro-title">Hack Cambridge is back!</h1> -->
+        <img id="top-logo-small" src="{{ asset('images/apply-for-101.png') }}" />
     </div>
 @endsection
 

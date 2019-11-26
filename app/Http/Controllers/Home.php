@@ -14,16 +14,24 @@ class Home extends Controller
         return view('frontpages/apply');
     }
 
- 	public function about() {
-		return view('about');
-	}
-
-    public function info() {
-        ob_start();
-        phpinfo();
-        $phpinfo = ob_get_clean();
-        return new Response(
-            '<html><body>'.$phpinfo.'</body></html>'
-        );
+    public function conduct() {
+        return view('frontpages/conduct');
     }
+
+    public function privacy() {
+        return view('frontpages/privacy');
+    }
+
+ 	// public function about() {
+	// 	return view('about');
+	// }
+
+    // public function info() {
+    //     ob_start();
+    //     phpinfo();
+    //     $phpinfo = ob_get_clean();
+    //     return new Response(
+    //         '<html><body>'.$phpinfo.'</body></html>'
+    //     );
+    // }
 }

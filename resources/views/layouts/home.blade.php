@@ -5,12 +5,12 @@
         <meta name="viewport" content="width=device-width">
         <meta name="viewport" content="initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-        <!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"> -->
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
         <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}" />
         <link rel="shortcut icon" type="image/png" href="/images/favicon.png"/>
 
-        <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700|Overpass&display=swap" rel="stylesheet">    </head>
+        <link href="https://fonts.googleapis.com/css?family=Ovo:400,700|Arvo&display=swap" rel="stylesheet">    </head>
     <body>
 
         @env('production')
@@ -49,7 +49,7 @@
             @yield('content')
 
             <section id="footer-section" class="section-diagonal-top" >
-                <div class="container grid-lg">
+            <div class="container grid-lg">
                     <ul id="top-menu" class="breadcrumb" style="text-align: right;">
                         <li class="breadcrumb-item">
                             <a href="/">
@@ -60,10 +60,13 @@
                             <a href="{{route('sponsors_dashboard')}}">Sponsors Portal</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="/login/committee">Committee Portal</a>
+                            <a href="{{route('conduct')}}">Code of Conduct</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{route('privacy')}}">Privacy Policy</a>
                         </li>
                     </ul>
-                    <!-- <p style="text-align:right;color: white;">Designed and built with <span class="text-error">♥</span> by Harri.</p> -->
+                    <p id="copyright">© Hack Cambridge 2019-2020. Hack Cambridge is UK registered charity #1177223.</p>
                 </div>
             </section>
 
@@ -101,18 +104,18 @@
                 }
                 
                 if(html) {
-                    html.style.cssText = "background: linear-gradient(0deg, "+calculateIntermediaryColour(0)+", "+calculateIntermediaryColour(1)+");"
+                    html.style.cssText = "background: linear-gradient(0deg, "+calculateIntermediaryColour(0, 0.7)+", "+calculateIntermediaryColour(1, 0.7)+"), url(/images/hc_backdrop_tessalating_small.png), #000;"
                     transitionTick += gradientSpeed;
                 }
             }
 
-            function calculateIntermediaryColour(component) {
+            function calculateIntermediaryColour(component, alpha=1) {
                 var nextGradient = (currentGradient + 1) % gradients.length;
                 var r = (1 - transitionTick) * gradients[currentGradient][component][0] + transitionTick * gradients[nextGradient][component][0];
                 var g = (1 - transitionTick) * gradients[currentGradient][component][1] + transitionTick * gradients[nextGradient][component][1];
                 var b = (1 - transitionTick) * gradients[currentGradient][component][2] + transitionTick * gradients[nextGradient][component][2];
                 // if(component == 0) console.log(`${fmt(r)}  ${fmt(g)}  ${fmt(b)}`);
-                return "rgb("+r+","+g+","+b+")";
+                return "rgba("+r+","+g+","+b+","+alpha+")";
             }
 
             function fmt(x) {

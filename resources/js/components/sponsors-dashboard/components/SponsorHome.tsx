@@ -42,7 +42,12 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
                     <Layout.Section>
                         <Card sectioned>
                             <DisplayText size="small"><TextStyle variation="strong">Welcome to Hack Cambridge!</TextStyle></DisplayText>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Posuere urna nec tincidunt praesent semper feugiat. Sagittis eu volutpat odio facilisis. In metus vulputate eu scelerisque felis imperdiet proin fermentum. Vitae congue eu consequat ac felis. A erat nam at lectus urna duis convallis convallis tellus. Facilisi morbi tempus iaculis urna id volutpat lacus laoreet non. Diam vel quam elementum pulvinar etiam non quam lacus. Amet consectetur adipiscing elit duis. Donec et odio pellentesque diam. Ut lectus arcu bibendum at varius vel pharetra vel turpis. Amet luctus venenatis lectus magna fringilla urna porttitor rhoncus. Commodo ullamcorper a lacus vestibulum sed arcu non odio euismod. Eget mauris pharetra et ultrices neque ornare. Ut sem nulla pharetra diam sit amet. Enim ut tellus elementum sagittis vitae et. Ultrices in iaculis nunc sed.</p>
+                            <br style={{ lineHeight: "0.8rem" }} />
+                            <p>We are extremely delighted to have {this.props.sponsor.name} onboard with Hack Cambridge 101 this year.</p>
+                            <br style={{ lineHeight: "0.8rem" }} />
+                            <p>In this portal, you will be able to provide all of the information that we need in order for us to run Hack Cambridge smoothly. This would include information about your attending recruiters and mentors, details about your API/hardware, swag that you will be bringing, and other crucial pieces of information.</p>
+                            <br style={{ lineHeight: "0.8rem" }} />
+                            <p>Please do take your time to explore our Sponsors Portal, and fill in all the relevant details to the best of your knowledge. The more information that you can provide, the better it is for us! Do send us an email if you have any issues or questions regarding our portal.</p>
                         </Card>
                     </Layout.Section>
                     <Layout.Section secondary>
