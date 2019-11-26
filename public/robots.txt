@@ -1,2 +1,5 @@
+# Hack Cambridge -- updated 26/11/19.
 User-agent: *
-Disallow:
+Disallow: /dashboard/
+Disallow: /sponsors/dashboard/
+Disallow: /committee/admin/
