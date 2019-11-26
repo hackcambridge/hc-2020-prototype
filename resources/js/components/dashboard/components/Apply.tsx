@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton } from "@shopify/polaris";
+import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton, Link } from "@shopify/polaris";
 import axios from 'axios';
 import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
 import countryList from 'country-list';
@@ -19,6 +19,8 @@ interface IApplyState {
     questionValues: { [key: string]: string },
     isSubmitted: boolean,
     countrySelection: string,
+    agreedToConduct: boolean,
+    agreedToPrivacy: boolean,
 
     showingVisaDateSelector: boolean,
     visaRequired: boolean,
@@ -50,6 +52,8 @@ class Apply extends Component<IApplyProps, IApplyState> {
         visaDateTemp: this.props.initialRecord
             ? (this.props.initialRecord.visaRequiredDate ? new Date(this.props.initialRecord.visaRequiredDate) : undefined)
             : undefined,
+        agreedToConduct: this.props.initialRecord ? this.props.initialRecord.acceptedConduct : false,
+        agreedToPrivacy: this.props.initialRecord ? this.props.initialRecord.acceptedPrivacy : false,
     }
 
 
@@ -124,6 +128,10 @@ class Apply extends Component<IApplyProps, IApplyState> {
     }
 
     private saveForm(submitted: boolean, customToast?: () => void, cv?: File) {
+        if(submitted && !(this.state.agreedToConduct && this.state.agreedToPrivacy)) {
+            toast.error("Please accept the terms and conditions.");
+            return;
+        }
         this.setState({ isSaving: true });
         this.updateRecordInDatabase(submitted, customToast, cv);
     }
@@ -140,6 +148,8 @@ class Apply extends Component<IApplyProps, IApplyState> {
             showingVisaDateSelector,
             visaRequired,
             visaDate,
+            agreedToConduct,
+            agreedToPrivacy,
         } = this.state;
 
         const countriesNoGB = countryList().getData()
@@ -265,6 +275,20 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     </FormLayout>
                 </Card>
 
+
+                <Card sectioned title={"The Legal Bit"}>
+                    <Checkbox
+                        label={<span>I have read and agreed to <Link external url='https://static.mlh.io/docs/mlh-code-of-conduct.pdf'>MLH's Code of Conduct</Link>.</span>}
+                        checked={agreedToConduct}
+                        onChange={(val) => this.setState({ agreedToConduct: val })}
+                    />
+                    <Checkbox
+                        label={<span>I authorise you to share my application/registration information for event administration, ranking, MLH administration, pre- and post- event informational emails, and occasional emails about hackathons in line with <Link external url="https://mlh.io/privacy">MLH's Privacy Policy</Link>. I further agree to the terms in both the <Link external url="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</Link>, the <Link external url="https://mlh.io/privacy">MLH Privacy Policy</Link>, and <Link url="/privacy">Hack Cambridge's own Privacy Policy</Link>.</span>}
+                        checked={agreedToPrivacy}
+                        onChange={(val) => this.setState({ agreedToPrivacy: val })}
+                    />
+                </Card>
+
                 {this.props.canEdit ? <>
                     {isSubmitted
                         ? <div id="save-button-group">
@@ -328,6 +352,8 @@ class Apply extends Component<IApplyProps, IApplyState> {
         formData.append('visaRequired', this.state.visaRequired ? "true" : "false");
         formData.append('visaRequiredDate', (this.state.visaDate || "").toString());
         formData.append('isSubmitted', isSubmitted ? "true" : "false");
+        formData.append('acceptedConduct', this.state.agreedToConduct ? "true" : "false");
+        formData.append('acceptedPrivacy', this.state.agreedToPrivacy ? "true" : "false");
         if(cv) formData.append('cvFile', cv);
         // const payload: any = {
         //     questionResponses: JSON.stringify(questions),
