@@ -4,9 +4,8 @@
     --body-font: 'Arvo', serif;
 }
 
-*:focus { 
-    outline-style:none;
-    outline: none
+input:focus, textarea:focus, select:focus, a:focus {
+    outline: none;
 }
 
 html {
@@ -252,13 +251,19 @@ body {
     font-family: var(--body-font);
     font-weight: 400;
     padding: 0.8rem;
+
+    &.breadcrumb .breadcrumb-item:not(:first-child)::before {
+        color: #bfc4c780;
+        padding-right: 0.2rem;
+    }
+
     li > a {
         text-decoration: none;
-        color: #a9b4c5;
+        color: #bfc4c7;
         font-family: 'Courier', sans-serif;
         font-weight: 400;
         font-size: 0.8rem;
-        margin-left: -0.15rem;
+        // margin-left: -0.25rem;
         line-height: 1rem;
         vertical-align: text-bottom;
 
@@ -288,7 +293,7 @@ body {
     padding: 4rem 10px 2rem;
 
     & #top-logo {
-        margin: 0 auto;
+        margin: -23px auto 0;
         width: 6rem;
         display: block;
         padding: 0 0 2rem 2px;
@@ -297,10 +302,11 @@ body {
     }
 
     & #top-logo-solo {
-        margin: 0 auto -1.5rem;
+        margin: -23px auto -1.5rem;
         width: 6rem;
         display: block;
         max-width: 90%;
+        padding-left: 2px;
     }
 
     & #top-tagline {
@@ -348,10 +354,11 @@ body {
 }
 
 #copyright {
-    font-family: var(--title-font);
     color: #a9b4c6;
+    font-family: 'Courier';
     text-align: right;
     font-size: 0.6rem;
+    margin-top: -0.3rem;
 }
 
 .intro-subtitle {

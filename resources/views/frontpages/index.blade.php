@@ -148,7 +148,7 @@
     </section>
 
     <section id="" class="section-diagonal static-section section-ocean">
-        <div class="container grid-lg" style="padding:1rem 30px 1rem">
+        <div class="container grid-lg" style="padding:1rem 30px 1.5rem">
             <h1 class="section-header">Sponsors</h1>
 
             <!-- Temporary placeholder -->

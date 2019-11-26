@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class Home extends Controller
 {
@@ -11,6 +12,10 @@ class Home extends Controller
     }
 
     public function apply() {
+        if(Auth::check()) {
+            $dashboard_url = route("dashboard_index", array(), false);
+            return redirect($dashboard_url . "/apply/individual");
+        }
         return view('frontpages/apply');
     }
 
