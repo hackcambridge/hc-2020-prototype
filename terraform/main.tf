@@ -1,6 +1,9 @@
 
 provider "aws" {
   region = "eu-west-2"
+  # STS is breaking Terraform cloud. This should prevent issues but is dirty and
+  # needs to be looked at for a more permanent fix
+  skip_credentials_validation = true
 }
 
 # -------------------------------
