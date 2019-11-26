@@ -4,8 +4,10 @@
     --body-font: 'Arvo', serif;
 }
 
-input:focus, textarea:focus, select:focus, a:focus {
-    outline: none;
+*:focus {
+    outline-style: none;
+    box-shadow: none !important;
+    border-color: transparent;
 }
 
 html {
@@ -180,6 +182,7 @@ body {
     & .accordion-header {
         font-family: var(--body-font);
         font-size: 1rem;
+        cursor: pointer;
     }
 
     & .faq-body {
