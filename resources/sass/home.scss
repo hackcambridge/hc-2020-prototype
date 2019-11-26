@@ -284,8 +284,9 @@ body {
         margin: 0 auto;
         width: 6rem;
         display: block;
-        padding: 0 0 2rem 0;
+        padding: 0 0 2rem 2px;
         max-width: 90%;
+        // margin-top: -28px;
     }
 
     & #top-logo-solo {
@@ -293,7 +294,6 @@ body {
         width: 6rem;
         display: block;
         max-width: 90%;
-        // padding-top: 23px;
     }
 
     & #top-tagline {

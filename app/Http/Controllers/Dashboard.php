@@ -115,7 +115,7 @@ class Dashboard extends Controller
 
     private function updateApplicationRecord($request) {
         $r = $request->request;
-        if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "visaRequired", "visaRequiredDate"])) {
+        if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "visaRequired", "visaRequiredDate", "acceptedConduct", "acceptedPrivacy"])) {
             $app = Application::where("user_id", Auth::user()->id)->first();
             if(!$app) {
                 $app = new Application();
@@ -143,6 +143,8 @@ class Dashboard extends Controller
             $app->setAttribute("isSubmitted", $r->get("isSubmitted") == 'true');
             $app->setAttribute("visaRequired", $r->get("visaRequired") == 'true');
             $app->setAttribute("visaRequiredDate", $r->get("visaRequiredDate"));
+            $app->setAttribute("acceptedConduct", $r->get("acceptedConduct") == 'true');
+            $app->setAttribute("acceptedPrivacy", $r->get("acceptedPrivacy") == 'true');
 
             if($app->save()) {
                 return response()->json([
