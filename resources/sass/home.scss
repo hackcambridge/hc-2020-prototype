@@ -296,20 +296,19 @@ body {
     padding: 4rem 10px 2rem;
 
     & #top-logo {
-        margin: -23px auto 0;
+        margin: -26px auto 0;
         width: 6rem;
         display: block;
-        padding: 0 0 2rem 2px;
+        padding: 0 0 2rem 5px;
         max-width: 90%;
-        // margin-top: -28px;
     }
 
     & #top-logo-solo {
-        margin: -23px auto -1.5rem;
+        margin: -26px auto -1.5rem;
         width: 6rem;
         display: block;
         max-width: 90%;
-        padding-left: 2px;
+        padding-left: 5px;
     }
 
     & #top-tagline {

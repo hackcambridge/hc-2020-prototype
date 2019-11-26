@@ -43,7 +43,7 @@
             <p>Nope! That's the best part! Hack Cambridge is totally <strong>FREE!</strong> Even more, you'll get unlimited free food and drinks. With 4 free meals and a constant supply of snacks, we'll make sure you're never hungry, and you don't even have to pay a penny. You'll have access to free hardware and, some of the top tech companies will be sending their engineers to help you realise your vision.</p>
 
             <h5 class="intro-subtitle">Ok, what's the catch? Surely I have to be a programming genius?</h5>
-            <p>Nope! We're looking for enthusiastic people with a desire to make something cool. Hackathon projects take more than just software development, teams with hardware engineers, designers and project managers all help make a hack great! No software development experience is necessary (some people even learn to code during the event itself)</p>
+            <p>Nope! We're looking for enthusiastic people with a desire to make something cool. Hackathon projects take more than just software development, teams with hardware engineers, designers and project managers all help make a hack great! No software development experience is necessary (some people even learn to code during the event itself).</p>
 
             <h5 class="intro-subtitle">How do I sign up?</h5>
             <button onclick="window.location.href = '{{ route('apply') }}';" class="apply-button" style="margin:25px 0 15px;">Apply for 101 →</button>
