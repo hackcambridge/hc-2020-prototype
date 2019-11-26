@@ -76,13 +76,17 @@ class Apply extends Component<IApplyProps, IApplyState> {
 
             if(fileSelector.files) {
                 const file = fileSelector.files.item(0);
-                if(file) {
+                // console.log(file.type, file.size);
+                if(file && file.type == "application/pdf" && file.size <= 5000000) {
                     // Upload file.
                     this.saveForm(
                         this.state.isSubmitted,
                         () => toast.success("CV uploaded."),
                         file
                     );
+                    return;
+                } else {
+                    toast.error("Invalid file! It must be a PDF no larger than 5 MB.");
                     return;
                 }
             }
@@ -178,7 +182,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
                                 <Heading>CV / Resume</Heading>
                             </div>
-                            {uploadedFileName.length > 0
+                            {uploadedFileName && uploadedFileName.length > 0
                                 ?   <ButtonGroup segmented>
                                         <Button outline size="slim" url={uploadedFileURL} external={true}>{uploadedFileName}</Button>
                                         <Button destructive size="slim" onClick={this.handleCVRemove} disabled={!this.props.canEdit || isSaving}>Remove</Button>
@@ -278,12 +282,12 @@ class Apply extends Component<IApplyProps, IApplyState> {
 
                 <Card sectioned title={"The Legal Bit"}>
                     <Checkbox
-                        label={<span>I have read and agreed to <Link external url='https://static.mlh.io/docs/mlh-code-of-conduct.pdf'>MLH's Code of Conduct</Link>.</span>}
+                        label={<span>I have read and agreed to <Link external={true} url='https://static.mlh.io/docs/mlh-code-of-conduct.pdf'>MLH's Code of Conduct</Link>.</span>}
                         checked={agreedToConduct}
                         onChange={(val) => this.setState({ agreedToConduct: val })}
                     />
                     <Checkbox
-                        label={<span>I authorise you to share my application/registration information for event administration, ranking, MLH administration, pre- and post- event informational emails, and occasional emails about hackathons in line with <Link external url="https://mlh.io/privacy">MLH's Privacy Policy</Link>. I further agree to the terms in both the <Link external url="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</Link>, the <Link external url="https://mlh.io/privacy">MLH Privacy Policy</Link>, and <Link url="/privacy">Hack Cambridge's own Privacy Policy</Link>.</span>}
+                        label={<span>I authorise you to share my application/registration information for event administration, ranking, MLH administration, pre- and post- event informational emails, and occasional emails about hackathons in line with <Link external={true} url="https://mlh.io/privacy">MLH's Privacy Policy</Link>. I further agree to the terms in both the <Link external={true} url="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</Link>, the <Link external={true} url="https://mlh.io/privacy">MLH Privacy Policy</Link>, and <Link url="/privacy">Hack Cambridge's own Privacy Policy</Link>.</span>}
                         checked={agreedToPrivacy}
                         onChange={(val) => this.setState({ agreedToPrivacy: val })}
                     />
