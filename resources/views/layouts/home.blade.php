@@ -14,7 +14,7 @@
     <body>
 
         @env('production')
-            // Nothing in prod.
+            <!-- Running in production mode. -->
         @elseenv('staging')
             <div class="env-banner" style="background-color: #3b7b00;">STAGING</div>
         @elseenv('development')
