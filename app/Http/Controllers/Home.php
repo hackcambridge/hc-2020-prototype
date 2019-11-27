@@ -27,6 +27,10 @@ class Home extends Controller
         return view('frontpages/privacy');
     }
 
+    public function terms() {
+        return view('frontpages/terms');
+    }
+
  	// public function about() {
 	// 	return view('about');
 	// }
