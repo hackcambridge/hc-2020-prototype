@@ -170,6 +170,11 @@ class Apply extends Component<IApplyProps, IApplyState> {
             ...countriesNoGB
         ]
 
+        const mlhConduct = "https://static.mlh.io/docs/mlh-code-of-conduct.pdf";
+        const hcTerms = "/terms";
+        const mlhPrivacy = "https://mlh.io/privacy";
+        const mlhTC = "https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md";
+        const hcPrivacy = "/privacy";
         return (
             <Page title={"Apply for Hack Cambridge"}>
                 <Banner status="info">
@@ -287,17 +292,17 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 <Card sectioned title={"The Legal Bit"}>
                   <FormLayout>
                         <Checkbox
-                            label={<span>I have read and agreed to <Link external={true} url='https://static.mlh.io/docs/mlh-code-of-conduct.pdf'>MLH's Code of Conduct</Link>.</span>}
+                            label={<span>I have read and agreed to <Link external onClick={() => this.openInNewTab(mlhConduct)}>MLH's Code of Conduct</Link>.</span>}
                             checked={agreedToConduct}
                             onChange={(val) => this.setState({ agreedToConduct: val })}
                         />
                         <Checkbox
-                            label={<span>I have read and agreed to Hack Cambridge's own <Link url="/terms">Terms &#038; Conditions</Link>.</span>}
+                            label={<span>I have read and agreed to Hack Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link>.</span>}
                             checked={agreedToTerms}
                             onChange={(val) => this.setState({ agreedToTerms: val })}
                         />
                         <Checkbox
-                            label={<span>I authorise you to share my application/registration information for event administration, ranking, MLH administration, pre- and post- event informational emails, and occasional emails about hackathons in line with <Link external={true} url="https://mlh.io/privacy">MLH's Privacy Policy</Link>. I further agree to the terms in both the <Link external={true} url="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</Link>, the <Link external={true} url="https://mlh.io/privacy">MLH Privacy Policy</Link>, and <Link url="/privacy">Hack Cambridge's own Privacy Policy</Link>.</span>}
+                            label={<span>I authorise you to share my application/registration information for event administration, ranking, MLH administration, pre- and post- event informational emails, and occasional emails about hackathons in line with <Link external onClick={() => this.openInNewTab(mlhPrivacy)}>MLH's Privacy Policy</Link>. I further agree to the terms in both the <Link external onClick={() => this.openInNewTab(mlhTC)}>MLH Contest Terms and Conditions</Link>, the <Link external onClick={() => this.openInNewTab(mlhPrivacy)}>MLH Privacy Policy</Link>, and <Link external onClick={() => this.openInNewTab(hcPrivacy)}>Hack Cambridge's own Privacy Policy</Link>.</span>}
                             checked={agreedToPrivacy}
                             onChange={(val) => this.setState({ agreedToPrivacy: val })}
                         />
@@ -352,6 +357,11 @@ class Apply extends Component<IApplyProps, IApplyState> {
 
             </Page>
         );
+    }
+
+    private openInNewTab(url: string) {
+        var w = window.open(url, '_blank'); 
+        if(w) w.focus();
     }
 
     private updateRecordInDatabase(isSubmitted: boolean, toaster?: () => void, cv?: File) {
