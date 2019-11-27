@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Models\Sponsor;
+use App\Models\Application;
 use App\Http\Resources\Sponsor as SponsorResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 
@@ -24,16 +26,16 @@ class Committee extends Controller
 
     public function api_get($path) {
         switch ($path) {
-            case 'get-sponsors': return $this->getSponsors();
+            case 'init': return $this->initSession();
+            case 'applications-summary': return $this->getApplicationsSummary();
             default: return $this->fail("Route not found");
         }
-
     }
 
     public function api_post(Request $request, $path) {
         $r = $request->request;
         switch ($path) {
-            case 'add-sponsor': return $this->addSponsor($r->get('name'));
+            // case 'add-sponsor': return $this->addSponsor($r->get('name'));
             default: return $this->fail("Route not found");
         }
     }
@@ -57,38 +59,58 @@ class Committee extends Controller
         return $this->response(true, $message);
     }
 
-
-    private function getSponsors() {
-        if(Sponsor::count() == 0) return $this->success("No sponsors");
-
-        $all = Sponsor::all();
-        if($all) return SponsorResource::collection($all);
-        else return $this->fail("Failed to get sponsors");
-    }
-
-    private function addSponsor($name) {
-        $slug = $this->slugify($name);
-        if(strlen($slug) > 0) {
-            $check = Sponsor::where('slug', $slug)->first();
-            if (!$check) {
-                $sponsor = new Sponsor();
-                $sponsor->setAttribute("slug", $slug);
-                $sponsor->setAttribute("name", $name);
-                $sponsor->save();
-                if ($sponsor->save()) {
-                    return SponsorResource::make($sponsor);
-                } else {
-                    return $this->fail("Failed to save new sponsor object");
-                }
-            } else {
-                return $this->fail("Sponsor already exists");
-            }
-        } else {
-            return $this->fail("Sponsor title invalid");
+    private function initSession() {
+        if(Auth::check() && in_array(Auth::user()->type, ["committee", "admin"])) {
+            return response()->json([
+                "success" => true,
+                "payload" => array(
+                    "baseUrl" => route("committee_dashboard", array(), false),
+                    "user" => array(
+                        "type" => Auth::user()->type,
+                        "email" => Auth::user()->email,
+                        "name" => Auth::user()->name,
+                    ),
+                ),
+            ]);
+        }
+        else {
+            return $this->fail("Not authorised.");
         }
     }
 
+    private function canContinue($r, $stringChecks = [], $admin_only = true) {
+        $allowed = $admin_only ? ["admin"] : ["admin", "committee"];
+        if(Auth::check() && in_array(Auth::user()->type, $allowed)) {
+            if($r) {
+                foreach ($stringChecks as $param) {
+                    $val = $r->get($param);
+                    if(!$r->has($param)) return false;
+                }
+            }
+            return true;
 
+        } else {
+            // Not logged in or user type not allowed.
+            return false;
+        }
+    }
+
+    private function getApplicationsSummary() {
+        if($this->canContinue(null, [], false)) {
+            $applications = DB::table('applications')
+                ->join('users', 'users.id', '=', 'applications.user_id')
+                ->select('applications.id', 'applications.user_id', 'users.name', 'users.email', 'applications.isSubmitted')
+                ->where('users.type', '=', 'hacker')
+                ->orderBy('users.name')
+                ->get();
+            return response()->json([
+                "success" => true,
+                "applications" => $applications,
+            ]);
+        } else {
+            return $this->fail(Auth::user()->type);
+        }
+    }
 
     private static function slugify($text)
     {
