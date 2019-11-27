@@ -95,7 +95,7 @@
                     <i class="icon icon-arrow-right mr-1"></i> Am I allowed to attend?
                 </label>
                 <div class="accordion-body faq-body">
-                    <div class="inner">Anyone who is currently a registered student or has graduated after 18th January 2018 is eligible to attend. Sadly we can't accommodate anyone under the age of 18 this year.</div>
+                    <div class="inner">Anyone who is currently a registered student or has graduated after 18th January 2019 is eligible to attend. Sadly we can't accommodate anyone under the age of 18 this year.</div>
                 </div>
             </div>
             <div class="accordion">
