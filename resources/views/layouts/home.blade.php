@@ -52,7 +52,7 @@
             <div class="container grid-lg">
                     <ul id="top-menu" class="breadcrumb" style="text-align: right;">
                         <li class="breadcrumb-item">
-                            <a href="/">
+                            <a href="{{ route('committee_dashboard') }}">
                                 <div id="logo" style="background-image: url({{ asset('images/hc101_icon_white.svg') }});"></div>
                             </a>
                         </li>

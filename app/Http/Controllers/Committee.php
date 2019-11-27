@@ -27,6 +27,7 @@ class Committee extends Controller
     public function api_get($path) {
         switch ($path) {
             case 'init': return $this->initSession();
+            case 'admin-overview': return $this->getAdminOverview();
             case 'applications-summary': return $this->getApplicationsSummary();
             default: return $this->fail("Route not found");
         }
@@ -92,6 +93,28 @@ class Committee extends Controller
         } else {
             // Not logged in or user type not allowed.
             return false;
+        }
+    }
+
+
+    private function getAdminOverview() {
+        if($this->canContinue(null, [], false)) {
+            $applications = DB::table('applications')
+                ->select('applications.id', 'applications.isSubmitted', 'applications.user_id')
+                ->join('users', 'users.id', '=', 'applications.user_id')
+                ->select('applications.id', 'applications.isSubmitted')
+                ->where('users.type', '=', 'hacker');
+            return response()->json([
+                "success" => true,
+                "overview" => array(
+                    "users" => DB::table('users')->where('users.type', '=', 'hacker')->count(),
+                    "applications" => array(
+                        "total" => $applications->where('applications.isSubmitted', '1')->count()
+                    )
+                ),
+            ]);
+        } else {
+            return $this->fail(Auth::user()->type);
         }
     }
 

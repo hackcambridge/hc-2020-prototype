@@ -7,6 +7,13 @@ export interface ICommitteeProps {
     }
 }
 
+export interface IAdminOverview {
+    users: number,
+    applications: {
+        total: number,
+    }
+}
+
 export interface IApplicationSummary {
     id: number,
     user_id: number,

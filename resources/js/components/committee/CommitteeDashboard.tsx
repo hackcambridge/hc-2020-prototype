@@ -9,8 +9,9 @@ import {
     Banner,
 } from "@shopify/polaris";
 import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, PackageMajorMonotone} from '@shopify/polaris-icons';
-import Dashboard404 from "../dashboard/Dashboard404";
 import Applications from "./components/Applications";
+import Overview from "./components/Overview";
+import Committee404 from "./Committee404";
 import axios from 'axios';
 import { ToastContainer, cssTransition } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -183,9 +184,10 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private renderContent(): JSX.Element {
         return (
             <Switch>
-                <Route exact path={`${this.props.baseUrl}/`} render={(props) => <h1>test</h1>} />
+                <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
+                <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications`} render={(props) => <Applications {...props} />} />
-                <Route component={Dashboard404}></Route>
+                <Route component={Committee404}></Route>
             </Switch>
         );
     }
