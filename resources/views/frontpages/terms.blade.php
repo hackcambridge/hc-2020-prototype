@@ -20,11 +20,12 @@
                 The Organisers of Hack Cambridge, henceforth referred to as
                 ‘the Organisers’ in this T&C, refer to any or all of the
                 individuals involved with organising the Event in any capacity.
-              </p class="body-text">
+              <p class="body-text">
                 The Premises of Hack Cambridge, henceforth referred to as ‘the
                 Premises’ refer to the locations at which the Event is held.
                 These include, but are not necessarily limited to, the entire
                 building of the Cambridge Corn Exchange and Guildhall.
+              </p>
               <p class="body-text">
                 ‘Terms and Conditions’ or ‘Agreement’ will refer to these Terms
                 and Conditions, including all of their provisions.
@@ -95,7 +96,7 @@
                 (including swag from sponsors) must then be returned to the Organisers
                 upon request. You also agree to abide by our Code of Conduct.
               </p>
-              <a href='{{route('conduct')}}' target='_blank')> Read the Code of Conduct </a>
+              <a href="{{ route('conduct') }}" target='_blank')><p class="body-text">Read the Code of Conduct</p></a>
         </div>
       </section>
 
