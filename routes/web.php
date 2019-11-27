@@ -31,6 +31,7 @@ Route::middleware(['auth.check_staging'])->group(function() {
     Route::get('/apply', 'Home@apply')->name('apply');
     Route::get('/conduct', 'Home@conduct')->name('conduct');
     Route::get('/privacy', 'Home@privacy')->name('privacy');
+    Route::get('/terms', 'Home@terms')->name('terms');
     // Route::get('/foundation', 'Foundation@index')->name('foundation_index');
 
     // Protected routes - login will be forced.
