@@ -77,7 +77,7 @@ class Dashboard extends Controller
                 // flag
                 return true;
             }
-        } 
+        }
         // else {
         //     // Not logged in or user type not allowed.
         //     return false;
@@ -115,7 +115,7 @@ class Dashboard extends Controller
 
     private function updateApplicationRecord($request) {
         $r = $request->request;
-        if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "visaRequired", "visaRequiredDate", "acceptedConduct", "acceptedPrivacy"])) {
+        if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "visaRequired", "visaRequiredDate", "acceptedConduct", "acceptedPrivacy", "acceptedTerms"])) {
             $app = Application::where("user_id", Auth::user()->id)->first();
             if(!$app) {
                 $app = new Application();
@@ -145,6 +145,7 @@ class Dashboard extends Controller
             $app->setAttribute("visaRequiredDate", $r->get("visaRequiredDate"));
             $app->setAttribute("acceptedConduct", $r->get("acceptedConduct") == 'true');
             $app->setAttribute("acceptedPrivacy", $r->get("acceptedPrivacy") == 'true');
+            $app->setAttribute("acceptedTerms", $r->get("acceptedTerms") == 'true');
 
             if($app->save()) {
                 return response()->json([
@@ -215,7 +216,7 @@ class Dashboard extends Controller
                 $team->setAttribute("user_id", Auth::user()->id);
                 $team->setAttribute("team_id", $team_id);
                 $team->setAttribute("owner", false);
-                
+
                 if($team->save()) {
                     $old_records = TeamMember::where("id", "!=", $team->id)->where("user_id", Auth::user()->id);
                     if($old_records->count() == 0 || $old_records->delete()) {
@@ -347,7 +348,7 @@ class Dashboard extends Controller
 
     public function storeCV(Request $r) {
         if($this->canContinue(["admin", "sponsor", "hacker"], $r->request, ["sponsor_slug"])) {
-        
+
         } else {
             $this->fail("Checks failed");
         }

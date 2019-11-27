@@ -65,6 +65,9 @@
                         <li class="breadcrumb-item">
                             <a href="{{route('privacy')}}">Privacy Policy</a>
                         </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{route('terms')}}">Terms & Conditions</a>
+                        </li>
                     </ul>
                     <p id="copyright">© Hack Cambridge 2016-2020. Hack Cambridge is UK registered charity #1177223.</p>
                 </div>
@@ -124,7 +127,7 @@
 
             setInterval(nextGradient, refreshCadence);
         </script>
-        
+
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153422761-1"></script>
         <script>
