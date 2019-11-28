@@ -75,7 +75,17 @@
                     <i class="icon icon-arrow-right mr-1"></i> Do I need a team?
                 </label>
                 <div class="accordion-body faq-body">
-                    <div class="inner">Nope! You are of course welcome to apply in a pre-formed team but some of our hackers will meet their team when they arrive on the first day.</div>
+                    <div class="inner">Nope! You are of course welcome to apply in a pre-formed team but some of our hackers will meet their team when they arrive on the first day. </div>
+                </div>
+            </div>
+            <div class="accordion">
+                <!-- Question 9 -->
+                <input type="checkbox" id="accordion-9" name="accordion-checkbox-2" hidden>
+                <label class="accordion-header" for="accordion-9">
+                    <i class="icon icon-arrow-right mr-1"></i> How large are the teams?
+                </label>
+                <div class="accordion-body faq-body">
+                    <div class="inner"> No more than 4 people can be in a team; otherwise, it would be unfair. </div>
                 </div>
             </div>
             <div class="accordion">

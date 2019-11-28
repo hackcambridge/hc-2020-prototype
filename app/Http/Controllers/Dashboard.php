@@ -12,7 +12,7 @@ use App\Http\Resources\TeamMember as TeamMemberResource;
 
 class Dashboard extends Controller
 {
-    private $maximum_team_size = 5;
+    private $maximum_team_size = 4;
 
     public function index()
     {
