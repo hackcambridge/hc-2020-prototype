@@ -235,7 +235,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                     multiline={4}
                                     placeholder={q.placeholder}
                                     disabled={!this.props.canEdit}
-                                    maxLength={200}
+                                    maxLength={500}
                                     showCharacterCount
                                 />
                             </div>
