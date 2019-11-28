@@ -232,6 +232,11 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                     toast.success("Successfully joined team.");
                     return;
                 }
+                else if ("success" in payload) {
+                    toast.error(payload["message"]);
+                    this.setState({ doingAction: false });
+                    return;
+                }
             }
             toast.error("An error occurred.");
             // console.log(status, res.data);
