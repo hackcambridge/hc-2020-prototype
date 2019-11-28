@@ -111,7 +111,11 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                         return (
                             <ResourceList.Item
                                 id={`${member.user_id}`}
-                                onClick={() => this.removeTeamMember(member)}
+                                onClick={() => {
+                                    if(teamOwner) {
+                                        this.removeTeamMember(member);
+                                    }
+                                }}
                                 shortcutActions={shortcutActions}
                                 media={
                                     <Avatar customer size="small" name={member.user_name} source={`https://www.gravatar.com/avatar/${member.user_email_hash}?d=retro`} />
@@ -248,7 +252,16 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
 
             this.setState({ showDestructiveForm: destructor });
         } else {
-            toast.error("You can't remove youself");
+            const destructor : JSX.Element = (
+                <DestructiveConfirmation 
+                    onConfirm={() => this.handleLeaveTeam()}
+                    onClose={() => this.setState({ showDestructiveForm: undefined })}
+                    title={`Are you sure?`}
+                    confirmText={"Yes, I want to leave the team"}
+                />
+            );
+
+            this.setState({ showDestructiveForm: destructor });
         }
     }
 
