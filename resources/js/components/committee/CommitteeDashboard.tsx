@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, PackageMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone} from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import Overview from "./components/Overview";
 import Committee404 from "./Committee404";
@@ -16,6 +16,7 @@ import axios from 'axios';
 import { ToastContainer, cssTransition } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
 import md5 from "md5";
+import MemberList from "./components/MemberList";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {
@@ -119,6 +120,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 onToggle={this.toggleState('userMenuOpen')}
             />
         );
+
         const navigationMarkup = (
             <Navigation location={`${this.props.location.pathname}`}>
                 <Navigation.Section
@@ -132,9 +134,20 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                             url: `${this.props.baseUrl}/applications`,
                             label: "Applications",
                             icon: PackageMajorMonotone
-                        }
+                        },
                     ]}
                 />
+                {this.props.user.type == "admin" ?
+                    <Navigation.Section title="Admin"
+                        items={[
+                            {
+                                url: `${this.props.baseUrl}/members`,
+                                label: "Members",
+                                icon: ProfileMajorMonotone
+                            },
+                        ]}
+                    /> 
+                : <></>}
 
                 {/* {this.sponsorSectionsNavMarkup(navSection)} */}
                 {/* {this.props.sponsors.length > 1 ? 
@@ -187,6 +200,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications`} render={(props) => <Applications {...props} />} />
+                <Route exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />
                 <Route component={Committee404}></Route>
             </Switch>
         );

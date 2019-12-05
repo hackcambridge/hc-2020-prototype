@@ -69,7 +69,7 @@ class Sponsors extends Controller
     }
 
     private function canContinue($allowed = [], $r, $stringChecks = []) {
-        array_push($allowed, "committee", "admin"); // TODO "committee" temporary
+        array_push($allowed, "admin"); // TODO "committee" temporary
 
         // Check the request provides all required arguments.
         array_push($stringChecks, "sponsor_id", "sponsor_slug");
@@ -134,6 +134,18 @@ class Sponsors extends Controller
         }
     }
 
+    private function getSponsors() {
+        if($this->canContinue(["admin", "committee"], null, [])) {
+            $sponsors = Sponsor::all();
+            response()->json([
+                "success" => true,
+                "sponsors" => $sponsors
+            ]);
+        } else {
+            $this->fail("Checks failed.");
+        }
+    }
+
     public function storeAsset(Request $r) {
         $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
         if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug"])) {
@@ -156,7 +168,7 @@ class Sponsors extends Controller
 
     private function addSponsor($r) {
         // TODO "committee" is temporary.
-        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee"])) {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin"])) {
             $name = $r->get("name");
             $slug = $this->slugify($name);
             if (strlen($slug) > 0) {
@@ -165,7 +177,6 @@ class Sponsors extends Controller
                     $sponsor = new Sponsor();
                     $sponsor->setAttribute("slug", $slug);
                     $sponsor->setAttribute("name", $name);
-                    // $sponsor->save();
                     if ($sponsor->save()) {
                         return SponsorResource::make($sponsor);
                     } else {

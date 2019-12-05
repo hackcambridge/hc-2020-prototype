@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Models\Sponsor;
 use App\Models\Application;
-use App\Http\Resources\Sponsor as SponsorResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -29,6 +27,7 @@ class Committee extends Controller
             case 'init': return $this->initSession();
             case 'admin-overview': return $this->getAdminOverview();
             case 'applications-summary': return $this->getApplicationsSummary();
+            case 'get-members': return $this->getMembers();
             default: return $this->fail("Route not found");
         }
     }
@@ -36,7 +35,8 @@ class Committee extends Controller
     public function api_post(Request $request, $path) {
         $r = $request->request;
         switch ($path) {
-            // case 'add-sponsor': return $this->addSponsor($r->get('name'));
+            case 'demote-admin': return $this->removeAdmin($r);
+            case 'promote-committee': return $this->setAdmin($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -134,6 +134,89 @@ class Committee extends Controller
             return $this->fail(Auth::user()->type);
         }
     }
+
+
+    private function getMembers() {
+        if($this->canContinue(null, [], true)) {
+            $admins = User::where("type", "=", "admin")->select("name", "email", "id", "type")->get();
+            $committee = User::where("type", "=", "committee")->select("name", "email", "id", "type")->get();
+            return response()->json([
+                "success" => true,
+                "admins" => $admins,
+                "committee" => $committee
+            ]);
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function setAdmin($r) {
+        if($this->canContinue($r, ["id", "email"], true)) {
+            $id = $r->get("id");
+            $email = $r->get("email");
+            $user = User::where("id", "=", $id)->where("email", "=", $email)->first();
+            if($user) {
+                if($user->type == "committee") {
+                    $user->setAttribute("type", "admin");
+                    if($user->save()) {
+                        $admins = User::where("type", "=", "admin")->select("name", "email", "id", "type")->get();
+                        $committee = User::where("type", "=", "committee")->select("name", "email", "id", "type")->get();
+                        return response()->json([
+                            "success" => true,
+                            "admins" => $admins,
+                            "committee" => $committee
+                        ]);
+                    } else {
+                        return $this->fail("Failed to save user.");
+                    }
+                } else if($user->type == "admin") {
+                    return $this->success("Already an admin");
+                } else {
+                    return $this->fail("User is not a committee member.");
+                }
+            } else {
+                return $this->fail("User not found."); 
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function removeAdmin($r) {
+        if($this->canContinue($r, ["id", "email"], true)) {
+            $id = $r->get("id");
+            $email = $r->get("email");
+            $email_parts = explode("@", $email);
+            if(count($email_parts) == 2 && $email_parts[1] == "hackcambridge.com") {
+                $user = User::where("id", "=", $id)->where("email", "=", $email)->first();
+                if($user) {
+                    if($user->type == "admin") {
+                        $user->setAttribute("type", "committee");
+                        if($user->save()) {
+                            $admins = User::where("type", "=", "admin")->select("name", "email", "id", "type")->get();
+                            $committee = User::where("type", "=", "committee")->select("name", "email", "id", "type")->get();
+                            return response()->json([
+                                "success" => true,
+                                "admins" => $admins,
+                                "committee" => $committee
+                            ]);
+                        } else {
+                            return $this->fail("Failed to save user.");
+                        }
+                    } else {
+                        return $this->fail("User is not an admin.");
+                    }
+                } else {
+                    return $this->fail("User not found."); 
+                }
+            } else {
+                return $this->fail("Invalid or non-HC email."); 
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
 
     private static function slugify($text)
     {
