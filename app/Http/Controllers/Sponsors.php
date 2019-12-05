@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\Sponsor as SponsorResource;
+use App\Helpers\S3Management;
+
 
 class Sponsors extends Controller
 {
@@ -135,30 +137,28 @@ class Sponsors extends Controller
     }
 
     private function getSponsors() {
-        if($this->canContinue(["admin", "committee"], null, [])) {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee"])) {
             $sponsors = Sponsor::all();
-            response()->json([
+            return response()->json([
                 "success" => true,
-                "sponsors" => $sponsors
+                "data" => $sponsors
             ]);
         } else {
-            $this->fail("Checks failed.");
+            $this->fail("Unauthorised/unauthenticated.");
         }
     }
 
     public function storeAsset(Request $r) {
-        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
         if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug"])) {
             $sponsor_slug = $r->request->get("sponsor_slug");
-//            $this->validate($r, [
-//                'asset' => 'required|image|max:2048'
-//            ]);
             if ($r->hasFile('asset')) {
-                $file = $r->file('asset');
-                $name = time() . '-' . $file->getClientOriginalName();
-                $filePath = 'sponsors/' . $sponsor_slug . '/' . $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                return $this->success($url . $filePath);
+                $directory = "sponsors/" . $sponsor_slug;
+                $result = S3Management::storeAsset($r, $directory, null, 20000000, 'asset');
+                if($result["success"]) {
+                    return $this->success($result["data"]);
+                } else {
+                    return $this->fail("Failed to upload.");
+                }
             }
             return $this->fail("No file.");
         } else {

@@ -16,11 +16,12 @@ class S3Management {
         if ($r->hasFile($parameterName)) {
             if ($r->file($parameterName)->isValid()){
                 $file = $r->file($parameterName);
-                $r->validate([
-                    $parameterName => 'required|mimes:'.$mimes.'|max:'.$maxSize
-                ]);
+                if(!$mimes) {
+                    $r->validate([$parameterName => 'required|max:'.$maxSize]);
+                } else {
+                    $r->validate([$parameterName => 'required|mimes:'.$mimes.'|max:'.$maxSize]);
+                }
                 if (strlen($file->getClientOriginalName()) > 0) {
-
                     $filename_parts = explode('.', $file->getClientOriginalName());
                     $extension = array_pop($filename_parts);
                     // $filename_parts = array(

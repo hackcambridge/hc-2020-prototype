@@ -236,11 +236,9 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             const status = res.status;
             if(status == 200) {
                 const payload = res.data;
-                console.log(res.data);
                 if("success" in payload && payload["success"]) {
                     const detail = payload["details"];
                     if(Array.isArray(detail) && detail.length > 0) {
-                        console.log(detail);
                         const details: {
                             title: string,
                             description: string,
