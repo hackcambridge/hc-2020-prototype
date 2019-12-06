@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, DropZone, Stack, Thumbnail, Caption, Modal } from "@shopify/polaris";
 import axios from "axios";
 import { ISponsorData, IAssetInformation } from "../../../../interfaces/sponsors.interfaces";
+import { toast } from "react-toastify";
 
 interface IUploadFormProps {
     onClose: () => void,
@@ -22,6 +23,8 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
         isActive: true,
         isSaving: false
     }
+
+    private maxFileSize = 20000000; // 20mb
 
     render() {
         const { files, isActive, isSaving } = this.state;
@@ -53,15 +56,19 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
             <Modal
                 open={isActive}
                 onClose={this.toggleModal}
-                title={"Upload assets"}
+                title={"Upload assets (20MB max.)"}
                 footer={<Button primary onClick={this.handleFormSubmit} loading={isSaving}>Save</Button> }
             >
                 <Modal.Section>
                     <DropZone
+                        customValidator={(f: File) => {
+                            return (f.size <= this.maxFileSize);
+                        }}
                         onDrop={(files, acceptedFiles, rejectedFiles) => {
                             this.setState({
                                 files: [...this.state.files, ...acceptedFiles]
                             });
+                            toast.error(`${rejectedFiles.length} file(s) too large`);
                         }}
                     >
                         {uploadedFiles}
