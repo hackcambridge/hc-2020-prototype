@@ -3,6 +3,7 @@ export interface ISponsorDashboardProps {
     user: { 
         type: string, 
         name: string,
+        email: string,
     }
     sponsors: ISponsorData[]
 }

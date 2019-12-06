@@ -132,6 +132,7 @@ class Sponsors extends Controller
                     "user" => array(
                         "type" => Auth::user()->type,
                         "name" => Auth::user()->name,
+                        "email" => Auth::user()->email,
                     ),
                     "sponsors" => $sponsors
                 ),
