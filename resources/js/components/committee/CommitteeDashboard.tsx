@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone} from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import Overview from "./components/Overview";
 import Committee404 from "./Committee404";
@@ -91,6 +91,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             id: "logout",
             items: [
                 {content: 'Frontpage', url: "/", icon: HomeMajorMonotone},
+                {content: 'Hackers\' Dashboard', url: "/dashboard", icon: SmileyJoyMajorMonotone},
+                {content: 'Sponsors\' Portal', url: "/sponsors/dashboard", icon: BillingStatementPoundMajorMonotone},
                 {content: 'Logout', url: "/logout", icon: LogOutMinor},
             ],
         },

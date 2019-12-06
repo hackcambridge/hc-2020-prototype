@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Button, DropZone, Stack, Thumbnail, Caption, Modal } from "@shopify/polaris";
 import axios from "axios";
-import { ISponsorData } from "../../../../interfaces/sponsors.interfaces";
+import { ISponsorData, IAssetInformation } from "../../../../interfaces/sponsors.interfaces";
 
 interface IUploadFormProps {
     onClose: () => void,
-    onSubmit: (urls: string[]) => void,
+    onSubmit: (urls: IAssetInformation[]) => void,
     sponsor: ISponsorData
 }
 
@@ -82,7 +82,7 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
         this.uploadFiles(this.state.files, []);
     }
 
-    private uploadFiles(files: File[], urls: string[]) {
+    private uploadFiles(files: File[], urls: IAssetInformation[]) {
         if(files.length > 0) {
             let formData = new FormData();
             formData.append('asset', files[0]);
@@ -97,7 +97,11 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
                 if(res.status == 200) {
                     const response = res.data;
                     if("success" in response && response["success"]) {
-                        currentURLs.push(response["message"]);
+                        currentURLs.push({
+                            name: response["originalName"],
+                            url: response["data"]
+                        } as IAssetInformation);
+                        // currentURLs.push(response["message"]);
                     } else {
                         console.log(res.data);
                     }

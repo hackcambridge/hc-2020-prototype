@@ -17,6 +17,7 @@ interface ISponsorFormState {
     email: string;
     type: string;
     typeName: string;
+    loading: boolean;
 }
 
 class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
@@ -27,15 +28,17 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
         name: this.props.editing ? this.props.editing.name : "",
         email: this.props.editing ? this.props.editing.email : "",
         type: this.props.type || "access",
-        typeName: this.props.editing ? this.props.editing.type : "sponsor agent"
+        typeName: this.props.editing ? this.props.editing.type : "sponsor agent",
+        loading: false,
     }
 
     render() {
-        const { typeName } = this.state;
+        const { typeName, loading } = this.state;
         return (
             <Modal
                 open={this.state.isActive}
                 onClose={this.toggleModal}
+                loading={loading}
                 title={this.props.editing ? `Edit ${typeName}` : `Add a new ${typeName}`}
                 primaryAction={{
                     content: this.props.editing ? "Amend" : "Add",
@@ -71,6 +74,7 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
     createSponsorAgent = () => {
         const name = this.state.name;
         const email = this.state.email;
+        this.setState({ loading: true });
         if(name.length > 0 && email.length > 0) {
             axios.post(`/sponsors/dashboard-api/add-agent-${this.state.type}.json`, {
                 name: name,
@@ -81,10 +85,13 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
                 const status = res.status;
                 if(status >= 200 && status < 300) {
                     this.props.onCreate();
+                    this.setState({ loading: false });
                     this.toggleModal();
+                    return;
                 } else {
                     console.log(`Status: ${status}`);
                     console.log(res.data);
+                    this.setState({ loading: false });
                 }
             })
         }

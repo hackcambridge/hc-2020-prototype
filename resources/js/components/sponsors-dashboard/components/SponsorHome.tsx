@@ -13,6 +13,7 @@ interface ISponsorAdminState {
     completeness: number,
     recruiters: number,
     mentors: number,
+    loading: boolean,
 }
 
 interface SponsorDetailModelObject {
@@ -28,6 +29,7 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
         completeness: 0,
         recruiters: 0,
         mentors: 0,
+        loading: true,
     }
 
     componentDidMount() {
@@ -35,7 +37,7 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
     }
 
     render() {
-        const { completeness, mentors, recruiters } = this.state;
+        const { completeness, mentors, recruiters, loading } = this.state;
         return (
             <Page title={this.props.sponsor.name}>
                 <Layout>
@@ -57,13 +59,19 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
                         </Card>
                         <br />
                         <Card sectioned>
-                            <DisplayText size="small"><TextStyle variation="strong">{Math.round(completeness)}%</TextStyle> completed.</DisplayText>
+                            {loading ?
+                                <DisplayText size="small">Loading...</DisplayText> :
+                                <DisplayText size="small"><TextStyle variation="strong">{Math.round(completeness)}%</TextStyle> completed.</DisplayText>
+                            }
                             <br />
                             <ProgressBar progress={completeness} size="small" />
                         </Card>
                         <br />
                         <Card sectioned>
-                            <DisplayText size="small">You're bringing {recruiters + mentors} {(recruiters + mentors == 1) ? "person" : "people"}.</DisplayText>
+                            {loading ? 
+                                <DisplayText size="small">Loading...</DisplayText> :
+                                <DisplayText size="small">You're bringing {recruiters + mentors} {(recruiters + mentors == 1) ? "person" : "people"}.</DisplayText>  
+                            }
                             {/* <Subheading>You're bringing;</Subheading> */}
                             {/* <div style={{ textAlign: "left" }}>
                                 <DisplayText size="small">
@@ -86,6 +94,7 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
     }
 
     private loadInformation() {
+        this.setState({ loading: true });
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
             sponsor_id: this.props.sponsor.id,
             sponsor_slug: this.props.sponsor.slug,
@@ -95,15 +104,22 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
                     const detailWrappers = payload["details"];
+                    console.log(payload);
                     if(Array.isArray(detailWrappers)) {
-                        const details: SponsorDetailModelObject[] = detailWrappers;
+                        // const details: SponsorDetailModelObject[] = detailWrappers;
                         const percentage = this.calculateCompletenessPercentage(detailWrappers);
-                        this.setState({ completeness: percentage });
+                        this.setState({ 
+                            loading: false,
+                            completeness: percentage,
+                            recruiters: +payload["recruiters"],
+                            mentors: +payload["mentors"],
+                         });
                         return;
                     }
                 }
             }
             console.log(res.data);
+            this.setState({ loading: false });
         });
     }
 

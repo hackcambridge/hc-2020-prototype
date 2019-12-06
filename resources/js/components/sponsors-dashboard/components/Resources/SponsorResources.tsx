@@ -79,7 +79,7 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
                         :
                         <Card.Section>
                             <Button 
-                                disabled={loadingDefinitions}
+                                loading={loadingDefinitions}
                                 icon={AddMajorMonotone} 
                                 onClick={() => this.setState({ resourceFormShowing: true })}
                             >
