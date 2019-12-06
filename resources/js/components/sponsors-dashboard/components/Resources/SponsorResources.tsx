@@ -7,6 +7,7 @@ import { IResourceDefinition, ISponsorData } from "../../../../interfaces/sponso
 import DestructiveConfirmation from "../common/DestructiveConfirmation";
 import { extractHostname } from "../common/url_helpers";
 import SponsorResourceForm from "./SponsorResourceForm";
+import { toast } from "react-toastify";
 
 interface ISponsorResourcesProps extends RouteComponentProps {
     baseSponsorPath: string,
@@ -205,6 +206,7 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
             if(status >= 200 && status < 300) {
                 const data = res.data;
                 if("success" in data && data["success"]) {
+                    toast.success("Resource deleted");
                     this.loadResources();
                 }
             }

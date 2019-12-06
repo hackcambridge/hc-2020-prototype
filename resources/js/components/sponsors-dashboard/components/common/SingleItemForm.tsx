@@ -99,14 +99,14 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                                 </Button>
                             }
                         />
-                    : <Button loading={isLoading} icon={AttachmentMajorMonotone} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset</Button>}
+                    : <Button loading={isLoading} icon={AttachmentMajorMonotone} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>}
 
                     <hr style={{ borderStyle: "solid", borderColor: "#dedede94", margin: "20px 0" }} />
                     <div style={{ float: "right", marginBottom: "20px" }}>
                         <Button 
                             primary 
                             loading={isLoading}
-                            onClick={this.saveContent}
+                            onClick={() => this.saveContent(false)}
                         >
                             Save
                         </Button>
@@ -121,7 +121,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                         const newFields = fields;
                         newFields.files = oldFiles.concat(newURLs);
                         this.setState({ fields: newFields });
-                        this.saveContent(() => toast.success(`Successfully uploaded ${newURLs.length} file(s)`));
+                        this.saveContent(true, () => toast.success(`Successfully uploaded ${newURLs.length} file(s)`));
                     }}
                 /> : <></>}
                 {showDestructiveForm || <></>}
@@ -181,7 +181,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
         if(!this.state.isLoading) {
             this.setState({ isLoading: true });
         }
-        console.log("Trying to delete");
+        // console.log("Trying to delete");
         axios.post(`/sponsors/dashboard-api/remove-asset.json`, {
             sponsor_id: this.props.sponsor.id,
             sponsor_slug: this.props.sponsor.slug,
@@ -194,7 +194,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                     const newFields = this.state.fields;
                     newFields.files = newFields.files.filter(f => f.url !== item.url)
                     this.setState({ fields: newFields });
-                    this.saveContent(() => toast.success("Successfully removed file"));
+                    this.saveContent(true, () => toast.success("Successfully removed file"));
                 } else {
                     toast.error(`Failed to remove file: ${payload["message"]}`);
                 }
@@ -283,7 +283,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
         }).finally(() => this.setState({ isLoading: false }));
     }
 
-    private saveContent = (then: () => void = () => {}) => {
+    private saveContent = (silent: boolean = false, then: () => void = () => {}) => {
         if(!this.state.isLoading) {
             this.setState({ isLoading: true });
         }
@@ -298,7 +298,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             complete: this.calculateCompleteness(),
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if(status == 200 || status == 201) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
                     const detailData = payload["detail"];
@@ -317,8 +317,15 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             files: details.files,
                         }
                     });
+                    if(!silent) {
+                        toast.success("Form saved");
+                    }
                     then();
+                    return;
                 }
+                toast.error(payload["message"]);
+            } else {
+                toast.error("An error occurred");
             }
         }).finally(() => this.setState({ isLoading: false }));
     }
