@@ -99,7 +99,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                                 </Button>
                             }
                         />
-                    : <Button loading={isLoading} icon={AttachmentMajorMonotone} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>}
+                    : <Button disabled={isLoading} icon={AttachmentMajorMonotone} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>}
 
                     <hr style={{ borderStyle: "solid", borderColor: "#dedede94", margin: "20px 0" }} />
                     <div style={{ float: "right", marginBottom: "20px" }}>
