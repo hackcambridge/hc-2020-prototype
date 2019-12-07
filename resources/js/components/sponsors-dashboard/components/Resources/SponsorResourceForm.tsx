@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import { IResourceDefinition, ISponsorData } from "../../../../interfaces/sponsors.interfaces";
 import { validURL } from "../common/url_helpers";
+import { toast } from "react-toastify";
 
 interface ISponsorResourceFormProps {
     onClose: () => void,
@@ -23,6 +24,7 @@ interface ISponsorResourceFormState {
     newURL: string,
     newURLError: string, 
     titleError: string,
+    loading: boolean,
 }
 
 class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorResourceFormState> {
@@ -36,6 +38,7 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
         urls: this.props.item ? this.props.item.urls : [],
         newURLError: "",
         titleError: "",
+        loading: false,
     }    
 
     render() {
@@ -47,7 +50,8 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
             urls, 
             newURL, 
             newURLError, 
-            titleError 
+            titleError,
+            loading
         } = this.state;
 
         return (
@@ -59,6 +63,7 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
                     content: this.props.item ? "Amend" : "Add",
                     onAction: this.handleFormSubmit,
                 }}
+                loading={loading}
                 // secondaryActions={this.props.item ? [{
                 //     content: "Delete",
                 //     onAction: () => console.log("deleting"),
@@ -136,8 +141,9 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
     }
 
     handleFormSubmit = () => {
+        this.setState({ loading: true });
         if(this.state.title.trim().length == 0) {
-            this.setState({ titleError: "Title can't be blank" });
+            this.setState({ titleError: "Title can't be blank", loading: false });
             return;
         }
 
@@ -162,9 +168,14 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
                 const data = res.data;
                 if("success" in data && data["success"]) {
                     this.toggleModal();
+                    this.setState({ loading: false });
+                    toast.success(`Successfully saved ${this.props.detailType}`);
                     this.props.onCreate();
+                    return;
                 }
             } 
+            toast.error("An error occurred");
+            this.setState({ loading: false });
             console.log(`Status: ${status}`);
             console.log(res.data);
         })

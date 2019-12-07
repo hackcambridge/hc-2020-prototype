@@ -64,12 +64,12 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
                 // primaryAction={{content: 'Save', disabled: false}}
                 // secondaryActions={[{content: 'Duplicate'}, {content: 'View on your store'}]}
             >
-                <Card>
+                {/* <Card>
                     <div style={{ padding: "2rem" }}>
                         <DisplayText size="small">This is where we explain what the f*ck is going on.</DisplayText>
                     </div>
                 </Card>
-                <br style={{ margin: "30px" }} />
+                <br style={{ margin: "30px" }} /> */}
                 <Layout>
                     <Layout.Section oneHalf>
                         <Card title="Mentors">

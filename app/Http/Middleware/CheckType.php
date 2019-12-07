@@ -9,9 +9,10 @@ class CheckType
 {
 
     private $allowed = array(
-        "hacker" => ["hacker", "sponsor", "committee"],
-        "sponsor" => ["sponsor", "committee"],
-        "committee" => ["committee"]
+        "hacker" => ["hacker", "sponsor", "committee", "admin"],
+        "sponsor" => ["sponsor", "committee", "admin"],
+        "committee" => ["committee", "admin"],
+        "admin" => ["admin"],
     );
 
     /**

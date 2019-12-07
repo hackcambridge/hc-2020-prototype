@@ -7,6 +7,7 @@ import UploadForm from "./UploadForm";
 import DestructiveConfirmation from "./DestructiveConfirmation";
 import axios from "axios";
 import { descriptions } from "./descriptions";
+import { toast } from "react-toastify";
 
 interface ISingleItemFormProps extends RouteComponentProps {
     hasTitle: boolean,
@@ -62,25 +63,25 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                     url: this.props.baseSponsorPath
                 }]}
                 title={this.props.pageTitle}
-                titleMetadata={this.generateStatusBadge(complete)}
+                titleMetadata={isLoading ? <></> : this.generateStatusBadge(complete)}
                 // primaryAction={{content: 'Save', disabled: false}}
                 // secondaryActions={[{content: 'Duplicate'}, {content: 'View on your store'}]}
             >
-                {this.props.detailType in descriptions ? 
+                {/* {this.props.detailType in descriptions ? 
                 <Card sectioned>
                     {descriptions[this.props.detailType.toString()]}
                 </Card>
-                : <></>}
+                : <></>} */}
                 <Card sectioned>
                     {this.props.hasTitle ?
                         <>
-                            <TextField label="Title" value={title} onChange={this.handleTitleChange} />
+                            <TextField label="Title" value={title} onChange={this.handleTitleChange} disabled={isLoading} />
                             <br />
                         </>
                     : <></>}
                     {this.props.hasDescription ?
                         <>
-                            <TextField label="Description" value={description} onChange={this.handleDescriptionChange} multiline={4}/>
+                            <TextField label="Description" value={description} onChange={this.handleDescriptionChange} multiline={4} disabled={isLoading}/>
                             <br />
                         </>
                     : <></>}
@@ -90,7 +91,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             items={files}
                             renderItem={this.renderAssetThumbnail}
                             showHeader={true}
-                            loading={false}
+                            loading={isLoading}
                             alternateTool={
                                 <Button 
                                     plain icon={AddMajorMonotone} 
@@ -98,14 +99,14 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                                 </Button>
                             }
                         />
-                    : <Button icon={AttachmentMajorMonotone} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset</Button>}
+                    : <Button disabled={isLoading} icon={AttachmentMajorMonotone} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>}
 
                     <hr style={{ borderStyle: "solid", borderColor: "#dedede94", margin: "20px 0" }} />
                     <div style={{ float: "right", marginBottom: "20px" }}>
                         <Button 
                             primary 
                             loading={isLoading}
-                            onClick={this.saveContent}
+                            onClick={() => this.saveContent(false)}
                         >
                             Save
                         </Button>
@@ -114,16 +115,13 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                 {uploadFormShowing ? <UploadForm 
                     sponsor={this.props.sponsor}
                     onClose={() => this.setState({ uploadFormShowing: false })}
-                    onSubmit={(urls: string[]) => {
-                        const newURLs: IAssetInformation[] = urls.map(url => {
-                            const parts = url.split("/");
-                            return { name: parts[parts.length - 1], url: url };
-                        });
-                        
+                    onSubmit={(urls: IAssetInformation[]) => {
+                        const newURLs: IAssetInformation[] = urls;
                         const oldFiles: IAssetInformation[] = files; 
                         const newFields = fields;
                         newFields.files = oldFiles.concat(newURLs);
                         this.setState({ fields: newFields });
+                        this.saveContent(true, () => toast.success(`Successfully uploaded ${newURLs.length} file(s)`));
                     }}
                 /> : <></>}
                 {showDestructiveForm || <></>}
@@ -145,7 +143,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
 
     renderAssetThumbnail = (item: IAssetInformation) => {
         const { name, url } = item;
-        const thumbnail = <Thumbnail source={url} alt={name}></Thumbnail>;
+        // const thumbnail = <Thumbnail source={url} alt={name}></Thumbnail>;
         const actions = [{
             content: 'Delete',
             onAction: () => this.deleteAsset(item)
@@ -153,7 +151,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
         return (
             <ResourceList.Item
                 id={name}
-                media={thumbnail}
+                // media={thumbnail}
                 onClick={() => {
                     var win = window.open(item.url, '_blank');
                     win.focus();
@@ -180,9 +178,32 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
     }
 
     actuallyDeleteAsset(item: IAssetInformation) {
-        const newFields = this.state.fields;
-        newFields.files = newFields.files.filter(f => f.url !== item.url)
-        this.setState({ fields: newFields });
+        if(!this.state.isLoading) {
+            this.setState({ isLoading: true });
+        }
+        // console.log("Trying to delete");
+        axios.post(`/sponsors/dashboard-api/remove-asset.json`, {
+            sponsor_id: this.props.sponsor.id,
+            sponsor_slug: this.props.sponsor.slug,
+            asset_url: item.url
+        }).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    const newFields = this.state.fields;
+                    newFields.files = newFields.files.filter(f => f.url !== item.url)
+                    this.setState({ fields: newFields });
+                    this.saveContent(true, () => toast.success("Successfully removed file"));
+                } else {
+                    toast.error(`Failed to remove file: ${payload["message"]}`);
+                }
+            } else {
+                toast.error("Failed to remove file");
+            }
+        }).finally(() => {
+            this.setState({ isLoading: false });
+        });
     }
 
     calculateCompleteness(): string {
@@ -236,11 +257,9 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             const status = res.status;
             if(status == 200) {
                 const payload = res.data;
-                console.log(res.data);
                 if("success" in payload && payload["success"]) {
                     const detail = payload["details"];
                     if(Array.isArray(detail) && detail.length > 0) {
-                        console.log(detail);
                         const details: {
                             title: string,
                             description: string,
@@ -264,7 +283,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
         }).finally(() => this.setState({ isLoading: false }));
     }
 
-    private saveContent = () => {
+    private saveContent = (silent: boolean = false, then: () => void = () => {}) => {
         if(!this.state.isLoading) {
             this.setState({ isLoading: true });
         }
@@ -279,7 +298,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             complete: this.calculateCompleteness(),
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if(status == 200 || status == 201) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
                     const detailData = payload["detail"];
@@ -298,7 +317,15 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             files: details.files,
                         }
                     });
+                    if(!silent) {
+                        toast.success("Form saved");
+                    }
+                    then();
+                    return;
                 }
+                toast.error(payload["message"]);
+            } else {
+                toast.error("An error occurred");
             }
         }).finally(() => this.setState({ isLoading: false }));
     }

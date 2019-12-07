@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Button, DropZone, Stack, Thumbnail, Caption, Modal } from "@shopify/polaris";
 import axios from "axios";
-import { ISponsorData } from "../../../../interfaces/sponsors.interfaces";
+import { ISponsorData, IAssetInformation } from "../../../../interfaces/sponsors.interfaces";
+import { toast } from "react-toastify";
 
 interface IUploadFormProps {
     onClose: () => void,
-    onSubmit: (urls: string[]) => void,
+    onSubmit: (urls: IAssetInformation[]) => void,
     sponsor: ISponsorData
 }
 
@@ -22,6 +23,8 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
         isActive: true,
         isSaving: false
     }
+
+    private maxFileSize = 20000000; // 20mb
 
     render() {
         const { files, isActive, isSaving } = this.state;
@@ -53,15 +56,21 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
             <Modal
                 open={isActive}
                 onClose={this.toggleModal}
-                title={"Upload assets"}
+                title={"Upload assets (20MB max.)"}
                 footer={<Button primary onClick={this.handleFormSubmit} loading={isSaving}>Save</Button> }
             >
                 <Modal.Section>
                     <DropZone
+                        customValidator={(f: File) => {
+                            return (f.size <= this.maxFileSize);
+                        }}
                         onDrop={(files, acceptedFiles, rejectedFiles) => {
                             this.setState({
                                 files: [...this.state.files, ...acceptedFiles]
                             });
+                            if(rejectedFiles.length > 0) {
+                                toast.error(`${rejectedFiles.length} file(s) too large`);
+                            }
                         }}
                     >
                         {uploadedFiles}
@@ -82,7 +91,7 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
         this.uploadFiles(this.state.files, []);
     }
 
-    private uploadFiles(files: File[], urls: string[]) {
+    private uploadFiles(files: File[], urls: IAssetInformation[]) {
         if(files.length > 0) {
             let formData = new FormData();
             formData.append('asset', files[0]);
@@ -97,7 +106,11 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
                 if(res.status == 200) {
                     const response = res.data;
                     if("success" in response && response["success"]) {
-                        currentURLs.push(response["message"]);
+                        currentURLs.push({
+                            name: response["originalName"],
+                            url: response["data"]
+                        } as IAssetInformation);
+                        // currentURLs.push(response["message"]);
                     } else {
                         console.log(res.data);
                     }

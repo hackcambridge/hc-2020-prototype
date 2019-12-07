@@ -1,6 +1,7 @@
 import { Modal, Stack, TextField } from "@shopify/polaris";
 import axios from "axios";
 import React, { Component } from "react";
+import { toast } from "react-toastify";
 
 interface ICreateSponsorFormProps {
     active: boolean;
@@ -56,6 +57,7 @@ class CreateSponsorForm extends Component<ICreateSponsorFormProps, ICreateSponso
             if(status >= 200 && status < 300) {
                 const data = res.data;
                 if("success" in data && data["success"]) {
+                    toast.success(`New sponsor: ${value}`);
                     const sponsorSlug = data["data"]["slug"];
                     this.props.onCreateSponsor(sponsorSlug);
                     return;

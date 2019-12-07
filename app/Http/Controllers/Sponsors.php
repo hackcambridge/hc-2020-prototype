@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Sponsor;
 use App\Models\SponsorAgent;
 use App\Models\SponsorDetail;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\Sponsor as SponsorResource;
+use App\Helpers\S3Management;
+use App\Helpers\Auth0Management;
+
 
 class Sponsors extends Controller
 {
@@ -30,6 +34,7 @@ class Sponsors extends Controller
         $r = $request->request;
         switch ($path) {
             case 'store-asset': return $this->storeAsset($request);
+            case 'remove-asset': return $this->removeAsset($request);
             case 'add-sponsor': return $this->addSponsor($r);
             case 'delete-sponsor': return $this->deleteSponsor($r);
             case 'update-sponsor': return $this->sponsorAdminDetailsUpdate($r);
@@ -69,7 +74,7 @@ class Sponsors extends Controller
     }
 
     private function canContinue($allowed = [], $r, $stringChecks = []) {
-        array_push($allowed, "committee", "admin"); // TODO "committee" temporary
+        array_push($allowed, "admin"); // TODO "committee" temporary
 
         // Check the request provides all required arguments.
         array_push($stringChecks, "sponsor_id", "sponsor_slug");
@@ -127,6 +132,7 @@ class Sponsors extends Controller
                     "user" => array(
                         "type" => Auth::user()->type,
                         "name" => Auth::user()->name,
+                        "email" => Auth::user()->email,
                     ),
                     "sponsors" => $sponsors
                 ),
@@ -134,19 +140,29 @@ class Sponsors extends Controller
         }
     }
 
+    private function getSponsors() {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee"])) {
+            $sponsors = Sponsor::all();
+            return response()->json([
+                "success" => true,
+                "data" => $sponsors
+            ]);
+        } else {
+            $this->fail("Unauthorised/unauthenticated.");
+        }
+    }
+
     public function storeAsset(Request $r) {
-        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
         if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug"])) {
             $sponsor_slug = $r->request->get("sponsor_slug");
-//            $this->validate($r, [
-//                'asset' => 'required|image|max:2048'
-//            ]);
             if ($r->hasFile('asset')) {
-                $file = $r->file('asset');
-                $name = time() . '-' . $file->getClientOriginalName();
-                $filePath = 'sponsors/' . $sponsor_slug . '/' . $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                return $this->success($url . $filePath);
+                $directory = "sponsors/" . $sponsor_slug;
+                $result = S3Management::storeAsset($r, $directory, null, 20000000, 'asset');
+                if($result["success"]) {
+                    return $result;
+                } else {
+                    return $this->fail("Failed to upload.");
+                }
             }
             return $this->fail("No file.");
         } else {
@@ -154,9 +170,49 @@ class Sponsors extends Controller
         }
     }
 
+    public function removeAsset(Request $r) {
+        if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug", "asset_url"])) {
+            $sponsor_slug = $r->request->get("sponsor_slug");
+            $url =  $r->request->get("asset_url");
+
+            $index_aws = strpos($url,".amazonaws.com/");
+            $length = strlen($url);
+
+            $path = substr($url, $index_aws + 15, $length - $index_aws - 15);
+            $filepath = explode("/", $path, 2)[1];
+
+            // Need to make sure the sponsor slug matches the path
+            // We have:
+            //  $filePath = 'sponsors/' . $sponsor_slug . '/' . $name;
+            // So, explode on path: note this is unambigious since
+            // we use slugify...
+
+            $components = explode("/", $path);
+            if ($components[1] != "sponsors") {
+                return array(
+                    "success" => false,
+                    "message" => $path
+                );
+            }
+            if ($r->request->get("sponsor_slug") != $components[2]) {
+                // Not your resource...
+                return $this->fail("Unable to find resource.");
+            }
+
+            $result = S3Management::deleteAsset($url);
+            if($result["success"]) {
+                return $result;
+            } else {
+                return $this->fail("Operation failed.");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
     private function addSponsor($r) {
         // TODO "committee" is temporary.
-        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee"])) {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin"])) {
             $name = $r->get("name");
             $slug = $this->slugify($name);
             if (strlen($slug) > 0) {
@@ -165,7 +221,6 @@ class Sponsors extends Controller
                     $sponsor = new Sponsor();
                     $sponsor->setAttribute("slug", $slug);
                     $sponsor->setAttribute("name", $name);
-                    // $sponsor->save();
                     if ($sponsor->save()) {
                         return SponsorResource::make($sponsor);
                     } else {
@@ -254,7 +309,7 @@ class Sponsors extends Controller
 
     // type one of 'access', 'mentor', 'recruiter'
     private function addSponsorAgent($r, $type, $allowed = ["admin"]) {
-        if($this->canContinue($allowed, $r, ["sponsor_id", "sponsor_slug", "email"])) {
+        if($this->canContinue($allowed, $r, ["sponsor_id", "sponsor_slug", "email", "name"])) {
             $id = $r->get("sponsor_id");
             $slug = $r->get("sponsor_slug");
             $email = $r->get("email");
@@ -271,9 +326,17 @@ class Sponsors extends Controller
                 if(!$agent) {
                     $new_agent = new SponsorAgent();
                     $new_agent->setAttribute("sponsor_id", $sponsor->id);
-                    $new_agent->setAttribute("name", $name ? $name : "");
+                    $new_agent->setAttribute("name", $name);
                     $new_agent->setAttribute("email", $email);
                     $new_agent->setAttribute("type", $type);
+
+                    // Initialise Auth0
+                    if($type == "access") {
+                        $auth0 = Auth0Management::addPasswordlessUser($email, $name);
+                        if(!$auth0["success"]) return $auth0;
+                        else $new_agent->setAttribute("auth0_id", $auth0["message"]);
+                    }
+
                     if($new_agent->save()) {
                         return response()->json([
                             "success" => true,
@@ -315,7 +378,20 @@ class Sponsors extends Controller
                     ->where("email", $email)
                     ->where("type", $type)
                     ->first();
+
                 if($agent) {
+
+                    // Deinit from Auth0
+                    if($type == "access") {
+                        $count = SponsorAgent::where("email", "=", $email)->where("type", "=", "access")->count();
+                        if($count == 1) {
+                            if($agent->auth0_id) {
+                                $auth0 = Auth0Management::removePasswordlessUser($agent->auth0_id);
+                                if(!$auth0["success"]) return $auth0;
+                            }
+                        }
+                    }
+
                     if($agent->delete()) {
                         return $this->success("Successfully delete agent");
                     } else {
@@ -403,7 +479,9 @@ class Sponsors extends Controller
                 if($details) {
                     return response()->json([
                         "success" => true,
-                        "details" => $details
+                        "details" => $details,
+                        "recruiters" => $sponsor->agents()->where("type", "=", "recruiter")->count(),
+                        "mentors" => $sponsor->agents()->where("type", "=", "mentor")->count(),
                     ]);
                 } else {
                     $this->fail("No details found");

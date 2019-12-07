@@ -16,11 +16,12 @@ class S3Management {
         if ($r->hasFile($parameterName)) {
             if ($r->file($parameterName)->isValid()){
                 $file = $r->file($parameterName);
-                $r->validate([
-                    $parameterName => 'required|mimes:'.$mimes.'|max:'.$maxSize
-                ]);
+                if(!$mimes) {
+                    $r->validate([$parameterName => 'required|max:'.$maxSize]);
+                } else {
+                    $r->validate([$parameterName => 'required|mimes:'.$mimes.'|max:'.$maxSize]);
+                }
                 if (strlen($file->getClientOriginalName()) > 0) {
-
                     $filename_parts = explode('.', $file->getClientOriginalName());
                     $extension = array_pop($filename_parts);
                     // $filename_parts = array(
@@ -70,43 +71,16 @@ class S3Management {
         // echo $region;
         $path = substr($url, $index_aws + 15, $length - $index_aws - 15);
         $filepath = explode("/", $path, 2)[1];
-        // $filePath = substr($url, $length - $index_aws - 15);
-        // echo $filePath;
-        // if (($region != env('AWS_DEFAULT_REGION')) || ($bucket != env("AWS_BUCKET"))) {
-        //     // Here we would have to change the region or bucket of S3 to delete
-        //     // ----> Probably a mistake
-        //     return array(
-        //         "success" => false,
-        //         "data" => "File path invalid"
-        //     );
-        // }
 
-        // Need to make sure the sponsor slug matches the path
-        // We have:
-        //  $filePath = 'sponsors/' . $sponsor_slug . '/' . $name;
-        // So, explode on path: note this is unambigious since
-        // we use slugify...
-
-        // $components = explode("/", $path);
-        // if ($components[0] != "sponsors") {
-        //     return array(
-        //         "success" => false,
-        //         "data" => "Invalid resource"
-        //     );
-        // }
-        // if ($r->request->get("sponsor_slug") != $components[1]){
-        //     // Not your resource...
-        //     return $this->fail("Unable to find resource.");
-        // }
         if(Storage::disk('s3')->delete($filepath)) {
             return array(
                 "success" => true,
-                "data" => ""
+                "message" => ""
             );
         } else {
             return array(
                 "success" => false,
-                "data" => "Failed to remove file"
+                "message" => "Failed to remove file"
             );
         }
     }

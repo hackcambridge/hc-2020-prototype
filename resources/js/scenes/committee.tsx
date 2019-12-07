@@ -18,10 +18,8 @@ function initialise(root: HTMLElement) {
         const status = res.status;
         if(status == 200) {
             const obj = res.data;
-            console.log(obj);
             if ("success" in obj && obj["success"]) {
                 const payload : ICommitteeProps = obj["payload"];
-                console.log(payload);
                 ReactDOM.render(
                     <BrowserRouter>
                         <CommitteeDashboard {...payload} />

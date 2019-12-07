@@ -7,13 +7,16 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {DnsSettingsMajorMonotone, HomeMajorMonotone, CirclePlusOutlineMinor, SmileyJoyMajorMonotone, MentionMajorMonotone, ConfettiMajorMonotone, CodeMajorMonotone, DataVisualizationMajorMonotone, SandboxMajorMonotone, GamesConsoleMajorMonotone, MobileBackArrowMajorMonotone, LogOutMinor, MobileChevronMajorMonotone, TransferWithinShopifyMajorMonotone, PackageMajorMonotone, LockMajorMonotone, IqMajorMonotone} from '@shopify/polaris-icons';
+import {DnsSettingsMajorMonotone, HomeMajorMonotone, CirclePlusOutlineMinor, SmileyJoyMajorMonotone, MentionMajorMonotone, ConfettiMajorMonotone, CodeMajorMonotone, DataVisualizationMajorMonotone, SandboxMajorMonotone, GamesConsoleMajorMonotone, MobileBackArrowMajorMonotone, LogOutMinor, MobileChevronMajorMonotone, TransferWithinShopifyMajorMonotone, PackageMajorMonotone, LockMajorMonotone, IqMajorMonotone, TipsMajorTwotone} from '@shopify/polaris-icons';
 import { Link, withRouter, RouteComponentProps, Redirect } from "react-router-dom";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
 import Sponsor404 from "./Sponsor404";
 import axios from 'axios';
 import SponsorContext from "./SponsorContext";
 import CreateSponsorForm from "./components/common/CreateSponsorForm";
+import { toast, ToastContainer, cssTransition } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css';
+import md5 from 'md5';
 
 interface ISponsorDashboardAppendedProps extends ISponsorDashboardProps, RouteComponentProps {
     validRoute: boolean
@@ -181,7 +184,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             }
         });
 
-        const renderAdminMenuItems = this.props.user ? ["committee", "admin"].includes(this.props.user.type) : false;
+        const renderAdminMenuItems = this.props.user ? ["admin"].includes(this.props.user.type) : false;
         const navigationMarkup = (
             <Navigation location={`${this.props.location.pathname}`}>  
                 { renderAdminMenuItems ? 
@@ -210,6 +213,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
                 actions={this.userMenuActions}
                 name={this.props.user.name.split(" ")[0]}
                 initials={this.props.user.name.charAt(0)}
+                avatar={`https://www.gravatar.com/avatar/${md5(this.props.user.email.toLowerCase())}?d=retro`}
                 open={this.state.userMenuOpen}
                 onToggle={this.toggleState('userMenuOpen')}
             />
@@ -225,29 +229,44 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         const render404 = !isRoot && (!sponsor || !this.props.validRoute || !validSection);
         
         return (
-            <AppProvider theme={this.theme} linkComponent={this.adapterLink}>
-                <Frame
-                    topBar={this.topBarMarkup(userMenuMarkup)}
-                    navigation={navigationMarkup}
-                    showMobileNavigation={showMobileNavigation}
-                    onNavigationDismiss={this.toggleState('showMobileNavigation')}
-                >
-                    {!render404 ? <SponsorContext sponsor={sponsor} onUpdate={() => {
-                        this.getAllSponsors(() => console.log("Updated"))
-                    }} {...this.props}/> : <Sponsor404 />}
-                    {this.state.createSponsorFormShowing ? 
-                        <CreateSponsorForm 
-                            active={true} 
-                            onCreateSponsor={(sponsor) => {
-                                this.getAllSponsors(() => {
-                                    this.props.history.push(`${this.props.baseUrl}/${sponsor}/overview`);
-                                });
-                            }}
-                            onClose={() => this.setState({ createSponsorFormShowing: false })}
-                        /> : <></>
-                    }
-                </Frame>
-            </AppProvider>
+            <>
+                <AppProvider theme={this.theme} linkComponent={this.adapterLink}>
+                    <Frame
+                        topBar={this.topBarMarkup(userMenuMarkup)}
+                        navigation={navigationMarkup}
+                        showMobileNavigation={showMobileNavigation}
+                        onNavigationDismiss={this.toggleState('showMobileNavigation')}
+                    >
+                        {!render404 ? <SponsorContext sponsor={sponsor} onUpdate={() => {
+                            this.getAllSponsors(() => {})
+                        }} {...this.props}/> : <Sponsor404 />}
+                        {this.state.createSponsorFormShowing ? 
+                            <CreateSponsorForm 
+                                active={true} 
+                                onCreateSponsor={(sponsor) => {
+                                    this.getAllSponsors(() => {
+                                        this.props.history.push(`${this.props.baseUrl}/${sponsor}/overview`);
+                                    });
+                                }}
+                                onClose={() => this.setState({ createSponsorFormShowing: false })}
+                            /> : <></>
+                        }
+                    </Frame>
+                </AppProvider>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={3000}
+                    transition={cssTransition({
+                        enter: 'zoomIn',
+                        exit: 'zoomOut',
+                        duration: 400
+                    })}
+                    newestOnTop
+                    closeOnClick
+                    draggable
+                    pauseOnHover
+                />
+            </>
         );
     }
 
@@ -329,27 +348,26 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
     }
 
     private getAllSponsors(then: () => void = () => {}) {
-        axios.get(`/committee/admin-api/get-sponsors.json`).then(res => {
+        axios.get(`/sponsors/dashboard-api/get-sponsors.json`).then(res => {
             const status = res.status;
             if(status == 200) {
-                // const data: { data: ISponsorData[] } = res.data;
-                const obj: object = res.data;
-                if("data" in obj) {
-                    const data: ISponsorData[] = obj["data"];
-                    this.setState({ sponsors: data.sort((a, b) => (a.name > b.name) ? 1 : -1) });
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    const sponsors: ISponsorData[] = payload["data"];
+                    this.setState({ sponsors: sponsors.sort((a, b) => (a.name > b.name) ? 1 : -1) });
                     then();
-                } else if ("success" in obj && obj["success"] == true) {
-                    const data: ISponsorData[] = [];
-                    this.setState({ sponsors: data })
+                    return;
                 } else {
-                    console.log("failed");
+                    console.log(payload);
                 }
-            } else {
-                console.log(`Status: ${status}`);
-                console.log(res.data);
             }
+            toast.error("Failed to load members.");
+            // console.log(status, res.data);
+            // this.setState({ isLoading: false });
         });
     }
+
+    
 }
 
 export default withRouter(SponsorDashboard);

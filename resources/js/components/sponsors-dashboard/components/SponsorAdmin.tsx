@@ -6,6 +6,8 @@ import { ISponsorAgent, ISponsorData } from "../../../interfaces/sponsors.interf
 import axios from "axios";
 import SponsorAgentForm from "./Agents/SponsorAgentForm";
 import DestructiveConfirmation from "./common/DestructiveConfirmation";
+import { toast } from "react-toastify";
+import { toAdminPath } from "@shopify/app-bridge/actions/Navigation/Redirect";
 
 interface ISponsorAdminProps extends RouteComponentProps {
     baseSponsorPath: string,
@@ -162,7 +164,10 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
                         active={true} 
                         sponsor={this.props.sponsor}
                         editing={isEditingSponsorAgent}
-                        onCreate={() => this.loadSponsorAgents()}
+                        onCreate={() => {
+                            toast.success("Created sponsor agent");
+                            this.loadSponsorAgents();
+                        }}
                         onClose={() => this.setState({ sponsorAgentFormShowing: false, isEditingSponsorAgent: undefined })}
                     /> : <></>
                 }
@@ -196,8 +201,11 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             privileges: this.generatePrivilegeString()
         }).then(res => {
             const status = res.status;
-            if(status) {
+            if(status == 200 || status == 201) {
+                toast.success("Sponsor updated");
                 this.props.onUpdate();
+            } else {
+                toast.error("An error occurred");
             }
             this.setState({ doingSave: false });
         });
@@ -226,8 +234,13 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
                 if("success" in payload && payload["success"]) {
                     this.props.onUpdate();
                     this.props.history.push('/sponsors/dashboard/');
+                    toast.success("Sponsor deleted");
                     return;
+                } else {
+                    toast.error(`An error occurred. ${payload["message"]}`);
                 }
+            } else {
+                toast.error(`An error occurred`);
             }
             console.log(status, res.data);
             this.setState({ loadingAgents: false });
@@ -337,11 +350,17 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
         }).then(res => {
             const status = res.status;
             if(status == 200) {
+                console.log(res.data);
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
                     this.loadSponsorAgents();
+                    toast.success("Successfully deleted sponsor agent.");
                     return;
+                } else {
+                    toast.error(payload["message"]);
                 }
+            } else {
+                toast.error("An error occurred");
             }
             console.log(status, res.data);
             this.setState({ loadingAgents: false });

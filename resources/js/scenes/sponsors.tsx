@@ -18,7 +18,6 @@ function initialise(root: HTMLElement) {
             const obj = res.data;
             if ("success" in obj && obj["success"]) {
                 const payload : ISponsorDashboardProps = obj["payload"];
-                console.log(payload);
                 ReactDOM.render(<SponsorFrame {...payload}/>, root);
 
                 const loadingElement = document.getElementById('loading');
