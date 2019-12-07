@@ -68,7 +68,9 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
                             this.setState({
                                 files: [...this.state.files, ...acceptedFiles]
                             });
-                            toast.error(`${rejectedFiles.length} file(s) too large`);
+                            if(rejectedFiles.length > 0) {
+                                toast.error(`${rejectedFiles.length} file(s) too large`);
+                            }
                         }}
                     >
                         {uploadedFiles}

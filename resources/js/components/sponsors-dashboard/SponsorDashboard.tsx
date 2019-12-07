@@ -238,7 +238,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
                         onNavigationDismiss={this.toggleState('showMobileNavigation')}
                     >
                         {!render404 ? <SponsorContext sponsor={sponsor} onUpdate={() => {
-                            this.getAllSponsors(() => console.log("Updated"))
+                            this.getAllSponsors(() => {})
                         }} {...this.props}/> : <Sponsor404 />}
                         {this.state.createSponsorFormShowing ? 
                             <CreateSponsorForm 
