@@ -37,6 +37,7 @@ class Committee extends Controller
         switch ($path) {
             case 'demote-admin': return $this->removeAdmin($r);
             case 'promote-committee': return $this->setAdmin($r);
+            case 'get-application': return $this->getApplication($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -211,6 +212,26 @@ class Committee extends Controller
                 }
             } else {
                 return $this->fail("Invalid or non-HC email."); 
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+
+    private function getApplication($r) {
+        if($this->canContinue($r, ["id"], false)) {
+            $id = $r->get("id");
+            $app = Application::where("id", "=", $id)->first();
+            $user = User::where("id", "=", $app->user_id)->first();
+            if($app) {
+                return response()->json([
+                    'success' => true,
+                    'application' => $app,
+                    'user' => $user,
+                ]);
+            } else {
+                return $this->fail("Application doesn't exist.");
             }
         } else {
             return $this->fail("Checks failed.");

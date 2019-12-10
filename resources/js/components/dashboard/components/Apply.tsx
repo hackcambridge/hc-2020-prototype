@@ -34,6 +34,13 @@ function RequiredStar() {
     return <span style={{ color: "red" }}>*</span>;
 }
 
+export const textFieldQuestions: { id: string, title: string, placeholder: string }[] = [
+    { id: "1", title: "What do you want to get out of this event?", placeholder: "" },
+    { id: "2", title: "What are you interested in?", placeholder: "Mention anything you want -- it doesn’t have to be technology-related!" },
+    { id: "3", title: "Tell us about a recent accomplishment you’re proud of.", placeholder: "" },
+    { id: "4", title: "Are there any links you’d like to share so we can get to know you better?", placeholder: "For example GitHub, LinkedIn or your website. Put each link on a new line. " },
+]
+
 class Apply extends Component<IApplyProps, IApplyState> {
 
     state = {
@@ -58,13 +65,6 @@ class Apply extends Component<IApplyProps, IApplyState> {
         agreedToTerms: this.props.initialRecord ? this.props.initialRecord.acceptedTerms : false,
     }
 
-
-    private textFieldQuestions: { id: string, title: string, placeholder: string }[] = [
-        { id: "1", title: "What do you want to get out of this event?", placeholder: "" },
-        { id: "2", title: "What are you interested in?", placeholder: "Mention anything you want -- it doesn’t have to be technology-related!" },
-        { id: "3", title: "Tell us about a recent accomplishment you’re proud of.", placeholder: "" },
-        { id: "4", title: "Are there any links you’d like to share so we can get to know you better?", placeholder: "For example GitHub, LinkedIn or your website. Put each link on a new line. " },
-    ]
 
     private buildFileSelector() {
         const fileSelector = document.createElement('input');
@@ -217,7 +217,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 <br />
 
                 <Card sectioned>
-                    {this.textFieldQuestions.map((q, index) => {
+                    {textFieldQuestions.map((q, index) => {
                         return (
                             <div key={q.id}>
                                 <div style={{ paddingBottom: "12px", paddingTop: (index == 0 ? "0" : "20px") }}>
@@ -367,7 +367,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
     private updateRecordInDatabase(isSubmitted: boolean, toaster?: () => void, cv?: File) {
         const questionValues = this.state.questionValues;
         const questions: { [key : string]: string } = {};
-        this.textFieldQuestions.forEach(q => {
+        textFieldQuestions.forEach(q => {
             questions[q.id] = q.id in questionValues ? questionValues[q.id] : ""
         });
 
