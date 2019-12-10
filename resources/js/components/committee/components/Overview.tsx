@@ -44,7 +44,7 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
             <Card sectioned title={""}>
                 <Stack>
                     <Button monochrome outline>{`${overview.users}`} registrations</Button>
-                    <Button monochrome outline>{`${overview.applications.total}`} applications</Button>
+                    <Button url={`applications`} external={false} monochrome outline>{`${overview.applications.total}`} applications</Button>
                 </Stack>
             </Card>
         );

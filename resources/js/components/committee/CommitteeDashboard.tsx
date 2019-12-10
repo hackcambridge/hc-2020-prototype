@@ -17,6 +17,7 @@ import { ToastContainer, cssTransition } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
 import md5 from "md5";
 import MemberList from "./components/MemberList";
+import IndividualApplication from "./components/IndividualApplication";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {
@@ -202,6 +203,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications`} render={(props) => <Applications {...props} />} />
+                <Route exact path={`${this.props.baseUrl}/applications/:id`} render={(props) => <IndividualApplication applicationId={props.match.params.id} {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />
                 <Route component={Committee404}></Route>
             </Switch>
