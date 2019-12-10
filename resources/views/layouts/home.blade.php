@@ -4,13 +4,19 @@
         <title>@yield('title')</title>
         <meta name="viewport" content="width=device-width">
         <meta name="viewport" content="initial-scale=1.0">
+        <meta name="description" content="Hack Cambridge is back for its fifth year! In January 2020, the University of Cambridge’s annual hackathon will yet again bring together 300 outstanding hackers, programmers, designers and more from universities all over the world. For 24 hours, they will build, break and innovate to produce genuinely remarkable projects that push the boundaries of technology.">
+        <meta property="og:title" content="@yield('title')">
+        <meta property="og:description" content="Hack Cambridge is back for its fifth year! In January 2020, the University of Cambridge’s annual hackathon will yet again bring together 300 outstanding hackers, programmers, designers and more from universities all over the world. For 24 hours, they will build, break and innovate to produce genuinely remarkable projects that push the boundaries of technology.">
+        <meta property="og:image" content="{{ url('images/meta-image.jpg') }}">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta name="twitter:card" content="summary_large_image">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
         <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}" />
         <link rel="shortcut icon" type="image/png" href="/images/favicon.png"/>
-
-        <link href="https://fonts.googleapis.com/css?family=Ovo:400,700|Arvo&display=swap" rel="stylesheet">    </head>
+        <link href="https://fonts.googleapis.com/css?family=Ovo:400,700|Arvo&display=swap" rel="stylesheet">    
+    </head>
     <body>
 
         @env('production')

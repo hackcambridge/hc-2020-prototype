@@ -2,9 +2,7 @@
 @section('title', 'Hack Cambridge 101 — The Official University of Cambridge Hackathon')
 
 @section('header-content')
-    <meta name="description" content="Hack Cambridge is back for its fifth year! In January 2020, the University of Cambridge’s annual hackathon will yet again bring together 300 outstanding hackers, programmers, designers and more from universities all over the world. For 24 hours, they will build, break and innovate to produce genuinely remarkable projects that push the boundaries of technology.">
     <div id="intro-container">
-        <!-- <h1 id="intro-title">Hack Cambridge is back!</h1> -->
         <img id="top-logo" src="{{ asset('images/101-white.png') }}" />
         <p id="top-tagline" style="">Hack Cambridge is going back to basics with 101.</p>
 
@@ -16,7 +14,6 @@
     </div>
     <div id="header-bottom-card">
         <div id="header-bottom-card-content">
-            <!-- <p>OFFICIAL HACKATHON</p> -->
             <img style="padding: 0.1rem 0 0.3rem;" src="{{ asset('images/official-hackathon.png') }}" />
             <img src="{{ asset('images/cambridge.png') }}" />
         </div>
