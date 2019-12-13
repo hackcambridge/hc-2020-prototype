@@ -48,7 +48,7 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
                     { applications && applications.length > 0 ?
                         <ResourceList
                             loading={isLoading}
-                            resourceName={{singular: 'application', plural: 'applications'}}
+                            resourceName={{singular: 'applicant', plural: 'applicants'}}
                             items={applications.filter((app) => {
                                 return (app.name.toLowerCase().includes(filterValue) || app.email.toLowerCase().includes(filterValue));
                             })}
