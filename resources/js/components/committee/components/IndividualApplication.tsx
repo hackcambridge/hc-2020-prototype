@@ -51,18 +51,35 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
 
     constructor(props: IIndividualApplicationProps & RouteComponentProps){
         super(props);
-        this.spaceFunction = this.spaceFunction.bind(this);
+        this.arrowFunctions = this.arrowFunctions.bind(this);
+        this.rightArrowFunction = this.rightArrowFunction.bind(this);
     }
 
-    spaceFunction(event: KeyboardEvent){
-        if(event.keyCode === 32) {
-            const { cvModalOpen } = this.state;
+    arrowFunctions(event: KeyboardEvent){
+        const { cvModalOpen, reviewModalOpen } = this.state;
+        if(event.keyCode === 32) { // space
             this.setState({ cvModalOpen: !cvModalOpen });
+        }
+        if(event.keyCode === 40) { // down
+            this.setState({ cvModalOpen: false });
+        }
+        if(event.keyCode === 39) { // right
+            this.setState({ reviewModalOpen: true });
+        }
+        if(event.keyCode === 38) { // up
+            this.setState({ cvModalOpen: true });
+        }
+        if(event.keyCode === 37) { // left
+            this.setState({ reviewModalOpen: false });
         }
     }
 
+    rightArrowFunction(event: KeyboardEvent){
+        
+    }
+
     componentDidMount() {
-        document.addEventListener("keydown", this.spaceFunction, false);
+        document.addEventListener("keydown", this.arrowFunctions, false);
         const applicationId = +this.props.applicationId;
         if (Number.isNaN(applicationId)) {
             this.setState({ loading: false });
@@ -72,7 +89,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
     }
 
     componentWillUnmount(){
-        document.removeEventListener("keydown", this.spaceFunction, false);
+        document.removeEventListener("keydown", this.arrowFunctions, false);
     }
 
     render() {
@@ -106,7 +123,9 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             const cvButton = app.cvUrl.length > 0 
                 ? <a style={{ marginTop: "-0.4rem", textDecoration: "none", cursor: "pointer" }} onClick={() => this.setState({ cvModalOpen: true })}><Badge status="success">Open CV</Badge></a>
                 : <div style={{ marginTop: "-0.4rem" }}><Badge status="warning">Missing</Badge></div>;
-            const cvIFrame = <iframe className="cv-frame" style={{ height: `${window.innerHeight * 0.85}px` }} src={`${app.cvUrl}#view=FitH`}></iframe>;
+            const cvIFrame = (app.cvUrl || app.cvUrl.length > 0)
+                ? <iframe className="cv-frame" style={{ height: `${window.innerHeight * 0.85}px` }} src={`${app.cvUrl}#view=FitH`}></iframe>
+                : <div style={{ height: `${window.innerHeight * 0.85}px`, padding: "1rem", width: "100%", textAlign: "center" }}>No file found</div>;
             return (
                 <Page 
                     breadcrumbs={[{content: 'Applications', url: '../applications'}]}
@@ -173,7 +192,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                         title="Review Application"
                         primaryAction={{
                             content: 'Submit',
-                            onAction: () => {},
+                            onAction: this.randomNextApplication,
                         }}
                     >
                         <Modal.Section>
@@ -211,7 +230,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
     };
 
     private retrieveApplication = (applicationId: number) => {
-        this.setState({ loading: true });
+        this.setState({ loading: true, cvModalOpen: false, reviewModalOpen: false });
         axios.post("/committee/admin-api/get-application.json", {
             id: applicationId
         }).then(res => {
