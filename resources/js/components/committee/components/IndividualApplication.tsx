@@ -48,13 +48,31 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
         reviewTotal: reviewQuestions.reduce((a, b) => a + b.default, 0),
         reviewMax: reviewQuestions.reduce((a, b) => a + b.range, 0),
     }
+
+    constructor(props: IIndividualApplicationProps & RouteComponentProps){
+        super(props);
+        this.spaceFunction = this.espaceFunctionscFunction.bind(this);
+    }
+
+    spaceFunction(event: KeyboardEvent){
+        if(event.keyCode === 32) {
+            const { cvModalOpen } = this.state;
+            this.setState({ cvModalOpen: !cvModalOpen });
+        }
+    }
+
     componentDidMount() {
+        document.addEventListener("keydown", this.spaceFunction, false);
         const applicationId = +this.props.applicationId;
         if (Number.isNaN(applicationId)) {
             this.setState({ loading: false });
         } else {
             this.retrieveApplication(applicationId);
         }
+    }
+
+    componentWillUnmount(){
+        document.removeEventListener("keydown", this.spaceFunction, false);
     }
 
     render() {
@@ -88,12 +106,17 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             const cvButton = app.cvUrl.length > 0 
                 ? <a style={{ marginTop: "-0.4rem", textDecoration: "none", cursor: "pointer" }} onClick={() => this.setState({ cvModalOpen: true })}><Badge status="success">Open CV</Badge></a>
                 : <div style={{ marginTop: "-0.4rem" }}><Badge status="warning">Missing</Badge></div>;
-            const cvIFrame = <iframe className="cv-frame" style={{ height: `${window.innerHeight * 0.9}px` }} src={`${app.cvUrl}#view=FitH`}></iframe>;
+            const cvIFrame = <iframe className="cv-frame" style={{ height: `${window.innerHeight * 0.85}px` }} src={`${app.cvUrl}#view=FitH`}></iframe>;
             return (
                 <Page 
                     breadcrumbs={[{content: 'Applications', url: '../applications'}]}
                     title={`${usr.name}`} 
                     subtitle={`Application #${app.id}`}
+                    pagination={{
+                        hasPrevious: false,
+                        hasNext: true,
+                        onNext: this.randomNextApplication
+                    }}
                     primaryAction={{content: 'Review', onAction: () => this.setState({ reviewModalOpen: true })}}
                     thumbnail={<Thumbnail
                         source={`https://www.gravatar.com/avatar/${md5(usr.email.toLowerCase())}?d=retro&s=200`}
@@ -108,16 +131,14 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                     <DescriptionList
                                         items={[
                                             { term: 'CV', description: cvButton },
-                                            { term: 'Email', description: profile["email"] },
-                                            { term: 'Gender', description: profile["gender"] },
-                                            { term: 'School', description: profile["school"]["name"] },
-                                            { term: 'Subject', description: profile["major"] },
-                                            { term: 'Level', description: profile["level_of_study"] },
+                                            { term: 'Email', description: profile["email"] || "" },
+                                            { term: 'Gender', description: profile["gender"] || "" },
+                                            { term: 'School', description: "school" in profile ? (profile["school"]["name"] || "") : "" },
+                                            { term: 'Subject', description: profile["major"] || "" },
+                                            { term: 'Level', description: profile["level_of_study"] || "" },
                                         ]}
                                     />
                                 </div>
-                                {/* <br />
-                                {usr.profile} */}
                             </Card>
                         </Layout.Section>
                         <Layout.Section>
@@ -154,10 +175,6 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                             content: 'Submit',
                             onAction: () => {},
                         }}
-                        secondaryActions={[{
-                            content: 'Skip',
-                            onAction: () => {},
-                        }]}
                     >
                         <Modal.Section>
                             <Stack vertical>
@@ -165,6 +182,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                     return (
                                         <Stack.Item>
                                             <RangeSlider
+                                                key={q.id}
                                                 output
                                                 label={q.question}
                                                 min={0}
@@ -177,7 +195,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                     );
                                 })}
                                 
-                                <Stack.Item>
+                                <Stack.Item key={-1}>
                                     <p style={{ textAlign: "center", fontWeight: 700, fontSize: "2rem", padding: "2rem 0 0.5rem" }}>Score: {(Math.round((reviewTotal/reviewMax) * 100) / 100).toFixed(2)}/1.00</p>
                                 </Stack.Item>
                             </Stack>
@@ -201,6 +219,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             if(status == 200) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
+                    console.log(payload);
                     const application : IApplicationDetail = payload["application"];
                     const user : IUserDetails = payload["user"];
                     this.setState({ 
@@ -222,6 +241,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
     }
 
     private randomNextApplication = () => {
+        this.setState({ loading: true });
         axios.get("/committee/admin-api/random-application-for-review.json").then(res => {
             const status = res.status;
             const currentUrl = this.props.history.location.pathname;
@@ -232,6 +252,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                     const next = +payload["message"];
                     if (!Number.isNaN(next) && next >= 0) {
                         this.props.history.push(`${base}/${next}`);
+                        this.retrieveApplication(next);
                     } else {
                         toast.error("Invalid next application.");
                         this.props.history.push(`${base}`);
