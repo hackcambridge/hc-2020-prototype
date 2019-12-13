@@ -7,6 +7,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import md5 from 'md5';
 import { textFieldQuestions } from '../../dashboard/components/Apply';
+import { RangeSliderValue } from '@shopify/polaris/types/components/RangeSlider';
 
 interface IIndividualApplicationProps {
     applicationId: string
@@ -19,8 +20,17 @@ interface IIndividualApplicationState {
     user: IUserDetails | undefined,
     cvModalOpen: boolean,
     reviewModalOpen: boolean,
+    reviewAnswers: { [id: number]: number },
+    reviewTotal: number,
+    reviewMax: number,
 }
 
+
+export const reviewQuestions = [
+    { id: 1, question: "Technical Ability [0-100, greater is better]", range: 100, step: 5, default: 20 },
+    { id: 2, question: "Enthusiasm [0-50, greater is better]", range: 50, step: 5, default: 10 },
+    { id: 3, question: "Bonus [0-5]", range: 5, step: 1, default: 0 },
+]
 
 class IndividualApplication extends Component<IIndividualApplicationProps & RouteComponentProps, IIndividualApplicationState> {
     
@@ -31,6 +41,12 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
         user: undefined,
         cvModalOpen: false,
         reviewModalOpen: false,
+        reviewAnswers: reviewQuestions.reduce<{ [id: number]: number }>((map, obj) => {
+            map[obj.id] = obj.default;
+            return map;
+        }, {}),
+        reviewTotal: reviewQuestions.reduce((a, b) => a + b.default, 0),
+        reviewMax: reviewQuestions.reduce((a, b) => a + b.range, 0),
     }
     componentDidMount() {
         const applicationId = +this.props.applicationId;
@@ -63,16 +79,16 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
 
     private renderApplication = () => {
         const { application, user }: { application: IApplicationDetail | undefined, user: IUserDetails | undefined } = this.state;
-        const { cvModalOpen, reviewModalOpen } = this.state;
+        const { cvModalOpen, reviewModalOpen, reviewAnswers, reviewTotal, reviewMax } = this.state;
         if(application && user) {
             const app: IApplicationDetail = application;
             const usr: IUserDetails = user;
             const questions = JSON.parse(app.questionResponses);
             const profile = JSON.parse(usr.profile);
             const cvButton = app.cvUrl.length > 0 
-                ? <a style={{ marginTop: "-0.4rem", textDecoration: "none", cursor: "pointer" }} onClick={() => this.setState({ cvModalOpen: true })}><Badge status="info">Open CV</Badge></a>
+                ? <a style={{ marginTop: "-0.4rem", textDecoration: "none", cursor: "pointer" }} onClick={() => this.setState({ cvModalOpen: true })}><Badge status="success">Open CV</Badge></a>
                 : <div style={{ marginTop: "-0.4rem" }}><Badge status="warning">Missing</Badge></div>;
-            const cvIFrame = <iframe className="cv-frame" style={{ height: `${window.innerHeight * 0.8}px` }} src={ app.cvUrl }></iframe>;
+            const cvIFrame = <iframe className="cv-frame" style={{ height: `${window.innerHeight * 0.9}px` }} src={`${app.cvUrl}#view=FitH`}></iframe>;
             return (
                 <Page 
                     breadcrumbs={[{content: 'Applications', url: '../applications'}]}
@@ -145,38 +161,24 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                     >
                         <Modal.Section>
                             <Stack vertical>
+                                {reviewQuestions.map(q => {
+                                    return (
+                                        <Stack.Item>
+                                            <RangeSlider
+                                                output
+                                                label={q.question}
+                                                min={0}
+                                                max={q.range}
+                                                step={q.step}
+                                                value={reviewAnswers[q.id]}
+                                                onChange={(n) => this.setReviewAnswer(q.id, n)}
+                                            />
+                                        </Stack.Item>
+                                    );
+                                })}
+                                
                                 <Stack.Item>
-                                    <RangeSlider
-                                        output
-                                        label="Criteria A"
-                                        min={0}
-                                        max={100}
-                                        step={10}
-                                        value={20}
-                                        onChange={() => {}}
-                                    />
-                                </Stack.Item>
-                                <Stack.Item>
-                                    <RangeSlider
-                                        output
-                                        label="Criteria B"
-                                        min={0}
-                                        max={100}
-                                        step={10}
-                                        value={20}
-                                        onChange={() => {}}
-                                    />
-                                </Stack.Item>
-                                <Stack.Item>
-                                    <RangeSlider
-                                        output
-                                        label="Criteria C"
-                                        min={0}
-                                        max={100}
-                                        step={10}
-                                        value={20}
-                                        onChange={() => {}}
-                                    />
+                                    <p style={{ textAlign: "center", fontWeight: 700, fontSize: "2rem", padding: "2rem 0 0.5rem" }}>Score: {(Math.round((reviewTotal/reviewMax) * 100) / 100).toFixed(2)}/1.00</p>
                                 </Stack.Item>
                             </Stack>
                         </Modal.Section>
@@ -245,8 +247,13 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
         });
     }
 
-    private startReview = () => {
-        
+    private setReviewAnswer(id: number, value: number | [number, number]) {
+        const { reviewAnswers } = this.state;
+        reviewAnswers[id] = Array.isArray(value) ? value[1] : value;
+        const vals = reviewQuestions.map((q) => reviewAnswers[q.id]);
+        const sum = vals.reduce((a, b) => a + b, 0);
+        // const avg = (sum / vals.length) || 0;
+        this.setState({ reviewAnswers: reviewAnswers, reviewTotal: sum });
     }
 }
 
