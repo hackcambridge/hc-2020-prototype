@@ -11,6 +11,10 @@ class Home extends Controller
         return view('frontpages/index');
     }
 
+    public function test() {
+        return view('test');
+    }
+
     public function apply() {
         if(Auth::check()) {
             $dashboard_url = route("dashboard_index", array(), false);
