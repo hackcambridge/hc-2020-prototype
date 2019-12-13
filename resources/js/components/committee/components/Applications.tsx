@@ -12,6 +12,7 @@ interface IApplicationsProps {
 interface IApplicationsState {
     isLoading: boolean,
     applications: IApplicationSummary[],
+    filterValue: string,
 }
 
 class Applications extends Component<IApplicationsProps, IApplicationsState> {
@@ -20,6 +21,7 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
     state = {
         isLoading: true,
         applications: [this.dummyRecord],
+        filterValue: "",
     }
 
     componentDidMount() {
@@ -27,15 +29,15 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
     }
 
     render() {
-        const { isLoading, applications } = this.state;
+        const { isLoading, applications, filterValue } = this.state;
 
         const filterControl = (
             <Filters
-              queryValue={""}
+              queryValue={filterValue}
               filters={[]}
               appliedFilters={[]}
-              onQueryChange={() => {}}
-              onQueryClear={() => {}}
+              onQueryChange={(m) => this.setState({ filterValue: m })}
+              onQueryClear={() => this.setState({ filterValue: "" })}
               onClearAll={() => {}}
             />
           );
@@ -47,7 +49,9 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
                         <ResourceList
                             loading={isLoading}
                             resourceName={{singular: 'application', plural: 'applications'}}
-                            items={applications}
+                            items={applications.filter((app) => {
+                                return (app.name.toLowerCase().includes(filterValue) || app.email.toLowerCase().includes(filterValue));
+                            })}
                             renderItem={this.renderApplicationSummaryRow}
                             filterControl={filterControl}
                         />
