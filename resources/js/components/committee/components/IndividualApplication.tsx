@@ -219,7 +219,6 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             if(status == 200) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
-                    console.log(payload);
                     const application : IApplicationDetail = payload["application"];
                     const user : IUserDetails = payload["user"];
                     this.setState({ 
