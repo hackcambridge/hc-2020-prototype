@@ -51,7 +51,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
 
     constructor(props: IIndividualApplicationProps & RouteComponentProps){
         super(props);
-        this.spaceFunction = this.espaceFunctionscFunction.bind(this);
+        this.spaceFunction = this.spaceFunction.bind(this);
     }
 
     spaceFunction(event: KeyboardEvent){
