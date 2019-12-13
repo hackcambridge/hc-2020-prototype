@@ -21,16 +21,6 @@ Route::get('/health', function () {
     return 'Application is up.';
 });
 
-// Route::get('/test-add/{email}', function($email) {
-//     return \App\Helpers\Auth0Management::addPasswordlessUser($email, 'A New Name');
-// });
-
-// Route::get('/test-remove/{id}', function($id) {
-//     return \App\Helpers\Auth0Management::removePasswordlessUser($id);
-// });
-
-
-
 
 # Auth0
 Route::get('/auth0/callback', '\Auth0\Login\Auth0Controller@callback')->name('auth0-callback');
