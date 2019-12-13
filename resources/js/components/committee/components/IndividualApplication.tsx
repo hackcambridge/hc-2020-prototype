@@ -84,7 +84,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                         size="large"
                         alt={`${usr.name}`}
                     />}
-                    separator>
+                >
                     <Layout>
                         <Layout.Section secondary>
                             <Card>
