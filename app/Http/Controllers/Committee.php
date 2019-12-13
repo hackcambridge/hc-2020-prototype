@@ -28,6 +28,7 @@ class Committee extends Controller
             case 'admin-overview': return $this->getAdminOverview();
             case 'applications-summary': return $this->getApplicationsSummary();
             case 'get-members': return $this->getMembers();
+            case 'random-application-for-review': return $this->getRandomApplicationToReview();
             default: return $this->fail("Route not found");
         }
     }
@@ -233,6 +234,15 @@ class Committee extends Controller
             } else {
                 return $this->fail("Application doesn't exist.");
             }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function getRandomApplicationToReview() {
+        if($this->canContinue(null, [], false)) {
+            $app = Application::all()->random();
+            return $this->success($app->id);
         } else {
             return $this->fail("Checks failed.");
         }
