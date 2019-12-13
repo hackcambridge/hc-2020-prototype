@@ -54,6 +54,7 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
                             })}
                             renderItem={this.renderApplicationSummaryRow}
                             filterControl={filterControl}
+                            alternateTool={<></>}
                         />
                     : 
                         <Heading>Loading...</Heading>
