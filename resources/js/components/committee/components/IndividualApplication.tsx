@@ -121,8 +121,8 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             const questions = JSON.parse(app.questionResponses);
             const profile = JSON.parse(usr.profile);
             const cvButton = app.cvUrl.length > 0 
-                ? <a style={{ marginTop: "-0.4rem", textDecoration: "none", cursor: "pointer" }} onClick={() => this.setState({ cvModalOpen: true })}><Badge status="success">Open CV</Badge></a>
-                : <div style={{ marginTop: "-0.4rem" }}><Badge status="warning">Missing</Badge></div>;
+                ? <a style={{ marginTop: "-0.4rem", textDecoration: "none", cursor: "pointer" }} onClick={() => this.setState({ cvModalOpen: true })}><Button fullWidth primary>View CV</Button></a>
+                : <div style={{ marginTop: "-0.4rem" }}><Button disabled fullWidth primary>CV missing</Button></div>;
             const cvIFrame = (app.cvUrl || app.cvUrl.length > 0)
                 ? <iframe className="cv-frame" style={{ height: `${window.innerHeight * 0.85}px` }} src={`${app.cvUrl}#view=FitH`}></iframe>
                 : <div style={{ height: `${window.innerHeight * 0.85}px`, padding: "1rem", width: "100%", textAlign: "center" }}>No file found</div>;
@@ -136,7 +136,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                         hasNext: true,
                         onNext: this.randomNextApplication
                     }}
-                    primaryAction={{content: 'Review', onAction: () => this.setState({ reviewModalOpen: true })}}
+                    primaryAction={{content: 'Review', destructive: true, onAction: () => this.setState({ reviewModalOpen: true })}}
                     thumbnail={<Thumbnail
                         source={`https://www.gravatar.com/avatar/${md5(usr.email.toLowerCase())}?d=retro&s=200`}
                         size="large"
@@ -145,11 +145,13 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                 >
                     <Layout>
                         <Layout.Section secondary>
+                            {cvButton}
+                            <br />
                             <Card>
                                 <div style={{ padding: "0 2rem" }}>
                                     <DescriptionList
                                         items={[
-                                            { term: 'CV', description: cvButton },
+                                            // { term: 'CV', description: cvButton },
                                             { term: 'Email', description: profile["email"] || "" },
                                             { term: 'Gender', description: profile["gender"] || "" },
                                             { term: 'School', description: "school" in profile ? (profile["school"]["name"] || "") : "" },
