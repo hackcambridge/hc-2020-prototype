@@ -41,9 +41,9 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
               onClearAll={() => {}}
             />
           );
-          
+        const titlePrefix = (applications.length > 0 && !isLoading) ? `${applications.length} ` : "";
         return (
-            <Page title={"Applications"}>
+            <Page title={`${titlePrefix}Applications`}>
                 <Card>
                     { applications && applications.length > 0 ?
                         <ResourceList
@@ -54,7 +54,6 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
                             })}
                             renderItem={this.renderApplicationSummaryRow}
                             filterControl={filterControl}
-                            alternateTool={<></>}
                         />
                     : 
                         <Heading>Loading...</Heading>

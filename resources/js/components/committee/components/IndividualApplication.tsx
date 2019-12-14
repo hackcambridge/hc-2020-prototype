@@ -29,9 +29,9 @@ interface IIndividualApplicationState {
 
 
 export const reviewQuestions = [
-    { id: 1, question: "Technical Ability [0-100, greater is better]", range: 100, step: 5, default: 20 },
-    { id: 2, question: "Enthusiasm [0-50, greater is better]", range: 50, step: 5, default: 10 },
-    { id: 3, question: "Bonus [0-5]", range: 5, step: 1, default: 0 },
+    { id: 1, question: "Technical Ability [0-100, greater is better]", range: 100, step: 5, default: 20, weight: 1 },
+    { id: 2, question: "Enthusiasm [0-100, greater is better]", range: 100, step: 5, default: 20, weight: 1 },
+    { id: 3, question: "Bonus [0-1]", range: 1, step: 1, default: 0, weight: 30, width: "10rem" },
 ]
 
 class IndividualApplication extends Component<IIndividualApplicationProps & RouteComponentProps, IIndividualApplicationState> {
@@ -47,8 +47,8 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             map[obj.id] = obj.default;
             return map;
         }, {}),
-        reviewTotal: reviewQuestions.reduce((a, b) => a + b.default, 0),
-        reviewMax: reviewQuestions.reduce((a, b) => a + b.range, 0),
+        reviewTotal: reviewQuestions.reduce((a, b) => a + (b.default * b.weight), 0),
+        reviewMax: reviewQuestions.reduce((a, b) => a + (b.range * b.weight), 0),
         savingReview: false,
         alreadyReviewed: false,
     }
@@ -215,16 +215,18 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                 {reviewQuestions.map(q => {
                                     return (
                                         <Stack.Item key={q.id}>
-                                            <RangeSlider
-                                                key={q.id}
-                                                output
-                                                label={q.question}
-                                                min={0}
-                                                max={q.range}
-                                                step={q.step}
-                                                value={reviewAnswers[q.id]}
-                                                onChange={(n) => this.setReviewAnswer(q.id, n)}
-                                            />
+                                            <div style={{ width: (q.width || "100%"), maxWidth: "100%" }}>
+                                                <RangeSlider
+                                                    key={q.id}
+                                                    output
+                                                    label={q.question}
+                                                    min={0}
+                                                    max={q.range}
+                                                    step={q.step}
+                                                    value={reviewAnswers[q.id]}
+                                                    onChange={(n) => this.setReviewAnswer(q.id, n)}
+                                                />
+                                            </div>
                                         </Stack.Item>
                                     );
                                 })}
@@ -316,7 +318,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
     private setReviewAnswer(id: number, value: number | [number, number]) {
         const { reviewAnswers } = this.state;
         reviewAnswers[id] = Array.isArray(value) ? value[1] : value;
-        const vals = reviewQuestions.map((q) => reviewAnswers[q.id]);
+        const vals = reviewQuestions.map((q) => reviewAnswers[q.id] * q.weight);
         const sum = vals.reduce((a, b) => a + b, 0);
         // const avg = (sum / vals.length) || 0;
         this.setState({ reviewAnswers: reviewAnswers, reviewTotal: sum });
