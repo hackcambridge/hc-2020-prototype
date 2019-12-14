@@ -51,12 +51,14 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
                     </Card>
                 </Layout.Section>
                 <Layout.Section oneHalf>
-                    <Card sectioned title={"Leaderboard"}>
-                        <DescriptionList
-                            items={overview.reviews.sort((a, b) => (a.reviews > b.reviews) ? 1 : -1).map(r => {
-                                return { term: r.reviews, description: r.name };
-                            })}
-                        />
+                    <Card title={"Review Leaderboard"}>
+                        <div style={{ padding: "0 2rem" }}>
+                            <DescriptionList
+                                items={overview.reviews.sort((a, b) => (a.reviews > b.reviews) ? 1 : -1).map(r => {
+                                    return { term: r.reviews, description: r.name };
+                                })}
+                            />
+                        </div>
                     </Card>
                 </Layout.Section>
             </Layout>
