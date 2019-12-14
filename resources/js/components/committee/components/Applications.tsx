@@ -12,6 +12,7 @@ interface IApplicationsProps {
 interface IApplicationsState {
     isLoading: boolean,
     applications: IApplicationSummary[],
+    filterValue: string,
 }
 
 class Applications extends Component<IApplicationsProps, IApplicationsState> {
@@ -20,6 +21,7 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
     state = {
         isLoading: true,
         applications: [this.dummyRecord],
+        filterValue: "",
     }
 
     componentDidMount() {
@@ -27,27 +29,29 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
     }
 
     render() {
-        const { isLoading, applications } = this.state;
+        const { isLoading, applications, filterValue } = this.state;
 
         const filterControl = (
             <Filters
-              queryValue={""}
+              queryValue={filterValue}
               filters={[]}
               appliedFilters={[]}
-              onQueryChange={() => {}}
-              onQueryClear={() => {}}
+              onQueryChange={(m) => this.setState({ filterValue: m })}
+              onQueryClear={() => this.setState({ filterValue: "" })}
               onClearAll={() => {}}
             />
           );
-          
+        const titlePrefix = (applications.length > 0 && !isLoading) ? `${applications.length} ` : "";
         return (
-            <Page title={"Applications"}>
+            <Page title={`${titlePrefix}Applications`}>
                 <Card>
                     { applications && applications.length > 0 ?
                         <ResourceList
                             loading={isLoading}
-                            resourceName={{singular: 'application', plural: 'applications'}}
-                            items={applications}
+                            resourceName={{singular: 'applicant', plural: 'applicants'}}
+                            items={applications.filter((app) => {
+                                return (app.name.toLowerCase().includes(filterValue) || app.email.toLowerCase().includes(filterValue));
+                            })}
                             renderItem={this.renderApplicationSummaryRow}
                             filterControl={filterControl}
                         />
@@ -67,7 +71,6 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
                     const applications: IApplicationSummary[] = payload["applications"];
-                    console.log(applications);
                     this.setState({ 
                         applications: applications,
                         isLoading: false,

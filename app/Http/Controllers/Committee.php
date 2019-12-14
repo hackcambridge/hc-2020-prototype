@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Models\Application;
+use App\Models\ApplicationReview;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ class Committee extends Controller
             case 'admin-overview': return $this->getAdminOverview();
             case 'applications-summary': return $this->getApplicationsSummary();
             case 'get-members': return $this->getMembers();
+            case 'random-application-for-review': return $this->getRandomApplicationToReview();
             default: return $this->fail("Route not found");
         }
     }
@@ -38,6 +40,7 @@ class Committee extends Controller
             case 'demote-admin': return $this->removeAdmin($r);
             case 'promote-committee': return $this->setAdmin($r);
             case 'get-application': return $this->getApplication($r);
+            case 'submit-review': return $this->submitApplicationReview($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -105,13 +108,18 @@ class Committee extends Controller
                 ->join('users', 'users.id', '=', 'applications.user_id')
                 ->select('applications.id', 'applications.isSubmitted')
                 ->where('users.type', '=', 'hacker');
+            $reviews = DB::table('application_reviews')
+                ->join("users", "users.id", "=", "application_reviews.user_id")
+                ->groupBy('application_reviews.user_id')
+                ->select("name", DB::raw('count(*) as reviews'))->get();
             return response()->json([
                 "success" => true,
                 "overview" => array(
                     "users" => DB::table('users')->where('users.type', '=', 'hacker')->count(),
                     "applications" => array(
-                        "total" => $applications->where('applications.isSubmitted', '1')->count()
-                    )
+                        "total" => $applications->where('applications.isSubmitted', true)->count()
+                    ),
+                    "reviews" => $reviews
                 ),
             ]);
         } else {
@@ -224,14 +232,95 @@ class Committee extends Controller
             $id = $r->get("id");
             $app = Application::where("id", "=", $id)->first();
             $user = User::where("id", "=", $app->user_id)->first();
+            $review = ApplicationReview::where("application_id", "=", $app->id)
+                                       ->where("user_id", "=", Auth::user()->id)
+                                       ->first();
             if($app) {
                 return response()->json([
                     'success' => true,
                     'application' => $app,
                     'user' => $user,
+                    'review' => $review,
                 ]);
             } else {
                 return $this->fail("Application doesn't exist.");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function getRandomApplicationToReview() {
+        if($this->canContinue(null, [], false)) {
+            // Hacker applications I haven't reviewed yet...
+            $apps = DB::table('applications')
+                ->select('applications.id', 'applications.isSubmitted', "applications.user_id")
+                ->join("users", "users.id", "=", "applications.user_id")
+                ->where("type", "=", "hacker")
+                ->where("applications.isSubmitted", true)
+                ->select("applications.id")
+                ->rightJoin('application_reviews', 'application_reviews.application_id', '=', 'applications.id')
+                ->where('application_reviews.user_id', '!=', Auth::user()->id)->orWhereNull('application_reviews.user_id')
+                ->get();
+
+            if($apps->count() > 0) {
+                return $this->success($apps->random()->id);
+            } else {
+                return $this->fail("No more applications to review");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function submitApplicationReview($r) {
+        if($this->canContinue($r, ["app_id","review_details","review_total"], false)) {
+            $app_id = $r->get("app_id");
+            $review_details = $r->get("review_details");
+            $review_total = $r->get("review_total");
+            $review = ApplicationReview::where("application_id", "=", $app_id)
+                                       ->where("user_id", "=", Auth::user()->id)
+                                       ->first();
+            if($review) {
+                // Updating record
+                $review->setAttribute("review_details", $review_details);
+                $review->setAttribute("review_total", $review_total);
+                if($review->save()) {
+                    return $this->success("Successfully saved review.");
+                } else {
+                    return $this->fail("Failed to update review.");
+                }
+            } else {
+                // New review
+                $review = new ApplicationReview();
+                $review->setAttribute("application_id", $app_id);
+                $review->setAttribute("user_id", Auth::user()->id);
+                $review->setAttribute("review_details", $review_details);
+                $review->setAttribute("review_total", $review_total);
+                if($review->save()) {
+                    return $this->success("Successfully saved review.");
+                } else {
+                    return $this->fail("Failed to create review.");
+                }
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function getOwnReview() {
+        if($this->canContinue($r, ["app_id"], false)) {
+            $app_id = $r->get("app_id");
+            $review = ApplicationReview::where("application_id", "=", $app_id)
+                                       ->where("user_id", "=", Auth::user()->id)
+                                       ->first();
+            if($review) {
+                return response()->json([
+                    'success' => true,
+                    'review' => $review,
+                ]);
+            } else {
+                return $this->success("No review found.");
             }
         } else {
             return $this->fail("Checks failed.");

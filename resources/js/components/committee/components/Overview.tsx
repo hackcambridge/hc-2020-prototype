@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Page, Button, Card, ResourceList, Avatar, TextStyle, TextContainer, Heading, Filters, Stack } from "@shopify/polaris";
+import { Page, Button, Card, ResourceList, Avatar, TextStyle, TextContainer, Heading, Filters, Stack, Layout, DescriptionList } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { IAdminOverview } from '../../../interfaces/committee.interfaces';
@@ -41,12 +41,27 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
         }
 
         return (
-            <Card sectioned title={""}>
-                <Stack>
-                    <Button monochrome outline>{`${overview.users}`} registrations</Button>
-                    <Button url={`applications`} external={false} monochrome outline>{`${overview.applications.total}`} applications</Button>
-                </Stack>
-            </Card>
+            <Layout>
+                <Layout.Section oneHalf>
+                    <Card sectioned title={""}>
+                        <Stack>
+                            <Button monochrome outline>{`${overview.users}`} registrations</Button>
+                            <Button url={`applications`} monochrome outline>{`${overview.applications.total}`} applications</Button>
+                        </Stack>
+                    </Card>
+                </Layout.Section>
+                <Layout.Section oneHalf>
+                    <Card title={"Review Leaderboard"}>
+                        <div style={{ padding: "0 2rem" }}>
+                            <DescriptionList
+                                items={overview.reviews.sort((a, b) => (a.reviews > b.reviews) ? 1 : -1).map(r => {
+                                    return { term: r.reviews, description: r.name };
+                                })}
+                            />
+                        </div>
+                    </Card>
+                </Layout.Section>
+            </Layout>
         );
     }
 

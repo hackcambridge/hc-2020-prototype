@@ -16,7 +16,7 @@ folders:
       to: /home/vagrant/hackcambridge
 
 sites:
-    - map: hackcambridge.test
+    - map: local.hackcambridge.com
       to: /home/vagrant/hackcambridge/public
 
 databases:

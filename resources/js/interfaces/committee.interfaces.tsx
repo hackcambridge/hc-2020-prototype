@@ -7,7 +7,8 @@ export interface IAdminOverview {
     users: number,
     applications: {
         total: number,
-    }
+    },
+    reviews: { name: string, reviews: number }[]
 }
 
 export interface IApplicationSummary {
@@ -30,4 +31,9 @@ export interface IUserDetails {
     email: string,
     type: string,
     profile: string,
+}
+
+export interface IApplicationReview {
+    review_details: string,
+    review_total: number,
 }
