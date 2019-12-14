@@ -7,9 +7,11 @@
         <p id="top-tagline" style="">Hack Cambridge is going back to basics with 101.</p>
 
         <div id="intro-description">
-            <br />
             <p>18<span class="superscript">th</span>-19<span class="superscript">th</span> January, 2020</p>
             <p>Cambridge Corn Exchange, Cambridge CB2 3QB</p>
+            <a href="https://blackrock.com", target="_blank">
+                <img id="cohost-logo" src="{{ asset('images/101-cohost.png') }}" />
+            </a>
         </div>
     </div>
     <div id="header-bottom-card">
@@ -159,7 +161,82 @@
             <h1 class="section-header">Sponsors</h1>
 
             <!-- Temporary placeholder -->
-            <h4 style="font-family: var(--title-font);text-align: center;">— We will announce all our sponsors for 101 very soon! —</h4>
+            <!-- <h4 style="font-family: var(--title-font);text-align: center;">— We will announce all our sponsors for 101 very soon! —</h4> -->
+            
+            <h6 class="sponsor-tier-title">— Cohost —</h6>
+            <div id="sponsors-cohost" class="sponsors-container">
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/blackrock.png') }}" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <h6 class="sponsor-tier-title">— Tera —</h6>
+            <div id="sponsors-tera" class="sponsors-container">
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/avast.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/microsoft.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/reply.png') }}" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <h6 class="sponsor-tier-title">— Giga —</h6>
+            <div id="sponsors-giga" class="sponsors-container">
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/huawei.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/mathworks.png') }}" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <h6 class="sponsor-tier-title">— Mega —</h6>
+            <div id="sponsors-mega" class="sponsors-container">
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/arm.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/featurespace.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/gresearch.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/janestreet.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/man.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/netcraft.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/thoughtmachine.png') }}" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <h6 class="sponsor-tier-title">— Kilo —</h6>
+            <div id="sponsors-kilo" class="sponsors-container">
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/datascope.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/wolfram.png') }}" />
+                </div>
+                <div class="item">
+                    <img src="{{ asset('images/sponsors/yoyogames.png') }}" />
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+
         </div>
     </section>
 @endsection
