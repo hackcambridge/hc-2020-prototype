@@ -72,7 +72,6 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
                     const applications: IApplicationSummary[] = payload["applications"];
-                    console.log(applications);
                     this.setState({ 
                         applications: applications,
                         isLoading: false,

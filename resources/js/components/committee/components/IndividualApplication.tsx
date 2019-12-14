@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {withRouter, RouteComponentProps} from 'react-router';
 import { Page, Card, SkeletonBodyText, Thumbnail, Layout, Heading, TextContainer, DescriptionList, Button, Link, Badge, Modal, Stack, RangeSlider } from '@shopify/polaris';
 import Committee404 from '../Committee404';
-import { IApplicationDetail, IUserDetails } from '../../../interfaces/committee.interfaces';
+import { IApplicationDetail, IUserDetails, IApplicationReview } from '../../../interfaces/committee.interfaces';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import md5 from 'md5';
@@ -23,6 +23,8 @@ interface IIndividualApplicationState {
     reviewAnswers: { [id: number]: number },
     reviewTotal: number,
     reviewMax: number,
+    savingReview: boolean,
+    alreadyReviewed: boolean,
 }
 
 
@@ -47,6 +49,8 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
         }, {}),
         reviewTotal: reviewQuestions.reduce((a, b) => a + b.default, 0),
         reviewMax: reviewQuestions.reduce((a, b) => a + b.range, 0),
+        savingReview: false,
+        alreadyReviewed: false,
     }
 
     constructor(props: IIndividualApplicationProps & RouteComponentProps){
@@ -114,7 +118,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
 
     private renderApplication = () => {
         const { application, user }: { application: IApplicationDetail | undefined, user: IUserDetails | undefined } = this.state;
-        const { cvModalOpen, reviewModalOpen, reviewAnswers, reviewTotal, reviewMax } = this.state;
+        const { cvModalOpen, reviewModalOpen, reviewAnswers, reviewTotal, reviewMax, savingReview, alreadyReviewed } = this.state;
         if(application && user) {
             const app: IApplicationDetail = application;
             const usr: IUserDetails = user;
@@ -129,7 +133,8 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             return (
                 <Page 
                     breadcrumbs={[{content: 'Applications', url: '../applications'}]}
-                    title={`${usr.name}`} 
+                    title={`${usr.name}`}
+                    titleMetadata={alreadyReviewed ? <Badge status="success">Reviewed</Badge> : <></>}
                     subtitle={`Application #${app.id}`}
                     pagination={{
                         hasPrevious: false,
@@ -177,6 +182,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                     </Layout>
 
                     <Modal
+                        key={1}
                         size={"Full"}
                         large
                         open={cvModalOpen}
@@ -189,19 +195,21 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                     </Modal>
 
                     <Modal
+                        key={2}
                         open={reviewModalOpen}
                         onClose={() => this.setState({ reviewModalOpen: false })}
                         title="Review Application"
                         primaryAction={{
                             content: 'Submit',
-                            onAction: this.randomNextApplication,
+                            onAction: this.saveReview,
                         }}
+                        loading={savingReview}
                     >
                         <Modal.Section>
                             <Stack vertical>
                                 {reviewQuestions.map(q => {
                                     return (
-                                        <Stack.Item>
+                                        <Stack.Item key={q.id}>
                                             <RangeSlider
                                                 key={q.id}
                                                 output
@@ -246,8 +254,20 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                         loading: false, 
                         applicationId: applicationId, 
                         application: application,
-                        user: user
+                        user: user,
                     });
+
+                    const review : IApplicationReview = payload["review"];
+                    if(review) {
+                        const reviewDetails = JSON.parse(review.review_details);
+                        if(reviewDetails) {
+                            this.setState({ 
+                                alreadyReviewed: true,
+                                reviewAnswers: reviewDetails,
+                                reviewTotal: review.review_total,
+                            });
+                        }
+                    }
                 } else {
                     toast.error(payload["message"]);
                 }
@@ -295,6 +315,33 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
         const sum = vals.reduce((a, b) => a + b, 0);
         // const avg = (sum / vals.length) || 0;
         this.setState({ reviewAnswers: reviewAnswers, reviewTotal: sum });
+    }
+
+
+    private saveReview = () => {
+        this.setState({ savingReview: true });
+        const { applicationId, reviewAnswers, reviewTotal } = this.state;
+        axios.post("/committee/admin-api/submit-review.json", {
+            app_id: applicationId,
+            review_details: JSON.stringify(reviewAnswers),
+            review_total: reviewTotal,
+        }).then(res => {
+            const status = res.status;
+            if(status == 200 || status == 201) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    toast.success("Successfully saved review.");
+                    this.setState({ savingReview: false, alreadyReviewed: true });
+                    this.randomNextApplication();
+                    return;
+                } else {
+                    toast.error(payload["message"]);
+                }
+            } else {
+                toast.error("Failed to save review.");
+            }
+            this.setState({ savingReview: false });
+        });
     }
 }
 

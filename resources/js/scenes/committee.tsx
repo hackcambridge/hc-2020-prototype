@@ -14,7 +14,6 @@ if (document.getElementById('committee-root')) {
 function initialise(root: HTMLElement) {
     console.log("Initialising Admin...");
     axios.get(`/committee/admin-api/init.json`).then(res => {
-        console.log(res);
         const status = res.status;
         if(status == 200) {
             const obj = res.data;

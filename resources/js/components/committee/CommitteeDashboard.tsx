@@ -8,12 +8,12 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone} from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import Overview from "./components/Overview";
 import Committee404 from "./Committee404";
 import axios from 'axios';
-import { ToastContainer, cssTransition } from "react-toastify";
+import { ToastContainer, cssTransition, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
 import md5 from "md5";
 import MemberList from "./components/MemberList";
@@ -138,6 +138,11 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                             label: "Applications",
                             icon: PackageMajorMonotone
                         },
+                        {
+                            onClick: this.startReviewing,
+                            label: "Start Reviewing",
+                            icon: FilterMajorMonotone
+                        },
                     ]}
                 />
                 {this.props.user.type == "admin" ?
@@ -208,6 +213,28 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Route component={Committee404}></Route>
             </Switch>
         );
+    }
+
+    private startReviewing = () => {
+        toast.info("Finding a random review...");
+        axios.get("/committee/admin-api/random-application-for-review.json").then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    const next = +payload["message"];
+                    if (!Number.isNaN(next) && next >= 0) {
+                        this.props.history.push(`${this.props.baseUrl}/applications/${next}`);
+                    } else {
+                        toast.error("Couldn't find next application to review");
+                    }
+                } else {
+                    toast.error(payload["message"]);
+                }
+            } else {
+                toast.error("Failed to load application to review");
+            }
+        });
     }
 
 }
