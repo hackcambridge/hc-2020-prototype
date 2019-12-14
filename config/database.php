@@ -39,14 +39,14 @@ return [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
+            'prefix' => 'dev_',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
         'sqlite_testing' => [
             'driver'   => 'sqlite',
             'database' => storage_path().'/testing.sqlite',
-            'prefix'   => 'dev_',
+            'prefix'   => 'test_',
         ],
 
         'mysql' => [

@@ -103,15 +103,13 @@ class Committee extends Controller
 
     private function getAdminOverview() {
         if($this->canContinue(null, [], false)) {
-            $prefix = env('DB_PREFIX', '');
-            if(strlen($prefix) > 0) $prefix .= '_';
-            $applications = DB::table($prefix.'applications')
+            $applications = DB::table('applications')
                 ->select('applications.id', 'applications.isSubmitted', 'applications.user_id')
-                ->join($prefix.'users', 'users.id', '=', 'applications.user_id')
+                ->join('users', 'users.id', '=', 'applications.user_id')
                 ->select('applications.id', 'applications.isSubmitted')
                 ->where('users.type', '=', 'hacker');
-            $reviews = DB::table($prefix.'application_reviews')
-                ->join($prefix."users", "users.id", "=", "application_reviews.user_id")
+            $reviews = DB::table('application_reviews')
+                ->join("users", "users.id", "=", "application_reviews.user_id")
                 ->groupBy('application_reviews.user_id')
                 ->select("name", DB::raw('count(*) as reviews'))
                 ->get();
@@ -132,10 +130,8 @@ class Committee extends Controller
 
     private function getApplicationsSummary() {
         if($this->canContinue(null, [], false)) {
-            $prefix = env('DB_PREFIX', '');
-            if(strlen($prefix) > 0) $prefix .= '_';
-            $applications = DB::table($prefix.'applications')
-                ->join($prefix.'users', 'users.id', '=', 'applications.user_id')
+            $applications = DB::table('applications')
+                ->join('users', 'users.id', '=', 'applications.user_id')
                 ->select('applications.id', 'applications.user_id', 'users.name', 'users.email', 'applications.isSubmitted')
                 ->where('users.type', '=', 'hacker')
                 ->orderBy('users.name')
@@ -257,12 +253,10 @@ class Committee extends Controller
 
     private function getRandomApplicationToReview() {
         if($this->canContinue(null, [], false)) {
-            $prefix = env('DB_PREFIX', '');
-            if(strlen($prefix) > 0) $prefix .= '_';
-            $apps = DB::table($prefix.'applications')
+            $apps = DB::table('applications')
                 ->select('applications.id', 'applications.isSubmitted')
                 ->where("applications.isSubmitted", true)
-                ->leftJoin($prefix.'application_reviews', 'application_reviews.application_id', '=', 'applications.id')
+                ->leftJoin('application_reviews', 'application_reviews.application_id', '=', 'applications.id')
                 ->where('application_reviews.user_id', '!=', Auth::user()->id)->orWhereNull('application_reviews.user_id')
                 ->get();
 ;
