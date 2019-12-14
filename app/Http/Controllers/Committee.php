@@ -111,8 +111,7 @@ class Committee extends Controller
             $reviews = DB::table('application_reviews')
                 ->join("users", "users.id", "=", "application_reviews.user_id")
                 ->groupBy('application_reviews.user_id')
-                ->select("name", DB::raw('count(*) as reviews'))
-                ->get();
+                ->select("name", DB::raw('count(*) as reviews'))->get();
             return response()->json([
                 "success" => true,
                 "overview" => array(
