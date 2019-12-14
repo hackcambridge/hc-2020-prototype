@@ -228,6 +228,11 @@
                     <img src="{{ asset('images/sponsors/datascope.png') }}" />
                 </div>
                 <div class="item">
+                    <a href=http://hackp.ac/mlh-stickermule-hackathons>
+                        <img src="{{ asset('images/sponsors/stickermule.png') }}" >
+                    </a>
+                </div>
+                <div class="item">
                     <img src="{{ asset('images/sponsors/wolfram.png') }}" />
                 </div>
                 <div class="item">
