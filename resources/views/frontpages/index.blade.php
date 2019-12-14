@@ -166,7 +166,9 @@
             <h6 class="sponsor-tier-title">— Cohost —</h6>
             <div id="sponsors-cohost" class="sponsors-container">
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/blackrock.png') }}" />
+                    <a href="https://www.blackrock.com">
+                        <img src="{{ asset('images/sponsors/blackrock.png') }}" />
+                    </a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -174,13 +176,19 @@
             <h6 class="sponsor-tier-title">— Tera —</h6>
             <div id="sponsors-tera" class="sponsors-container">
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/avast.png') }}" />
+                    <a href="https://www.avast.com">
+                        <img src="{{ asset('images/sponsors/avast.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/microsoft.png') }}" />
+                    <a href="https://www.microsoft.com">
+                        <img src="{{ asset('images/sponsors/microsoft.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/reply.png') }}" />
+                    <a href="https://www.reply.com">
+                        <img src="{{ asset('images/sponsors/reply.png') }}" />
+                    </a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -188,10 +196,14 @@
             <h6 class="sponsor-tier-title">— Giga —</h6>
             <div id="sponsors-giga" class="sponsors-container">
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/huawei.png') }}" />
+                    <a href="https://www.huawei.com">
+                        <img src="{{ asset('images/sponsors/huawei.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/mathworks.png') }}" />
+                    <a href="https://www.mathworks.com">
+                        <img src="{{ asset('images/sponsors/mathworks.png') }}" />
+                    </a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -199,25 +211,39 @@
             <h6 class="sponsor-tier-title">— Mega —</h6>
             <div id="sponsors-mega" class="sponsors-container">
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/arm.png') }}" />
+                    <a href="https://www.arm.com">
+                        <img src="{{ asset('images/sponsors/arm.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/featurespace.png') }}" />
+                    <a href="https://www.featurespace.com">
+                        <img src="{{ asset('images/sponsors/featurespace.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/gresearch.png') }}" />
+                    <a href="https://www.gresearch.co.uk">
+                        <img src="{{ asset('images/sponsors/gresearch.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/janestreet.png') }}" />
+                    <a href="https://www.janestreet.com">
+                        <img src="{{ asset('images/sponsors/janestreet.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/man.png') }}" />
+                    <a href="https://www.man.com">
+                        <img src="{{ asset('images/sponsors/man.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/netcraft.png') }}" />
+                    <a href="https://www.netcraft.com">
+                        <img src="{{ asset('images/sponsors/netcraft.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/thoughtmachine.png') }}" />
+                    <a href="https://www.thoughtmachine.net">
+                        <img src="{{ asset('images/sponsors/thoughtmachine.png') }}" />
+                    </a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -225,7 +251,9 @@
             <h6 class="sponsor-tier-title">— Kilo —</h6>
             <div id="sponsors-kilo" class="sponsors-container">
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/datascope.png') }}" />
+                    <a href="https://datascope.co.uk">
+                        <img src="{{ asset('images/sponsors/datascope.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
                     <a href=http://hackp.ac/mlh-stickermule-hackathons>
@@ -233,10 +261,14 @@
                     </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/wolfram.png') }}" />
+                    <a href="https://www.wolfram.com">
+                        <img src="{{ asset('images/sponsors/wolfram.png') }}" />
+                    </a>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('images/sponsors/yoyogames.png') }}" />
+                    <a href="https://www.yoyogames.com">
+                        <img src="{{ asset('images/sponsors/yoyogames.png') }}" />
+                    </a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
