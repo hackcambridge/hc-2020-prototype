@@ -2,8 +2,8 @@
 SCRIPT_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CODE_LOCATION="$( cd $SCRIPT_LOCATION/../ >/dev/null 2>&1 && pwd )"
 ORIGINAL_LOCATION="$PWD"
-HOMESTEAD_BOX_VERSION="8.2.1"
-HOMESTEAD_GIT_RELEASE="v9.2.2"
+HOMESTEAD_BOX_VERSION="9.1.0"
+HOMESTEAD_GIT_RELEASE="v10.0.1"
 
 # Printing.
 PREFIX="[hc-dev]"
@@ -113,10 +113,23 @@ fi
 blue "Finished launching the Vagrant VM.\n\n"
 
 
+# Stop the VM and configure its DNS.
+vagrant halt
+if [ $? -ne 0 ]; then
+    >&2 red "Failed to stop the VM. Try re-running 'vagrant halt'."
+    exit 1;
+fi
+VBoxManage modifyvm "homestead" --natdnsproxy1 on
+if [ $? -ne 0 ]; then
+    >&2 red "Failed to set the VM's DNS proxy setting."
+    exit 1;
+fi
+
 # Complete.
 cd $ORIGINAL_LOCATION;
-green "The HC Dev environment is now setup."
+green "The HC Dev environment is now setup. The VM is currently off."
 echo ""
+echo "Start the VM with 'cd $CODE_LOCATION/Homestead && vagrant up'"
 echo "Stop the VM with 'cd $CODE_LOCATION/Homestead && vagrant halt'"
 echo "Remove the VM with 'cd $CODE_LOCATION/Homestead && vagrant destroy'"
 echo "Restart/reinstall the VM with 'cd $CODE_LOCATION/Homestead && vagrant up'"
@@ -124,14 +137,16 @@ echo ""
 
 cat << EndOfMessage
 Next steps:
+    1. Add environment secrets to .env.
+      This is explained on the 'Development > Setting up the Development Environment' page in Notion.
+    2. Start the VM and go to http://local.hackcambridge.com to make sure everything works!
+
+
+(Legacy) Setup the hackcambridge.test domain:
     1. Add hackcambridge.test to your hosts file.
        Check the file doesn't already contain the record before running the command below.
        Run: sudo sh -c 'echo "192.168.10.10 hackcambridge.test" >> /etc/hosts'
-    2. Add environment secrets to .env.
-       This is explained on the 'Development > Setting up the Development Environment' page in Notion.
-
-Finally, go to http://hackcambridge.test in your browser to make sure everything works! 
+    2. Go to http://hackcambridge.test in your browser to make sure everything works. 
 EndOfMessage
 
 echo ""
-red "Don't forget that the VM is now running. Remember to turn it off when you're done."
