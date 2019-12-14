@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter, RouteComponentProps} from 'react-router';
-import { Page, Card, SkeletonBodyText, Thumbnail, Layout, Heading, TextContainer, DescriptionList, Button, Link, Badge, Modal, Stack, RangeSlider } from '@shopify/polaris';
+import { Page, Card, SkeletonBodyText, Thumbnail, Layout, Heading, TextContainer, DescriptionList, Button, Link, Badge, Modal, Stack, RangeSlider, KeyboardKey } from '@shopify/polaris';
 import Committee404 from '../Committee404';
 import { IApplicationDetail, IUserDetails, IApplicationReview } from '../../../interfaces/committee.interfaces';
 import axios from 'axios';
@@ -180,6 +180,11 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                             </Card>
                         </Layout.Section>
                     </Layout>
+
+                    <br />
+                    <Card sectioned title="Hotkeys">
+                        <KeyboardKey>↑</KeyboardKey> to open the CV preview, <KeyboardKey>↓</KeyboardKey> to close it. &nbsp;<KeyboardKey>→</KeyboardKey> to open the review form, <KeyboardKey>←</KeyboardKey> to close it.
+                    </Card>
 
                     <Modal
                         key={1}
