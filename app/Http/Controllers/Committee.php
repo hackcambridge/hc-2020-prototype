@@ -30,6 +30,8 @@ class Committee extends Controller
             case 'applications-summary': return $this->getApplicationsSummary();
             case 'get-members': return $this->getMembers();
             case 'random-application-for-review': return $this->getRandomApplicationToReview();
+            case 'sync-review-script': return $this->syncReviewScript();
+            case 'check-review-script': return $this->checkReviewScriptPresent();
             default: return $this->fail("Route not found");
         }
     }
@@ -41,6 +43,8 @@ class Committee extends Controller
             case 'promote-committee': return $this->setAdmin($r);
             case 'get-application': return $this->getApplication($r);
             case 'submit-review': return $this->submitApplicationReview($r);
+            case 'save-review-script': return $this->submitApplicationReview($r);
+            case 'run-review-script': return $this->runReviewScript($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -327,6 +331,48 @@ class Committee extends Controller
         }
     }
 
+
+    private function saveReviewScript($r) {
+        if($this->canContinue($r, ["content"], true)) {
+            $content = $r->get("content");
+            // Save file locally and remotely.
+            // ...
+            return $this->success("");
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function syncReviewScript() {
+        if($this->canContinue(null, [], true)) {
+            // Copy file from remote.
+            // ...
+            return $this->success("");
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function checkReviewScriptPresent() {
+        if($this->canContinue(null, [], true)) {
+            // Check we have the review script.
+            // ...
+            return $this->success("");
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function runReviewScript($r) {
+        if($this->canContinue($r, [], true)) {
+            // Actually run the file.
+            // ...
+            // require_once("...");
+            return $this->success("");
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
 
     private static function slugify($text)
     {
