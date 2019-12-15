@@ -41,6 +41,7 @@
         "moize": "^5.4.4",
         "react-router-dom": "^5.0.1",
         "react-toastify": "^5.4.0",
+        "serialize-javascript": "^2.1.1",
         "source-map-loader": "^0.2.4",
         "tslint": "^5.20.0",
         "tslint-react": "^4.0.0",
