@@ -223,7 +223,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     }
 
     private startReviewing = () => {
-        toast.info("Finding a random review...");
+        toast.info("Finding a random application...");
         axios.get("/committee/admin-api/random-application-for-review.json").then(res => {
             const status = res.status;
             if(status == 200) {
