@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone, EnvelopeMajorMonotone} from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import Overview from "./components/Overview";
 import Committee404 from "./Committee404";
@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import md5 from "md5";
 import MemberList from "./components/MemberList";
 import IndividualApplication from "./components/IndividualApplication";
+import Selection from "./components/Selection";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {
@@ -153,6 +154,11 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                                 label: "Members",
                                 icon: ProfileMajorMonotone
                             },
+                            {
+                                url: `${this.props.baseUrl}/selection`,
+                                label: "Selection",
+                                icon: EnvelopeMajorMonotone
+                            },
                         ]}
                     /> 
                 : <></>}
@@ -210,13 +216,14 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Route exact path={`${this.props.baseUrl}/applications`} render={(props) => <Applications {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications/:id`} render={(props) => <IndividualApplication applicationId={props.match.params.id} {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />
+                <Route exact path={`${this.props.baseUrl}/selection`} render={(props) => <Selection {...props} />} />
                 <Route component={Committee404}></Route>
             </Switch>
         );
     }
 
     private startReviewing = () => {
-        toast.info("Finding a random review...");
+        toast.info("Finding a random application...");
         axios.get("/committee/admin-api/random-application-for-review.json").then(res => {
             const status = res.status;
             if(status == 200) {
