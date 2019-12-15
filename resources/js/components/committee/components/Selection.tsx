@@ -1,5 +1,9 @@
 import React, { Component, ReactNode} from 'react';
 import { Page, Card, Tabs, Button, Modal, TextField } from "@shopify/polaris";
+import AceEditor from "react-ace";
+
+import "ace-builds/src-noconflict/mode-php";
+import "ace-builds/src-noconflict/theme-twilight";
 
 interface ISelectionProps {
 
@@ -9,7 +13,7 @@ interface ISelectionState {
     selected: number
     newFileModal: boolean
     fileName: string
-    files: {id: string, content: string, panelID: string}[]
+    files: {id: string, content: string}[]
 }
 
 class Selection extends Component<ISelectionProps, ISelectionState> {
@@ -18,11 +22,16 @@ class Selection extends Component<ISelectionProps, ISelectionState> {
         selected: 0,
         newFileModal: false,
         fileName: "",
-        files: [ {
-            id: 'overview',
-            content: 'Overview',
-            panelID: 'overview-content',
-            } ]
+        files: [
+            {
+                id: 'overview',
+                content: 'Overview',
+            },
+            {
+                id: 'test.php',
+                content: 'test.php',
+            }
+        ]
     };
 
     render() {
@@ -58,7 +67,19 @@ class Selection extends Component<ISelectionProps, ISelectionState> {
         if (this.state.selected == 0) {
             return this.renderOverview();
         }
-        return (<p>Oops, something has happened</p>);
+        return this.renderEditor();
+    }
+
+    private renderEditor(): ReactNode {
+        return (
+        <AceEditor
+            mode="php"
+            theme="twilight"
+            name="UNIQUE_ID_OF_DIV"
+            width="100%"
+            editorProps={{ $blockScrolling: true }}
+          />);
+
     }
 
     private renderOverview() : ReactNode {
@@ -80,10 +101,12 @@ class Selection extends Component<ISelectionProps, ISelectionState> {
     private addNewFile = () => {
         this.setState({fileName: ""});
         this.setState({newFileModal: false});
+
+        // Loading stuff and call endpoint to save state
+
         this.state.files.push({
             id: this.state.fileName,
             content: this.state.fileName,
-            panelID: this.state.fileName
         });
     }
 }
