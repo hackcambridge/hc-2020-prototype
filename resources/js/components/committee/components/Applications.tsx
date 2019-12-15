@@ -50,7 +50,7 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
                             loading={isLoading}
                             resourceName={{singular: 'applicant', plural: 'applicants'}}
                             items={applications.filter((app) => {
-                                return (app.name.toLowerCase().includes(filterValue) || app.email.toLowerCase().includes(filterValue));
+                                return (app.name.toLowerCase().includes(filterValue.toLowerCase()) || app.email.toLowerCase().includes(filterValue));
                             })}
                             renderItem={this.renderApplicationSummaryRow}
                             filterControl={filterControl}
