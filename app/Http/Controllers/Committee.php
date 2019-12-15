@@ -30,8 +30,8 @@ class Committee extends Controller
             case 'applications-summary': return $this->getApplicationsSummary();
             case 'get-members': return $this->getMembers();
             case 'random-application-for-review': return $this->getRandomApplicationToReview();
-            case 'sync-review-script': return $this->syncReviewScript();
-            case 'check-review-script': return $this->checkReviewScriptPresent();
+            case 'sync-review-scripts': return $this->syncReviewScripts();
+            case 'list-review-scripts': return $this->getReviewScripts();
             default: return $this->fail("Route not found");
         }
     }
@@ -43,7 +43,7 @@ class Committee extends Controller
             case 'promote-committee': return $this->setAdmin($r);
             case 'get-application': return $this->getApplication($r);
             case 'submit-review': return $this->submitApplicationReview($r);
-            case 'save-review-script': return $this->submitApplicationReview($r);
+            case 'save-review-script': return $this->saveReviewScript($r);
             case 'run-review-script': return $this->runReviewScript($r);
             default: return $this->fail("Route not found");
         }
@@ -333,42 +333,76 @@ class Committee extends Controller
 
 
     private function saveReviewScript($r) {
-        if($this->canContinue($r, ["content"], true)) {
+        if($this->canContinue($r, ["name", "content"], true)) {
+            $name = $r->get("name");
             $content = $r->get("content");
+
             // Save file locally and remotely.
-            // ...
-            return $this->success("");
+            $output = "reviewing/".$name.".php";
+            if(Storage::disk('s3')->put($output, $content)) {
+                if(Storage::disk('local')->put($output, $content)) {
+                    return $this->success("File successfully saved.");
+                } else {
+                    return $this->fail("Failed to save file locally.");
+                }
+            } else {
+                return $this->fail("Failed to save file locally.");
+            }
         } else {
             return $this->fail("Checks failed.");
         }
     }
 
-    private function syncReviewScript() {
+    private function syncReviewScripts() {
         if($this->canContinue(null, [], true)) {
-            // Copy file from remote.
-            // ...
-            return $this->success("");
-        } else {
-            return $this->fail("Checks failed.");
-        }
-    }
+            $files = Storage::disk('local')->allFiles('reviewing');
+            if($files) {
+                $successes = 0;
+                foreach($files as $file) {
+                    if(Storage::disk('local')->put($file, Storage::disk('s3')->get($file))) {
+                        $successes++; 
+                    }
+                }
 
-    private function checkReviewScriptPresent() {
-        if($this->canContinue(null, [], true)) {
-            // Check we have the review script.
-            // ...
-            return $this->success("");
+                return $this->success("Retrieved ".$successes."/".count($files)." files");
+            } else {
+                return $this->fail("Failed to retrieve files index.");
+            }
         } else {
             return $this->fail("Checks failed.");
         }
     }
 
     private function runReviewScript($r) {
-        if($this->canContinue($r, [], true)) {
-            // Actually run the file.
-            // ...
-            // require_once("...");
-            return $this->success("");
+        if($this->canContinue($r, ["name"], true)) {
+            $name = $r->get("name");
+            require_once(Storage::disk('local')->path('') . $name);
+            try {
+                return response()->json([
+                    "success" => true,
+                    "results" => Reviewing\ApplicationReviewer::review(),
+                ]);
+            } catch (Exception $e) {
+                return $this->fail($e->getMessage());
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function getReviewScripts() {
+        if($this->canContinue(null, [], true)) {
+            $files = Storage::disk('local')->allFiles('reviewing');
+            if($files) {
+                return response()->json([
+                    "success" => true,
+                    "scripts" => array_map(function($file) {
+                        return substr(strstr($file, "/"), 1);
+                    }),
+                ]);
+            } else {
+                $this->fail("Failed to retrive files.");
+            }
         } else {
             return $this->fail("Checks failed.");
         }
