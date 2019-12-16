@@ -259,7 +259,7 @@ class Committee extends Controller
                 ->where("type", "=", "hacker")
                 ->where("applications.isSubmitted", true)
                 ->select("applications.id")
-                ->rightJoin('application_reviews', 'application_reviews.application_id', '=', 'applications.id')
+                ->leftJoin('application_reviews', 'application_reviews.application_id', '=', 'applications.id')
                 ->where('application_reviews.user_id', '!=', Auth::user()->id)->orWhereNull('application_reviews.user_id')
                 ->get();
 
