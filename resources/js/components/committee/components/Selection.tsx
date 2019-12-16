@@ -216,7 +216,7 @@ class ApplicationReviewer {
         }
 
         const { files }: { files: string[] } = this.state;
-        const newFileNameTrimmed = newFileName.trim().replace(/\.php/, '');
+        const newFileNameTrimmed = newFileName.trim().replace(/\.php/, '').toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
         files.push(newFileNameTrimmed);
 
         this.setState({
