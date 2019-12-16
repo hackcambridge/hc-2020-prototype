@@ -1,14 +1,13 @@
 import React, { Component, ReactNode} from 'react';
 import { Page, Card, Tabs, Button, Modal, TextField, Stack, Select, TextContainer, ButtonGroup, Checkbox } from "@shopify/polaris";
-import AceEditor from "react-ace";
-
-import "ace-builds/src-noconflict/mode-php";
-import "ace-builds/src-noconflict/theme-twilight";
-import "ace-builds/src-noconflict/ext-language_tools.js";
 import { AddCodeMajorMonotone, RefreshMajorMonotone, PlayMajorMonotone, SettingsMajorMonotone } from '@shopify/polaris-icons';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-php";
+import "ace-builds/src-noconflict/theme-twilight";
+import "ace-builds/src-noconflict/ext-language_tools.js";
 
 interface ISelectionProps {}
 
@@ -151,6 +150,7 @@ class ApplicationReviewer {
                         enableLiveAutocompletion={true}
                         enableSnippets={true}
                         fontSize={14}
+                        setOptions={{ useWorker: false }}
                         value={current_file_content}
                     />
                     <Card.Section>
