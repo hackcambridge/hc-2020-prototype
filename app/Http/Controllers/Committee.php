@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\ApplicationReview;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 
@@ -30,6 +31,8 @@ class Committee extends Controller
             case 'applications-summary': return $this->getApplicationsSummary();
             case 'get-members': return $this->getMembers();
             case 'random-application-for-review': return $this->getRandomApplicationToReview();
+            case 'sync-review-scripts': return $this->syncReviewScripts();
+            case 'list-review-scripts': return $this->getReviewScripts();
             default: return $this->fail("Route not found");
         }
     }
@@ -41,6 +44,10 @@ class Committee extends Controller
             case 'promote-committee': return $this->setAdmin($r);
             case 'get-application': return $this->getApplication($r);
             case 'submit-review': return $this->submitApplicationReview($r);
+            case 'save-review-script': return $this->saveReviewScript($r);
+            case 'run-review-script': return $this->runReviewScript($r);
+            case 'load-review-script': return $this->loadReviewScript($r);
+            case 'delete-review-script': return $this->deleteReviewScript($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -327,6 +334,121 @@ class Committee extends Controller
         }
     }
 
+
+    private function saveReviewScript($r) {
+        if($this->canContinue($r, ["name", "content"], true)) {
+            $name = $r->get("name");
+            $content = $r->get("content");
+
+            // Save file locally and remotely.
+            $output = "reviewing/". Committee::slugify($name) .".php";
+            if(Storage::disk('s3')->put($output, $content)) {
+                if(Storage::disk('local')->put($output, $content)) {
+                    return $this->success("File successfully saved.");
+                } else {
+                    return $this->fail("Failed to save file locally.");
+                }
+            } else {
+                return $this->fail("Failed to save file remotely.");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function deleteReviewScript($r) {
+        if($this->canContinue($r, ["name"], true)) {
+            $name = $r->get("name");
+
+            $output = "reviewing/". Committee::slugify($name) .".php";
+            if(Storage::disk('s3')->delete($output)) {
+                if(Storage::disk('local')->delete($output)) {
+                    return $this->success("File deleted");
+                } else {
+                    return $this->fail("Failed to delete local copy");
+                }
+            } else {
+                return $this->fail("Failed to delete remote copy");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function syncReviewScripts() {
+        if($this->canContinue(null, [], true)) {
+            $files = Storage::disk('local')->allFiles('reviewing');
+            if($files) {
+                $successes = 0;
+                foreach($files as $file) {
+                    if(Storage::disk('local')->put($file, Storage::disk('s3')->get($file))) {
+                        $successes++; 
+                    }
+                }
+
+                return $this->success("Retrieved ".$successes."/".count($files)." files");
+            } else {
+                return $this->fail("Failed to retrieve files index.");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function runReviewScript($r) {
+        if($this->canContinue($r, ["name"], true)) {
+            $name = $r->get("name");
+            $output = "reviewing/". Committee::slugify($name) .".php";
+            try {
+                require_once(Storage::disk('local')->path('') . $output);
+                return response()->json([
+                    "success" => true,
+                    "results" => \Reviewing\ApplicationReviewer::review(),
+                ]);
+                
+            } catch (Exception $e) {
+                return $this->fail($e->getMessage());
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function getReviewScripts() {
+        if($this->canContinue(null, [], true)) {
+            $files = Storage::disk('local')->allFiles('reviewing');
+            if($files) {
+                return response()->json([
+                    "success" => true,
+                    "scripts" => array_map(function($file) {
+                        return substr(strstr($file, "/"), 1);
+                    }, $files),
+                ]);
+            } else {
+                return $this->success("No scripts found.");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function loadReviewScript($r) {
+        if($this->canContinue($r, ["name"], true)) {
+            $name = $r->get("name");
+            $path = storage_path() . "/app/reviewing/${name}.php";
+            $content = file_get_contents($path);
+            if($content) {
+                return response()->json([
+                    "success" => true,
+                    "content" => $content,
+                ]);
+            } else {
+                $this->fail("Failed to retrieve file.");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
 
     private static function slugify($text)
     {
