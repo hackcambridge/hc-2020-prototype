@@ -82,7 +82,8 @@ class CustomUserRepository extends Auth0UserRepository {
         
         $client_id = env('AUTH0_CLIENT_ID');
         $client_secret = env('AUTH0_CLIENT_SECRET');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"client_id\":\"".$client_id."\",\"client_secret\":\"".$client_secret."\",\"audience\":\"https://hackcambridge.eu.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}");
+        $auth_opts = "{\"client_id\":\"".$client_id."\",\"client_secret\":\"".$client_secret."\",\"audience\":\"https://hackcambridge.eu.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}";
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $auth_opts);
         
         $headers = array();
         $headers[] = 'Content-Type: application/json';
