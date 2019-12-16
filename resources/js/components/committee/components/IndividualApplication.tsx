@@ -262,6 +262,11 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                         applicationId: applicationId, 
                         application: application,
                         user: user,
+                        reviewAnswers: reviewQuestions.reduce<{ [id: number]: number }>((map, obj) => {
+                            map[obj.id] = obj.default;
+                            return map;
+                        }, {}),
+                        reviewTotal: reviewQuestions.reduce((a, b) => a + (b.default * b.weight), 0),
                     });
 
                     const review : IApplicationReview = payload["review"];
