@@ -54,7 +54,7 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
                     <Card title={"Review Leaderboard"}>
                         <div style={{ padding: "0 2rem" }}>
                             <DescriptionList
-                                items={overview.reviews.sort((a, b) => (a.reviews > b.reviews) ? 1 : -1).map(r => {
+                                items={overview.reviews.sort((a, b) => (a.reviews < b.reviews) ? 1 : -1).map(r => {
                                     return { term: r.reviews, description: r.name };
                                 })}
                             />
