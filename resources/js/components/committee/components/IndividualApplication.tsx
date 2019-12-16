@@ -267,6 +267,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                             return map;
                         }, {}),
                         reviewTotal: reviewQuestions.reduce((a, b) => a + (b.default * b.weight), 0),
+                        alreadyReviewed: false,
                     });
 
                     const review : IApplicationReview = payload["review"];
