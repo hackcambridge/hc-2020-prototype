@@ -399,12 +399,13 @@ class Committee extends Controller
         if($this->canContinue($r, ["name"], true)) {
             $name = $r->get("name");
             $output = "reviewing/". Committee::slugify($name) .".php";
-            require_once(Storage::disk('local')->path('') . $output);
             try {
+                require_once(Storage::disk('local')->path('') . $output);
                 return response()->json([
                     "success" => true,
                     "results" => \Reviewing\ApplicationReviewer::review(),
                 ]);
+                
             } catch (Exception $e) {
                 return $this->fail($e->getMessage());
             }

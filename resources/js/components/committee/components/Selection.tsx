@@ -1,5 +1,5 @@
 import React, { Component, ReactNode} from 'react';
-import { Page, Card, Tabs, Button, Modal, TextField, Layout, Stack, Select, TextContainer, Icon, ButtonGroup } from "@shopify/polaris";
+import { Page, Card, Tabs, Button, Modal, TextField, Stack, Select, TextContainer, ButtonGroup, Checkbox } from "@shopify/polaris";
 import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/mode-php";
@@ -10,9 +10,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 
-interface ISelectionProps {
-
-}
+interface ISelectionProps {}
 
 interface ISelectionState {
     selectedTab: number
@@ -25,8 +23,15 @@ interface ISelectionState {
     loading: boolean,
     running: boolean,
     results: string,
+
+    settingsModal: boolean,
+    reviewMode: boolean,
 }
 
+interface IReviewDecisionSet {
+    accepted: number[],
+    rejected: number[],
+}
 
 class Selection extends Component<ISelectionProps, ISelectionState> {
 
@@ -41,6 +46,10 @@ class Selection extends Component<ISelectionProps, ISelectionState> {
         loading: true,
         running: false,
         results: "",
+
+        // settings
+        settingsModal: false,
+        reviewMode: false,
     };
 
     private defaultTemplate = `<?php
@@ -61,7 +70,7 @@ class ApplicationReviewer {
             { id: "overview", content: "Overview" },
             { id: "code", content: "Code" }
         ];
-        const { newFileModal, selectedTab, newFileName, confirmDeleteModal, loading } = this.state;
+        const { newFileModal, selectedTab, newFileName, confirmDeleteModal, loading, settingsModal, reviewMode } = this.state;
         return (
             <Page title="Selection">
                 <Card>
@@ -82,6 +91,17 @@ class ApplicationReviewer {
                 >
                     <Modal.Section>
                         <TextField label="File name" value={newFileName} onChange={this.handleFileNameChange} />
+                    </Modal.Section>
+                </Modal>
+
+                <Modal
+                    loading={loading}
+                    open={settingsModal}
+                    onClose={() => this.setState({ settingsModal: false })}
+                    title="Settings"
+                >
+                    <Modal.Section>
+                        <Checkbox label="Review mode" checked={reviewMode} onChange={(v) => this.setState({ reviewMode: v })} />
                     </Modal.Section>
                 </Modal>
 
@@ -130,6 +150,7 @@ class ApplicationReviewer {
                         enableBasicAutocompletion={true}
                         enableLiveAutocompletion={true}
                         enableSnippets={true}
+                        fontSize={14}
                         value={current_file_content}
                     />
                     <Card.Section>
@@ -150,7 +171,7 @@ class ApplicationReviewer {
     }
       
     private renderOverview() : ReactNode {
-        const { selectedFile, loading, results, running } = this.state;
+        const { selectedFile, loading, results, running, reviewMode } = this.state;
         const { files }: { files: string[] } = this.state;
         return (
             <>
@@ -177,14 +198,16 @@ class ApplicationReviewer {
                             <ButtonGroup segmented>
                                 <Button disabled={loading} onClick={() => this.setState({ newFileModal: true })} icon={AddCodeMajorMonotone}></Button>
                                 <Button loading={loading && !running} disabled={running} onClick={this.syncScripts} icon={RefreshMajorMonotone}></Button>
-                                <Button disabled={loading} onClick={this.syncScripts} icon={SettingsMajorMonotone}></Button>
+                                <Button disabled={loading} onClick={() => this.setState({ settingsModal: true })} icon={SettingsMajorMonotone}></Button>
                                 <Button disabled={loading && !running} loading={running} onClick={this.runScript} icon={PlayMajorMonotone}></Button>
                             </ButtonGroup>
                         </div>
                     </div>
                 </Card.Section>
                 <Card.Section>
-                    <pre style={{ overflowX: "scroll" }}>{JSON.stringify(results, null, 4)}</pre>
+                    <pre style={{ overflowX: "scroll" }}>
+                        {reviewMode ? this.renderReviewMode() : (results ? JSON.stringify(results, null, 4) : "Press play to run the script")}
+                    </pre>
                 </Card.Section>
             </>
         );
@@ -370,7 +393,6 @@ class ApplicationReviewer {
             if(status == 200 || status == 201) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
-                    console.log(payload["results"]);
                     this.setState({ results: payload["results"] });
                     toast.success("Script run");
                 } else {
@@ -382,7 +404,24 @@ class ApplicationReviewer {
             toast.error("Failed to load data.");
             console.log(status, res.data);
             this.setState({ loading: false, running: false });
+        }).catch((error) => {
+            if (error.response) {
+                toast.error(`Error: ${error.response.data.message} (line ${error.response.data.line})`);
+                this.setState({ loading: false, running: false });
+                return;
+            }
+            toast.error("An error occurred.");
+            this.setState({ loading: false, running: false });
         });
+    }
+
+    private renderReviewMode() {
+        try {
+            const reviewDecisions: IReviewDecisionSet = this.state.results as any;
+            return <></>;
+        } catch(e) {
+            console.log(e);
+        }
     }
 }
 
