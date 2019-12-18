@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import {withRouter, RouteComponentProps} from 'react-router';
-import { Page, Card, SkeletonBodyText, Thumbnail, Layout, Heading, TextContainer, DescriptionList, Button, Link, Badge, Modal, Stack, RangeSlider, KeyboardKey } from '@shopify/polaris';
+import { Page, Card, SkeletonBodyText, Thumbnail, Layout, Heading, TextContainer, DescriptionList, Button, Badge, Modal, Stack, RangeSlider, KeyboardKey } from '@shopify/polaris';
 import Committee404 from '../Committee404';
 import { IApplicationDetail, IUserDetails, IApplicationReview } from '../../../interfaces/committee.interfaces';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import md5 from 'md5';
 import { textFieldQuestions } from '../../dashboard/components/Apply';
-import { RangeSliderValue } from '@shopify/polaris/types/components/RangeSlider';
+import Linkify from 'linkifyjs/react';
+
 
 interface IIndividualApplicationProps {
     applicationId: string
@@ -171,11 +172,16 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                             <Card>
                                 {textFieldQuestions.map((value) => {
                                     const answer: string = questions[value.id];
-                                    return (<div style={{ padding: "1.4rem 2rem" }} key={value.id}>
-                                        <Heading>{value.title}</Heading>
-                                        <br style={{ lineHeight: "3px" }} />
-                                        <TextContainer>{answer.length > 0 ? answer : "(Blank)"}</TextContainer>
-                                    </div>);
+                                    const answerMarkup = answer.length > 0 ? answer.split('\n').map(i => {
+                                        return <TextContainer>{i}</TextContainer>
+                                    }) : <TextContainer>(Blank)</TextContainer>;
+                                    return (<Linkify tagName="a" options={{ target: {url: '_blank'} }}>
+                                        <div style={{ padding: "1.4rem 2rem" }} key={value.id}>
+                                            <Heading>{value.title}</Heading>
+                                            <br style={{ lineHeight: "3px" }} />
+                                            {answerMarkup}
+                                        </div>
+                                    </Linkify>);
                                 })}
                             </Card>
                         </Layout.Section>
