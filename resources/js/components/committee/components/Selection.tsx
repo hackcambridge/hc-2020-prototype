@@ -284,7 +284,7 @@ class ApplicationReviewer {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
                     toast.success("Scripts synced");
-                    this.setState({ loading: false });
+                    this.getScripts();
                     return;
                 }
             }
@@ -386,7 +386,7 @@ class ApplicationReviewer {
         const { selectedFile } = this.state;
         const name = files[selectedFile];
         this.setState({ loading: true, running: true });
-        axios.post(`/committee/admin-api/run-review-script.json`, {
+        axios.post(`/committee/admin-api/run-review-script.json?${+new Date}`, {
             name: name
         }).then(res => {
             const status = res.status;
