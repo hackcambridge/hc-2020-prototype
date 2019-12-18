@@ -377,7 +377,7 @@ class Committee extends Controller
 
     private function syncReviewScripts() {
         if($this->canContinue(null, [], true)) {
-            $files = Storage::disk('local')->allFiles('reviewing');
+            $files = Storage::disk('s3')->allFiles('reviewing');
             if($files) {
                 $successes = 0;
                 foreach($files as $file) {
