@@ -386,7 +386,7 @@ class ApplicationReviewer {
         const { selectedFile } = this.state;
         const name = files[selectedFile];
         this.setState({ loading: true, running: true });
-        axios.post(`/committee/admin-api/run-review-script.json?${+new Date}`, {
+        axios.post(`/committee/admin-api/run-review-script.json?t=${+new Date}`, {
             name: name
         }).then(res => {
             const status = res.status;
