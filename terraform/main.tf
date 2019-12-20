@@ -25,7 +25,7 @@ module "hc-staging-instance" {
   AUTH0_DOMAIN          = "${var.AUTH0_DOMAIN}"
   AUTH0_CLIENT_ID       = "${var.AUTH0_CLIENT_ID}"
   AUTH0_CLIENT_SECRET   = "${var.AUTH0_CLIENT_SECRET}"
-
+  MAILGUN_SECRET        = "${var.MAILGUN_SECRET}"
 }
 
 module "hc-staging-cluster" {
@@ -58,6 +58,7 @@ module "hc-prod-instance" {
   AUTH0_DOMAIN          = "${var.AUTH0_DOMAIN}"
   AUTH0_CLIENT_ID       = "${var.AUTH0_CLIENT_ID}"
   AUTH0_CLIENT_SECRET   = "${var.AUTH0_CLIENT_SECRET}"
+  MAILGUN_SECRET        = "${var.MAILGUN_SECRET}"
 }
 
 module "hc-prod-cluster" {
