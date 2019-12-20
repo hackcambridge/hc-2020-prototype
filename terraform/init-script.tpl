@@ -28,6 +28,7 @@ echo "export AWS_BUCKET=\"${AWS_BUCKET}\"" >> /etc/profile.d/hc-deployment-vars.
 echo "export AUTH0_DOMAIN=\"${AUTH0_DOMAIN}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export AUTH0_CLIENT_ID=\"${AUTH0_CLIENT_ID}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export AUTH0_CLIENT_SECRET=\"${AUTH0_CLIENT_SECRET}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export MAILGUN_SECRET=\"${MAILGUN_SECRET}\"" >> /etc/profile.d/hc-deployment-vars.sh
 
 # Set htpasswd file.
 # touch /etc/profile.d/.htpasswd

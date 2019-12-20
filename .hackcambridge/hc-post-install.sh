@@ -68,6 +68,7 @@ echo "AWS_BUCKET=\"$AWS_BUCKET\"" >> .env
 echo "AUTH0_DOMAIN=\"$AUTH0_DOMAIN\"" >> .env
 echo "AUTH0_CLIENT_ID=\"$AUTH0_CLIENT_ID\"" >> .env
 echo "AUTH0_CLIENT_SECRET=\"$AUTH0_CLIENT_SECRET\"" >> .env
+echo "MAILGUN_SECRET=\"$MAILGUN_SECRET\"" >> .env
 
 
 # Set htpasswd.
