@@ -4,6 +4,7 @@ use App\User;
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\Sponsor as SponsorResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,26 @@ use Illuminate\Http\Request;
 Route::get('/health', function () {
     return 'Application is up.';
 });
+
+// Route::get('/test', function () {
+//     $data = [
+//         "content" => [
+//             "Good news, we would like to invite you to join us at Hack Cambridge 101!",
+//             "We noticed on your application that you need to know your outcome today. This isn't the official invitation — that will come in the next few days — so let us know if you need an official letter to support your visa application.",
+//         ],
+//         "name" => "Sandeep",
+//         "signoff" => "Merry Christmas"
+//     ];
+    
+//     Mail::send(['mail/PlainMessage','mail/text/PlainMessage'], $data, function ($msg) {
+//         $msg->to("ahb36@cam.ac.uk")
+//             // ->bcc("ahb36@cam.ac.uk")
+//             ->from("team@hackcambridge.com", "The Hack Cambridge Team")
+//             ->subject('Invitation — Hack Cambridge 101');
+//     });
+//     return view('mail/PlainMessage', $data);
+// });
+
 
 # Auth0
 Route::get('/auth0/callback', '\Auth0\Login\Auth0Controller@callback')->name('auth0-callback');

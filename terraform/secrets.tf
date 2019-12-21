@@ -31,3 +31,6 @@ variable "AUTH0_CLIENT_ID" {
 variable "AUTH0_CLIENT_SECRET" {
   default = ""
 }
+variable "MAILGUN_SECRET" {
+  default = ""
+}
