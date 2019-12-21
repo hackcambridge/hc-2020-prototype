@@ -408,6 +408,7 @@ class ApplicationReviewer {
             console.log(status, res.data);
             this.setState({ loading: false, running: false });
         }).catch((error) => {
+            console.log(error);
             if (error.response) {
                 toast.error(`Error: ${error.response.data.message} (line ${error.response.data.line})`);
                 this.setState({ loading: false, running: false });
