@@ -5,6 +5,7 @@ use App\Http\Resources\User as UserResource;
 use App\Http\Resources\Sponsor as SponsorResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Helpers\BatchMailer;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,22 +24,29 @@ Route::get('/health', function () {
 });
 
 // Route::get('/test', function () {
-    // $data = [
-    //     "content" => [
-    //         "Good news, we would like to invite you to join us at Hack Cambridge 101!",
-    //         "We noticed on your application that you need to know your outcome today. This isn't the official invitation — that will come in the next few days — so let us know if you need an official letter to support your visa application.",
-    //     ],
-    //     "name" => "Sandeep",
-    //     "signoff" => "Merry Christmas"
-    // ];
-    
-    // Mail::send(['mail/PlainMessage','mail/text/PlainMessage'], $data, function ($msg) {
-    //     $msg->to("ahb36@cam.ac.uk")
-    //         // ->bcc("ahb36@cam.ac.uk")
-    //         ->from("team@hackcambridge.com", "The Hack Cambridge Team")
-    //         ->subject('Invitation — Hack Cambridge 101');
-    // });
-    // return view('mail/PlainMessage', $data);
+//     $data = [
+//         "content" => [
+//             "Good news, we would like to invite you to join us at Hack Cambridge 101!",
+//             "We noticed on your application that you need to know your outcome today. This isn't the official invitation — that will come in the next few days — so let us know if you need an official letter to support your visa application.",
+//         ],
+//         "name" => "%name%",
+//         "signoff" => "Merry Christmas",
+//         "_defaults" => [
+//             "name" => "there"
+//         ]
+//     ];
+
+//     $mailer = new BatchMailer(['mail/PlainMessage','mail/text/PlainMessage'], "Finish your Hack Cambridge application", $data);
+//     $mailer->addRecipient("ahb36@cam.ac.uk", ["name" => "Harri"]);
+//     $mailer->addRecipient("harribellthomas@gmail.com", []);
+//     $mailer->addRecipient("harribellthomas+2@gmail.com", ["name" => ""]);
+//     $mailer->sendAll();
+//     $results = [
+//         "a" => $mailer->getSent(),
+//         "b" => $mailer->getFailed(),
+//     ];
+//     dd($results);
+//     return view('mail/PlainMessage', $data);
 // });
 
 
