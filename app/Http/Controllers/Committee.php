@@ -400,7 +400,9 @@ class Committee extends Controller
             $name = $r->get("name");
             $output = "reviewing/". Committee::slugify($name) .".php";
             try {
-                require_once(Storage::disk('local')->path('') . $output);
+                $file = Storage::disk('local')->path('') . $output;
+                opcache_invalidate($file);
+                require_once($file);
                 return response()->json([
                     "success" => true,
                     "results" => \Reviewing\ApplicationReviewer::review(),
