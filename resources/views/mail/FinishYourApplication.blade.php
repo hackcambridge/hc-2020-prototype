@@ -1,7 +1,7 @@
 @extends('mail.base')
 
 @section('content')
-    <p class="greeting">Hi {{ isset($name) ? $name : "there" }}!</p>
+    <p class="greeting">Hi %recipient.name%!</p>
     @foreach ($content as $line)
         <p>{{ $line }}</p>
     @endforeach

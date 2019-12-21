@@ -307,6 +307,8 @@ class ApplicationReviewer {
                         if(scripts.length > 0 && (this.state.selectedFile < 0 || this.state.selectedFile > scripts.length)) {
                             this.setState({ selectedFile: 0 });
                             this.loadScript(scripts[0]);
+                        } else {
+                            this.loadScript(scripts[this.state.selectedFile]);
                         }
                     } else {
                         this.setState({ loading: false });
