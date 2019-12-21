@@ -307,6 +307,8 @@ class ApplicationReviewer {
                         if(scripts.length > 0 && (this.state.selectedFile < 0 || this.state.selectedFile > scripts.length)) {
                             this.setState({ selectedFile: 0 });
                             this.loadScript(scripts[0]);
+                        } else {
+                            this.loadScript(scripts[this.state.selectedFile]);
                         }
                     } else {
                         this.setState({ loading: false });
@@ -388,8 +390,11 @@ class ApplicationReviewer {
         this.setState({ loading: true, running: true });
         axios.post(`/committee/admin-api/run-review-script.json?t=${+new Date}`, {
             name: name
+        }, {
+            headers: { CacheControl: "no-cache, no-store, max-age=0, must-revalidate" }
         }).then(res => {
             const status = res.status;
+            console.log(res);
             if(status == 200 || status == 201) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
@@ -405,6 +410,7 @@ class ApplicationReviewer {
             console.log(status, res.data);
             this.setState({ loading: false, running: false });
         }).catch((error) => {
+            console.log(error);
             if (error.response) {
                 toast.error(`Error: ${error.response.data.message} (line ${error.response.data.line})`);
                 this.setState({ loading: false, running: false });

@@ -18,7 +18,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \Auth0\Login\Contract\Auth0UserRepository::class,
         	\App\Repositories\CustomUserRepository::class
-		);
+        );
+        $this->app->bind('mailgun.client', function() {
+            return \Http\Adapter\Guzzle6\Client::createWithConfig([
+                // your Guzzle6 configuration
+            ]);
+        });
     }
 
     /**

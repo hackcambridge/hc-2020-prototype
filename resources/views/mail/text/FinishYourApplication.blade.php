@@ -1,4 +1,4 @@
-Hi {{ isset($name) ? $name : "there" }}!
+Hi %recipient.name%!
 
 @foreach ($content as $line)
     {{ $line }}
