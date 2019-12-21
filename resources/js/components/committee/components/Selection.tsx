@@ -392,10 +392,10 @@ class ApplicationReviewer {
             headers: { CacheControl: "no-cache, no-store, max-age=0, must-revalidate" }
         }).then(res => {
             const status = res.status;
+            console.log(res);
             if(status == 200 || status == 201) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
-                    console.log(payload);
                     this.setState({ results: payload["results"] });
                     toast.success("Script run");
                 } else {
