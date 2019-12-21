@@ -404,6 +404,8 @@ class Committee extends Controller
                 return response()->json([
                     "success" => true,
                     "results" => \Reviewing\ApplicationReviewer::review(),
+                    "machine" => gethostname(),
+                    "timestamp" => time(),
                 ]);
                 
             } catch (Exception $e) {

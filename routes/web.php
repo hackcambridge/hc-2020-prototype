@@ -23,22 +23,22 @@ Route::get('/health', function () {
 });
 
 // Route::get('/test', function () {
-//     $data = [
-//         "content" => [
-//             "Good news, we would like to invite you to join us at Hack Cambridge 101!",
-//             "We noticed on your application that you need to know your outcome today. This isn't the official invitation — that will come in the next few days — so let us know if you need an official letter to support your visa application.",
-//         ],
-//         "name" => "Sandeep",
-//         "signoff" => "Merry Christmas"
-//     ];
+    // $data = [
+    //     "content" => [
+    //         "Good news, we would like to invite you to join us at Hack Cambridge 101!",
+    //         "We noticed on your application that you need to know your outcome today. This isn't the official invitation — that will come in the next few days — so let us know if you need an official letter to support your visa application.",
+    //     ],
+    //     "name" => "Sandeep",
+    //     "signoff" => "Merry Christmas"
+    // ];
     
-//     Mail::send(['mail/PlainMessage','mail/text/PlainMessage'], $data, function ($msg) {
-//         $msg->to("ahb36@cam.ac.uk")
-//             // ->bcc("ahb36@cam.ac.uk")
-//             ->from("team@hackcambridge.com", "The Hack Cambridge Team")
-//             ->subject('Invitation — Hack Cambridge 101');
-//     });
-//     return view('mail/PlainMessage', $data);
+    // Mail::send(['mail/PlainMessage','mail/text/PlainMessage'], $data, function ($msg) {
+    //     $msg->to("ahb36@cam.ac.uk")
+    //         // ->bcc("ahb36@cam.ac.uk")
+    //         ->from("team@hackcambridge.com", "The Hack Cambridge Team")
+    //         ->subject('Invitation — Hack Cambridge 101');
+    // });
+    // return view('mail/PlainMessage', $data);
 // });
 
 
