@@ -205,11 +205,21 @@ class ApplicationReviewer {
                         </div>
                     </div>
                 </Card.Section>
-                <Card.Section>
-                    <pre style={{ overflowX: "scroll" }}>
-                        {reviewMode ? this.renderReviewMode() : (results ? <ReactJson src={JSON.parse(JSON.stringify(results))} /> : "Press play to run the script")}
-                    </pre>
-                </Card.Section>
+                <div style={{ overflowX: "scroll", lineHeight: "1.6rem", fontSize: "1.7rem" }}>
+                    {reviewMode
+                        ? this.renderReviewMode()
+                        : (results ?
+                            <ReactJson
+                                name={false}
+                                enableClipboard={true}
+                                theme={"solarized"}
+                                collapsed={1}
+                                style={{ padding: "2rem" }}
+                                iconStyle={"circle"}
+                                src={JSON.parse(JSON.stringify(results))}
+                            /> : <></>)
+                    }
+                </div>
             </>
         );
     }
