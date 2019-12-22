@@ -205,7 +205,7 @@ class ApplicationReviewer {
                         </div>
                     </div>
                 </Card.Section>
-                <div style={{ overflowX: "scroll", lineHeight: "1.6rem", fontSize: "1.7rem" }}>
+                <div style={{ lineHeight: "1.6rem", fontSize: "1.7rem" }}>
                     {reviewMode
                         ? this.renderReviewMode()
                         : (results ?
