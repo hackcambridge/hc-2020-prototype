@@ -36,10 +36,8 @@ Route::get('/health', function () {
 //         ]
 //     ];
 
-//     $mailer = new BatchMailer(['mail/PlainMessage','mail/text/PlainMessage'], "Finish your Hack Cambridge application", $data);
-//     $mailer->addRecipient("ahb36@cam.ac.uk", ["name" => "Harri"]);
-//     $mailer->addRecipient("harribellthomas@gmail.com", []);
-//     $mailer->addRecipient("harribellthomas+2@gmail.com", ["name" => ""]);
+//     $mailer = new BatchMailer(['mail/PlainMessage','mail/text/PlainMessage'], "Invitation — Hack Cambridge 101", $data);
+//     $mailer->addRecipient("", ["name" => ""]);
 //     $mailer->sendAll();
 //     $results = [
 //         "a" => $mailer->getSent(),

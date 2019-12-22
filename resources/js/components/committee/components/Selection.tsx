@@ -8,6 +8,7 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-php";
 import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/ext-language_tools.js";
+import ReactJson from 'react-json-view'
 
 interface ISelectionProps {}
 
@@ -206,7 +207,7 @@ class ApplicationReviewer {
                 </Card.Section>
                 <Card.Section>
                     <pre style={{ overflowX: "scroll" }}>
-                        {reviewMode ? this.renderReviewMode() : (results ? JSON.stringify(results, null, 4) : "Press play to run the script")}
+                        {reviewMode ? this.renderReviewMode() : (results ? <ReactJson src={JSON.parse(JSON.stringify(results))} /> : "Press play to run the script")}
                     </pre>
                 </Card.Section>
             </>
