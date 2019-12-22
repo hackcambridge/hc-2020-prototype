@@ -9,7 +9,6 @@ import md5 from 'md5';
 import { textFieldQuestions } from '../../dashboard/components/Apply';
 import Linkify from 'linkifyjs/react';
 
-
 interface IIndividualApplicationProps {
     applicationId: string
 }
