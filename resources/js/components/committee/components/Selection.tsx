@@ -61,8 +61,41 @@ class ApplicationReviewer {
     }
 }`;
 
+    constructor(props: ISelectionProps){
+        super(props);
+        this.keyboardShortcuts = this.keyboardShortcuts.bind(this);
+    }
+
     componentDidMount() {
+        document.addEventListener("keydown", this.keyboardShortcuts , false);
         this.getScripts();
+    }
+
+    componentWillUnmount(){
+        document.removeEventListener("keydown", this.arrowFunctions, false);
+    }
+
+    keyboardShortcuts(e: KeyboardEvent) {
+        // cmd + s will save
+        if (this.state.selectedTab == 1 && e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+            e.preventDefault();
+            this.saveScript();
+        }
+
+        // Does not work on Safari (cannot override cmd + NUM)
+        // cmd + 1/2 will change tab
+        if (e.keyCode == 49 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+            e.preventDefault();
+            this.setState({selectedTab: 0})
+        }
+
+        if (e.keyCode == 50 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+            e.preventDefault();
+            this.setState({selectedTab: 1})
+        }
+        
+
+
     }
 
     render() {
