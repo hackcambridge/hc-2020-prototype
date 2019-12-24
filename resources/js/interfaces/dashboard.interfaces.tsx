@@ -31,6 +31,7 @@ export interface IApplicationRecordContent {
     acceptedConduct: boolean,
     acceptedPrivacy: boolean,
     acceptedTerms: boolean,
+    invited_on: string,
 }
 
 export interface ITeamMember {
