@@ -56,7 +56,6 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
     constructor(props: IIndividualApplicationProps & RouteComponentProps){
         super(props);
         this.arrowFunctions = this.arrowFunctions.bind(this);
-        this.rightArrowFunction = this.rightArrowFunction.bind(this);
     }
 
     arrowFunctions(event: KeyboardEvent){
@@ -76,10 +75,6 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
         if(event.keyCode === 37) { // left
             this.setState({ reviewModalOpen: false });
         }
-    }
-
-    rightArrowFunction(event: KeyboardEvent){
-        
     }
 
     componentDidMount() {

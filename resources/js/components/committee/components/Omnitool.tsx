@@ -10,9 +10,9 @@ import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/ext-language_tools.js";
 import ReactJson from 'react-json-view'
 
-interface ISelectionProps {}
+interface IOmnitoolProps {}
 
-interface ISelectionState {
+interface IOmnitoolState {
     selectedTab: number
     selectedFile: number
     newFileModal: boolean
@@ -33,7 +33,7 @@ interface IReviewDecisionSet {
     rejected: number[],
 }
 
-class Selection extends Component<ISelectionProps, ISelectionState> {
+class Omnitool extends Component<IOmnitoolProps, IOmnitoolState> {
 
     state = {
         selectedTab: 0,
@@ -61,7 +61,7 @@ class ApplicationReviewer {
     }
 }`;
 
-    constructor(props: ISelectionProps){
+    constructor(props: IOmnitoolProps){
         super(props);
         this.keyboardShortcuts = this.keyboardShortcuts.bind(this);
     }
@@ -72,7 +72,7 @@ class ApplicationReviewer {
     }
 
     componentWillUnmount(){
-        document.removeEventListener("keydown", this.arrowFunctions, false);
+        document.removeEventListener("keydown", this.keyboardShortcuts, false);
     }
 
     keyboardShortcuts(e: KeyboardEvent) {
@@ -105,7 +105,7 @@ class ApplicationReviewer {
         ];
         const { newFileModal, selectedTab, newFileName, confirmDeleteModal, loading, settingsModal, reviewMode } = this.state;
         return (
-            <Page title="Selection">
+            <Page fullWidth title="Omnitool">
                 <Card>
                     <Tabs tabs={tabs} selected={selectedTab} onSelect={this.handleTabChange} fitted>
                         {this.renderPage()}
@@ -475,4 +475,4 @@ class ApplicationReviewer {
     }
 }
 
-export default Selection;
+export default Omnitool;

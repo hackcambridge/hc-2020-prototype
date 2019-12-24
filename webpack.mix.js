@@ -56,4 +56,5 @@ mix
     .ts('resources/js/scenes/sponsors.tsx', 'assets/js')
     .ts('resources/js/scenes/committee.tsx', 'assets/js')
     .sass('resources/sass/app.scss', 'assets/css')
-    .sass('resources/sass/home.scss', 'assets/css');
+    .sass('resources/sass/home.scss', 'assets/css')
+    .version();

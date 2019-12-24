@@ -191,7 +191,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 <Banner status="info">
                     {this.props.canEdit
                         ? <p>You change this information at any time before the application deadline.</p>
-                        : <p>Applications have now closed.</p>
+                        : <p>Your application is being reviewed.</p>
                     }
                 </Banner>
                 <br />
