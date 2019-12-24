@@ -102,7 +102,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
             <Card>
                 <div style={{ padding: "22px" }}>
                     <div style={{ float: "right", color: '#bf0711' }}>
-                        <Button onClick={this.leaveTeam} monochrome outline loading={busyState} size="slim">Leave Team</Button>
+                        <Button onClick={this.leaveTeam} monochrome outline loading={busyState} disabled={!this.props.canEdit} size="slim">Leave Team</Button>
                     </div>
                     <DisplayText size="medium">
                         <TextStyle variation="strong">
@@ -115,6 +115,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                     items={teamMembers}
                     renderItem={(member: ITeamMember) => {
                         const shortcutActions = teamOwner ? [{
+                            disabled: !this.props.canEdit,
                             content: 'Remove',
                             accessibilityLabel: `Remove`,
                             onClick: () => this.removeTeamMember(member)
