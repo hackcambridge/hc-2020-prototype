@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton, Link } from "@shopify/polaris";
+import React, { Component, ReactNode } from "react";
+import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton, Link, Tooltip} from "@shopify/polaris";
 import axios from 'axios';
 import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
 import countryList from 'country-list';
@@ -28,6 +28,7 @@ interface IApplyState {
     visaPickerMonthYear: { month: number, year: number },
     visaDate: Date | undefined,
     visaDateTemp: Date | undefined,
+    reviewed: boolean,
 }
 
 function RequiredStar() {
@@ -63,6 +64,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
         agreedToConduct: this.props.initialRecord ? this.props.initialRecord.acceptedConduct : false,
         agreedToPrivacy: this.props.initialRecord ? this.props.initialRecord.acceptedPrivacy : false,
         agreedToTerms: this.props.initialRecord ? this.props.initialRecord.acceptedTerms : false,
+        reviewed: false,
     }
 
 
@@ -134,6 +136,14 @@ class Apply extends Component<IApplyProps, IApplyState> {
         });
     }
 
+    private wrapButton(button: ReactNode, renderTooltip: boolean) {
+        return renderTooltip ?
+            <Tooltip light content="Your application is currently being reviewed.">
+                {button}
+            </Tooltip>
+        : button;
+    }
+
     private saveForm(submitted: boolean, customToast?: () => void, cv?: File) {
         if(submitted && !(this.state.agreedToConduct && this.state.agreedToPrivacy && this.state.agreedToTerms)) {
             toast.error("Please accept all the terms and conditions.");
@@ -175,6 +185,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
         const mlhPrivacy = "https://mlh.io/privacy";
         const mlhTC = "https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md";
         const hcPrivacy = "/privacy";
+        
         return (
             <Page title={"Apply for Hack Cambridge"}>
                 <Banner status="info">
@@ -313,10 +324,10 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     {isSubmitted
                         ? <div id="save-button-group">
                             <div style={{ float: "left", padding: "30px 0" }}>
-                                <Button destructive loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
+                                {this.wrapButton(<Button destructive disabled={this.state.reviewed} loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>, this.state.reviewed)}
                             </div>
                             <div style={{ float: "right", padding: "30px 0" }}>
-                                <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Update</Button>
+                                {this.wrapButton(<Button loading={isSaving} disabled={this.state.reviewed} primary onClick={() => this.saveForm(true)}>Update</Button>, this.state.reviewed)}
                             </div>
                         </div>
                         : <div id="save-button-group" style={{ float: "right", padding: "30px 0" }}>
@@ -437,6 +448,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             questionValues: JSON.parse(record.questionResponses) as { [key: string]: string },
                             countrySelection: record.country,
                             isSubmitted: record.isSubmitted,
+                            reviewed: (obj["reviewed"] == 'true'),
                         });
                     }
                     return;

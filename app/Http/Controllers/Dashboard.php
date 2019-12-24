@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\ApplicationReview;
 use App\Models\TeamMember;
 use App\Helpers\S3Management;
 use Illuminate\Http\Request;
@@ -163,10 +164,12 @@ class Dashboard extends Controller
     private function getApplicationRecord($r) {
         if($this->canContinue(["hacker", "committee", "admin"], $r)) {
             $app = Application::where("user_id", Auth::user()->id)->first();
+            $is_reviewed = ApplicationReview::where("application_id", "=", $app->getAttribute("id"))->count();
             if($app) {
                 return response()->json([
                     "success" => true,
                     "record" => $app,
+                    "reviewed" => json_encode($is_reviewed > 0),
                 ]);
             } else {
                 return response()->json([
