@@ -271,14 +271,16 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                 checked={!visaRequired}
                                 id="visa_no"
                                 name="visa_radio"
-                                onChange={(val, id) => this.setState({visaRequired: !val})}
+                                disabled={!this.props.canEdit}
+                                onChange={(val, _) => this.setState({visaRequired: !val})}
                               />
                               <RadioButton
                                 label="Yes"
                                 id="visa_yes"
                                 name="visa_radio"
                                 checked={visaRequired}
-                                onChange={(val, id) => this.setState({visaRequired: val})}
+                                disabled={!this.props.canEdit}
+                                onChange={(val, _) => this.setState({visaRequired: val})}
                               />
                             </Stack>
                             </>
@@ -287,7 +289,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                 <div style={{ paddingBottom: "8px", paddingTop: "10px" }}>
                                     <Subheading>What is the deadline for organising a visa?</Subheading>
                                 </div>
-                            <Button size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
+                            <Button disabled={!this.props.canEdit} size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
                                 {visaDate
                                     ? `${visaDate.getDate()} ${visaDate.toLocaleString('default', { month: 'long' })} ${visaDate.getFullYear()}`
                                     : "(No date selected)"
@@ -303,16 +305,19 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 <Card sectioned title={"The Legal Bit"}>
                   <FormLayout>
                         <Checkbox
+                            disabled={!this.props.canEdit}
                             label={<span>I have read and agreed to <Link external onClick={() => this.openInNewTab(mlhConduct)}>MLH's Code of Conduct</Link>.</span>}
                             checked={agreedToConduct}
                             onChange={(val) => this.setState({ agreedToConduct: val })}
                         />
                         <Checkbox
+                            disabled={!this.props.canEdit}
                             label={<span>I have read and agreed to Hack Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link>.</span>}
                             checked={agreedToTerms}
                             onChange={(val) => this.setState({ agreedToTerms: val })}
                         />
                         <Checkbox
+                            disabled={!this.props.canEdit}
                             label={<span>I authorise you to share my application/registration information for event administration, ranking, MLH administration, pre- and post- event informational emails, and occasional emails about hackathons in line with <Link external onClick={() => this.openInNewTab(mlhPrivacy)}>MLH's Privacy Policy</Link>. I further agree to the terms in both the <Link external onClick={() => this.openInNewTab(mlhTC)}>MLH Contest Terms and Conditions</Link>, the <Link external onClick={() => this.openInNewTab(mlhPrivacy)}>MLH Privacy Policy</Link>, and <Link external onClick={() => this.openInNewTab(hcPrivacy)}>Hack Cambridge's own Privacy Policy</Link>.</span>}
                             checked={agreedToPrivacy}
                             onChange={(val) => this.setState({ agreedToPrivacy: val })}
