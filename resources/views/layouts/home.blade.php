@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
-        <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}" />
+        <link rel="stylesheet" href="{{ mix('assets/css/home.css') }}" />
         <link rel="shortcut icon" type="image/png" href="/images/favicon.png"/>
         <link href="https://fonts.googleapis.com/css?family=Ovo:400,700|Arvo&display=swap" rel="stylesheet">    
     </head>
