@@ -1,7 +1,7 @@
 {
-    "/assets/js/committee.js": "/assets/js/committee.js?id=86abda378ada78107da7",
-    "/assets/js/dashboard.js": "/assets/js/dashboard.js?id=306e28a07f31f8e0a267",
-    "/assets/css/app.css": "/assets/css/app.css?id=f93061344679a9049736",
-    "/assets/css/home.css": "/assets/css/home.css?id=b4d94754a128da79d713",
-    "/assets/js/sponsors.js": "/assets/js/sponsors.js?id=f3d1de4c6337e43a092e"
+    "/assets/js/committee.js": "/assets/js/committee.js",
+    "/assets/js/dashboard.js": "/assets/js/dashboard.js",
+    "/assets/css/app.css": "/assets/css/app.css",
+    "/assets/css/home.css": "/assets/css/home.css",
+    "/assets/js/sponsors.js": "/assets/js/sponsors.js"
 }
