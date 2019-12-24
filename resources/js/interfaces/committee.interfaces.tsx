@@ -24,6 +24,8 @@ export interface IApplicationDetail {
     cvFilename: string,
     cvUrl: string,
     questionResponses: string,
+    visaRequired: boolean,
+    visaRequiredDate: string,
 }
 
 export interface IUserDetails {
