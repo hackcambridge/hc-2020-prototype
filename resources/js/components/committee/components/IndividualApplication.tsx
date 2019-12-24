@@ -127,6 +127,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             const cvButton = app.cvUrl.length > 0 
                 ? <a style={{ marginTop: "-0.4rem", textDecoration: "none", cursor: "pointer" }} onClick={() => this.setState({ cvModalOpen: true })}><Button fullWidth primary>View CV</Button></a>
                 : <div style={{ marginTop: "-0.4rem" }}><Button disabled fullWidth primary>CV missing</Button></div>;
+
             const cvIFrame = (app.cvUrl || app.cvUrl.length > 0)
                 ? <iframe className="cv-frame" style={{ height: `${window.innerHeight * 0.85}px` }} src={`https://docs.google.com/viewer?url=${app.cvUrl}&embedded=true`}></iframe>
                 : <div style={{ height: `${window.innerHeight * 0.85}px`, padding: "1rem", width: "100%", textAlign: "center" }}>No file found</div>;
@@ -162,7 +163,12 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                             { term: 'School', description: "school" in profile ? (profile["school"]["name"] || "") : "" },
                                             { term: 'Subject', description: profile["major"] || "" },
                                             { term: 'Level', description: profile["level_of_study"] || "" },
-                                        ]}
+                                        ]
+                                        .concat(
+                                            app.visaRequired ? 
+                                            [{term: 'Visa Deadline', description: new Date(app.visaRequiredDate).toDateString()}] 
+                                            : []
+                                        )}
                                     />
                                 </div>
                             </Card>
