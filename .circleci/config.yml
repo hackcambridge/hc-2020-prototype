@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.3-stretch-node-browsers
-      - image: circleci/mysql:5.7
+      - image: circleci/mysql:5.7-ram
         environment:
           MYSQL_ROOT_PASSWORD: secret
           MYSQL_DATABASE: hc
@@ -19,6 +19,8 @@ jobs:
 
       - run: sudo apt update
       - run: sudo docker-php-ext-install zip
+      - run: sudo apt-get install php7.3-mysql
+      - run: sudo service apache2 restart
 
       # Download and cache dependencies
       - restore_cache:
