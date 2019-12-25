@@ -6,14 +6,18 @@ version: 2
 jobs:
   build:
     docker:
-      # Specify the version you desire here
       - image: circleci/php:7.3-stretch-node-browsers
       - image: circleci/mysql:5.7
+        environment:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: hc
+          MYSQL_USER: hc
+          MYSQL_PASSWORD: secret
 
     steps:
       - checkout
 
-      - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
+      - run: sudo apt update
       - run: sudo docker-php-ext-install zip
 
       # Download and cache dependencies
@@ -41,8 +45,8 @@ jobs:
             - node_modules
 
       # prepare the database
-      - run: touch storage/testing.sqlite
-      - run: php artisan migrate --env=testing --database=sqlite_testing --force
+      # - run: touch storage/testing.sqlite
+      - run: php artisan migrate --env=testing --database=testing_database --force
 
       # run tests with phpunit or codecept
       #- run: ./vendor/bin/phpunit
