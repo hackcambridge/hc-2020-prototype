@@ -10,6 +10,7 @@ interface ITeamApplicationProps {
     teamID: string,
     teamMembers: ITeamMember[] | undefined,
     teamOwner: boolean | undefined,
+    canEdit: boolean,
 }
 
 interface ITeamApplicationState {
@@ -38,7 +39,10 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
         return (
             <Page title={"Team Information"}>
                 <Banner status="info">
-                    <p>You change this information at any time before the application deadline.</p>
+                    {this.props.canEdit 
+                        ? <p>You change this information at any time before the application deadline.</p>
+                        : <p>Your application is being reviewed</p>
+                    }
                 </Banner>
                 <br />
                 <Card sectioned title={"Specifying a Team is Optional"}>
@@ -58,6 +62,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                 <Layout.Section oneHalf>
                     <Card sectioned title={"Create a New Team"}>
                         <Button 
+                            disabled={!this.props.canEdit}
                             loading={busyState}
                             primary 
                             fullWidth 
@@ -74,9 +79,15 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                             placeholder="Team ID"
                             value={joinTeamID}
                             onChange={(s) => this.setState({ joinTeamID: s })}
-                            disabled={busyState}
+                            disabled={busyState || !this.props.canEdit}
                             connectedRight={
-                                <Button onClick={this.setTeam} loading={busyState} primary icon={MobilePlusMajorMonotone} />
+                                <Button 
+                                    onClick={this.setTeam} 
+                                    loading={busyState} 
+                                    disabled={!this.props.canEdit} 
+                                    primary 
+                                    icon={MobilePlusMajorMonotone} 
+                                />
                             }
                         />
                     </Card>
@@ -91,7 +102,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
             <Card>
                 <div style={{ padding: "22px" }}>
                     <div style={{ float: "right", color: '#bf0711' }}>
-                        <Button onClick={this.leaveTeam} monochrome outline loading={busyState} size="slim">Leave Team</Button>
+                        <Button onClick={this.leaveTeam} monochrome outline loading={busyState} disabled={!this.props.canEdit} size="slim">Leave Team</Button>
                     </div>
                     <DisplayText size="medium">
                         <TextStyle variation="strong">
@@ -104,6 +115,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                     items={teamMembers}
                     renderItem={(member: ITeamMember) => {
                         const shortcutActions = teamOwner ? [{
+                            disabled: !this.props.canEdit,
                             content: 'Remove',
                             accessibilityLabel: `Remove`,
                             onClick: () => this.removeTeamMember(member)
@@ -112,7 +124,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                             <ResourceList.Item
                                 id={`${member.user_id}`}
                                 onClick={() => {
-                                    if(teamOwner) {
+                                    if(teamOwner && this.props.canEdit) {
                                         this.removeTeamMember(member);
                                     }
                                 }}
@@ -134,6 +146,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
     }
 
     private createNewTeam = () => {
+        if(!this.props.canEdit) return;
         this.setState({ doingAction: true });
         axios.post(`/dashboard-api/create-team.json`, {}).then(res => {
             const status = res.status;
@@ -160,6 +173,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
     }
 
     private leaveTeam = () => {
+        if(!this.props.canEdit) return;
         const destructor : JSX.Element = (
             <DestructiveConfirmation 
                 onConfirm={() => this.handleLeaveTeam()}
@@ -171,6 +185,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
     }
 
     private handleLeaveTeam = () => {
+        if(!this.props.canEdit) return;
         this.setState({ doingAction: true });
         axios.post(`/dashboard-api/leave-team.json`, {}).then(res => {
             const status = res.status;
@@ -211,6 +226,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
     }
 
     private setTeam = () => {
+        if(!this.props.canEdit) return;
         const { joinTeamID } = this.state;
         this.setState({ doingAction: true });
         axios.post(`/dashboard-api/set-team.json`, {
@@ -245,6 +261,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
     }
 
     private removeTeamMember = (member: ITeamMember) => {
+        if(!this.props.canEdit) return;
         if(!member.team_owner) {
             const destructor : JSX.Element = (
                 <DestructiveConfirmation 

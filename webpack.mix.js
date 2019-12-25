@@ -21,21 +21,10 @@ mix
                     loader: 'babel-loader',
                     options: {
                         presets: [
-                            [
-                                '@babel/preset-env',
-                                {
-                                    targets: {
-                                        node: true,
-                                    },
-                                },
-                            ],
+                            ['@babel/preset-env', { targets: { node: true } } ],
                             '@babel/typescript',
                             '@babel/react'
                         ],
-                        // plugins: [["import", {
-                        //     "libraryName": "antd",
-                        //     "style": true,   // or 'css'
-                        // }]]
                     },
                     exclude: /node_modules/,
                 },
@@ -57,3 +46,7 @@ mix
     .ts('resources/js/scenes/committee.tsx', 'assets/js')
     .sass('resources/sass/app.scss', 'assets/css')
     .sass('resources/sass/home.scss', 'assets/css');
+
+if (mix.inProduction()) {
+    mix.version();
+}

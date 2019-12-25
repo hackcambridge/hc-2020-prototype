@@ -5,6 +5,7 @@ interface IDestructiveConfirmationProps {
     show?: boolean,
     title?: string,
     confirmText?: string,
+    bodyContent?: string,
     onConfirm: () => void,
     onClose: () => void
 }
@@ -40,6 +41,7 @@ class DestructiveConfirmation extends Component<IDestructiveConfirmationProps, I
                 //     destructive: true
                 // }}
                 >
+                    {this.props.bodyContent ? <Modal.Section>{this.props.bodyContent}</Modal.Section> : <></>}
             </Modal>
         );
     }

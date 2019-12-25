@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton, Link } from "@shopify/polaris";
+import React, { Component, ReactNode } from "react";
+import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton, Link, Tooltip} from "@shopify/polaris";
 import axios from 'axios';
 import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
 import countryList from 'country-list';
@@ -28,6 +28,7 @@ interface IApplyState {
     visaPickerMonthYear: { month: number, year: number },
     visaDate: Date | undefined,
     visaDateTemp: Date | undefined,
+    reviewed: boolean,
 }
 
 function RequiredStar() {
@@ -63,6 +64,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
         agreedToConduct: this.props.initialRecord ? this.props.initialRecord.acceptedConduct : false,
         agreedToPrivacy: this.props.initialRecord ? this.props.initialRecord.acceptedPrivacy : false,
         agreedToTerms: this.props.initialRecord ? this.props.initialRecord.acceptedTerms : false,
+        reviewed: false,
     }
 
 
@@ -134,6 +136,14 @@ class Apply extends Component<IApplyProps, IApplyState> {
         });
     }
 
+    private wrapButton(button: ReactNode, renderTooltip: boolean) {
+        return renderTooltip ?
+            <Tooltip light content="Your application is currently being reviewed.">
+                {button}
+            </Tooltip>
+        : button;
+    }
+
     private saveForm(submitted: boolean, customToast?: () => void, cv?: File) {
         if(submitted && !(this.state.agreedToConduct && this.state.agreedToPrivacy && this.state.agreedToTerms)) {
             toast.error("Please accept all the terms and conditions.");
@@ -175,12 +185,13 @@ class Apply extends Component<IApplyProps, IApplyState> {
         const mlhPrivacy = "https://mlh.io/privacy";
         const mlhTC = "https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md";
         const hcPrivacy = "/privacy";
+        
         return (
             <Page title={"Apply for Hack Cambridge"}>
                 <Banner status="info">
                     {this.props.canEdit
                         ? <p>You change this information at any time before the application deadline.</p>
-                        : <p>Applications have now closed.</p>
+                        : <p>Your application is being reviewed.</p>
                     }
                 </Banner>
                 <br />
@@ -260,14 +271,16 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                 checked={!visaRequired}
                                 id="visa_no"
                                 name="visa_radio"
-                                onChange={(val, id) => this.setState({visaRequired: !val})}
+                                disabled={!this.props.canEdit}
+                                onChange={(val, _) => this.setState({visaRequired: !val})}
                               />
                               <RadioButton
                                 label="Yes"
                                 id="visa_yes"
                                 name="visa_radio"
                                 checked={visaRequired}
-                                onChange={(val, id) => this.setState({visaRequired: val})}
+                                disabled={!this.props.canEdit}
+                                onChange={(val, _) => this.setState({visaRequired: val})}
                               />
                             </Stack>
                             </>
@@ -276,7 +289,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                 <div style={{ paddingBottom: "8px", paddingTop: "10px" }}>
                                     <Subheading>What is the deadline for organising a visa?</Subheading>
                                 </div>
-                            <Button size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
+                            <Button disabled={!this.props.canEdit} size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
                                 {visaDate
                                     ? `${visaDate.getDate()} ${visaDate.toLocaleString('default', { month: 'long' })} ${visaDate.getFullYear()}`
                                     : "(No date selected)"
@@ -292,16 +305,19 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 <Card sectioned title={"The Legal Bit"}>
                   <FormLayout>
                         <Checkbox
+                            disabled={!this.props.canEdit}
                             label={<span>I have read and agreed to <Link external onClick={() => this.openInNewTab(mlhConduct)}>MLH's Code of Conduct</Link>.</span>}
                             checked={agreedToConduct}
                             onChange={(val) => this.setState({ agreedToConduct: val })}
                         />
                         <Checkbox
+                            disabled={!this.props.canEdit}
                             label={<span>I have read and agreed to Hack Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link>.</span>}
                             checked={agreedToTerms}
                             onChange={(val) => this.setState({ agreedToTerms: val })}
                         />
                         <Checkbox
+                            disabled={!this.props.canEdit}
                             label={<span>I authorise you to share my application/registration information for event administration, ranking, MLH administration, pre- and post- event informational emails, and occasional emails about hackathons in line with <Link external onClick={() => this.openInNewTab(mlhPrivacy)}>MLH's Privacy Policy</Link>. I further agree to the terms in both the <Link external onClick={() => this.openInNewTab(mlhTC)}>MLH Contest Terms and Conditions</Link>, the <Link external onClick={() => this.openInNewTab(mlhPrivacy)}>MLH Privacy Policy</Link>, and <Link external onClick={() => this.openInNewTab(hcPrivacy)}>Hack Cambridge's own Privacy Policy</Link>.</span>}
                             checked={agreedToPrivacy}
                             onChange={(val) => this.setState({ agreedToPrivacy: val })}
@@ -313,10 +329,10 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     {isSubmitted
                         ? <div id="save-button-group">
                             <div style={{ float: "left", padding: "30px 0" }}>
-                                <Button destructive loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>
+                                {this.wrapButton(<Button destructive disabled={this.state.reviewed} loading={isSaving} onClick={() => this.saveForm(false)}>Unsubmit</Button>, this.state.reviewed)}
                             </div>
                             <div style={{ float: "right", padding: "30px 0" }}>
-                                <Button loading={isSaving} primary onClick={() => this.saveForm(true)}>Update</Button>
+                                {this.wrapButton(<Button loading={isSaving} disabled={this.state.reviewed} primary onClick={() => this.saveForm(true)}>Update</Button>, this.state.reviewed)}
                             </div>
                         </div>
                         : <div id="save-button-group" style={{ float: "right", padding: "30px 0" }}>
@@ -437,6 +453,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             questionValues: JSON.parse(record.questionResponses) as { [key: string]: string },
                             countrySelection: record.country,
                             isSubmitted: record.isSubmitted,
+                            reviewed: (obj["reviewed"] == 'true'),
                         });
                     }
                     return;

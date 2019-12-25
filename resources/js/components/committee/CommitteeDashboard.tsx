@@ -6,9 +6,8 @@ import {
     Frame,
     TopBar,
     Navigation,
-    Banner,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone, EnvelopeMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone, CodeMajorMonotone} from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import Overview from "./components/Overview";
 import Committee404 from "./Committee404";
@@ -18,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import md5 from "md5";
 import MemberList from "./components/MemberList";
 import IndividualApplication from "./components/IndividualApplication";
-import Selection from "./components/Selection";
+import Omnitool from "./components/Omnitool";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {
@@ -155,9 +154,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                                 icon: ProfileMajorMonotone
                             },
                             {
-                                url: `${this.props.baseUrl}/selection`,
-                                label: "Selection",
-                                icon: EnvelopeMajorMonotone
+                                url: `${this.props.baseUrl}/omnitool`,
+                                label: "Omnitool",
+                                icon: CodeMajorMonotone
                             },
                         ]}
                     /> 
@@ -216,7 +215,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Route exact path={`${this.props.baseUrl}/applications`} render={(props) => <Applications {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications/:id`} render={(props) => <IndividualApplication applicationId={props.match.params.id} {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />
-                <Route exact path={`${this.props.baseUrl}/selection`} render={(props) => <Selection {...props} />} />
+                <Route exact path={`${this.props.baseUrl}/omnitool`} render={(props) => <Omnitool {...props} />} />
                 <Route component={Committee404}></Route>
             </Switch>
         );

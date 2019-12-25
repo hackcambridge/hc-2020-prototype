@@ -30,6 +30,8 @@ export interface IApplicationRecordContent {
     visaRequiredDate: string,
     acceptedConduct: boolean,
     acceptedPrivacy: boolean,
+    acceptedTerms: boolean,
+    invited_on: string,
 }
 
 export interface ITeamMember {

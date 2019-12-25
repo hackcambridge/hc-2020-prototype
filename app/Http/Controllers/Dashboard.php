@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\ApplicationReview;
 use App\Models\TeamMember;
 use App\Helpers\S3Management;
 use Illuminate\Http\Request;
@@ -24,6 +25,8 @@ class Dashboard extends Controller
         switch ($path) {
             case "init": return $this->initSession();
             case "application-record": return $this->getApplicationRecord($r);
+            case "accept-invitation": return $this->acceptInvitation();
+            case "decline-invitation": return $this->declineInvitation();
             default: return $this->fail("Route not found");
         }
     }
@@ -74,20 +77,17 @@ class Dashboard extends Controller
                     if(!$r->has($param)) return false;
                     // if(!$val || strlen($val) == 0) return false;
                 }
-                // flag
-                return true;
-            }
+            } 
+            return true;
         }
-        // else {
-        //     // Not logged in or user type not allowed.
-        //     return false;
-        // }
         return false;
     }
 
     private function initSession() {
         if(Auth::check()) {
             $app = Application::where("user_id", Auth::user()->id)->first();
+            $is_reviewed = ApplicationReview::where("application_id", "=", $app->getAttribute("id"))->count();
+            $app->reviewed = ($is_reviewed > 0) ? 1 : 0;
             $team = TeamMember::where("user_id", Auth::user()->id)->first();
             $team_members = $team ? TeamMemberResource::collection(TeamMember::where("team_id", $team->team_id)->get()) : null;
             return response()->json([
@@ -163,6 +163,8 @@ class Dashboard extends Controller
     private function getApplicationRecord($r) {
         if($this->canContinue(["hacker", "committee", "admin"], $r)) {
             $app = Application::where("user_id", Auth::user()->id)->first();
+            $is_reviewed = ApplicationReview::where("application_id", "=", $app->getAttribute("id"))->count();
+            $app->reviewed = ($is_reviewed > 0) ? 1 : 0;
             if($app) {
                 return response()->json([
                     "success" => true,
@@ -346,11 +348,68 @@ class Dashboard extends Controller
     }
 
 
-    public function storeCV(Request $r) {
-        if($this->canContinue(["admin", "sponsor", "hacker"], $r->request, ["sponsor_slug"])) {
-
+    public function acceptInvitation() {
+        if($this->canContinue(["hacker"], null)) {
+            $application = Application::where("user_id", "=", Auth::user()->id)->first();
+            if($application) {
+                if($application->invited) {
+                    if($application->rejected) {
+                        return $this->fail("You have already rejected the invitation.");
+                    } else if ($application->confirmed) {
+                        return $this->success("You have already accepted the invitation.");
+                    } else {
+                        $application->setAttribute("confirmed", 1);
+                        if($application->save()) {
+                            $application->reviewed = 1;
+                            return response()->json([
+                                "success" => true,
+                                "application" => $application,
+                            ]);
+                        } else {
+                            return $this->fail("An error occurred.");
+                        }
+                    }
+                } else {
+                    return $this->fail("This invitastion doesn't exist.");
+                }
+            } else {
+                return $this->fail("Application not found.");
+            }
         } else {
-            $this->fail("Checks failed");
+            return $this->fail("Checks failed.");
+        }
+    }
+
+
+    public function declineInvitation() {
+        if($this->canContinue(["hacker"], null)) {
+            $application = Application::where("user_id", "=", Auth::user()->id)->first();
+            if($application) {
+                if($application->invited) {
+                    if($application->rejected) {
+                        return $this->success("You have already rejected the invitation.");
+                    } else if ($application->confirmed) {
+                        return $this->fail("You have already accepted the invitation.");
+                    } else {
+                        $application->setAttribute("rejected", 1);
+                        if($application->save()) {
+                            $application->reviewed = 1;
+                            return response()->json([
+                                "success" => true,
+                                "application" => $application,
+                            ]);
+                        } else {
+                            return $this->fail("An error occurred.");
+                        }
+                    }
+                } else {
+                    return $this->fail("This invitastion doesn't exist.");
+                }
+            } else {
+                return $this->fail("Application not found.");
+            }
+        } else {
+            return $this->fail("Checks failed.");
         }
     }
 

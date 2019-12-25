@@ -3,8 +3,8 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/app.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ mix('assets/css/app.css') }}">
     <div id="loading" class="lds-ripple"><div></div><div></div></div>
     <div id="dashboard-root"></div>
-    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+    <script src="{{ mix('assets/js/dashboard.js') }}"></script>
 @endsection

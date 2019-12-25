@@ -10,9 +10,9 @@ import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/ext-language_tools.js";
 import ReactJson from 'react-json-view'
 
-interface ISelectionProps {}
+interface IOmnitoolProps {}
 
-interface ISelectionState {
+interface IOmnitoolState {
     selectedTab: number
     selectedFile: number
     newFileModal: boolean
@@ -33,7 +33,7 @@ interface IReviewDecisionSet {
     rejected: number[],
 }
 
-class Selection extends Component<ISelectionProps, ISelectionState> {
+class Omnitool extends Component<IOmnitoolProps, IOmnitoolState> {
 
     state = {
         selectedTab: 0,
@@ -61,8 +61,41 @@ class ApplicationReviewer {
     }
 }`;
 
+    constructor(props: IOmnitoolProps){
+        super(props);
+        this.keyboardShortcuts = this.keyboardShortcuts.bind(this);
+    }
+
     componentDidMount() {
+        document.addEventListener("keydown", this.keyboardShortcuts , false);
         this.getScripts();
+    }
+
+    componentWillUnmount(){
+        document.removeEventListener("keydown", this.keyboardShortcuts, false);
+    }
+
+    keyboardShortcuts(e: KeyboardEvent) {
+        // cmd + s will save
+        if (this.state.selectedTab == 1 && e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+            e.preventDefault();
+            this.saveScript();
+        }
+
+        // Does not work on Safari (cannot override cmd + NUM)
+        // cmd + 1/2 will change tab
+        if (e.keyCode == 49 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+            e.preventDefault();
+            this.setState({selectedTab: 0})
+        }
+
+        if (e.keyCode == 50 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+            e.preventDefault();
+            this.setState({selectedTab: 1})
+        }
+        
+
+
     }
 
     render() {
@@ -72,7 +105,7 @@ class ApplicationReviewer {
         ];
         const { newFileModal, selectedTab, newFileName, confirmDeleteModal, loading, settingsModal, reviewMode } = this.state;
         return (
-            <Page title="Selection">
+            <Page fullWidth title="Omnitool">
                 <Card>
                     <Tabs tabs={tabs} selected={selectedTab} onSelect={this.handleTabChange} fitted>
                         {this.renderPage()}
@@ -442,4 +475,4 @@ class ApplicationReviewer {
     }
 }
 
-export default Selection;
+export default Omnitool;
