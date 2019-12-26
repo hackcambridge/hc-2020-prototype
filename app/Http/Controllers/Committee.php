@@ -267,6 +267,10 @@ class Committee extends Controller
             }
 
             $app = Application::withCount(["reviews"])
+                ->whereHas('user', function ($query) {
+                    $query->where('type', '=', "hacker");
+                })
+                ->with(["user"])
                 ->having("reviews_count", "<", 4)
                 ->where("isSubmitted", "=", 1)
                 ->whereNotIn("id", $my_reviews)
