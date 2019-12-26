@@ -256,7 +256,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private getApplicationStateKey(): string {
         const { application, applicationOpen } = this.state;
         if(application) {
-            if(application.reviewed) {
+            if(application.reviewed || application.invited) {
                 if(application.invited) {
                     if(application.rejected) return "declined";
                     else if(application.confirmed) return "confirmed";
