@@ -89,8 +89,6 @@ class Dashboard extends Controller
             if($app) {
                 $is_reviewed = ApplicationReview::where("application_id", "=", $app->getAttribute("id"))->count();
                 $app->reviewed = ($is_reviewed > 0) ? 1 : 0;
-            } else {
-                $app->reviewed = 0;
             }
             $team = TeamMember::where("user_id", Auth::user()->id)->first();
             $team_members = $team ? TeamMemberResource::collection(TeamMember::where("team_id", $team->team_id)->get()) : null;
