@@ -25,6 +25,7 @@ interface IIndividualApplicationState {
     reviewMax: number,
     savingReview: boolean,
     alreadyReviewed: boolean,
+    isSubmitted: boolean,
 }
 
 
@@ -51,6 +52,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
         reviewMax: reviewQuestions.reduce((a, b) => a + (b.range * b.weight), 0),
         savingReview: false,
         alreadyReviewed: false,
+        isSubmitted: false,
     }
 
     constructor(props: IIndividualApplicationProps & RouteComponentProps){
@@ -59,7 +61,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
     }
 
     arrowFunctions(event: KeyboardEvent){
-        const { cvModalOpen, reviewModalOpen } = this.state;
+        const { cvModalOpen, isSubmitted } = this.state;
         if(event.keyCode === 32) { // space
             this.setState({ cvModalOpen: !cvModalOpen });
         }
@@ -67,7 +69,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             this.setState({ cvModalOpen: false });
         }
         if(event.keyCode === 39) { // right
-            this.setState({ reviewModalOpen: true });
+            this.setState({ reviewModalOpen: true && isSubmitted });
         }
         if(event.keyCode === 38) { // up
             this.setState({ cvModalOpen: true });
@@ -280,6 +282,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                         }, {}),
                         reviewTotal: reviewQuestions.reduce((a, b) => a + (b.default * b.weight), 0),
                         alreadyReviewed: false,
+                        isSubmitted: application.isSubmitted,
                     });
 
                     const review : IApplicationReview = payload["review"];
