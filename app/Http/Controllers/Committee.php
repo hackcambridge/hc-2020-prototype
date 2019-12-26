@@ -260,18 +260,21 @@ class Committee extends Controller
     private function getRandomApplicationToReview() {
         if($this->canContinue(null, [], false)) {
             // Hacker applications I haven't reviewed yet...
-            $apps = DB::table('applications')
-                ->select('applications.id', 'applications.isSubmitted', "applications.user_id")
-                ->join("users", "users.id", "=", "applications.user_id")
-                ->where("type", "=", "hacker")
-                ->where("applications.isSubmitted", true)
-                ->select("applications.id")
-                ->leftJoin('application_reviews', 'application_reviews.application_id', '=', 'applications.id')
-                ->where('application_reviews.user_id', '!=', Auth::user()->id)->orWhereNull('application_reviews.user_id')
-                ->get();
+            $my_reviews_q = ApplicationReview::where("user_id", "=", Auth::user()->id)->get();
+            $my_reviews = [];
+            foreach ($my_reviews_q as $r) {
+                $my_reviews[] = $r->application_id;
+            }
 
-            if($apps->count() > 0) {
-                return $this->success($apps->random()->id);
+            $app = Application::withCount(["reviews"])
+                ->having("reviews_count", "<", 4)
+                ->where("isSubmitted", "=", 1)
+                ->whereNotIn("id", $my_reviews)
+                ->orderBy('reviews_count', 'DESC') // for now
+                ->first();
+
+            if($app) {
+                return $this->success($app->id);
             } else {
                 return $this->fail("No more applications to review");
             }
