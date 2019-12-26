@@ -126,18 +126,24 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             const cvIFrame = (app.cvUrl || app.cvUrl.length > 0)
                 ? <iframe className="cv-frame" style={{ height: `${window.innerHeight * 0.85}px` }} src={`https://docs.google.com/viewer?url=${app.cvUrl}&embedded=true`}></iframe>
                 : <div style={{ height: `${window.innerHeight * 0.85}px`, padding: "1rem", width: "100%", textAlign: "center" }}>No file found</div>;
+
+            const metadata = <>
+                {alreadyReviewed ? <Badge status="success">Reviewed</Badge> : <></>}
+                {!app.isSubmitted ? <Badge status="attention">Not submitted</Badge> : <></>}
+                {usr.type != "hacker" ? <Badge status="warning">{"Type: " + usr.type}</Badge> : <></>}
+            </>;
             return (
                 <Page 
                     breadcrumbs={[{content: 'Applications', url: '../applications'}]}
                     title={`${usr.name}`}
-                    titleMetadata={alreadyReviewed ? <Badge status="success">Reviewed</Badge> : <></>}
+                    titleMetadata={metadata}
                     subtitle={`Application #${app.id}`}
                     pagination={{
                         hasPrevious: false,
                         hasNext: true,
                         onNext: this.randomNextApplication
                     }}
-                    primaryAction={{content: 'Review', destructive: true, onAction: () => this.setState({ reviewModalOpen: true })}}
+                    primaryAction={{content: 'Review', disabled: !app.isSubmitted || usr.type != "hacker", destructive: true, onAction: () => this.setState({ reviewModalOpen: true })}}
                     thumbnail={<Thumbnail
                         source={`https://www.gravatar.com/avatar/${md5(usr.email.toLowerCase())}?d=retro&s=200`}
                         size="large"

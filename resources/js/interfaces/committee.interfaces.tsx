@@ -26,6 +26,7 @@ export interface IApplicationDetail {
     questionResponses: string,
     visaRequired: boolean,
     visaRequiredDate: string,
+    isSubmitted: boolean,
 }
 
 export interface IUserDetails {
