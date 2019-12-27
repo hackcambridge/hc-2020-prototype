@@ -29,6 +29,11 @@ interface IOmnitoolState {
 }
 
 interface IReviewDecisionSet {
+    details: { [key: number]: {
+        score: number,
+        adjustment: number,
+        decision: "accept" | "reject" | "ignore",
+    }},
     accepted: number[],
     rejected: number[],
 }
