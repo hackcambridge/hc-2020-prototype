@@ -196,6 +196,11 @@
             <h6 class="sponsor-tier-title">— Giga —</h6>
             <div id="sponsors-giga" class="sponsors-container">
                 <div class="item">
+                    <a href="https://www.amazon.com" target="_blank">
+                        <img src="{{ asset('images/sponsors/amazon.png') }}" />
+                    </a>
+                </div>
+                <div class="item">
                     <a href="https://www.huawei.com" target="_blank">
                         <img src="{{ asset('images/sponsors/huawei.png') }}" />
                     </a>
