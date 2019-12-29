@@ -1,5 +1,5 @@
 import React, { Component, ReactNode} from 'react';
-import { Page, Card, Tabs, Button, Modal, TextField, Stack, Select, TextContainer, ButtonGroup, Checkbox } from "@shopify/polaris";
+import { Page, Card, Tabs, Button, Modal, TextField, Stack, Select, TextContainer, ButtonGroup, Checkbox, ResourceList } from "@shopify/polaris";
 import { AddCodeMajorMonotone, RefreshMajorMonotone, PlayMajorMonotone, SettingsMajorMonotone } from '@shopify/polaris-icons';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import "ace-builds/src-noconflict/mode-php";
 import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/ext-language_tools.js";
 import ReactJson from 'react-json-view'
+import { IApplicationDetail, IUserDetails } from '../../../interfaces/committee.interfaces';
 
 interface IOmnitoolProps {}
 
@@ -29,13 +30,16 @@ interface IOmnitoolState {
 }
 
 interface IReviewDecisionSet {
-    details: { [key: number]: {
-        score: number,
-        adjustment: number,
-        decision: "accept" | "reject" | "ignore",
-    }},
-    accepted: number[],
-    rejected: number[],
+    details: { [key: number]: IReviewDecisionDetails },
+}
+
+interface IReviewDecisionDetails {
+    id: number,
+    user: IUserDetails,
+    application: IApplicationDetail,
+    score: number,
+    adjustment: number,
+    decision: "accept" | "reject" | "ignore",
 }
 
 class Omnitool extends Component<IOmnitoolProps, IOmnitoolState> {
@@ -473,6 +477,38 @@ class ApplicationReviewer {
     private renderReviewMode() {
         try {
             const reviewDecisions: IReviewDecisionSet = this.state.results as any;
+            const keys = Object.keys(reviewDecisions.details);
+            const show = keys
+                .map(app => reviewDecisions.details[+app])
+                .filter(app => app.decision == "accept");
+            const renderScore = (score: number, adj: number) => {
+                return <>{(Math.round(score * 100) / 100).toFixed(2)} ({adj >= 0 ? "+" : ""}{(Math.round(adj * 100) / 100).toFixed(2)})</>;
+            }
+            return (
+                <Card>
+                    <ResourceList
+                        resourceName={{singular: 'customer', plural: 'customers'}}
+                        items={show.concat(show)}
+                        renderItem={(item: IReviewDecisionDetails) => {
+                            
+                            return (
+                                <ResourceList.Item
+                                    id={`${item.id}`}
+                                    onClick={() => {}}
+                                    accessibilityLabel={`View details for ${name}`}
+                                >
+                                    <div style={{ padding: "0.1rem" }}>
+                                        <div style={{ color: "red", fontWeight: 700, padding: "0 0 0.2rem", fontSize: "0.8rem" }}>INDIVIDUAL</div>
+                                        <div>{item.user.name} — {renderScore(item.score, item.adjustment)}</div>
+                                        <div style={{ fontWeight: 700, padding: "0.2rem 0 0", fontSize: "1rem" }}>Application ID: {item.application.id}</div>
+                                    </div>
+                                </ResourceList.Item>
+                            );
+                            return <></>;
+                        }}
+                    />
+                </Card>
+            );
             return <></>;
         } catch(e) {
             console.log(e);

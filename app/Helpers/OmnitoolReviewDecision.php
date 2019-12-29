@@ -5,8 +5,12 @@ use Illuminate\Support\Facades\Storage;
 class OmnitoolReviewDecision {
     private $decisions = array();
 
-    public function addApplicationDecision($id, $score=0, $adjustment=0, $decision="ignore") {
+    public function addApplicationDecision($user, $application, $score=0, $adjustment=0, $decision="ignore") {
+        $id = $user->id;
         $this->decisions[$id] = array(
+            "id" => $id,
+            "user" => $user,
+            "application" => $application,
             "score" => $score,
             "adjustment" => $adjustment,
             "decision" => $decision
