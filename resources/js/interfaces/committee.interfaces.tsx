@@ -7,6 +7,10 @@ export interface IAdminOverview {
     users: number,
     applications: {
         total: number,
+        invited: number,
+        invitations_pending: number,
+        accepted: number,
+        rejected: number,
     },
     reviews: { name: string, reviews: number }[]
 }

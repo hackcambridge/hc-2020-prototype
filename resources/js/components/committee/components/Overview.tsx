@@ -48,6 +48,13 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
                             <Button monochrome outline>{`${overview.users}`} registrations</Button>
                             <Button url={`applications`} monochrome outline>{`${overview.applications.total}`} applications</Button>
                         </Stack>
+                        <br />
+                        <Stack>
+                            <Button monochrome outline>{`${overview.applications.invited}`} invited</Button>
+                            <Button monochrome outline>{`${overview.applications.invitations_pending}`} pending</Button>
+                            <Button monochrome outline>{`${overview.applications.accepted}`} confirmed</Button>
+                            <Button monochrome outline>{`${overview.applications.rejected}`} rejected</Button>
+                        </Stack>
                     </Card>
                 </Layout.Section>
                 <Layout.Section oneHalf>
