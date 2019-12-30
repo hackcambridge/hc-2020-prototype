@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Models\Application;
 use App\Models\ApplicationReview;
+use App\Models\TeamMember;
 use App\Helpers\BatchMailer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
-
 
 class Committee extends Controller
 {
@@ -244,12 +244,18 @@ class Committee extends Controller
             $review = ApplicationReview::where("application_id", "=", $app->id)
                                        ->where("user_id", "=", Auth::user()->id)
                                        ->first();
+            $team = TeamMember::where("user_id", "=", $app->user_id)->first();
+            $team_count = 0;
+            if($team) {
+                $team_count = TeamMember::where("team_id", "=", $team->team_id)->count();
+            }
             if($app) {
                 return response()->json([
                     'success' => true,
                     'application' => $app,
                     'user' => $user,
                     'review' => $review,
+                    'team' => $team && $team_count > 1 ? "$team->team_id ($team_count)" : "(None)"
                 ]);
             } else {
                 return $this->fail("Application doesn't exist.");

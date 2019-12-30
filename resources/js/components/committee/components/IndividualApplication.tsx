@@ -26,6 +26,7 @@ interface IIndividualApplicationState {
     savingReview: boolean,
     alreadyReviewed: boolean,
     isSubmitted: boolean,
+    team: string,
 }
 
 
@@ -42,6 +43,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
         loading: true,
         application: undefined,
         user: undefined,
+        team: "(None)",
         cvModalOpen: false,
         reviewModalOpen: false,
         reviewAnswers: reviewQuestions.reduce<{ [id: number]: number }>((map, obj) => {
@@ -115,7 +117,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
 
     private renderApplication = () => {
         const { application, user }: { application: IApplicationDetail | undefined, user: IUserDetails | undefined } = this.state;
-        const { cvModalOpen, reviewModalOpen, reviewAnswers, reviewTotal, reviewMax, savingReview, alreadyReviewed } = this.state;
+        const { cvModalOpen, reviewModalOpen, reviewAnswers, reviewTotal, reviewMax, savingReview, alreadyReviewed, team } = this.state;
         if(application && user) {
             const app: IApplicationDetail = application;
             const usr: IUserDetails = user;
@@ -160,12 +162,12 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                 <div style={{ padding: "0 2rem" }}>
                                     <DescriptionList
                                         items={[
-                                            // { term: 'CV', description: cvButton },
                                             { term: 'Email', description: profile["email"] || "" },
                                             { term: 'Gender', description: profile["gender"] || "" },
                                             { term: 'School', description: "school" in profile ? (profile["school"]["name"] || "") : "" },
                                             { term: 'Subject', description: profile["major"] || "" },
                                             { term: 'Level', description: profile["level_of_study"] || "" },
+                                            { term: 'Team', description: team }
                                         ]
                                         .concat(
                                             app.visaRequired ? 
@@ -271,10 +273,12 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                 if("success" in payload && payload["success"]) {
                     const application : IApplicationDetail = payload["application"];
                     const user : IUserDetails = payload["user"];
+                    const team: string = payload["team"];
                     this.setState({ 
                         loading: false, 
                         applicationId: applicationId, 
                         application: application,
+                        team: team,
                         user: user,
                         reviewAnswers: reviewQuestions.reduce<{ [id: number]: number }>((map, obj) => {
                             map[obj.id] = obj.default;
