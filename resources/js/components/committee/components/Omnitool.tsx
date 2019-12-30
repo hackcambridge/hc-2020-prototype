@@ -242,7 +242,7 @@ class ApplicationReviewer {
                                             }}
                                             accessibilityLabel={`View details`}
                                         >
-                                            <span style={{ fontSize: "1.6rem" }}>#{item.id} &nbsp; {item.user.name}</span> &nbsp; {this.renderScore(item.score, item.adjustment)}
+                                            <span style={{ fontSize: "1.6rem" }}>#{item.application.id} &nbsp; {item.user.name}</span> &nbsp; {this.renderScore(item.score, item.adjustment)}
                                         </ResourceList.Item>
                                     );
                                 }}
