@@ -27,6 +27,8 @@ interface IOmnitoolState {
     results: string,
 
     settingsModal: boolean,
+    doingInvites: boolean,
+    alreadyInvited: string[],
     reviewMode: boolean,
     reviewDecisionModalShowing: boolean,
     reviewDecisionModalInformation: IReviewDecisionModalContent;
@@ -74,6 +76,8 @@ class Omnitool extends Component<IOmnitoolProps & RouteComponentProps, IOmnitool
 
         // settings
         settingsModal: false,
+        doingInvites: false,
+        alreadyInvited: [],
         reviewMode: true,
         reviewDecisionModalShowing: false,
         reviewDecisionModalInformation: this.reviewDecisionModalInformationDefault,
@@ -139,6 +143,7 @@ class ApplicationReviewer {
             confirmDeleteModal,
             loading,
             settingsModal,
+            doingInvites,
             reviewMode,
             reviewDecisionModalShowing,
             reviewDecisionModalInformation,
@@ -201,19 +206,27 @@ class ApplicationReviewer {
                     open={reviewDecisionModalShowing}
                     onClose={() => this.setState({ reviewDecisionModalShowing: false, reviewDecisionModalInformation: this.reviewDecisionModalInformationDefault })}
                     title="Accept Applications"
+                    loading={doingInvites}
                     primaryAction={{
                         content: 'Accept',
                         onAction: () => {
-
-                            this.setState({ reviewDecisionModalShowing: false, reviewDecisionModalInformation: this.reviewDecisionModalInformationDefault })
+                            if(modalDetails) {
+                                this.inviteApplications(
+                                    modalDetails.applications.map(i => i.application.id),
+                                    modalDetails.teamName,
+                                    () => this.setState({ reviewDecisionModalShowing: false, reviewDecisionModalInformation: this.reviewDecisionModalInformationDefault })
+                                );
+                            } else {
+                                this.setState({ reviewDecisionModalShowing: false, reviewDecisionModalInformation: this.reviewDecisionModalInformationDefault });
+                            }
                         },
                     }}
-                    secondaryActions={[{
-                        content: 'Ignore',
-                        onAction: () => {
+                    // secondaryActions={[{
+                    //     content: 'Ignore',
+                    //     onAction: () => {
 
-                        },
-                    }]}
+                    //     },
+                    // }]}
                 >
                     {modalDetails
                         ? (
@@ -224,7 +237,9 @@ class ApplicationReviewer {
                                     return (
                                         <ResourceList.Item
                                             id={`${item.id}`}
-                                            onClick={() => {}}
+                                            onClick={() => {
+                                                window.open(`/committee/admin/applications/${item.id}`, "_blank")
+                                            }}
                                             accessibilityLabel={`View details`}
                                         >
                                             <span style={{ fontSize: "1.6rem" }}>#{item.id} &nbsp; {item.user.name}</span> &nbsp; {this.renderScore(item.score, item.adjustment)}
@@ -566,6 +581,8 @@ class ApplicationReviewer {
                             items={show}
                             renderItem={(item: IReviewDecisionDetails) => {
                                 if(!item) return <>No data.</>;
+                                const { alreadyInvited }: { alreadyInvited: string[] } = this.state;
+                                const greyOut = alreadyInvited.includes(item.teamName || `${item.applications[0].id}`);
                                 return (
                                     <ResourceList.Item
                                         id={`${item.applications.length == 1 ? item.applications[0].id : item.teamName}`}
@@ -580,11 +597,11 @@ class ApplicationReviewer {
                                         <div style={{ padding: "0.1rem" }}>
                                             {item.applications.length == 1
                                                 ? <>
-                                                    <div style={{ color: "red", fontWeight: 700, padding: "0 0 0.2rem", fontSize: "0.8rem" }}>INDIVIDUAL, #{item.applications[0].id}</div>
+                                                    <div style={{ color: greyOut ? "grey" : "red", fontWeight: 700, padding: "0 0 0.2rem", fontSize: "0.8rem" }}>{greyOut ? "INVITED, " : ""}INDIVIDUAL, #{item.applications[0].id}</div>
                                                     <div>{item.applications[0].user.name} &nbsp; — &nbsp; {this.renderScore(item.applications[0].score, item.applications[0].adjustment)}</div>
                                                 </>
                                                 : <>
-                                                    <div style={{ color: "purple", fontWeight: 700, padding: "0 0 0.2rem", fontSize: "0.8rem" }}>TEAM</div>
+                                                    <div style={{ color: greyOut ? "grey" : "purple", fontWeight: 700, padding: "0 0 0.2rem", fontSize: "0.8rem" }}>{greyOut ? "INVITED, " : ""}TEAM</div>
                                                     <div>{item.teamName} &nbsp; — &nbsp; {this.renderScore(item.score, item.adjustment)}</div>
                                                 </>
                                             }
@@ -601,6 +618,29 @@ class ApplicationReviewer {
         } catch(e) {
             console.log(e);
         }
+    }
+
+    private inviteApplications = (appIDs: number[], teamId: string | null, next: () => void) => {
+        this.setState({ doingInvites: true });
+        axios.post(`/committee/admin-api/invite-applications.json`, {
+            ids: appIDs
+        }).then(res => {
+            const status = res.status;
+            if(status == 200 || status == 201) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    toast.info(payload["message"]);
+                    const { alreadyInvited }: { alreadyInvited: string[] } = this.state;
+                    alreadyInvited.push(appIDs.length > 1 && teamId ? teamId : `${appIDs[0]}`);
+                    this.setState({ doingInvites: false, alreadyInvited: alreadyInvited });
+                    next();
+                    return;
+                }
+            }
+            toast.error("Failed to load data.");
+            console.log(status, res.data);
+            this.setState({ doingInvites: false });
+        });
     }
 }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Models\Application;
 use App\Models\ApplicationReview;
+use App\Helpers\BatchMailer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -48,6 +49,7 @@ class Committee extends Controller
             case 'run-review-script': return $this->runReviewScript($r);
             case 'load-review-script': return $this->loadReviewScript($r);
             case 'delete-review-script': return $this->deleteReviewScript($r);
+            case 'invite-applications': return $this->inviteApplications($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -456,6 +458,57 @@ class Committee extends Controller
             } else {
                 $this->fail("Failed to retrieve file.");
             }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function inviteApplications($r) {
+        if($this->canContinue($r, ["ids"], true)) {
+            $ids = $r->get("ids");
+            $successful = [];
+            $ineligible = 0;
+            foreach($ids as $id) {
+                $application = Application::where("id", "=", $id)->first();
+                if($application) {
+                    $already_invited = $application->invited == 1;
+                    $already_confirmed = $application->confirmed == 1;
+                    $already_rejected = $application->rejected == 1;
+                    if(!$already_invited && !$already_confirmed && !$already_rejected) {
+                        $application->setAttribute("invited", 1);
+                        $application->setAttribute("invited_on", date('Y-m-d H:i:s'));
+                        if($application->save()) {
+                            $successful[] = $application;
+                        }
+                    } else {
+                        $ineligible++;
+                    }
+                }
+            }
+
+            // Send emails.
+            $data = [
+                "content" => [
+                    "Good news, we would like to invite you to join us at Hack Cambridge 101!",
+                    "You can RSVP via the portal you used to apply; the link below will take you straight there. Invitations expire three days after they're sent, so if you're coming let us know ASAP! Please note that we don't accept RSVPs via email.",
+                    "Hopefully see you in a couple of weeks!"
+                ],
+                "name" => "%name%",
+                "signoff" => "Happy Holidays",
+                "_defaults" => [
+                    "name" => "there"
+                ]
+            ];
+            $mailer = new BatchMailer(['mail/InvitationLink','mail/text/InvitationLink'], "Invitation — Hack Cambridge 101", $data);
+            foreach($successful as $app) {
+                $name = (isset($app->user->name) ? explode(" ", $app->user->name)[0] : "there");
+                $mailer->addRecipient($app->user->email, ["name" => $name]);
+            }
+            $mailer->sendAll();
+
+            $num_successful = count($successful);
+            $num_failed = count($ids) - $num_successful - $ineligible;
+            return $this->success("Status: $num_successful / $ineligible / $num_failed");
         } else {
             return $this->fail("Checks failed.");
         }
