@@ -33,7 +33,7 @@ interface IOmnitoolState {
 }
 
 interface IReviewDecisionSet {
-    details: { [key: number]: IReviewDecisionDetails },
+    details: { [key: string]: IReviewDecisionDetails },
 }
 
 interface IReviewDecisionModalContent {
@@ -556,7 +556,7 @@ class ApplicationReviewer {
             if(reviewDecisions.details) {
                 const keys = Object.keys(reviewDecisions.details);
                 const show = keys
-                    .map(app => reviewDecisions.details[+app])
+                    .map(app => reviewDecisions.details[app])
                     .filter(app => app.decision == "accept");
                 
                 return (
