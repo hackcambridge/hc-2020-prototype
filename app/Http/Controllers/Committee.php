@@ -461,6 +461,54 @@ class Committee extends Controller
         }
     }
 
+    private function inviteApplications($r) {
+        if($this->canContinue($r, ["ids"], true)) {
+            $ids = $r->get("ids");
+            $successful = [];
+            $ineligible = 0;
+            foreach($ids as $id) {
+                $application = Application::where("id", "=", $id)->first();
+                if($application) {
+                    $already_invited = $application->invited == 1;
+                    $already_confirmed = $application->confirmed == 1;
+                    $already_rejected = $application->rejected == 1;
+                    if(!$already_invited && !$already_confirmed && !$already_rejected) {
+                        $application->setAttribute("invited", 1);
+                        if($application->save()) {
+                            $successful[] = $application;
+                        }
+                    } else {
+                        $ineligible++;
+                    }
+                }
+            }
+
+            // Send emails.
+            $data = [
+                "content" => [
+                    "Good news, we would like to invite you to join us at Hack Cambridge 101!",
+                    // "We noticed on your application that you need to know your outcome today. This isn't the official invitation — that will come in the next few days — so let us know if you need an official letter to support your visa application.",
+                ],
+                "name" => "%name%",
+                "signoff" => "Merry Christmas",
+                "_defaults" => [
+                    "name" => "there"
+                ]
+            ];
+            $mailer = new BatchMailer(['mail/InvitationLink','mail/text/InvitationLink'], "Invitation — Hack Cambridge 101", $data);
+            foreach($successful as $app) {
+                $name = (isset($app->user->name) ? explode(" ", $app->user->name)[0] : "there");
+                $mailer->addRecipient($app->user->email, ["name" => $name]);
+            }
+            $mailer->sendAll();
+
+            $num_successful = count($successful);
+            return $this->success("Invited $num_successful. $ineligible not eligible.");
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
     private static function slugify($text)
     {
         // replace non letter or digits by -
