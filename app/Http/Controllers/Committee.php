@@ -276,7 +276,7 @@ class Committee extends Controller
                 ->having("reviews_count", "<", 4)
                 ->where("isSubmitted", "=", 1)
                 ->whereNotIn("id", $my_reviews)
-                ->orderBy('reviews_count', 'DESC') // for now
+                ->orderBy('reviews_count', 'ASC')
                 ->first();
 
             if($app) {

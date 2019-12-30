@@ -238,7 +238,7 @@ class ApplicationReviewer {
                                         <ResourceList.Item
                                             id={`${item.id}`}
                                             onClick={() => {
-                                                window.open(`/committee/admin/applications/${item.id}`, "_blank")
+                                                window.open(`/committee/admin/applications/${item.application.id}`, "_blank")
                                             }}
                                             accessibilityLabel={`View details`}
                                         >
@@ -597,7 +597,7 @@ class ApplicationReviewer {
                                         <div style={{ padding: "0.1rem" }}>
                                             {item.applications.length == 1
                                                 ? <>
-                                                    <div style={{ color: greyOut ? "grey" : "red", fontWeight: 700, padding: "0 0 0.2rem", fontSize: "0.8rem" }}>{greyOut ? "INVITED, " : ""}INDIVIDUAL, #{item.applications[0].id}</div>
+                                                    <div style={{ color: greyOut ? "grey" : "red", fontWeight: 700, padding: "0 0 0.2rem", fontSize: "0.8rem" }}>{greyOut ? "INVITED, " : ""}INDIVIDUAL, #{item.applications[0].application.id}</div>
                                                     <div>{item.applications[0].user.name} &nbsp; — &nbsp; {this.renderScore(item.applications[0].score, item.applications[0].adjustment)}</div>
                                                 </>
                                                 : <>
