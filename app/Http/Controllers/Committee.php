@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Models\Application;
 use App\Models\ApplicationReview;
+use App\Helpers\BatchMailer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -48,6 +49,7 @@ class Committee extends Controller
             case 'run-review-script': return $this->runReviewScript($r);
             case 'load-review-script': return $this->loadReviewScript($r);
             case 'delete-review-script': return $this->deleteReviewScript($r);
+            case 'invite-applications': return $this->inviteApplications($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -474,6 +476,7 @@ class Committee extends Controller
                     $already_rejected = $application->rejected == 1;
                     if(!$already_invited && !$already_confirmed && !$already_rejected) {
                         $application->setAttribute("invited", 1);
+                        $application->setAttribute("invited_on", date('Y-m-d H:i:s'));
                         if($application->save()) {
                             $successful[] = $application;
                         }
@@ -487,10 +490,11 @@ class Committee extends Controller
             $data = [
                 "content" => [
                     "Good news, we would like to invite you to join us at Hack Cambridge 101!",
-                    // "We noticed on your application that you need to know your outcome today. This isn't the official invitation — that will come in the next few days — so let us know if you need an official letter to support your visa application.",
+                    "You can RSVP via the portal you used to apply; the link below will take you straight there. Invitations expire three days after they're sent, so if you're coming let us know ASAP! Please note that we don't accept RSVPs via email.",
+                    "Hopefully see you in a couple of weeks!"
                 ],
                 "name" => "%name%",
-                "signoff" => "Merry Christmas",
+                "signoff" => "Happy Holidays",
                 "_defaults" => [
                     "name" => "there"
                 ]
@@ -503,7 +507,8 @@ class Committee extends Controller
             $mailer->sendAll();
 
             $num_successful = count($successful);
-            return $this->success("Invited $num_successful. $ineligible not eligible.");
+            $num_failed = count($ids) - $num_successful - $ineligible;
+            return $this->success("Status: $num_successful / $ineligible / $num_failed");
         } else {
             return $this->fail("Checks failed.");
         }

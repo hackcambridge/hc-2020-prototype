@@ -5,7 +5,7 @@ Hi %recipient.name%!
     {!! nl2br(e("\n\n")) !!}
 @endforeach
 
-Your Hack Cambridge invitation: https://hackcambridge.com/dashboard/invitation/.
+Your Hack Cambridge invitation: https://hackcambridge.com/dashboard/apply/invitation/.
 
 {{ isset($signoff) ? $signoff : "All the best" }},
 {!! nl2br(e("\n")) !!}
