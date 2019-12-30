@@ -109,24 +109,43 @@ class Committee extends Controller
         }
     }
 
+    private function overviewBaseQuery() {
+        return DB::table('applications')
+            ->select('applications.id', 'applications.isSubmitted', 'applications.user_id')
+            ->join('users', 'users.id', '=', 'applications.user_id')
+            ->select('applications.id', 'applications.isSubmitted')
+            ->where('users.type', '=', 'hacker')
+            ->where('applications.isSubmitted', "=", 1);
+    }
 
     private function getAdminOverview() {
         if($this->canContinue(null, [], false)) {
-            $applications = DB::table('applications')
-                ->select('applications.id', 'applications.isSubmitted', 'applications.user_id')
-                ->join('users', 'users.id', '=', 'applications.user_id')
-                ->select('applications.id', 'applications.isSubmitted')
-                ->where('users.type', '=', 'hacker');
             $reviews = DB::table('application_reviews')
                 ->join("users", "users.id", "=", "application_reviews.user_id")
                 ->groupBy('application_reviews.user_id')
                 ->select("name", DB::raw('count(*) as reviews'))->get();
+
             return response()->json([
                 "success" => true,
                 "overview" => array(
                     "users" => DB::table('users')->where('users.type', '=', 'hacker')->count(),
                     "applications" => array(
-                        "total" => $applications->where('applications.isSubmitted', true)->count()
+                        "total" => $this->overviewBaseQuery()->count(),
+                        "invited" => $this->overviewBaseQuery()->where("invited", "=", 1)->count(),
+                        "invitations_pending" => $this->overviewBaseQuery()
+                            ->where("invited", "=", 1)
+                            ->where("rejected", "=", 0)
+                            ->where("confirmed", "=", 0)
+                            ->count(),
+                        "accepted" => $this->overviewBaseQuery()
+                            ->where("invited", "=", 1)
+                            ->where("rejected", "=", 0)
+                            ->where("confirmed", "=", 1)
+                            ->count(),
+                        "rejected" => $this->overviewBaseQuery()
+                            ->where("invited", "=", 1)
+                            ->where("rejected", "=", 1)
+                            ->count(),
                     ),
                     "reviews" => $reviews
                 ),
