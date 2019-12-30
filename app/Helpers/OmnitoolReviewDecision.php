@@ -82,7 +82,7 @@ class OmnitoolReviewDecision {
 
     public function finalDecisionObject($team_cutoff = 0) {
         $this->processTeams($team_cutoff);
-        usort($this->decisions, function($a, $b) { return $a->score > $b->score; });
+        usort($this->decisions, function($a, $b) { return $a["score"] < $b["score"]; });
         return $this->decisions;
     }
 }
