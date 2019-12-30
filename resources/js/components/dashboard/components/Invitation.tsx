@@ -19,6 +19,7 @@ interface IInvitationState {
 
 class Invitation extends Component<IInvitationProps, IInvitationState> {
     
+    private expires_after = 3; // days
     state = {
         attending: undefined,
         loading: false,
@@ -30,16 +31,16 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
         if(this.props.application) {
             const confirmed = this.props.application.confirmed;
             const declined = this.props.application.rejected;
+
+            var expiresOn = Date.parse(this.props.application.invited_on) + (this.expires_after * 24 * 60 * 60 * 1000);
+            expiresOn = Math.floor(expiresOn / 3600000) * 3600000;
+            this.setState({ expiration: expiresOn });
+
             if(confirmed || declined) {
                 this.setState({ attending: !declined });
-            }
-
-            var invitedOn = Date.parse(this.props.application.invited_on) + (7 * 24 * 60 * 60 * 1000);
-            invitedOn = Math.floor(invitedOn / 3600000) * 3600000;
-            if(new Date().getTime() > invitedOn) {
+            } else if(new Date().getTime() > expiresOn) {
                 this.setState({ attending: false });
             }
-            this.setState({ expiration: invitedOn });
         }
         
     }
