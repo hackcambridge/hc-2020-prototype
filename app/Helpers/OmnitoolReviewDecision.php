@@ -5,12 +5,52 @@ use Illuminate\Support\Facades\Storage;
 class OmnitoolReviewDecision {
     private $decisions = array();
 
-    public function addApplicationDecision($id, $score=0, $adjustment=0, $decision="ignore") {
+    public function addSingleApplicationDecision($user, $application, $score=0, $adjustment=0, $decision="ignore") {
+        $id = $user->id;
         $this->decisions[$id] = array(
+            "teamName" => "",
             "score" => $score,
             "adjustment" => $adjustment,
-            "decision" => $decision
+            "applications" => [
+                array(
+                    "id" => $id,
+                    "user" => $user,
+                    "application" => $application,
+                    "score" => $score,
+                    "adjustment" => $adjustment,
+                ),
+            ],
+            "decision" => $decision,
         );
+    }
+
+    public function addTeamDecisionEntry($user, $application, $team, $score=0, $adjustment=0) {
+        $id = "team_" . $team;
+        if(array_key_exists($id, $this->decisions)) {
+            $this->decisions[$id]["applications"][] = array(
+                "id" => $user->id,
+                "user" => $user,
+                "application" => $application,
+                "score" => $score,
+                "adjustment" => $adjustment,
+            );
+        } else {
+            $this->decisions[$id] = array(
+                "teamName" => $team,
+                "score" => -1,
+                "adjustment" => -1,
+                "applications" => [
+                    array(
+                        "id" => $user->id,
+                        "user" => $user,
+                        "application" => $application,
+                        "score" => $score,
+                        "adjustment" => $adjustment,
+                    ),
+                ],
+                "decision" => "team", // temporary
+            );
+        }
     }
 
     public function getCountries() {
@@ -19,7 +59,29 @@ class OmnitoolReviewDecision {
         return json_decode($countriesData);
     }
 
-    public function finalDecisionObject() {
+    private function processTeams($team_cutoff = 0) {
+        $decision_keys = array_keys($this->decisions);
+        foreach($decision_keys as $decision_key) {
+            if($this->decisions[$decision_key]["decision"] == "team") {
+                // Process team entry.
+                $scores = 0;
+                $adjustments = 0;
+                foreach($this->decisions[$decision_key]["applications"] as $app) {
+                    $scores += $app["score"];
+                    $adjustments += $app["adjustment"];
+                }
+                $score = $scores / count($this->decisions[$decision_key]["applications"]); 
+                $adjustment = $adjustments / count($this->decisions[$decision_key]["applications"]); 
+                
+                $this->decisions[$decision_key]["score"] = $score;
+                $this->decisions[$decision_key]["adjustment"] = $adjustment;
+                $this->decisions[$decision_key]["decision"] = ($score >= $team_cutoff) ? "accept" : "ignore";
+            }
+        }
+    }
+
+    public function finalDecisionObject($team_cutoff = 0) {
+        $this->processTeams($team_cutoff);
         return $this->decisions;
     }
 }

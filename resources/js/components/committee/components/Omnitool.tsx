@@ -1,5 +1,5 @@
 import React, { Component, ReactNode} from 'react';
-import { Page, Card, Tabs, Button, Modal, TextField, Stack, Select, TextContainer, ButtonGroup, Checkbox } from "@shopify/polaris";
+import { Page, Card, Tabs, Button, Modal, TextField, Stack, Select, TextContainer, ButtonGroup, Checkbox, ResourceList } from "@shopify/polaris";
 import { AddCodeMajorMonotone, RefreshMajorMonotone, PlayMajorMonotone, SettingsMajorMonotone } from '@shopify/polaris-icons';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -9,6 +9,8 @@ import "ace-builds/src-noconflict/mode-php";
 import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/ext-language_tools.js";
 import ReactJson from 'react-json-view'
+import { IApplicationDetail, IUserDetails } from '../../../interfaces/committee.interfaces';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 interface IOmnitoolProps {}
 
@@ -26,19 +28,37 @@ interface IOmnitoolState {
 
     settingsModal: boolean,
     reviewMode: boolean,
+    reviewDecisionModalShowing: boolean,
+    reviewDecisionModalInformation: IReviewDecisionModalContent;
 }
 
 interface IReviewDecisionSet {
-    details: { [key: number]: {
-        score: number,
-        adjustment: number,
-        decision: "accept" | "reject" | "ignore",
-    }},
-    accepted: number[],
-    rejected: number[],
+    details: { [key: number]: IReviewDecisionDetails },
 }
 
-class Omnitool extends Component<IOmnitoolProps, IOmnitoolState> {
+interface IReviewDecisionModalContent {
+    details?: IReviewDecisionDetails
+}
+
+interface IReviewDecisionDetails {
+    teamName: string,
+    applications: IReviewDecisionApplicationDetail[],
+    score: number,
+    adjustment: number,
+    decision: "accept" | "reject" | "ignore",
+}
+
+interface IReviewDecisionApplicationDetail {
+    id: number,
+    user: IUserDetails,
+    application: IApplicationDetail,
+    score: number,
+    adjustment: number,
+}
+
+class Omnitool extends Component<IOmnitoolProps & RouteComponentProps, IOmnitoolState> {
+
+    private reviewDecisionModalInformationDefault: IReviewDecisionModalContent = {};
 
     state = {
         selectedTab: 0,
@@ -54,7 +74,9 @@ class Omnitool extends Component<IOmnitoolProps, IOmnitoolState> {
 
         // settings
         settingsModal: false,
-        reviewMode: false,
+        reviewMode: true,
+        reviewDecisionModalShowing: false,
+        reviewDecisionModalInformation: this.reviewDecisionModalInformationDefault,
     };
 
     private defaultTemplate = `<?php
@@ -66,7 +88,9 @@ class ApplicationReviewer {
     }
 }`;
 
-    constructor(props: IOmnitoolProps){
+    
+
+    constructor(props: IOmnitoolProps & RouteComponentProps){
         super(props);
         this.keyboardShortcuts = this.keyboardShortcuts.bind(this);
     }
@@ -108,7 +132,18 @@ class ApplicationReviewer {
             { id: "overview", content: "Overview" },
             { id: "code", content: "Code" }
         ];
-        const { newFileModal, selectedTab, newFileName, confirmDeleteModal, loading, settingsModal, reviewMode } = this.state;
+        const { 
+            newFileModal,
+            selectedTab,
+            newFileName,
+            confirmDeleteModal,
+            loading,
+            settingsModal,
+            reviewMode,
+            reviewDecisionModalShowing,
+            reviewDecisionModalInformation,
+        } = this.state;
+        const modalDetails = reviewDecisionModalInformation.details || null;
         return (
             <Page fullWidth title="Omnitool">
                 <Card>
@@ -160,6 +195,46 @@ class ApplicationReviewer {
                     <Modal.Section>
                         <p>This operation cannot be undone! Delete at your own risk!</p>
                     </Modal.Section>
+                </Modal>
+
+                <Modal
+                    open={reviewDecisionModalShowing}
+                    onClose={() => this.setState({ reviewDecisionModalShowing: false, reviewDecisionModalInformation: this.reviewDecisionModalInformationDefault })}
+                    title="Accept Applications"
+                    primaryAction={{
+                        content: 'Accept',
+                        onAction: () => {
+
+                            this.setState({ reviewDecisionModalShowing: false, reviewDecisionModalInformation: this.reviewDecisionModalInformationDefault })
+                        },
+                    }}
+                    secondaryActions={[{
+                        content: 'Ignore',
+                        onAction: () => {
+
+                        },
+                    }]}
+                >
+                    {modalDetails
+                        ? (
+                            <ResourceList
+                                resourceName={{singular: 'application', plural: 'applications'}}
+                                items={modalDetails.applications}
+                                renderItem={(item: IReviewDecisionApplicationDetail) => {
+                                    return (
+                                        <ResourceList.Item
+                                            id={`${item.id}`}
+                                            onClick={() => {}}
+                                            accessibilityLabel={`View details`}
+                                        >
+                                            <span style={{ fontSize: "1.6rem" }}>#{item.id} &nbsp; {item.user.name}</span> &nbsp; {this.renderScore(item.score, item.adjustment)}
+                                        </ResourceList.Item>
+                                    );
+                                }}
+                            />
+                        )
+                        : <></>
+                    }
                 </Modal>
             </Page>
         );
@@ -469,10 +544,59 @@ class ApplicationReviewer {
             this.setState({ loading: false, running: false });
         });
     }
+    private renderScore = (score: number, adj: number) => {
+        return <span style={{ fontWeight: 600, fontSize: "1.5rem" }}>
+            {(Math.round(score * 100) / 100).toFixed(2)} <span style={{ fontSize: "1.2rem", color: (adj >= 0 ? "green" : "red") }}>({adj >= 0 ? "+" : ""}{(Math.round(adj * 100) / 100).toFixed(2)})</span>
+        </span>;
+    }
 
     private renderReviewMode() {
         try {
             const reviewDecisions: IReviewDecisionSet = this.state.results as any;
+            if(reviewDecisions.details) {
+                const keys = Object.keys(reviewDecisions.details);
+                const show = keys
+                    .map(app => reviewDecisions.details[+app])
+                    .filter(app => app.decision == "accept");
+                
+                return (
+                    <Card>
+                        <ResourceList
+                            resourceName={{singular: 'application', plural: 'applications'}}
+                            items={show}
+                            renderItem={(item: IReviewDecisionDetails) => {
+                                if(!item) return <>No data.</>;
+                                return (
+                                    <ResourceList.Item
+                                        id={`${item.applications.length == 1 ? item.applications[0].id : item.teamName}`}
+                                        onClick={() => {
+                                            this.setState({ 
+                                                reviewDecisionModalShowing: true,
+                                                reviewDecisionModalInformation: { details: item }
+                                            });
+                                        }}
+                                        accessibilityLabel={`View details`}
+                                    >
+                                        <div style={{ padding: "0.1rem" }}>
+                                            {item.applications.length == 1
+                                                ? <>
+                                                    <div style={{ color: "red", fontWeight: 700, padding: "0 0 0.2rem", fontSize: "0.8rem" }}>INDIVIDUAL, #{item.applications[0].id}</div>
+                                                    <div>{item.applications[0].user.name} &nbsp; — &nbsp; {this.renderScore(item.applications[0].score, item.applications[0].adjustment)}</div>
+                                                </>
+                                                : <>
+                                                    <div style={{ color: "purple", fontWeight: 700, padding: "0 0 0.2rem", fontSize: "0.8rem" }}>TEAM</div>
+                                                    <div>{item.teamName} &nbsp; — &nbsp; {this.renderScore(item.score, item.adjustment)}</div>
+                                                </>
+                                            }
+                                        </div>
+                                    </ResourceList.Item>
+                                );
+                                return <></>;
+                            }}
+                        />
+                    </Card>
+                );
+            }
             return <></>;
         } catch(e) {
             console.log(e);
@@ -480,4 +604,4 @@ class ApplicationReviewer {
     }
 }
 
-export default Omnitool;
+export default withRouter(Omnitool);
