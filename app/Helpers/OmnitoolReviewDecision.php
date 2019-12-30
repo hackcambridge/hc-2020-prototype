@@ -59,7 +59,8 @@ class OmnitoolReviewDecision {
         return json_decode($countriesData);
     }
 
-    private function processTeams($team_cutoff = 0) {
+    private function processTeams($details) {
+        $teams = $details["teams"];
         $decision_keys = array_keys($this->decisions);
         foreach($decision_keys as $decision_key) {
             if($this->decisions[$decision_key]["decision"] == "team") {
@@ -72,16 +73,17 @@ class OmnitoolReviewDecision {
                 }
                 $score = $scores / count($this->decisions[$decision_key]["applications"]); 
                 $adjustment = $adjustments / count($this->decisions[$decision_key]["applications"]); 
-                
+                $complete = (count($this->decisions[$decision_key]["applications"]) == count($teams[$this->decisions[$decision_key]["teamName"]]));
+
                 $this->decisions[$decision_key]["score"] = $score;
                 $this->decisions[$decision_key]["adjustment"] = $adjustment;
-                $this->decisions[$decision_key]["decision"] = ($score >= $team_cutoff) ? "accept" : "ignore";
+                $this->decisions[$decision_key]["decision"] = ($score >= $details["cutoff"] && $complete ? "accept" : "ignore");
             }
         }
     }
 
-    public function finalDecisionObject($team_cutoff = 0) {
-        $this->processTeams($team_cutoff);
+    public function finalDecisionObject($details) {
+        $this->processTeams($details);
         usort($this->decisions, function($a, $b) { return $a["score"] < $b["score"]; });
         return $this->decisions;
     }
