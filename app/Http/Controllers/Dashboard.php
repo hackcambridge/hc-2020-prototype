@@ -165,9 +165,9 @@ class Dashboard extends Controller
     private function getApplicationRecord($r) {
         if($this->canContinue(["hacker", "committee", "admin"], $r)) {
             $app = Application::where("user_id", Auth::user()->id)->first();
-            $is_reviewed = ApplicationReview::where("application_id", "=", $app->getAttribute("id"))->count();
-            $app->reviewed = ($is_reviewed > 0) ? 1 : 0;
             if($app) {
+                $is_reviewed = ApplicationReview::where("application_id", "=", $app->getAttribute("id"))->count();
+                $app->reviewed = ($is_reviewed > 0) ? 1 : 0;
                 return response()->json([
                     "success" => true,
                     "record" => $app,
