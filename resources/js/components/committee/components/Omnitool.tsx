@@ -582,7 +582,7 @@ class ApplicationReviewer {
                             renderItem={(item: IReviewDecisionDetails) => {
                                 if(!item) return <>No data.</>;
                                 const { alreadyInvited }: { alreadyInvited: string[] } = this.state;
-                                const greyOut = alreadyInvited.includes(item.teamName || `${item.applications[0].id}`);
+                                const greyOut = alreadyInvited.includes(item.teamName || `${item.applications[0].application.id}`);
                                 return (
                                     <ResourceList.Item
                                         id={`${item.applications.length == 1 ? item.applications[0].id : item.teamName}`}
