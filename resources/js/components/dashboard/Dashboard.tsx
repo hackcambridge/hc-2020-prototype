@@ -209,7 +209,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props}/>} />
                 <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />
                 <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} />}/>
-                <Route exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner}/>} />
+                <Route exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner}/>} />
                 <Route exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />
                 <Route component={Dashboard404}></Route>
             </Switch>

@@ -11,6 +11,7 @@ interface ITeamApplicationProps {
     teamMembers: ITeamMember[] | undefined,
     teamOwner: boolean | undefined,
     canEdit: boolean,
+    isSubmitted: boolean,
 }
 
 interface ITeamApplicationState {
@@ -39,9 +40,11 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
         return (
             <Page title={"Team Information"}>
                 <Banner status="info">
-                    {this.props.canEdit 
+                    {this.props.canEdit
                         ? <p>You change this information at any time before the application deadline.</p>
-                        : <p>Your application is being reviewed</p>
+                        : (this.props.isSubmitted
+                            ? <p>Your application is being reviewed.</p>
+                            : <p>Applications have now closed.</p>)
                     }
                 </Banner>
                 <br />
