@@ -186,16 +186,15 @@ class Apply extends Component<IApplyProps, IApplyState> {
         const mlhPrivacy = "https://mlh.io/privacy";
         const mlhTC = "https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md";
         const hcPrivacy = "/privacy";
-        const applicationsClosed = !isSubmitted && !this.props.canEdit;
-        
+        console.log(this.state);
         return (
             <Page title={"Apply for Hack Cambridge"}>
                 <Banner status="info">
                     {this.props.canEdit
                         ? <p>You change this information at any time before the application deadline.</p>
-                        : applicationsClosed
-                            ? <p>Applications have now closed.</p>
-                            : <p>Your application is being reviewed.</p>
+                        : (isSubmitted
+                            ? <p>Your application is being reviewed.</p>
+                            : <p>Applications have now closed.</p>)
                     }
                 </Banner>
                 <br />

@@ -117,6 +117,8 @@ class Dashboard extends Controller
 
     private function updateApplicationRecord($request) {
         $r = $request->request;
+        if(!$this->accepting_applications) return $this->fail("Applications are closed.");
+
         if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "visaRequired", "visaRequiredDate", "acceptedConduct", "acceptedPrivacy", "acceptedTerms"])) {
             $app = Application::where("user_id", Auth::user()->id)->first();
             if(!$app) {
