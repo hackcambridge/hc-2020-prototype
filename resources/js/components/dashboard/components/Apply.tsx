@@ -186,7 +186,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
         const mlhPrivacy = "https://mlh.io/privacy";
         const mlhTC = "https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md";
         const hcPrivacy = "/privacy";
-        const applicationsClosed = !isSubmitted && reviewed;
+        const applicationsClosed = !isSubmitted && !this.props.canEdit;
         
         return (
             <Page title={"Apply for Hack Cambridge"}>
