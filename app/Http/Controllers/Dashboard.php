@@ -14,7 +14,7 @@ use App\Http\Resources\TeamMember as TeamMemberResource;
 class Dashboard extends Controller
 {
     private $maximum_team_size = 4;
-    private $accepting_applications = true;
+    private $accepting_applications = false;
 
     public function index() {
         return view('dashboard/index');
