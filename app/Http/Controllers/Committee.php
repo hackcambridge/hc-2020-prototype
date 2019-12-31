@@ -300,6 +300,7 @@ class Committee extends Controller
                 ->with(["user"])
                 ->having("reviews_count", "<", 4)
                 ->where("isSubmitted", "=", 1)
+                ->where("invited", "=", 0)
                 ->whereNotIn("id", $my_reviews)
                 ->orderBy('reviews_count', 'ASC')
                 ->first();
