@@ -136,6 +136,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                 {!app.isSubmitted ? <Badge status="attention">Not submitted</Badge> : <></>}
                 {usr.type != "hacker" ? <Badge status="warning">{"Type: " + usr.type}</Badge> : <></>}
             </>;
+            const reviewable = app.isSubmitted && usr.type == "hacker";
             return (
                 <Page 
                     breadcrumbs={[{content: 'Applications', url: '../applications'}]}
@@ -147,7 +148,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                         hasNext: true,
                         onNext: this.randomNextApplication
                     }}
-                    primaryAction={{content: 'Review', disabled: !app.isSubmitted || usr.type != "hacker", destructive: true, onAction: () => this.setState({ reviewModalOpen: true })}}
+                    primaryAction={{content: 'Review', disabled: !reviewable, destructive: true, onAction: () => this.setState({ reviewModalOpen: true })}}
                     thumbnail={<Thumbnail
                         source={`https://www.gravatar.com/avatar/${md5(usr.email.toLowerCase())}?d=retro&s=200`}
                         size="large"

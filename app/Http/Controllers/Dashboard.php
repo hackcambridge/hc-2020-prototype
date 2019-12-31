@@ -14,9 +14,9 @@ use App\Http\Resources\TeamMember as TeamMemberResource;
 class Dashboard extends Controller
 {
     private $maximum_team_size = 4;
+    private $accepting_applications = true;
 
-    public function index()
-    {
+    public function index() {
         return view('dashboard/index');
     }
 
@@ -88,7 +88,7 @@ class Dashboard extends Controller
             $app = Application::where("user_id", Auth::user()->id)->first();
             if($app) {
                 $is_reviewed = ApplicationReview::where("application_id", "=", $app->getAttribute("id"))->count();
-                $app->reviewed = ($is_reviewed > 0) ? 1 : 0;
+                $app->reviewed = ($is_reviewed > 0 || !$this->accepting_applications) ? 1 : 0;
             }
             $team = TeamMember::where("user_id", Auth::user()->id)->first();
             $team_members = $team ? TeamMemberResource::collection(TeamMember::where("team_id", $team->team_id)->get()) : null;
@@ -167,7 +167,7 @@ class Dashboard extends Controller
             $app = Application::where("user_id", Auth::user()->id)->first();
             if($app) {
                 $is_reviewed = ApplicationReview::where("application_id", "=", $app->getAttribute("id"))->count();
-                $app->reviewed = ($is_reviewed > 0) ? 1 : 0;
+                $app->reviewed = ($is_reviewed > 0 || !$this->accepting_applications) ? 1 : 0;
                 return response()->json([
                     "success" => true,
                     "record" => $app,
