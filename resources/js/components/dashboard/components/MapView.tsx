@@ -7,16 +7,22 @@ import { RouteComponentProps } from "react-router";
 
 class MapView extends Component {
 
+    private mapUrl = "https://hc-upload-production.s3.eu-west-2.amazonaws.com/map.png";
     render() {
 
         // console.log(this.props);
 
         return (
-            <Page title={"Map"}>
+            <Page fullWidth title={"Event Map"}>
                 <Card>
-                    <MapInteractionCSS>
-                        <img src="https://www.nasa.gov/sites/default/files/thumbnails/image/stsci-h-p1917b-q-5198x4801.jpg" alt="test" />
-                    </MapInteractionCSS>
+                    <div style={{ height: "100%" }}>
+                        <MapInteractionCSS
+                            showControls
+                            defaultScale={0.3}
+                        >
+                            <img src={this.mapUrl} alt="Hack Cambridge Venue Map" />
+                        </MapInteractionCSS>
+                    </div>
                 </Card>
             </Page>
         );
