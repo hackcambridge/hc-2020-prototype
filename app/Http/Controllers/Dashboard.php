@@ -14,10 +14,14 @@ use App\Http\Resources\TeamMember as TeamMemberResource;
 class Dashboard extends Controller
 {
     private $maximum_team_size = 4;
-    private $accepting_applications = false;
+    private static $accepting_applications = false;
 
     public function index() {
         return view('dashboard/index');
+    }
+
+    public static function areApplicationsOpen() {
+        return self::$accepting_applications;
     }
 
     public function api_get(Request $request, $path) {
@@ -88,7 +92,7 @@ class Dashboard extends Controller
             $app = Application::where("user_id", Auth::user()->id)->first();
             if($app) {
                 $is_reviewed = ApplicationReview::where("application_id", "=", $app->getAttribute("id"))->count();
-                $app->reviewed = ($is_reviewed > 0 || !$this->accepting_applications) ? 1 : 0;
+                $app->reviewed = ($is_reviewed > 0 || !self::$accepting_applications) ? 1 : 0;
             }
             $team = TeamMember::where("user_id", Auth::user()->id)->first();
             $team_members = $team ? TeamMemberResource::collection(TeamMember::where("team_id", $team->team_id)->get()) : null;
@@ -96,7 +100,7 @@ class Dashboard extends Controller
                 "success" => true,
                 "payload" => array(
                     "baseUrl" => route("dashboard_index", array(), false),
-                    "canApply" => $this->accepting_applications,
+                    "canApply" => self::$accepting_applications,
                     "user" => array(
                         "type" => Auth::user()->type,
                         "email" => Auth::user()->email,
@@ -118,7 +122,7 @@ class Dashboard extends Controller
 
     private function updateApplicationRecord($request) {
         $r = $request->request;
-        if(!$this->accepting_applications) return $this->fail("Applications are closed.");
+        if(!self::$accepting_applications) return $this->fail("Applications are closed.");
 
         if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "visaRequired", "visaRequiredDate", "acceptedConduct", "acceptedPrivacy", "acceptedTerms"])) {
             $app = Application::where("user_id", Auth::user()->id)->first();
@@ -170,7 +174,7 @@ class Dashboard extends Controller
             $app = Application::where("user_id", Auth::user()->id)->first();
             if($app) {
                 $is_reviewed = ApplicationReview::where("application_id", "=", $app->getAttribute("id"))->count();
-                $app->reviewed = ($is_reviewed > 0 || !$this->accepting_applications) ? 1 : 0;
+                $app->reviewed = ($is_reviewed > 0 || !self::$accepting_applications) ? 1 : 0;
                 return response()->json([
                     "success" => true,
                     "record" => $app,

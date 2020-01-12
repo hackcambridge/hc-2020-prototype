@@ -11,6 +11,7 @@ import {
 import { LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, ConfettiMajorMonotone } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
+import MapView from "./components/MapView";
 import Apply from "./components/Apply";
 import TeamApplication from "./components/TeamApplication";
 import axios from 'axios';
@@ -139,14 +140,22 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             applicationNavigationItems.push({ url: `${this.props.baseUrl}/apply/invitation`, label: `Invitation`, icon: ConfettiMajorMonotone });
         }
 
+        const dashboardNavigationItems = [
+            {
+                url: `${this.props.baseUrl}/overview`,
+                label: "Overview",
+                icon: IqMajorMonotone
+            }
+        ]
+
+        if (application && application.invited) {
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/map`, label: `Map`, icon: LocationMajorMonotone });
+        }
+
         const navigationMarkup = (
             <Navigation location={`${this.props.location.pathname}`}>
                 <Navigation.Section
-                    items={[{
-                        url: `${this.props.baseUrl}/overview`,
-                        label: "Overview",
-                        icon: IqMajorMonotone
-                    }]}
+                    items={dashboardNavigationItems}
                 />
 
                 {showApplicationItems ?
