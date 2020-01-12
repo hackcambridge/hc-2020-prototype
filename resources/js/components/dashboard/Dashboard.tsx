@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, ConfettiMajorMonotone} from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, ConfettiMajorMonotone } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
@@ -48,7 +48,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     };
 
     componentDidMount() {
-        if(this.props.user.application) {
+        if (this.props.user.application) {
             this.setState({ applicationOpen: !this.props.user.application.reviewed });
             this.updateApplicationRecord(this.props.user.application);
         } else {
@@ -74,9 +74,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
     private adapterLink = ({ url, ...rest }) => {
         const _url = url as string;
-        if(_url.startsWith(this.props.baseUrl)) {
+        if (_url.startsWith(this.props.baseUrl)) {
             return <Link to={url} {...rest} onClick={() => {
-                if(this.state.showMobileNavigation) {
+                if (this.state.showMobileNavigation) {
                     this.setState({ showMobileNavigation: false });
                 }
             }} />
@@ -99,8 +99,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         {
             id: "logout",
             items: [
-                {content: 'Frontpage', url: "/", icon: HomeMajorMonotone},
-                {content: 'Logout', url: "/logout", icon: LogOutMinor},
+                { content: 'Frontpage', url: "/", icon: HomeMajorMonotone },
+                { content: 'Logout', url: "/logout", icon: LogOutMinor },
             ],
         },
     ];
@@ -135,7 +135,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             { url: `${this.props.baseUrl}/apply/individual`, label: `Details`, icon: AddCodeMajorMonotone },
             { url: `${this.props.baseUrl}/apply/team`, label: `Team`, icon: CustomerPlusMajorMonotone },
         ];
-        if(application && application.invited) {
+        if (application && application.invited) {
             applicationNavigationItems.push({ url: `${this.props.baseUrl}/apply/invitation`, label: `Invitation`, icon: ConfettiMajorMonotone });
         }
 
@@ -149,12 +149,12 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                     }]}
                 />
 
-                {showApplicationItems ? 
-                <>{this.renderApplicationBanner()}
-                <div style={{ marginTop: "-1.6rem" }}>
-                    <Navigation.Section items={applicationNavigationItems} />
-                </div></>
-                : <></>}
+                {showApplicationItems ?
+                    <>{this.renderApplicationBanner()}
+                        <div style={{ marginTop: "-1.6rem" }}>
+                            <Navigation.Section items={applicationNavigationItems} />
+                        </div></>
+                    : <></>}
 
                 {/* {this.sponsorSectionsNavMarkup(navSection)} */}
                 {/* {this.props.sponsors.length > 1 ? 
@@ -206,10 +206,10 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         return (
             <Switch>
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
-                <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props}/>} />
+                <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props} />} />
                 <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />
-                <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} />}/>
-                <Route exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner}/>} />
+                <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} applicationsOpen={this.props.canApply} />} />
+                <Route exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />
                 <Route exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />
                 <Route component={Dashboard404}></Route>
             </Switch>
@@ -217,11 +217,13 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     }
 
     private renderApplicationBanner(): JSX.Element {
-        const states: { [key: string]: { 
-            status: "warning" | "info" | "critical" | "success" | undefined, 
-            text: string,
-            noLink?: boolean
-        }} = {
+        const states: {
+            [key: string]: {
+                status: "warning" | "info" | "critical" | "success" | undefined,
+                text: string,
+                noLink?: boolean
+            }
+        } = {
             "notStarted": { status: undefined, text: "Start Application" },
             "started": { status: "warning", text: "Finish Application" },
             "pending": { status: "info", text: "Application Pending" },
@@ -232,7 +234,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         }
         const currentState = states[this.getApplicationStateKey()];
 
-        if(currentState) {
+        if (currentState) {
             const banner = (
                 <Banner status={currentState.status}>
                     <p style={{ fontWeight: 500 }}>{currentState.text}</p>
@@ -240,7 +242,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             );
 
             return (
-                currentState.noLink 
+                currentState.noLink
                     ? banner
                     : (
                         <Link to={"/dashboard/apply/individual"} style={{ textDecoration: "inherit", color: "inherit" }}>
@@ -255,14 +257,14 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
     private getApplicationStateKey(): string {
         const { application, applicationOpen } = this.state;
-        if(application) {
-            if(application.reviewed || application.invited) {
-                if(application.invited) {
-                    if(application.rejected) return "declined";
-                    else if(application.confirmed) return "confirmed";
+        if (application) {
+            if (application.reviewed || application.invited) {
+                if (application.invited) {
+                    if (application.rejected) return "declined";
+                    else if (application.confirmed) return "confirmed";
                     else return "invited";
                 }
-                else if(application.rejected) return "rejected";
+                else if (application.rejected) return "rejected";
                 else return "pending";
             }
 
@@ -272,7 +274,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 complete = complete && responses[key].length > 0;
             }
 
-            if(applicationOpen) {
+            if (applicationOpen) {
                 return application.isSubmitted ? (complete ? "pending" : "started") : "started";
             } else {
                 return application.isSubmitted ? (complete ? "pending" : "rejected") : "rejected";
@@ -285,7 +287,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private loadApplicationRecord() {
         axios.get(`/dashboard-api/application-record.json`).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const obj = res.data;
                 if ("success" in obj && obj["success"]) {
                     const record: IApplicationRecord = obj["record"];

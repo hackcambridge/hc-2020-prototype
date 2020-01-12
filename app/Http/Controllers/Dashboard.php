@@ -96,6 +96,7 @@ class Dashboard extends Controller
                 "success" => true,
                 "payload" => array(
                     "baseUrl" => route("dashboard_index", array(), false),
+                    "canApply" => $this->accepting_applications,
                     "user" => array(
                         "type" => Auth::user()->type,
                         "email" => Auth::user()->email,

@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from "react";
-import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton, Link, Tooltip} from "@shopify/polaris";
+import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton, Link, Tooltip } from "@shopify/polaris";
 import axios from 'axios';
 import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
 import countryList from 'country-list';
@@ -9,6 +9,7 @@ interface IApplyProps {
     canEdit: boolean,
     initialRecord: IApplicationRecord | undefined,
     updateApplication: (application: IApplicationRecord) => void,
+    applicationsOpen: boolean,
 }
 
 interface IApplyState {
@@ -73,15 +74,15 @@ class Apply extends Component<IApplyProps, IApplyState> {
         fileSelector.setAttribute('type', 'file');
         fileSelector.setAttribute('accept', 'application/pdf');
         fileSelector.onchange = (_) => {
-            if(!this.state.isUploadingFile) {
+            if (!this.state.isUploadingFile) {
                 this.setState({ isUploadingFile: true });
             }
             // console.log(fileSelector.files);
 
-            if(fileSelector.files) {
+            if (fileSelector.files) {
                 const file = fileSelector.files.item(0);
                 // console.log(file.type, file.size);
-                if(file && file.type == "application/pdf" && file.size <= 5000000) {
+                if (file && file.type == "application/pdf" && file.size <= 5000000) {
                     // Upload file.
                     this.saveForm(
                         this.state.isSubmitted,
@@ -105,7 +106,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
     }
 
     private fileSelector: HTMLElement
-    componentDidMount(){
+    componentDidMount() {
         this.fileSelector = this.buildFileSelector();
         this.loadApplicationRecord();
     }
@@ -119,10 +120,10 @@ class Apply extends Component<IApplyProps, IApplyState> {
         this.setState({ isSaving: true });
         axios.post(`/dashboard-api/remove-cv.json`, {}).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
                 // console.log(payload);
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     this.setState({
                         uploadedFileName: "",
                         uploadedFileURL: "",
@@ -141,11 +142,11 @@ class Apply extends Component<IApplyProps, IApplyState> {
             <Tooltip light content="Your application is currently being reviewed.">
                 {button}
             </Tooltip>
-        : button;
+            : button;
     }
 
     private saveForm(submitted: boolean, customToast?: () => void, cv?: File) {
-        if(submitted && !(this.state.agreedToConduct && this.state.agreedToPrivacy && this.state.agreedToTerms)) {
+        if (submitted && !(this.state.agreedToConduct && this.state.agreedToPrivacy && this.state.agreedToTerms)) {
             toast.error("Please accept all the terms and conditions.");
             return;
         }
@@ -154,6 +155,17 @@ class Apply extends Component<IApplyProps, IApplyState> {
     }
 
     render() {
+        if (this.props.applicationsOpen || this.props.initialRecord) {
+            return this.render_application_form();
+        } else {
+            return (
+                <Page title={"Applications have closed"}>
+                </Page>
+            );
+        }
+    }
+
+    render_application_form() {
         const {
             isUploadingFile,
             uploadedFileName,
@@ -202,28 +214,28 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     <FormLayout>
                         <FormLayout.Group>
                             <>
-                            <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
-                                <Heading>CV / Resume (PDF under 5MB)</Heading>
-                            </div>
-                            {uploadedFileName && uploadedFileName.length > 0
-                                ?   <ButtonGroup segmented>
+                                <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
+                                    <Heading>CV / Resume (PDF under 5MB)</Heading>
+                                </div>
+                                {uploadedFileName && uploadedFileName.length > 0
+                                    ? <ButtonGroup segmented>
                                         <Button outline size="slim" url={uploadedFileURL} external={true}>{uploadedFileName}</Button>
                                         <Button destructive size="slim" onClick={this.handleCVRemove} disabled={!this.props.canEdit || isSaving}>Remove</Button>
                                     </ButtonGroup>
-                                :   <Button size="slim" loading={isUploadingFile} onClick={this.handleFileSelect} disabled={!this.props.canEdit}>Upload CV</Button>
-                            }
+                                    : <Button size="slim" loading={isUploadingFile} onClick={this.handleFileSelect} disabled={!this.props.canEdit}>Upload CV</Button>
+                                }
                             </>
                             <>
-                            <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
-                                <Heading>Country travelling from:</Heading>
-                            </div>
-                            <Select
-                                label=""
-                                options={countries}
-                                onChange={(value) => this.setState({ countrySelection: value })}
-                                value={countrySelection}
-                                disabled={!this.props.canEdit || isSaving}
-                            />
+                                <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
+                                    <Heading>Country travelling from:</Heading>
+                                </div>
+                                <Select
+                                    label=""
+                                    options={countries}
+                                    onChange={(value) => this.setState({ countrySelection: value })}
+                                    value={countrySelection}
+                                    disabled={!this.props.canEdit || isSaving}
+                                />
                             </>
                         </FormLayout.Group>
                     </FormLayout>
@@ -265,48 +277,48 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     <FormLayout>
                         <FormLayout.Group>
                             <>
-                            <div style={{ paddingBottom: "10px", paddingTop: "10px" }}>
-                                <Subheading>Do you require a visa?</Subheading>
-                            </div>
-                            <Stack>
-                              <RadioButton
-                                label="No"
-                                checked={!visaRequired}
-                                id="visa_no"
-                                name="visa_radio"
-                                disabled={!this.props.canEdit}
-                                onChange={(val, _) => this.setState({visaRequired: !val})}
-                              />
-                              <RadioButton
-                                label="Yes"
-                                id="visa_yes"
-                                name="visa_radio"
-                                checked={visaRequired}
-                                disabled={!this.props.canEdit}
-                                onChange={(val, _) => this.setState({visaRequired: val})}
-                              />
-                            </Stack>
+                                <div style={{ paddingBottom: "10px", paddingTop: "10px" }}>
+                                    <Subheading>Do you require a visa?</Subheading>
+                                </div>
+                                <Stack>
+                                    <RadioButton
+                                        label="No"
+                                        checked={!visaRequired}
+                                        id="visa_no"
+                                        name="visa_radio"
+                                        disabled={!this.props.canEdit}
+                                        onChange={(val, _) => this.setState({ visaRequired: !val })}
+                                    />
+                                    <RadioButton
+                                        label="Yes"
+                                        id="visa_yes"
+                                        name="visa_radio"
+                                        checked={visaRequired}
+                                        disabled={!this.props.canEdit}
+                                        onChange={(val, _) => this.setState({ visaRequired: val })}
+                                    />
+                                </Stack>
                             </>
                             {visaRequired ?
                                 <>
-                                <div style={{ paddingBottom: "8px", paddingTop: "10px" }}>
-                                    <Subheading>What is the deadline for organising a visa?</Subheading>
-                                </div>
-                            <Button disabled={!this.props.canEdit} size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
-                                {visaDate
-                                    ? `${visaDate.getDate()} ${visaDate.toLocaleString('default', { month: 'long' })} ${visaDate.getFullYear()}`
-                                    : "(No date selected)"
-                                }
-                            </Button>
-                            </>
-                            : <></>}
+                                    <div style={{ paddingBottom: "8px", paddingTop: "10px" }}>
+                                        <Subheading>What is the deadline for organising a visa?</Subheading>
+                                    </div>
+                                    <Button disabled={!this.props.canEdit} size={"slim"} onClick={() => this.setState({ showingVisaDateSelector: true })}>
+                                        {visaDate
+                                            ? `${visaDate.getDate()} ${visaDate.toLocaleString('default', { month: 'long' })} ${visaDate.getFullYear()}`
+                                            : "(No date selected)"
+                                        }
+                                    </Button>
+                                </>
+                                : <></>}
                         </FormLayout.Group>
                     </FormLayout>
                 </Card>
 
 
                 <Card sectioned title={"The Legal Bit"}>
-                  <FormLayout>
+                    <FormLayout>
                         <Checkbox
                             disabled={!this.props.canEdit}
                             label={<span>I have read and agreed to <Link external onClick={() => this.openInNewTab(mlhConduct)}>MLH's Code of Conduct</Link>.</span>}
@@ -325,7 +337,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             checked={agreedToPrivacy}
                             onChange={(val) => this.setState({ agreedToPrivacy: val })}
                         />
-                  </FormLayout>
+                    </FormLayout>
                 </Card>
 
                 {this.props.canEdit ? <>
@@ -379,13 +391,13 @@ class Apply extends Component<IApplyProps, IApplyState> {
     }
 
     private openInNewTab(url: string) {
-        var w = window.open(url, '_blank'); 
-        if(w) w.focus();
+        var w = window.open(url, '_blank');
+        if (w) w.focus();
     }
 
     private updateRecordInDatabase(isSubmitted: boolean, toaster?: () => void, cv?: File) {
         const questionValues = this.state.questionValues;
-        const questions: { [key : string]: string } = {};
+        const questions: { [key: string]: string } = {};
         textFieldQuestions.forEach(q => {
             questions[q.id] = q.id in questionValues ? questionValues[q.id] : ""
         });
@@ -399,7 +411,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
         formData.append('acceptedConduct', this.state.agreedToConduct ? "true" : "false");
         formData.append('acceptedPrivacy', this.state.agreedToPrivacy ? "true" : "false");
         formData.append('acceptedTerms', this.state.agreedToTerms ? "true" : "false");
-        if(cv) formData.append('cvFile', cv);
+        if (cv) formData.append('cvFile', cv);
         // const payload: any = {
         //     questionResponses: JSON.stringify(questions),
         //     country: this.state.countrySelection,
@@ -418,13 +430,13 @@ class Apply extends Component<IApplyProps, IApplyState> {
         }).then(res => {
             // console.log(res);
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const record: IApplicationRecord = payload["payload"];
                     this.props.updateApplication(record);
 
-                    if(toaster) { toaster(); }
+                    if (toaster) { toaster(); }
                     else { toast.success("Application saved."); }
                     this.setState({
                         isSubmitted: isSubmitted,
@@ -445,11 +457,11 @@ class Apply extends Component<IApplyProps, IApplyState> {
     private loadApplicationRecord() {
         axios.get(`/dashboard-api/application-record.json`).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const obj = res.data;
                 if ("success" in obj && obj["success"]) {
                     const record: IApplicationRecord = obj["record"] as IApplicationRecord;
-                    if(record) {
+                    if (record) {
                         this.setState({
                             uploadedFileName: record.cvFilename || "",
                             uploadedFileURL: record.cvUrl || "",
@@ -481,7 +493,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 }}
             />
         );
-      }
+    }
 }
 
 export default Apply;
