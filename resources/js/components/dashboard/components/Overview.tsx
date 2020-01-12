@@ -10,16 +10,16 @@ class Overview extends Component<IDashboardPropsWithRouter> {
         // console.log(this.props);
         return (
             <>
-                <img src="/images/HC-HackerHeader-bg.png" style={{ position: "absolute", width: "100%", marginTop: "-30px", zIndex: -1000 }}/>
+                <img src="/images/HC-HackerHeader-bg.png" style={{ position: "absolute", width: "100%", marginTop: "-30px", zIndex: -1000 }} />
                 <Page title={""}>
                     <img id="hacker-header-fg" src="/images/HC-HackerHeader-fg.png" />
-                    
+
                     <Card>
                         <Link url={`${this.props.baseUrl}/apply/individual`}>
                             <div id="apply-banner"><img src="/images/apply-text-overlay.png" /></div>
                         </Link>
                     </Card>
-                    
+
                     <Card sectioned title={``}>
                         <div style={{ textAlign: "center", padding: "1rem", color: "#8e8e8e" }}>
                             <DisplayText size="medium">More Coming Soon...</DisplayText>
