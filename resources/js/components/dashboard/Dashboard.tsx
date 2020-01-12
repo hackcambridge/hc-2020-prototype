@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, ConfettiMajorMonotone, LocationMajorMonotone } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, ConfettiMajorMonotone } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import MapView from "./components/MapView";
@@ -136,7 +136,6 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             { url: `${this.props.baseUrl}/apply/individual`, label: `Details`, icon: AddCodeMajorMonotone },
             { url: `${this.props.baseUrl}/apply/team`, label: `Team`, icon: CustomerPlusMajorMonotone },
         ];
-
         if (application && application.invited) {
             applicationNavigationItems.push({ url: `${this.props.baseUrl}/apply/invitation`, label: `Invitation`, icon: ConfettiMajorMonotone });
         }
@@ -217,9 +216,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Switch>
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props} />} />
-                <Route exact path={`${this.props.baseUrl}/map`} render={(props) => <MapView {...props} {...this.props} />} />
                 <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />
-                <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} />} />
+                <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} applicationsOpen={this.props.canApply} />} />
                 <Route exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />
                 <Route exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />
                 <Route component={Dashboard404}></Route>
