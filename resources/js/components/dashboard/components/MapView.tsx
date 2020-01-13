@@ -4,7 +4,7 @@ import PinchZoomPan from "react-responsive-pinch-zoom-pan";
 
 class MapView extends Component {
 
-    private mapUrl = "https://hc-upload-production.s3.eu-west-2.amazonaws.com/map.png";
+    private mapUrl = "https://assets.hackcambridge.com/map.png";
 
     componentDidMount() {
         document.body.style.overflow = "hidden";
