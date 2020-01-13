@@ -312,7 +312,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     }
 
     private canSeeApplicationItems() {
-        return ["", "hacker"].includes(this.props.user.type);
+        return ["admin", "hacker"].includes(this.props.user.type);
     }
 }
 
