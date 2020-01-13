@@ -261,8 +261,13 @@
                     </a>
                 </div>
                 <div class="item">
-                    <a href=http://hackp.ac/mlh-stickermule-hackathons target="_blank">
+                    <a href="http://hackp.ac/mlh-stickermule-hackathons" target="_blank">
                         <img src="{{ asset('images/sponsors/stickermule.png') }}" >
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="https://www.twilio.com/" target="_blank">
+                        <img src="{{ asset('images/sponsors/twilio.png') }}" >
                     </a>
                 </div>
                 <div class="item">
