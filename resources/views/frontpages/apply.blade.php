@@ -20,7 +20,7 @@
                 <h4 class="section-header">Applications are now closed.</h4>
             @endif
             <!-- <p>To start of continue your application, log in with MyMLH.</p> -->
-            <p class="legal-text">By authorising Hack Cambridge to view your MyMLH profile you agree to our <a href="{{ route('privacy') }}">Privacy Policy</a> and Terms and Conditions.
+            <p class="legal-text">By authorising Hack Cambridge to view your MyMLH profile you agree to our <a href="{{ route('privacy') }}">Privacy Policy</a> and <a href="{{ route('terms') }}">Terms and Conditions</a>.
         </div>
     </section>
 @endsection
