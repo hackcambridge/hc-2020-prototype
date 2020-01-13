@@ -14,7 +14,7 @@ use App\Http\Resources\TeamMember as TeamMemberResource;
 class Dashboard extends Controller
 {
     private $maximum_team_size = 4;
-    private $accepting_applications = true;
+    private $accepting_applications = false;
 
     public function index() {
         return view('dashboard/index');
@@ -117,6 +117,8 @@ class Dashboard extends Controller
 
     private function updateApplicationRecord($request) {
         $r = $request->request;
+        if(!$this->accepting_applications) return $this->fail("Applications are closed.");
+
         if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "visaRequired", "visaRequiredDate", "acceptedConduct", "acceptedPrivacy", "acceptedTerms"])) {
             $app = Application::where("user_id", Auth::user()->id)->first();
             if(!$app) {
