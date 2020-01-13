@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, ConfettiMajorMonotone } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, ConfettiMajorMonotone, LocationMajorMonotone } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import MapView from "./components/MapView";
@@ -141,41 +141,27 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         }
 
         const dashboardNavigationItems = [
-            {
-                url: `${this.props.baseUrl}/overview`,
-                label: "Overview",
-                icon: IqMajorMonotone
-            }
+            { url: `${this.props.baseUrl}/overview`, label: "Overview", icon: IqMajorMonotone }
         ]
 
-        if (application && application.invited) {
+        if (this.allowedEventDetails()) {
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/map`, label: `Map`, icon: LocationMajorMonotone });
         }
 
         const navigationMarkup = (
             <Navigation location={`${this.props.location.pathname}`}>
-                <Navigation.Section
-                    items={dashboardNavigationItems}
-                />
+                <Navigation.Section items={dashboardNavigationItems} />
 
-                {showApplicationItems ?
-                    <>{this.renderApplicationBanner()}
-                        <div style={{ marginTop: "-1.6rem" }}>
-                            <Navigation.Section items={applicationNavigationItems} />
-                        </div></>
-                    : <></>}
-
-                {/* {this.sponsorSectionsNavMarkup(navSection)} */}
-                {/* {this.props.sponsors.length > 1 ? 
-                <Navigation.Section
-                    title="Sponsors"
-                    items={sponsorItems}
-                    action={renderAdminMenuItems ? {
-                        accessibilityLabel: 'Add new sponsor',
-                        icon: CirclePlusOutlineMinor,
-                        onClick: () => this.setState({ createSponsorFormShowing: true }),
-                    } : undefined}
-                /> : <></>} */}
+                {showApplicationItems && this.canSeeApplicationItems()
+                    ?
+                        <>
+                            {this.renderApplicationBanner()}
+                            <div style={{ marginTop: "-1.6rem" }}>
+                                <Navigation.Section items={applicationNavigationItems} />
+                            </div>
+                        </>
+                    : <></>
+                }
             </Navigation>
         );
 
@@ -212,14 +198,21 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
     private renderContent(): JSX.Element {
         const { applicationOpen } = this.state;
+        const eventDetailRoutes = this.allowedEventDetails() ? [
+            <Route exact path={`${this.props.baseUrl}/map`} render={(props) => <MapView {...props} {...this.props} />} />,
+        ] : [];
+        const applicationDetailRoutes = this.canSeeApplicationItems() ? [
+            <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,
+            <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} applicationsOpen={this.props.canApply} />} />,
+            <Route exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />,
+            <Route exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />,
+        ] : [];
         return (
             <Switch>
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props} />} />
-                <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />
-                <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} applicationsOpen={this.props.canApply} />} />
-                <Route exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />
-                <Route exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />
+                {applicationDetailRoutes.map(i => i)}
+                {eventDetailRoutes.map(i => i)}
                 <Route component={Dashboard404}></Route>
             </Switch>
         );
@@ -305,12 +298,21 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                     return;
                 }
             }
-            // console.log("fail");
         });
     }
 
     private updateApplicationRecord = (record: IApplicationRecord) => {
         this.setState({ application: record });
+    }
+
+    private allowedEventDetails() {
+        const { application } = this.state;
+        const isParticipant = application && application.invited && application.confirmed && !application.rejected;
+        return isParticipant || this.props.user.type != "hacker";
+    }
+
+    private canSeeApplicationItems() {
+        return ["", "hacker"].includes(this.props.user.type);
     }
 }
 

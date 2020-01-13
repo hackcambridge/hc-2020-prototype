@@ -155,6 +155,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
     }
 
     render() {
+        console.log(this.props);
         if (this.props.applicationsOpen || this.props.initialRecord) {
             return this.render_application_form();
         } else {
