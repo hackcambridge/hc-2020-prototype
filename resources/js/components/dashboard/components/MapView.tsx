@@ -1,30 +1,27 @@
 import React, { Component } from "react";
-import { Page, Card } from "@shopify/polaris";
-import { MapInteractionCSS } from "react-map-interaction";
-import { IDashboardProps } from "../../../interfaces/dashboard.interfaces";
-import { RouteComponentProps } from "react-router";
+import PinchZoomPan from "react-responsive-pinch-zoom-pan";
 
 
 class MapView extends Component {
 
     private mapUrl = "https://hc-upload-production.s3.eu-west-2.amazonaws.com/map.png";
+
+    componentDidMount() {
+        document.body.style.overflow = "hidden";
+        window.scrollTo(0, 0);
+    }
+
+    componentWillUnmount() {
+        document.body.style.overflow = "scroll";
+    }
+
     render() {
-
-        // console.log(this.props);
-
         return (
-            <Page fullWidth title={"Event Map"}>
-                <Card>
-                    <div style={{ height: "100%" }}>
-                        <MapInteractionCSS
-                            showControls
-                            defaultScale={0.3}
-                        >
-                            <img src={this.mapUrl} alt="Hack Cambridge Venue Map" />
-                        </MapInteractionCSS>
-                    </div>
-                </Card>
-            </Page>
+            <div id={"mapViewContainer"} style={{ height: window.innerHeight - 62 }}>
+                <PinchZoomPan initialScale={0.25} minScale={0.05} maxScale={0.5}>
+                    <img alt='Hack Cambridge Venue Map' src={this.mapUrl} />
+                </PinchZoomPan>
+            </div>
         );
     }
 }

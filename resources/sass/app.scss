@@ -139,6 +139,17 @@ main.committee-content-wrapper {
     }
 }
 
+#mapViewContainer {
+    width: 100%;
+    height: 100%;
+    margin-top: -24px;
+    background: #d0dbe6; /* Old browsers */
+    background: -moz-linear-gradient(top,  #d0dbe6 0%, #e7eaf1 51%, #e4e8ef 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  #d0dbe6 0%,#e7eaf1 51%,#e4e8ef 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #d0dbe6 0%,#e7eaf1 51%,#e4e8ef 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d0dbe6', endColorstr='#e4e8ef',GradientType=0 ); /* IE6-9 */
+}
+
 // For react-toastify
 .zoomIn {
     animation-name: zoomIn;
