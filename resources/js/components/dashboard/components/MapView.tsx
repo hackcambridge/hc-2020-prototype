@@ -18,7 +18,7 @@ class MapView extends Component {
     render() {
         return (
             <div id={"mapViewContainer"} style={{ height: window.innerHeight - 62 }}>
-                <PinchZoomPan initialScale={0.25} minScale={0.05} maxScale={0.5}>
+                <PinchZoomPan initialScale={0.20} minScale={0.15} maxScale={0.5}>
                     <img alt='Hack Cambridge Venue Map' src={this.mapUrl} />
                 </PinchZoomPan>
             </div>
