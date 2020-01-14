@@ -231,6 +231,11 @@
                     </a>
                 </div>
                 <div class="item">
+                    <a href="https://improbable.io/" target="_blank">
+                        <img src="{{ asset('images/sponsors/improbable.png') }}" />
+                    </a>
+                </div>
+                <div class="item">
                     <a href="https://www.janestreet.com" target="_blank">
                         <img src="{{ asset('images/sponsors/janestreet.png') }}" />
                     </a>
