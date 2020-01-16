@@ -43,7 +43,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                     <Page title={"Challenges"}>
                         {loaded 
                             ? this.renderChallenges()
-                            : <Card sectioned><Heading>No challenges to show.</Heading></Card>
+                            : <Card sectioned><Heading>Loading challenges...</Heading></Card>
                         }
                     </Page>
                 </div>
