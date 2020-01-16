@@ -271,6 +271,11 @@
                     </a>
                 </div>
                 <div class="item">
+                    <a href="https://stripe.com/gb" target="_blank">
+                        <img src="{{ asset('images/sponsors/stripe.png') }}" >
+                    </a>
+                </div>
+                <div class="item">
                     <a href="https://www.twilio.com/" target="_blank">
                         <img src="{{ asset('images/sponsors/twilio.png') }}" >
                     </a>
