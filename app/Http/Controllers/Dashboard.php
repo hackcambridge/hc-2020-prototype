@@ -31,7 +31,7 @@ class Dashboard extends Controller
                 }
             }
         }
-        return redirect('home');
+        return redirect()->route('dashboard_index');
     }
 
     public static function areApplicationsOpen() {
