@@ -63,12 +63,12 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
     renderContent(): ReactNode {
         const { attending, expiration } = this.state;
         var expirationBlock = <><p>Expiration: <strong>31st December</strong></p><br /></>;
-        if(this.props.application) {
+        if(this.props.application && expiration) {
             expirationBlock = <><p>Expiration: <strong>{new Date(expiration).toLocaleString()}</strong></p><br /></>;
         }
         return (<>
             <Card sectioned title="RSVP for Hack Cambridge 101 &nbsp; 🥳">
-                <p>We're delighted to offer you a place at Hack Cambridge this year. The standard of applications this year was higher than ever, and you made the cut. Please accept the invite below — it will expire a week after it was sent, so be sure to let us know if you can come as soon as possible. We can't wait to meet all of you in Cambridge!</p>
+                <p>We're delighted to offer you a place at Hack Cambridge this year. The standard of applications this year was higher than ever, and you made the cut. Please accept the invite below — it will expire {this.expires_after} days after it was sent, so be sure to let us know if you can come as soon as possible. We can't wait to meet all of you in Cambridge!</p>
                 <br />
                 <p>The event will take place on the weekend of the <strong>18-19th January 2020 in central Cambridge</strong>. No worries if you can't now come, but please let us know so we can invite someone else to come along and enjoy the event instead.</p>
                 <br />

@@ -75,7 +75,7 @@ class BatchMailer {
     private function sendBatch($batch) {
         $result = Mailgun::send($this->templates, $this->generic, function ($msg) use ($batch) {
             $msg->to($batch)
-                ->bcc("harribt@live.co.uk")
+                // ->bcc("webmaster@hackcambridge.com")
                 ->from("team@hackcambridge.com", "The Hack Cambridge Team")
                 ->subject($this->subject);
         });

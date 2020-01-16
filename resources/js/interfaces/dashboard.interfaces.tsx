@@ -1,5 +1,6 @@
 export interface IDashboardProps {
     baseUrl: string,
+    canApply: boolean,
     user: {
         name: string,
         email: string,
