@@ -29,22 +29,23 @@ Route::get('/health', function () {
 //             "Good news, we would like to invite you to join us at Hack Cambridge 101!",
 //             "We noticed on your application that you need to know your outcome today. This isn't the official invitation — that will come in the next few days — so let us know if you need an official letter to support your visa application.",
 //         ],
+//         "link" => "https://hackcambridge.com/dashboard/join-slack",
+//         "link_text" => "Join the 101 Slack Workspace",
 //         "name" => "%name%",
-//         "signoff" => "Merry Christmas",
+//         "signoff" => "Best wishes",
 //         "_defaults" => [
 //             "name" => "there"
 //         ]
 //     ];
 
-//     $mailer = new BatchMailer(['mail/PlainMessage','mail/text/PlainMessage'], "Invitation — Hack Cambridge 101", $data);
+//     $mailer = new BatchMailer(['mail/LinkMessage','mail/text/LinkMessage'], "Invitation — Hack Cambridge 101", $data);
 //     $mailer->addRecipient("", ["name" => ""]);
 //     $mailer->sendAll();
 //     $results = [
 //         "a" => $mailer->getSent(),
 //         "b" => $mailer->getFailed(),
 //     ];
-//     dd($results);
-//     return view('mail/PlainMessage', $data);
+//     return view('mail/LinkMessage', $data);
 // });
 
 
