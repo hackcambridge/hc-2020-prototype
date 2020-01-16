@@ -150,6 +150,30 @@ main.committee-content-wrapper {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d0dbe6', endColorstr='#e4e8ef',GradientType=0 ); /* IE6-9 */
 }
 
+
+.markdown-source {
+    & h1, & h2, & h3 { font-weight: 700; padding: 1rem 0 0.5rem; }
+    & h1 { font-size: x-large; }
+    & h2 { font-size: larger; }
+    & h3 { font-size: large; }
+    & p { font-size: large; }
+}
+
+#sponsor-challenges {
+    .sponsor-challenge-logo {
+        & img {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            display: block;
+            padding: 2rem 3rem 0;
+        }
+    }
+    .sponsor-challenge-content {
+        padding: 2rem 0 0;
+    }
+}
+
 // For react-toastify
 .zoomIn {
     animation-name: zoomIn;

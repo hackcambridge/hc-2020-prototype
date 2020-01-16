@@ -1,5 +1,6 @@
 export interface IDashboardProps {
     baseUrl: string,
+    baseStorageUrl: string,
     canApply: boolean,
     user: {
         name: string,

@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, ConfettiMajorMonotone, LocationMajorMonotone } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, ConfettiMajorMonotone, LocationMajorMonotone, FlagMajorMonotone, SocialAdMajorMonotone } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import MapView from "./components/MapView";
@@ -19,6 +19,7 @@ import { ToastContainer, cssTransition } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
 import md5 from "md5";
 import Invitation from "./components/Invitation";
+import Challenges from "./components/Challenges";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -146,6 +147,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
         if (this.allowedEventDetails()) {
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/map`, label: `Map`, icon: LocationMajorMonotone });
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajorMonotone });
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajorMonotone });
         }
 
         const navigationMarkup = (
@@ -200,6 +203,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         const { applicationOpen } = this.state;
         const eventDetailRoutes = this.allowedEventDetails() ? [
             <Route exact path={`${this.props.baseUrl}/map`} render={(props) => <MapView {...props} {...this.props} />} />,
+            <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <Challenges {...props} {...this.props} />} />,
         ] : [];
         const applicationDetailRoutes = this.canSeeApplicationItems() ? [
             <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,

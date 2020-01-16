@@ -7,7 +7,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone, CodeMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone, CodeMajorMonotone, FlagMajorMonotone, SocialAdMajorMonotone} from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import Overview from "./components/Overview";
 import Committee404 from "./Committee404";
@@ -18,6 +18,7 @@ import md5 from "md5";
 import MemberList from "./components/MemberList";
 import IndividualApplication from "./components/IndividualApplication";
 import Omnitool from "./components/Omnitool";
+import ChallengesEditor from "./components/ChallengesEditor";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {
@@ -158,6 +159,16 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                                 label: "Omnitool",
                                 icon: CodeMajorMonotone
                             },
+                            {
+                                url: `${this.props.baseUrl}/challenges`,
+                                label: "Challenges",
+                                icon: FlagMajorMonotone
+                            },
+                            {
+                                url: `${this.props.baseUrl}/schedule`,
+                                label: "Schedule",
+                                icon: SocialAdMajorMonotone
+                            },
                         ]}
                     /> 
                 : <></>}
@@ -208,14 +219,19 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     }
 
     private renderContent(): JSX.Element {
+        const showAdmin = this.props.user.type == "admin";
+        const adminRoutes = showAdmin ? [
+            <Route exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />,
+            <Route exact path={`${this.props.baseUrl}/omnitool`} render={(props) => <Omnitool {...props} />} />,
+            <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <ChallengesEditor {...props} />} />,
+        ] : [];
         return (
             <Switch>
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications`} render={(props) => <Applications {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications/:id`} render={(props) => <IndividualApplication applicationId={props.match.params.id} {...props} />} />
-                <Route exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />
-                <Route exact path={`${this.props.baseUrl}/omnitool`} render={(props) => <Omnitool {...props} />} />
+                {adminRoutes.map(i => i)}
                 <Route component={Committee404}></Route>
             </Switch>
         );
