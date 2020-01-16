@@ -43,3 +43,12 @@ export interface ITeamMember {
     team_id: string,
     team_owner: boolean,
 }
+
+export interface ISponsorChallenge {
+    id: string,
+    title: string,
+    description: string,
+    content: string,
+    logoUrl: string,
+    slackChannel?: string   
+}

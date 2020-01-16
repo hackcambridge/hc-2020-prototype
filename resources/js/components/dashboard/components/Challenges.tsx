@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import { SocialPostMajorMonotone } from "@shopify/polaris-icons";
 import axios from 'axios';
 import { toast } from "react-toastify";
-import { IDashboardProps } from "../../../interfaces/dashboard.interfaces";
+import { IDashboardProps, ISponsorChallenge } from "../../../interfaces/dashboard.interfaces";
 
 interface IChallengesProps {
 
@@ -14,24 +14,21 @@ interface IChallengesState {
     loaded: boolean,
     modalContent: string,
     modalShowing: boolean,
+    modalTitle: string,
     challenges: ISponsorChallenge[],
-}
-
-interface ISponsorChallenge {
-    description: string,
-    content: string,
-    logoUrl: string,
-    slackChannel?: string   
+    challengesLive: boolean,
 }
 
 class Challenges extends Component<IDashboardProps, IChallengesState> {
 
-    private slackWorkspaceBaseUrl = "https://hackcambridge101.slack.com/messages/";
+    private slackWorkspaceBaseUrl = "https://hackcambridge101.slack.com/app_redirect?channel=";
     state = {
         loaded: false,
         modalContent: "",
+        modalTitle: "",
         modalShowing: false,
         challenges: [],
+        challengesLive: false,
     }
 
     componentDidMount() {
@@ -39,19 +36,14 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
     }
 
     render() {
-        const sponsor: ISponsorChallenge = {
-            description: "We would like you to write a game for Avast Secure Browser, taking the theme of 101 and adding a pinch of security or privacy. The game should be playable when the browser is offline, so we're looking for something that a player can engage with quickly and then enjoy for as long as they like.",
-            content: "# Prize\n\nprize prize",
-            logoUrl: "https://hackcambridge.com/images/sponsors/avast.png",
-        };
-        const { modalShowing, modalContent, loaded, challenges } = this.state;
+        const { modalShowing, modalContent, modalTitle, loaded } = this.state;
         return (
             <>
                 <div id={"sponsor-challenges"}>
                     <Page title={"Challenges"}>
                         {loaded 
                             ? this.renderChallenges()
-                            : this.interstitial(loaded)
+                            : <Card sectioned><Heading>No challenges to show.</Heading></Card>
                         }
                     </Page>
                 </div>
@@ -59,29 +51,24 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                 <Modal
                     open={modalShowing}
                     onClose={() => this.setState({ modalShowing: false })}
-                    title="Avast Prize"
+                    title={modalTitle}
                 >
                     <Modal.Section>
-                        <ReactMarkdown source={modalContent} className={"markdown-source"} />
+                        <ReactMarkdown source={modalContent} className={"markdown-source markdown-body"} />
+                        <br />
                     </Modal.Section>
                 </Modal>
             </>
         );
     }
 
-    private interstitial(challenges: ISponsorChallenge[]) {
-        return (
-            <Card sectioned>
-                {challenges.length 
-                    ? <Heading>No challenges to show.</Heading>
-                    : <Heading>Loading...</Heading>
-                }
-            </Card>
-        );
-    }
 
     private renderChallenges() {
-        const { challenges } = this.state;
+        const { challenges, challengesLive } = this.state;
+        if(!challengesLive) {
+            return <Card sectioned><Heading>Details will be published soon!</Heading></Card>; 
+        }
+
         if(challenges.length == 0) {
             return <Card sectioned><Heading>No challenges to show.</Heading></Card>;
         }
@@ -98,7 +85,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                 }] : []}
                 primaryFooterAction={{
                     content: 'Show Details',
-                    onAction: () => this.setState({ modalShowing: true, modalContent: data.content })
+                    onAction: () => this.setState({ modalShowing: true, modalContent: data.content, modalTitle: data.title })
                 }}
             >
                 <Layout>
@@ -127,6 +114,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                     const challenges: ISponsorChallenge[] = payload["challenges"];
                     this.setState({
                         challenges: challenges,
+                        challengesLive: payload["live"] || this.props.user.type == "admin",
                         loaded: true
                     });
                 }

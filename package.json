@@ -35,6 +35,7 @@
         "@types/react": "^16.9.2",
         "@types/react-dom": "^16.9.0",
         "@types/react-router-dom": "^4.3.5",
+        "@types/uuid": "^3.4.6",
         "ace-builds": "^1.4.7",
         "babel-plugin-import": "^1.12.0",
         "country-list": "https://github.com/mbale/country-list/archive/v1.1.0.tar.gz",
@@ -52,6 +53,7 @@
         "source-map-loader": "^0.2.4",
         "tslint": "^5.20.0",
         "tslint-react": "^4.0.0",
-        "typescript": "^3.6.3"
+        "typescript": "^3.6.3",
+        "uuid": "^3.3.3"
     }
 }
