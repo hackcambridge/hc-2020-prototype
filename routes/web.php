@@ -64,6 +64,9 @@ Route::middleware(['auth.check_staging'])->group(function() {
     // Protected routes - login will be forced.
     Route::middleware(['auth', 'type:hacker'])->group(function () {
 
+        // Slack invite link
+        Route::get('/dashboard/join-slack', 'Dashboard@join_slack')->name("slack_invite");
+
         // React App
         Route::get('/dashboard/{path?}', [
             'uses' => 'Dashboard@index',

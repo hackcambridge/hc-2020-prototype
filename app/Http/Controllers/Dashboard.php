@@ -15,9 +15,23 @@ class Dashboard extends Controller
 {
     private $maximum_team_size = 4;
     private static $accepting_applications = false;
+    private static $slack_invite_url = "https://join.slack.com/t/hackcambridge101/shared_invite/enQtOTAyNTIxNjU2NTk2LTViOTM5MDFjMTRiZmRlMDgxZjVjNzExOThiYmI3NTUxMzZkNzZiZTIxMTM2MjFjMGY4Mzk2ZWE4ODI1MDZiMTI";
 
     public function index() {
         return view('dashboard/index');
+    }
+
+    public function join_slack() {
+        if(Auth::check()) {
+            $application = Application::where("user_id", "=", Auth::user()->id)->first();
+            if($application) {
+                $is_attendee = $application->confirmed && !$application->rejected;
+                if($is_attendee || in_array(Auth::user()->type, ["admin", "committee", "sponsor"])) {
+                    return redirect(self::$slack_invite_url);
+                }
+            }
+        }
+        return redirect('home');
     }
 
     public static function areApplicationsOpen() {
