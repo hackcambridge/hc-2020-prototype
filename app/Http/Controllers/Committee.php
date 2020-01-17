@@ -50,6 +50,8 @@ class Committee extends Controller
             case 'load-review-script': return $this->loadReviewScript($r);
             case 'delete-review-script': return $this->deleteReviewScript($r);
             case 'invite-applications': return $this->inviteApplications($r);
+            case 'load-event-data-file': return $this->loadEventDataFile($r);
+            case 'save-event-data-file': return $this->saveEventDataFile($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -540,30 +542,68 @@ class Committee extends Controller
         }
     }
 
-    private static function slugify($text)
-    {
-        // replace non letter or digits by -
+
+    private function loadEventDataFile($r) {
+        if($this->canContinue($r, ["file"], true)) {
+            $name = $r->get("file");
+            $path = 'event-data/'.$name;
+            if(Storage::disk('s3')->has($path)) {
+                $content = Storage::disk('s3')->get($path);
+                $last_modified = Storage::disk('s3')->lastModified($path);
+                return response()->json([
+                    "success" => true,
+                    "last_modified" => $last_modified,
+                    "content" => $content
+                ]);
+            } else {
+                // return $this->fail("File not found");
+                return response()->json([
+                    "success" => false,
+                    "file" => Storage::disk('s3')->files("event-data")
+                ]);
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function saveEventDataFile($r) {
+        if($this->canContinue($r, ["file", "last_modified", "content"], true)) {
+            $name = $r->get("file");
+            $old_last_modified = $r->get("last_modified");
+            $content = $r->get("content");
+            $path = 'event-data/'.$name;
+            if(Storage::disk('s3')->exists($path)) {
+                $last_modified = Storage::disk('s3')->lastModified($path);
+                if($old_last_modified != $last_modified) {
+                    return $this->fail("File has changed since you opened it.");
+                }
+            }
+
+            if(Storage::disk("s3")->put($path, $content)) {
+                $last_modified = Storage::disk('s3')->lastModified($path);
+                return response()->json([
+                    "success" => true,
+                    "last_modified" => $last_modified
+                ]); 
+            } else {
+                return $this->fail("Failed to save new file.");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private static function slugify($text) {
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-
-        // transliterate
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
-        // remove unwanted characters
         $text = preg_replace('~[^-\w]+~', '', $text);
-
-        // trim
         $text = trim($text, '-');
-
-        // remove duplicate -
         $text = preg_replace('~-+~', '-', $text);
-
-        // lowercase
         $text = strtolower($text);
-
         if (empty($text)) {
             return 'n-a';
         }
-
         return $text;
     }
 }

@@ -110,10 +110,13 @@ class Dashboard extends Controller
             }
             $team = TeamMember::where("user_id", Auth::user()->id)->first();
             $team_members = $team ? TeamMemberResource::collection(TeamMember::where("team_id", $team->team_id)->get()) : null;
+            $storageUrl = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+
             return response()->json([
                 "success" => true,
                 "payload" => array(
                     "baseUrl" => route("dashboard_index", array(), false),
+                    "baseStorageUrl" => $storageUrl,
                     "canApply" => self::$accepting_applications,
                     "user" => array(
                         "type" => Auth::user()->type,
