@@ -61,3 +61,9 @@ export interface IScheduleItem {
     location: string,
     logoUrl: string,
 }
+
+export interface IFAQItem {
+    id: string,
+    title: string,
+    answer: string,
+}
