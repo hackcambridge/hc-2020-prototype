@@ -7,7 +7,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone, CodeMajorMonotone, FlagMajorMonotone, SocialAdMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone, CodeMajorMonotone, FlagMajorMonotone, SocialAdMajorMonotone, QuestionMarkMajorMonotone} from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import Overview from "./components/Overview";
 import Committee404 from "./Committee404";
@@ -20,6 +20,7 @@ import IndividualApplication from "./components/IndividualApplication";
 import Omnitool from "./components/Omnitool";
 import ChallengesEditor from "./components/ChallengesEditor";
 import ScheduleEditor from "./components/ScheduleEditor";
+import FAQEditor from "./components/FAQEditor";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {
@@ -170,6 +171,11 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                                 label: "Schedule",
                                 icon: SocialAdMajorMonotone
                             },
+                            {
+                                url: `${this.props.baseUrl}/faqs`,
+                                label: "FAQs",
+                                icon: QuestionMarkMajorMonotone
+                            },
                         ]}
                     /> 
                 : <></>}
@@ -226,6 +232,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Route exact path={`${this.props.baseUrl}/omnitool`} render={(props) => <Omnitool {...props} />} />,
             <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <ChallengesEditor {...props} />} />,
             <Route exact path={`${this.props.baseUrl}/schedule`} render={(props) => <ScheduleEditor {...props} />} />,
+            <Route exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQEditor {...props} />} />,
         ] : [];
         return (
             <Switch>
