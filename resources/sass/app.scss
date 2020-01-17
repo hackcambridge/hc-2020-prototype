@@ -153,13 +153,7 @@ main.committee-content-wrapper {
 
 
 .markdown-source {
-    & h1, & h2, & h3 { font-weight: 700; padding: 1rem 0 0.5rem; }
-    & h1 { font-size: x-large; }
-    & h2 { font-size: larger; }
-    & h3 { font-size: large; }
-    & p { font-size: small; }
     & img { max-width: 100%; }
-
     &.markdown-modal {
         padding: 0 1rem;
     }
@@ -172,11 +166,16 @@ main.committee-content-wrapper {
             max-height: 100%;
             margin: 0 auto;
             display: block;
-            padding: 3rem 3rem 0;
+            padding: 3rem 5rem 0;
         }
     }
     .sponsor-challenge-content {
         padding: 2rem 0 0;
+    }
+
+    & .Polaris-Layout__Section {
+        margin-top: 1rem;
+        margin-left: 0;
     }
 }
 
