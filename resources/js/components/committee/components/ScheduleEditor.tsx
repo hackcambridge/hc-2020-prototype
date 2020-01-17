@@ -23,6 +23,7 @@ interface IScheduleEditorState {
     modalContent_time: string,
     modalContent_title: string,
     modalContent_desc: string,
+    modalContent_location: string,
     modalContent_logoUrl?: string,
 }
 
@@ -39,6 +40,7 @@ class ScheduleEditor extends Component<IScheduleEditorProps, IScheduleEditorStat
         modalContent_time: "",
         modalContent_title: "",
         modalContent_desc: "",
+        modalContent_location: "",
         modalContent_logoUrl: "",
     }
 
@@ -56,6 +58,7 @@ class ScheduleEditor extends Component<IScheduleEditorProps, IScheduleEditorStat
             modalContent_time,
             modalContent_title,
             modalContent_desc,
+            modalContent_location,
             modalContent_logoUrl,
             showDestructiveForm,
         } = this.state;
@@ -95,6 +98,7 @@ class ScheduleEditor extends Component<IScheduleEditorProps, IScheduleEditorStat
                             >
                                 <h3>
                                     <TextStyle variation="strong">{scheduleItem.time} — {scheduleItem.title}</TextStyle><br />
+                                    <p><em>{scheduleItem.location}</em></p>
                                     {scheduleItem.desc}
                                 </h3>
                             </ResourceList.Item>
@@ -134,6 +138,12 @@ class ScheduleEditor extends Component<IScheduleEditorProps, IScheduleEditorStat
                         />
                         <br />
                         <TextField
+                            value={modalContent_location}
+                            onChange={(t) => this.setState({ modalContent_location: t })}
+                            label="Location"
+                        />
+                        <br />
+                        <TextField
                             value={modalContent_desc}
                             onChange={(t) => this.setState({ modalContent_desc: t })}
                             label="Description"
@@ -158,6 +168,7 @@ class ScheduleEditor extends Component<IScheduleEditorProps, IScheduleEditorStat
             time: "",
             title: "",
             desc: "",
+            location: "",
             logoUrl: "",
         }
         const { schedule } = this.state;
@@ -213,6 +224,7 @@ class ScheduleEditor extends Component<IScheduleEditorProps, IScheduleEditorStat
             modalContent_time,
             modalContent_title,
             modalContent_desc,
+            modalContent_location,
             modalContent_logoUrl,
         } = this.state;
         const toUpdate = schedule.find(c => c.id == modalContent_id);
@@ -220,6 +232,7 @@ class ScheduleEditor extends Component<IScheduleEditorProps, IScheduleEditorStat
             toUpdate.title = modalContent_title;
             toUpdate.time = modalContent_time;
             toUpdate.desc = modalContent_desc;
+            toUpdate.location = modalContent_location;
             toUpdate.logoUrl = modalContent_logoUrl;
         }
 
@@ -232,7 +245,8 @@ class ScheduleEditor extends Component<IScheduleEditorProps, IScheduleEditorStat
             modalContent_id: item.id, 
             modalContent_time: item.time, 
             modalContent_title: item.title, 
-            modalContent_desc: item.desc, 
+            modalContent_desc: item.desc,
+            modalContent_location: item.location,
             modalContent_logoUrl: item.logoUrl, 
         });
     }
