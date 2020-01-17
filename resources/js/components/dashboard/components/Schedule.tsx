@@ -1,14 +1,9 @@
 import React, { Component } from "react";
-import { Layout, Card, Page, Modal, Heading } from "@shopify/polaris";
-import ReactMarkdown from "react-markdown";
-import { SocialPostMajorMonotone } from "@shopify/polaris-icons";
+import { Layout, Card, Page, Heading } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from "react-toastify";
-import { IDashboardProps, ISponsorChallenge, IScheduleItem } from "../../../interfaces/dashboard.interfaces";
+import { IDashboardProps, IScheduleItem } from "../../../interfaces/dashboard.interfaces";
 
-interface IScheduleProps {
-
-}
 
 interface IScheduleState {
     loaded: boolean,

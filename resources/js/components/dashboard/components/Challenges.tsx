@@ -6,9 +6,6 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 import { IDashboardProps, ISponsorChallenge } from "../../../interfaces/dashboard.interfaces";
 
-interface IChallengesProps {
-
-}
 
 interface IChallengesState {
     loaded: boolean,
