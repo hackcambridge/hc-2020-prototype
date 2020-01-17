@@ -105,7 +105,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
         return fileSelector;
     }
 
-    private fileSelector: HTMLElement
+    private fileSelector: HTMLElement;
     componentDidMount() {
         this.fileSelector = this.buildFileSelector();
         this.loadApplicationRecord();
