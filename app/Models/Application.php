@@ -13,4 +13,8 @@ class Application extends Model
     public function reviews() {
         return $this->hasMany('App\Models\ApplicationReview');
     }
+
+    public function checkin() {
+        return $this->hasOne('App\Models\Checkin');
+    }
 }
