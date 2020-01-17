@@ -19,6 +19,7 @@ import MemberList from "./components/MemberList";
 import IndividualApplication from "./components/IndividualApplication";
 import Omnitool from "./components/Omnitool";
 import ChallengesEditor from "./components/ChallengesEditor";
+import ScheduleEditor from "./components/ScheduleEditor";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {
@@ -224,6 +225,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Route exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />,
             <Route exact path={`${this.props.baseUrl}/omnitool`} render={(props) => <Omnitool {...props} />} />,
             <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <ChallengesEditor {...props} />} />,
+            <Route exact path={`${this.props.baseUrl}/schedule`} render={(props) => <ScheduleEditor {...props} />} />,
         ] : [];
         return (
             <Switch>

@@ -52,3 +52,11 @@ export interface ISponsorChallenge {
     logoUrl: string,
     slackChannel?: string   
 }
+
+export interface IScheduleItem {
+    id: string,
+    time: string,
+    title: string,
+    desc: string,
+    logoUrl: string,
+}

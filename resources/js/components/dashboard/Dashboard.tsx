@@ -74,6 +74,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         },
     };
 
+    // private adapterLink = ({ url, ...rest }: { url: string, rest: { [x: string]: any }}) => {
     private adapterLink = ({ url, ...rest }) => {
         const _url = url as string;
         if (_url.startsWith(this.props.baseUrl)) {
