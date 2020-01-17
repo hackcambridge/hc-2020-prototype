@@ -20,6 +20,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import md5 from "md5";
 import Invitation from "./components/Invitation";
 import Challenges from "./components/Challenges";
+import Schedule from "./components/Schedule";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -149,7 +150,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         if (this.allowedEventDetails()) {
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/map`, label: `Map`, icon: LocationMajorMonotone });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajorMonotone });
-            // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajorMonotone });
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajorMonotone });
         }
 
         const navigationMarkup = (
@@ -205,6 +206,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         const eventDetailRoutes = this.allowedEventDetails() ? [
             <Route exact path={`${this.props.baseUrl}/map`} render={(props) => <MapView {...props} {...this.props} />} />,
             <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <Challenges {...props} {...this.props} />} />,
+            <Route exact path={`${this.props.baseUrl}/schedule`} render={(props) => <Schedule {...props} {...this.props} />} />,
         ] : [];
         const applicationDetailRoutes = this.canSeeApplicationItems() ? [
             <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,
