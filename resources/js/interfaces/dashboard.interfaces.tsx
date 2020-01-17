@@ -58,5 +58,6 @@ export interface IScheduleItem {
     time: string,
     title: string,
     desc: string,
+    location: string,
     logoUrl: string,
 }
