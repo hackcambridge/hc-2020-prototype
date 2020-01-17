@@ -155,7 +155,6 @@ class Apply extends Component<IApplyProps, IApplyState> {
     }
 
     render() {
-        console.log(this.props);
         if (this.props.applicationsOpen || this.props.initialRecord) {
             return this.render_application_form();
         } else {
@@ -199,7 +198,6 @@ class Apply extends Component<IApplyProps, IApplyState> {
         const mlhPrivacy = "https://mlh.io/privacy";
         const mlhTC = "https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md";
         const hcPrivacy = "/privacy";
-        console.log(this.state);
         return (
             <Page title={"Apply for Hack Cambridge"}>
                 <Banner status="info">
