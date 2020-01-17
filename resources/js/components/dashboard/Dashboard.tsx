@@ -148,7 +148,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         if (this.allowedEventDetails()) {
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/map`, label: `Map`, icon: LocationMajorMonotone });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajorMonotone });
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajorMonotone });
+            // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajorMonotone });
         }
 
         const navigationMarkup = (
