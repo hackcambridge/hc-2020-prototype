@@ -297,9 +297,12 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             if (status == 200) {
                 const obj = res.data;
                 if ("success" in obj && obj["success"]) {
+                    // TODO: check flow, maybe return blank record instead of null.
                     const record: IApplicationRecord = obj["record"];
-                    this.setState({ applicationOpen: !record.reviewed });
-                    this.updateApplicationRecord(record);
+                    if(record) {
+                        this.setState({ applicationOpen: !record.reviewed });
+                        this.updateApplicationRecord(record);
+                    }
                     return;
                 }
             }
