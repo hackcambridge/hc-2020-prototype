@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Application;
 use App\Models\ApplicationReview;
 use App\Models\TeamMember;
+use App\Models\Checkin;
 use App\Helpers\S3Management;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +46,7 @@ class Dashboard extends Controller
             case "application-record": return $this->getApplicationRecord($r);
             case "accept-invitation": return $this->acceptInvitation();
             case "decline-invitation": return $this->declineInvitation();
+            case "get-overview-stats": return $this->getOverviewStats();
             default: return $this->fail("Route not found");
         }
     }
@@ -134,6 +136,29 @@ class Dashboard extends Controller
         }
         else {
             return $this->fail("Not logged in");
+        }
+    }
+
+    private function getOverviewStats() {
+        if(Auth::check()) {
+            $allowed = in_array(Auth::user()->type, ["admin", "committee", "sponsor"]);
+            if(!$allowed) {
+                $application = Application::where("user_id", "=", Auth::user()->id)->first();
+                $allowed = $application && $application->confirmed && !$application->rejected;
+            }
+            if($allowed) {
+                $checked_in = Checkin::count();
+                return response()->json([
+                    "success" => true,
+                    "stats" => [
+                        "checkedIn" => $checked_in,
+                    ]
+                ]);
+            } else {
+                return $this->fail("Not authorised.");
+            }
+        } else {
+            return $this->fail("Not logged in.");
         }
     }
 
