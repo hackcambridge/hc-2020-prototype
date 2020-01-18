@@ -82,7 +82,7 @@ class CheckIn extends Component<ICheckInProps, ICheckInState> {
                     console.log(payload);
                     const hackers: ICheckinItem[] = payload["applications"];
                     this.setState({ 
-                        hackers: hackers,
+                        hackers: hackers.sort((a,b) => a.user.name.localeCompare(b.user.name)),
                         isLoading: false,
                     });
                     return;
@@ -95,27 +95,20 @@ class CheckIn extends Component<ICheckInProps, ICheckInState> {
     }
 
     private renderHackerRow = (hacker: ICheckinItem) => {
-        const { isLoading } = this.state;
         const hasCheckedIn = hacker.checkin != undefined;
-        const media = <span style={{ paddingTop: "10px", display: "block" }} ><Icon source={hasCheckedIn ? MobileAcceptMajorMonotone : <></>} /></span>;;
-
-        const active = hasCheckedIn;
-        const buttonContent = active ? 'Un Check-in' : 'Check-in';
+        const buttonContent = hasCheckedIn ? 'Undo' : 'Check In';
 
         return (
             <ResourceList.Item
                 id={`${hacker.id}`}
                 onClick={() => {}}
-                media={media}
                 accessibilityLabel={`Check-in ${hacker.user.name}`}
             >
                 <span style={{ display: "inline-block" }}>
-                <h3>
-                    <TextStyle variation="strong">{hacker.user.name}</TextStyle>
-                </h3>
-                <div>{hacker.user.email}</div>
+                    <div style={{ width: "1rem", height: "1rem", backgroundColor: (hasCheckedIn ? "#34b100" : "#ffc80082"), display: "inline-block", borderRadius: "1rem", marginRight: "1rem" }} />
+                    <h3 style={{ lineHeight: "2.8rem", display: "inline-block" }}><TextStyle variation="strong">{hacker.user.name}</TextStyle> ({hacker.user.email})</h3>
                 </span>
-                <div style={{ float: "right" }}><Button primary={!active} loading={isLoading} onClick={() => this.toggleAndSaveCheckIn(hacker.id)}>{buttonContent}</Button></div>
+                <div style={{ float: "right" }}><Button size={"slim"} primary={!hasCheckedIn} onClick={() => this.toggleAndSaveCheckIn(hacker.id)}>{buttonContent}</Button></div>
             </ResourceList.Item>
         );
     }
