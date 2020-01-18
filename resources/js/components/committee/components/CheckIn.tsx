@@ -52,7 +52,7 @@ class CheckIn extends Component<ICheckInProps, ICheckInState> {
             />
         );
         return (
-            <Page title={`Hacker Check-in`}>
+            <Page title={`Check In (${hackers.filter(h => h.checkin != undefined).length}/${hackers.length})`}>
                 <Card>
                     {hackers && hackers.length > 0 ?
                         <ResourceList
