@@ -7,8 +7,9 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone, CodeMajorMonotone, FlagMajorMonotone, SocialAdMajorMonotone, QuestionMarkMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone, CodeMajorMonotone, FlagMajorMonotone, SocialAdMajorMonotone, QuestionMarkMajorMonotone, ChecklistMajorMonotone} from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
+import CheckIn from "./components/CheckIn";
 import Overview from "./components/Overview";
 import Committee404 from "./Committee404";
 import axios from 'axios';
@@ -142,6 +143,11 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                             icon: PackageMajorMonotone
                         },
                         {
+                            url: `${this.props.baseUrl}/checkin`,
+                            label: "Check-in",
+                            icon: ChecklistMajorMonotone
+                        },
+                        {
                             onClick: this.startReviewing,
                             label: "Start Reviewing",
                             icon: FilterMajorMonotone
@@ -239,6 +245,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications`} render={(props) => <Applications {...props} />} />
+                <Route exact path={`${this.props.baseUrl}/checkin`} render={(props) => <CheckIn {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications/:id`} render={(props) => <IndividualApplication applicationId={props.match.params.id} {...props} />} />
                 {adminRoutes.map(i => i)}
                 <Route component={Committee404}></Route>

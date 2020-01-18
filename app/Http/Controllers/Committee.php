@@ -6,6 +6,7 @@ use App\User;
 use App\Models\Application;
 use App\Models\ApplicationReview;
 use App\Models\TeamMember;
+use App\Models\Checkin;
 use App\Helpers\BatchMailer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,7 @@ class Committee extends Controller
             case 'random-application-for-review': return $this->getRandomApplicationToReview();
             case 'sync-review-scripts': return $this->syncReviewScripts();
             case 'list-review-scripts': return $this->getReviewScripts();
+            case 'init-checkin-tool': return $this->initCheckinTool();
             default: return $this->fail("Route not found");
         }
     }
@@ -52,6 +54,8 @@ class Committee extends Controller
             case 'invite-applications': return $this->inviteApplications($r);
             case 'load-event-data-file': return $this->loadEventDataFile($r);
             case 'save-event-data-file': return $this->saveEventDataFile($r);
+            case 'checkin-application': return $this->checkinUser($r);
+            case 'uncheckin-application': return $this->uncheckinUser($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -588,6 +592,65 @@ class Committee extends Controller
                 ]); 
             } else {
                 return $this->fail("Failed to save new file.");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+
+    private function initCheckinTool() {
+        if($this->canContinue(null, [], false)) {
+            $applications = Application::with(["checkin", "user"])
+                ->select("id", "user_id")
+                ->whereHas('user', function ($query) {
+                    $query->where('type', '=', "hacker");
+                })
+                ->where([
+                    ["confirmed", "=", 1],
+                    ["rejected", "=", 0]
+                ])->get();
+            return response()->json([
+                "success" => true,
+                "applications" => $applications
+            ]); 
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function checkinUser($r) {
+        if($this->canContinue($r, ["app_id"], false)) {
+            $id = $r->get("app_id");
+            $checkin = Checkin::where("application_id", "=", $id)->first();
+            if($checkin) {
+                return $this->success("Already checked in.");
+            } else {
+                $checkin = new Checkin();
+                $checkin->setAttribute("application_id", $id);
+                if($checkin->save()) {
+                    return $this->success("Successfully checked in.");
+                } else {
+                    return $this->fail("Failed to check in.");
+                }
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function uncheckinUser($r) {
+        if($this->canContinue($r, ["app_id"], false)) {
+            $id = $r->get("app_id");
+            $checkin = Checkin::where("application_id", "=", $id)->first();
+            if(!$checkin) {
+                return $this->success("Not checked in.");
+            } else {
+                if($checkin->delete()) {
+                    return $this->success("Successfully removed checkin.");
+                } else {
+                    return $this->fail("Failed to remove check in.");
+                }
             }
         } else {
             return $this->fail("Checks failed.");
