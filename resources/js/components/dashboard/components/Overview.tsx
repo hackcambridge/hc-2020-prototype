@@ -1,21 +1,54 @@
 import React, { Component } from "react";
-import { Page, Card, TextContainer, CalloutCard, Heading, DisplayText, Link } from "@shopify/polaris";
+import { Page, Card, TextContainer, CalloutCard, Heading, DisplayText, Link, Layout, ResourceList, TextStyle } from "@shopify/polaris";
 import { IDashboardProps } from "../../../interfaces/dashboard.interfaces";
 import { RouteComponentProps } from "react-router";
+import { withRouter } from "react-router-dom";
+import axios from 'axios';
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 
-class Overview extends Component<IDashboardPropsWithRouter> {
-    private detailsReady = false;
+interface IOverviewState {
+    loading: boolean,
+    stats: IOverviewStats | undefined,
+    modalShowing: string,
+
+    loadedDatafile: boolean,
+    majors: { id: string, count: number }[],
+    universities: { id: string, count: number }[],
+    studyLevels: { id: string, count: number }[],
+}
+
+interface IOverviewStats {
+    checkedIn: number
+}
+
+class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
+    private detailsReady = true;
+
+    state = {
+        loading: true,
+        stats: undefined,
+        loadedDatafile: false,
+        modalShowing: "",
+        majors: [] as { id: string, count: number }[],
+        universities: [] as { id: string, count: number }[],
+        studyLevels: [] as { id: string, count: number }[],
+    }
+
+    componentDidMount() {
+        this.loadStats();
+        this.loadDatafile();
+    }
 
     render() {
         return (
             <>
                 <img src="/images/HC-HackerHeader-bg.png" style={{ position: "absolute", width: "100%", marginTop: "-30px", zIndex: -1000 }} />
                 <Page title={""}>
-                    <img id="hacker-header-fg" src="/images/HC-HackerHeader-fg.png" />
+                    <img id="hacker-header-fg" src="/images/HC-HackerHeader-fgv2.png" />
                     {this.renderStartApplicationBanner()}
                     {this.renderMoreComingSoonBanner()}
+                    {this.renderEventOverview()}
                 </Page>
             </>
         );
@@ -48,6 +81,149 @@ class Overview extends Component<IDashboardPropsWithRouter> {
             </Card>
         );
     }
+
+    private renderEventOverview() {
+        if(!this.detailsReady) {
+            return <></>;
+        }
+
+        const longLinks = [
+            { text: "Open / Join the 101 Slack Workspace", link: "/dashboard/join-slack", internal: false },
+            { text: "View the challenges", link: "/dashboard/challenges", internal: true },
+            { text: "What's happening when", link: "/dashboard/schedule", internal: true },
+            { text: "Find your way around", link: "/dashboard/map", internal: true },
+            { text: "Report a bug", link: "https://hackcambridge101.slack.com/app_redirect?channel=DS8NVDU0Z", internal: false },
+        ];
+        return (
+            <Layout>
+                <Layout.Section oneHalf>
+                    <Card>
+                        <ResourceList 
+                            items={longLinks}
+                            renderItem={(item) => {
+                                return (
+                                    <ResourceList.Item id={item.text} onClick={() => {
+                                        if(item.internal) { this.props.history.push(item.link); }
+                                        else { window.open(item.link, "_blank"); }
+                                    }}>
+                                        <Heading>{item.text} →</Heading> 
+                                    </ResourceList.Item>
+                                );
+                            }}
+                        />
+                    </Card>
+                </Layout.Section>
+                <Layout.Section oneHalf>
+                    <Card sectioned>{this.renderStats()}</Card><br />
+                    {this.renderDatafileStats()}
+                </Layout.Section>
+            </Layout>
+        );
+    }
+
+    private renderStats() {
+        const { loading, stats } = this.state;
+        if(loading) { return <Heading>Loading stats...</Heading>; }
+        else if(!stats) { return <Heading>Nothing here right now!</Heading>; }
+        
+        const statistics: IOverviewStats = stats!;
+        return (<>
+            <div style={{ textAlign: "center", fontSize: "1.8rem" }}>
+                <span style={{
+                    paddingRight: "1rem",
+                    fontSize: "1.2rem",
+                    lineHeight: "1.8rem",
+                    verticalAlign: "middle",
+                    fontWeight: 700,
+                    color: "red",
+                }}>LIVE</span>
+                <span>Hacker Count: <span style={{ fontWeight: 700 }}>{statistics.checkedIn}</span></span>
+            </div>
+        </>);
+    }
+
+    private renderDatafileStats() {
+        const { loadedDatafile, universities, majors, studyLevels, modalShowing } = this.state;
+        if(!loadedDatafile) { return <></>; }
+
+        const cards = [
+            { set: universities, modalKey: "uni", title: "Universities" },
+            { set: majors, modalKey: "degree", title: "Degrees" },
+            { set: studyLevels, modalKey: "level", title: "Experience" },
+        ];
+        return <>
+            {cards.map(c => {
+                const { set, modalKey, title } = c;
+                const amOpen = modalKey == modalShowing;
+                const subset = amOpen ? set : set.slice(0,3);
+                return <>
+                    <Card 
+                        sectioned
+                        title={title} 
+                        actions={[{ 
+                            content: (!amOpen ? "All" : "Collapse"), 
+                            onAction: () => this.setState({ modalShowing: (!amOpen ? modalKey : "") })
+                        }]}
+                    >
+                        {subset.map(u => {
+                            return <>
+                                <div style={{ display: "inline-block", width: "100%", fontSize: "1.5rem", padding: "0.3rem 0" }}>
+                                    <span><strong>{u.id}</strong></span>
+                                    <span style={{ float: "right" }}>{u.count}</span>
+                                </div>
+                                <br />
+                            </>;
+                        })}
+                    </Card>
+                    <br />
+                </>
+            })}
+        </>;
+    }
+
+    private loadStats() {
+        this.setState({ loading: true });
+        axios.get("/dashboard-api/get-overview-stats.json").then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    const stats: IOverviewStats = payload["stats"];
+                    this.setState({ loading: false, stats: stats });
+                    return;
+                } else {
+                    console.log(payload["message"]);
+                }
+            } else {
+                console.log(`Request failed. Status: ${status}`);
+            }
+            this.setState({ loading: false });
+        });
+    }
+
+    private loadDatafile() {
+        axios.get("/assets/data/public-stats.json").then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                const majorsDict: { [key:string]: number } = payload["major"];
+                const majors = Object.keys(majorsDict).map(k => { return {id: k, count: +majorsDict[k] } }).sort((a,b) => b.count - a.count);
+                const universitiesDict: { [key:string]: number } = payload["school/name"];
+                const universities = Object.keys(universitiesDict).map(k => { return {id: k, count: +universitiesDict[k] } }).sort((a,b) => b.count - a.count);
+                const studyLevelsDict: { [key:string]: number } = payload["level_of_study"];
+                const studyLevels = Object.keys(studyLevelsDict).map(k => { return {id: k, count: +studyLevelsDict[k] } }).sort((a,b) => b.count - a.count);
+
+                this.setState({
+                    majors: majors,
+                    universities: universities,
+                    studyLevels: studyLevels,
+                    loadedDatafile: true,
+                });
+            } else {
+                console.log(`Request failed. Status: ${status}`);
+            }
+        });
+    }
 }
 
-export default Overview;
+export default withRouter(Overview);
