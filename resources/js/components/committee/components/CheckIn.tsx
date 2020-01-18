@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Page, Button, Card, ResourceList, Avatar, TextStyle, TextContainer, Heading, Filters, SettingToggle, Icon } from "@shopify/polaris";
 import { MobileAcceptMajorMonotone, MobileCancelMajorMonotone } from "@shopify/polaris-icons";
 import axios from 'axios';
-import { IHacker } from '../../../interfaces/committee.interfaces';
 import { toast } from 'react-toastify';
 import md5 from 'md5';
 
@@ -12,13 +11,23 @@ interface ICheckInProps {
 
 interface ICheckInState {
     isLoading: boolean,
-    hackers: IHacker[],
+    hackers: ICheckinItem[],
     filterValue: string,
+}
+
+interface ICheckinItem {
+    id: number,
+    user_id: number,
+    checkin: {} | undefined,
+    user: {
+        email: string,
+        name: string,
+    }
 }
 
 class CheckIn extends Component<ICheckInProps, ICheckInState> {
 
-    private dummyRecord: IHacker = { name: "", email: "", id: 0, user_id: 0, hasCheckedIn: false }
+    private dummyRecord: ICheckinItem = { id:0, user_id:0, checkin:undefined, user: { email: "", name: ""} };
     state = {
         isLoading: true,
         hackers: [this.dummyRecord],
@@ -42,16 +51,15 @@ class CheckIn extends Component<ICheckInProps, ICheckInState> {
                 onClearAll={() => { }}
             />
         );
-        const titlePrefix = (hackers.length > 0 && !isLoading) ? `${hackers.length} ` : "";
         return (
-            <Page title={`${titlePrefix}Hacker Check-in`}>
+            <Page title={`Hacker Check-in`}>
                 <Card>
                     {hackers && hackers.length > 0 ?
                         <ResourceList
                             loading={isLoading}
                             resourceName={{ singular: 'hacker', plural: 'hackers' }}
                             items={hackers.filter((hacker) => {
-                                return (hacker.name.toLowerCase().includes(filterValue.toLowerCase()) || hacker.email.toLowerCase().includes(filterValue));
+                                return (hacker.user.name.toLowerCase().includes(filterValue.toLowerCase()) || hacker.user.email.toLowerCase().includes(filterValue));
                             })}
                             renderItem={this.renderHackerRow}
                             filterControl={filterControl}
@@ -65,35 +73,33 @@ class CheckIn extends Component<ICheckInProps, ICheckInState> {
     }
 
     private loadHackers = () => {
-        // this.setState({ isLoading: true });
-        // axios.get(`/committee/admin-api/applications-summary.json`).then(res => {
-        //     const status = res.status;
-        //     if(status == 200) {
-        //         const payload = res.data;
-        //         if("success" in payload && payload["success"]) {
-        //             const applications: IApplicationSummary[] = payload["applications"];
-        //             this.setState({ 
-        //                 applications: applications,
-        //                 isLoading: false,
-        //             });
-        //             return;
-        //         }
-        //     }
-        //     toast.error("Failed to load applications.");
-        //     // console.log(status, res.data);
-        //     this.setState({ isLoading: false });
-        // });
         this.setState({ isLoading: true });
-        this.setState({ hackers: [{ name: "a", user_id: 0, id: 0, hasCheckedIn: false, email: "a@h" }, { name: "b", user_id: 0, id: 1, hasCheckedIn: false, email: "b@h" }] });
-        this.setState({ isLoading: false });
+        axios.get(`/committee/admin-api/init-checkin-tool.json`).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    console.log(payload);
+                    const hackers: ICheckinItem[] = payload["applications"];
+                    this.setState({ 
+                        hackers: hackers,
+                        isLoading: false,
+                    });
+                    return;
+                }
+            }
+            toast.error("Failed to load applications.");
+            // console.log(status, res.data);
+            this.setState({ isLoading: false });
+        });
     }
 
-    private renderHackerRow = (hacker: IHacker) => {
+    private renderHackerRow = (hacker: ICheckinItem) => {
         const { isLoading } = this.state;
+        const hasCheckedIn = hacker.checkin != undefined;
+        const media = <span style={{ paddingTop: "10px", display: "block" }} ><Icon source={hasCheckedIn ? MobileAcceptMajorMonotone : <></>} /></span>;;
 
-        const media = <span style={{ paddingTop: "10px", display: "block" }} ><Icon source={hacker.hasCheckedIn ? MobileAcceptMajorMonotone : <></>} /></span>;;
-
-        const active = hacker.hasCheckedIn;
+        const active = hasCheckedIn;
         const buttonContent = active ? 'Un Check-in' : 'Check-in';
 
         return (
@@ -101,24 +107,49 @@ class CheckIn extends Component<ICheckInProps, ICheckInState> {
                 id={`${hacker.id}`}
                 onClick={() => {}}
                 media={media}
-                accessibilityLabel={`Check-in ${hacker.name}`}
+                accessibilityLabel={`Check-in ${hacker.user.name}`}
             >
                 <span style={{ display: "inline-block" }}>
                 <h3>
-                    <TextStyle variation="strong">{hacker.name}</TextStyle>
+                    <TextStyle variation="strong">{hacker.user.name}</TextStyle>
                 </h3>
-                <div>{hacker.email}</div>
+                <div>{hacker.user.email}</div>
                 </span>
-                <div style={{ float: "right" }}><Button primary={active} loading={isLoading} onClick={() => this.toggleAndSaveCheckIn(hacker.id)}>{buttonContent}</Button></div>
+                <div style={{ float: "right" }}><Button primary={!active} loading={isLoading} onClick={() => this.toggleAndSaveCheckIn(hacker.id)}>{buttonContent}</Button></div>
             </ResourceList.Item>
         );
     }
 
     private toggleAndSaveCheckIn(hacker_id: number) {
-        var hackers = this.state.hackers.slice();
+        this.setState({ isLoading: true });
+
+        const {
+            hackers,
+        } = this.state;
         const idx = hackers.findIndex((h) => h.id === hacker_id);
-        hackers[idx].hasCheckedIn = !hackers[idx].hasCheckedIn;
-        this.setState({hackers: hackers});
+        const checkedIn = hackers[idx].checkin != undefined;
+
+        const endpoint = checkedIn ? "uncheckin-application" : "checkin-application";
+        axios.post(`/committee/admin-api/${endpoint}.json`, {
+            app_id: hackers[idx].id
+        }).then(res => {
+            const status = res.status;
+            if(status == 200 || status == 201) {
+                const payload = res.data;
+                if("success" in payload && payload["success"]) {
+                    hackers[idx].checkin = checkedIn ? undefined : {};
+                    this.setState({ isLoading: false });
+                    return;
+                } else {
+                    toast.error(payload["message"]);
+                    this.setState({ isLoading: false });
+                    return;
+                }
+            }
+            toast.error("Failed to update status.");
+            this.setState({ isLoading: false });
+            console.log(status, res.data);
+        });
     }
 }
 

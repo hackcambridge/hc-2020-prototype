@@ -23,14 +23,6 @@ export interface IApplicationSummary {
     hasSubmitted: boolean,
 }
 
-export interface IHacker {
-    id: number,
-    user_id: number,
-    name: string,
-    email: string,
-    hasCheckedIn: boolean,
-}
-
 export interface IApplicationDetail {
     id: number,
     cvFilename: string,

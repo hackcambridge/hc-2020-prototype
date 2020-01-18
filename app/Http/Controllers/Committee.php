@@ -600,9 +600,12 @@ class Committee extends Controller
 
 
     private function initCheckinTool() {
-        if($this->canContinue($r, [], false)) {
+        if($this->canContinue(null, [], false)) {
             $applications = Application::with(["checkin", "user"])
-                ->select("id")
+                ->select("id", "user_id")
+                ->whereHas('user', function ($query) {
+                    $query->where('type', '=', "hacker");
+                })
                 ->where([
                     ["confirmed", "=", 1],
                     ["rejected", "=", 0]
