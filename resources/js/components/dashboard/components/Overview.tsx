@@ -88,7 +88,7 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
         }
 
         const longLinks = [
-            { text: "Open / Join the 101 Slack Workspace", link: "/dashboard/join-slack", internal: false },
+            { text: "Join the 101 Slack Workspace", link: "/dashboard/join-slack", internal: false },
             { text: "View the challenges", link: "/dashboard/challenges", internal: true },
             { text: "What's happening when", link: "/dashboard/schedule", internal: true },
             { text: "Find your way around", link: "/dashboard/map", internal: true },
