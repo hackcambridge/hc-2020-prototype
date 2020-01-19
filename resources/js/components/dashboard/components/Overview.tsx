@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Page, Card, TextContainer, CalloutCard, Heading, DisplayText, Link, Layout, ResourceList, TextStyle } from "@shopify/polaris";
+import { Page, Card, TextContainer, CalloutCard, Heading, DisplayText, Link, Layout, ResourceList, TextStyle, Modal } from "@shopify/polaris";
 import { IDashboardProps } from "../../../interfaces/dashboard.interfaces";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
@@ -16,14 +16,23 @@ interface IOverviewState {
     majors: { id: string, count: number }[],
     universities: { id: string, count: number }[],
     studyLevels: { id: string, count: number }[],
+    expoAssignments: IExpoAssigments[],
+    expoModalShowing: boolean,
 }
 
 interface IOverviewStats {
     checkedIn: number
 }
 
+interface IExpoAssigments {
+    title: string,
+    location: string,
+}
+
 class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
     private detailsReady = true;
+    private expoMapUrl = "https://assets.hackcambridge.com/table-allocations.png?t=" + Date.now();
+    private teamAllocationsUrl = "https://assets.hackcambridge.com/team_assignments.json";
 
     state = {
         loading: true,
@@ -33,11 +42,14 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
         majors: [] as { id: string, count: number }[],
         universities: [] as { id: string, count: number }[],
         studyLevels: [] as { id: string, count: number }[],
+        expoAssignments: [] as IExpoAssigments[],
+        expoModalShowing: false,
     }
 
     componentDidMount() {
         this.loadStats();
         this.loadDatafile();
+        this.loadTeamAllocations();
     }
 
     render() {
@@ -89,12 +101,15 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
 
         const longLinks = [
             { text: "Join the 101 Slack Workspace", link: "/dashboard/join-slack", internal: false },
+            { text: "Hackathon Devpost", link: "https://hack-cambridge-101.devpost.com/", internal: false },
             { text: "View the challenges", link: "/dashboard/challenges", internal: true },
             { text: "What's happening when", link: "/dashboard/schedule", internal: true },
             { text: "Find your way around", link: "/dashboard/map", internal: true },
             { text: "Report a bug", link: "https://hackcambridge101.slack.com/app_redirect?channel=DS8NVDU0Z", internal: false },
         ];
-        return (
+        const { expoModalShowing, expoAssignments } = this.state;
+        // console.log(expoAssignments);
+        return <>
             <Layout>
                 <Layout.Section oneHalf>
                     <Card>
@@ -112,13 +127,35 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                             }}
                         />
                     </Card>
+                    <br />
+                    <Card title={"Expo Layout"} actions={expoAssignments.length > 0 ? [{
+                        content: "Team Allocations", 
+                        onAction: () => this.setState({ expoModalShowing: true })
+                    }] : []}>
+                        <img style={{ width: "100%" }} src={this.expoMapUrl} />
+                    </Card>
                 </Layout.Section>
                 <Layout.Section oneHalf>
                     <Card sectioned>{this.renderStats()}</Card><br />
                     {this.renderDatafileStats()}
                 </Layout.Section>
             </Layout>
-        );
+            <Modal title={"Expo Assignments"} open={expoModalShowing} onClose={() => this.setState({ expoModalShowing: false })}>
+                <Modal.Section>
+                    {expoAssignments.length == 0
+                        ? <Heading>Nothing here yet.</Heading>
+                        : <div>
+                            {expoAssignments.map(e => {
+                                return <div style={{ display: "inline-block", width: "100%", fontSize: "2rem", margin: "0.6rem 0", padding: "0.5rem 0", borderBottom: "#d8d8d8 1px solid" }}>
+                                    <span style={{ fontWeight: 600 }}>{e.title}</span>
+                                    <span style={{ float: "right" }} >{e.location}</span>
+                                </div>;
+                            })}
+                        </div>
+                    }
+                </Modal.Section>
+            </Modal>
+        </>;
     }
 
     private renderStats() {
@@ -220,6 +257,21 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                     loadedDatafile: true,
                 });
             } else {
+                console.log(`Request failed. Status: ${status}`);
+            }
+        });
+    }
+
+    private loadTeamAllocations() {
+        axios.get(this.teamAllocationsUrl).then(res => {
+            const status = res.status;
+            if(status == 200) {
+                const payload = res.data as { assignments: IExpoAssigments[] };
+                this.setState({
+                    expoAssignments: payload.assignments ? payload.assignments.sort((a,b) => a.title.localeCompare(b.title)) : [] as IExpoAssigments[]
+                });
+            } else {
+                this.setState({ expoAssignments: [] as IExpoAssigments[] });
                 console.log(`Request failed. Status: ${status}`);
             }
         });
