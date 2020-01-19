@@ -267,7 +267,6 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
             const status = res.status;
             if(status == 200) {
                 const payload = res.data as { assignments: IExpoAssigments[] };
-                console.log(payload.assignments[0].location);
                 this.setState({
                     expoAssignments: payload.assignments ? payload.assignments.sort((a,b) => a.title.localeCompare(b.title)) : [] as IExpoAssigments[]
                 });
