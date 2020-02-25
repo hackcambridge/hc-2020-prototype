@@ -56,9 +56,9 @@
 
         var current = 0;
         const messages = [
-            "HackCambridge will be back soon.",
-            "We can't wait to show you what we've got planned.",
-            "It's going to be bigger and better than ever."
+            "Thank you for coming to Hack Cambridge 101! ",
+            "It was great to see so many of you 🥰 ",
+            "Be sure to stay tuned for next year's event 👋 "
         ];
 
         // Wrap every letter in a span
@@ -66,7 +66,7 @@
             var textWrapper = document.querySelector('.ml13');
             textWrapper.innerHTML = messages[current];
             current = (current + 1) % messages.length;
-            textWrapper.innerHTML = textWrapper.textContent.replace(/[a-zA-Z0-9\*\.']+/g, "<span class='letter'>$&</span>");
+            textWrapper.innerHTML = textWrapper.textContent.replace(/[a-zA-Z0-9!🥰👋\*\.']+/g, "<span class='letter'>$&</span>");
             do_animate();
         }
         function do_animate() {
