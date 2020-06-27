@@ -3,7 +3,7 @@ terraform {
     organization = "HackCambridge"
 
     workspaces {
-      name = "hc2020-prototype"
+      name = "hackaestus"
     }
   }
 }
