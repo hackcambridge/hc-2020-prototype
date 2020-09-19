@@ -19,17 +19,17 @@
     <div id="orange-triangle"></div>
     <div id="blue-triangle"></div>
 </div>
-<!-- <div id="header-bottom-card">
+@endsection
+
+@section('content')
+<section id="" class="section-diagonal static-section section-paper">
+    <div class="container grid-lg large-description" style="padding: 3rem 30px 0.25rem;">
+<div id="header-bottom-card">
         <div id="header-bottom-card-content">
             <img style="padding: 0.1rem 0 0.3rem;" src="{{ asset('images/official-hackathon.png') }}" />
             <img src="{{ asset('images/cambridge.png') }}" />
         </div>
-    </div> -->
-@endsection
-
-@section('content_old')
-<section id="" class="section-diagonal static-section section-paper">
-    <div class="container grid-lg large-description" style="padding: 3rem 30px 0.25rem;">
+    </div>
         <p>Hack Cambridge is back for its fifth year! In January 2020, the University of Cambridge’s annual hackathon will yet again bring together 300 outstanding hackers, programmers, designers and more from universities all over the world. For 24 hours, they will build, break and innovate to produce genuinely remarkable projects that push the boundaries of technology.</p>
         <button onclick="window.location.href = '{{ route('apply') }}';" class="apply-button">Apply for 101 →</button>
     </div>

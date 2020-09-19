@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ mix('assets/css/home.css') }}" />
     <link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
 </head>
@@ -46,8 +47,8 @@
                 </section>
                 <section class="navbar-section">
                     <a class="options" href="#about">About</a>
-                    <a class="options" href="#sponsors">Sponsors</a>
                     <a class="options" href="#faq">FAQs</a>
+                    <a class="options" href="#sponsors">Sponsors</a>
                 </section>
                 <!-- <li class="breadcrumb-item">
                     <a href="{{ route('apply') }}">Apply</a>
@@ -65,11 +66,25 @@
         </div>
     </section>
 
-    <!-- @yield('content') -->
+    @yield('content')
 
-    <!-- <section id="footer-section" class="section-diagonal-top">
-        <div class="container grid-lg">
-            <ul id="top-menu" class="breadcrumb" style="text-align: right;">
+    <section id="footer-section" class="section-diagonal-top">
+        <div class="container">
+            <div class="columns col-gapless">
+                <div class="column col-4 footer-element" id="footer-copyright">
+                    HackCambridge&nbsp;©&nbsp;2020
+                </div>
+                <div class="column col-4 footer-element" id="footer-email">
+                    <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>
+                </div>
+                <div class="column col-4 footer-element" id="footer-thumbnails">
+                    <a href="https://www.facebook.com/hackcambridge" target="_blank"><i class="fab fa-facebook-square"></i></a>
+                    <a href="https://twitter.com/hack_cambridge" target="_blank"><i class="fab fa-twitter-square"></i></a>
+                    <a href="https://www.instagram.com/hack_cambridge" target="_blank"><i class="fab fa-instagram-square"></i></a>
+                    <a href="" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <!-- <ul id="top-menu" class="breadcrumb" style="text-align: right;">
                 <li class="breadcrumb-item">
                     <a href="{{ route('committee_dashboard') }}">
                         <div id="logo" style="background-image: url({{ asset('images/hc101_icon_white.svg') }});"></div>
@@ -87,10 +102,10 @@
                 <li class="breadcrumb-item">
                     <a href="{{route('terms')}}">Terms & Conditions</a>
                 </li>
-            </ul>
-            <p id="copyright">© Hack Cambridge 2016-2021. Hack Cambridge is UK registered charity #1177223.</p>
+            </ul> -->
+            <!-- <p id="copyright">© Hack Cambridge 2016-2021. Hack Cambridge is UK registered charity #1177223.</p> -->
         </div>
-    </section> -->
+    </section>
 
     <!-- MLH Banner -->
     <!-- TODO: Get 2021 MLH Banner -->
