@@ -22,46 +22,25 @@
 @endsection
 
 @section('content')
-<section id="" class="section-diagonal static-section section-paper">
-    <div class="container grid-lg large-description" style="padding: 3rem 30px 0.25rem;">
-<div id="header-bottom-card">
-        <div id="header-bottom-card-content">
-            <img style="padding: 0.1rem 0 0.3rem;" src="{{ asset('images/official-hackathon.png') }}" />
-            <img src="{{ asset('images/cambridge.png') }}" />
+<section id="" class="section-orange">
+    <div class="container" style="padding: 3rem 30px 0.25rem;">
+        <!-- <div id="header-bottom-card">
+            <div id="header-bottom-card-content">
+                <img style="padding: 0.1rem 0 0.3rem;" src="{{ asset('images/official-hackathon.png') }}" />
+                <img src="{{ asset('images/cambridge.png') }}" />
+            </div>
+        </div> -->
+        <div class="intro-text">
+            <h1>Hack Cambridge is back!</h1>
+            <p>In January 2021, the University of Cambridge’s annual hackathon will yet again bring together 300 outstanding hackers, programmers, designers and more from universities all over the world. For 24 hours, <strong>virtually</strong> they will build, break and innovate to produce genuinely remarkable projects that push the boundaries of technology.</p>
+            <!-- <button onclick="window.location.href = '{{ route('apply') }}';" class="apply-button">Apply for HexCambridge →</button> -->
         </div>
     </div>
-        <p>Hack Cambridge is back for its fifth year! In January 2020, the University of Cambridge’s annual hackathon will yet again bring together 300 outstanding hackers, programmers, designers and more from universities all over the world. For 24 hours, they will build, break and innovate to produce genuinely remarkable projects that push the boundaries of technology.</p>
-        <button onclick="window.location.href = '{{ route('apply') }}';" class="apply-button">Apply for 101 →</button>
-    </div>
 </section>
 
-
-<section id="" class="section-diagonal static-section section-closeup">
-    <div class="container grid-lg" style="height: 400px;">
-    </div>
-</section>
-
-<section id="" class="section-diagonal static-section section-floral">
-    <div class="container grid-lg large-description" style="padding: 0.1rem 30px 0.5rem;">
-        <h5 class="intro-subtitle">That sounds awesome, but isn't it expensive?</h5>
-        <p>Nope! That's the best part! Hack Cambridge is totally <strong>FREE!</strong> Even more, you'll get unlimited free food and drinks. With 4 free meals and a constant supply of snacks, we'll make sure you're never hungry, and you don't even have to pay a penny. You'll have access to free hardware and, some of the top tech companies will be sending their engineers to help you realise your vision.</p>
-
-        <h5 class="intro-subtitle">Ok, what's the catch? Surely I have to be a programming genius?</h5>
-        <p>Nope! We're looking for enthusiastic people with a desire to make something cool. Hackathon projects take more than just software development, teams with hardware engineers, designers and project managers all help make a hack great! No software development experience is necessary (some people even learn to code during the event itself).</p>
-
-        <h5 class="intro-subtitle">How do I sign up?</h5>
-        <button onclick="window.location.href = '{{ route('apply') }}';" class="apply-button" style="margin:25px 0 15px;">Apply for 101 →</button>
-    </div>
-</section>
-
-<section id="" class="section-diagonal static-section section-cam-bg">
-    <div class="container grid-lg" style="height: 400px;">
-    </div>
-</section>
-
-<section id="" class="section-diagonal static-section section-peach">
+<section id="" class="section-hex">
     <div class="container grid-lg" style="padding:2rem 30px 1rem">
-        <h1 class="section-header">Frequenly Asked Questions</h1>
+        <h1 class="section-header">FAQ</h1>
         <div class="accordion">
             <!-- Question 1 -->
             <input type="checkbox" id="accordion-1" name="accordion-checkbox-1" hidden>
@@ -153,6 +132,30 @@
             </div>
         </div>
 
+    </div>
+</section>
+
+
+<section id="" class="section-diagonal static-section section-closeup">
+    <div class="container grid-lg" style="height: 400px;">
+    </div>
+</section>
+
+<section id="" class="section-diagonal static-section section-floral">
+    <div class="container grid-lg large-description" style="padding: 0.1rem 30px 0.5rem;">
+        <h5 class="intro-subtitle">That sounds awesome, but isn't it expensive?</h5>
+        <p>Nope! That's the best part! Hack Cambridge is totally <strong>FREE!</strong> Even more, you'll get unlimited free food and drinks. With 4 free meals and a constant supply of snacks, we'll make sure you're never hungry, and you don't even have to pay a penny. You'll have access to free hardware and, some of the top tech companies will be sending their engineers to help you realise your vision.</p>
+
+        <h5 class="intro-subtitle">Ok, what's the catch? Surely I have to be a programming genius?</h5>
+        <p>Nope! We're looking for enthusiastic people with a desire to make something cool. Hackathon projects take more than just software development, teams with hardware engineers, designers and project managers all help make a hack great! No software development experience is necessary (some people even learn to code during the event itself).</p>
+
+        <h5 class="intro-subtitle">How do I sign up?</h5>
+        <button onclick="window.location.href = '{{ route('apply') }}';" class="apply-button" style="margin:25px 0 15px;">Apply for 101 →</button>
+    </div>
+</section>
+
+<section id="" class="section-diagonal static-section section-cam-bg">
+    <div class="container grid-lg" style="height: 400px;">
     </div>
 </section>
 

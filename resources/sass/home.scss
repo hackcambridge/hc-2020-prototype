@@ -107,6 +107,29 @@ body {
     }
 }
 
+.section-orange {
+    background-color: #ff7a62;
+    margin-top: 1.9vh;
+    padding-bottom: 5vh;
+    .intro-text {
+        margin-left: 10vw;
+        width: 40%;
+        text-align: justify;
+        h1 {
+            font-family: var(--title-font);
+            font-size: 2.6rem;
+        }
+        font-size: 1.2rem;
+        color: white;
+    }
+}
+
+.section-hex {
+    color: black;
+    background-color: white;
+    clip-path: polygon(50% 0, 100% 20%, 100% 80%, 50% 100%, 0 80%, 0 20%);
+}
+
 .static-section {
     &::before {
         z-index: -2;
