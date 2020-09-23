@@ -94,6 +94,7 @@ body {
     .container {
         min-height: 100px;
     }
+    border: solid none none none;
     .footer-element {
         font-family: var(--title-font);
         font-weight: 200;
@@ -110,7 +111,8 @@ body {
 .section-orange {
     background-color: #ff7a62;
     margin-top: 1.9vh;
-    padding-bottom: 5vh;
+    padding-bottom: 25vh;
+    clip-path: polygon(100% 0, 100% 100%, 50% 80%, 0 100%, 0 0);
     .intro-text {
         margin-left: 10vw;
         width: 40%;
@@ -127,7 +129,91 @@ body {
 .section-hex {
     color: black;
     background-color: white;
-    clip-path: polygon(50% 0, 100% 20%, 100% 80%, 50% 100%, 0 80%, 0 20%);
+    // clip-path: polygon(50% 0, 100% 20%, 100% 80%, 50% 100%, 0 80%, 0 20%);
+    margin-top: -20vh;
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+    .section-header {
+        font-size: 2rem;
+        padding-bottom: 2vh;
+        width: 100%;
+        text-align: center;
+        font-family: var(--title-font);
+    }
+    div.columns {
+        margin: auto;
+        max-width: 1000px;
+    }
+}
+
+.section-sponsors {
+    background-color: #3D82FF;
+    color: white;
+    // clip-path: polygon(0 0, 100% 40%, 100% 100%, 0% 100%);
+    // clip-path: polygon(100% 20%, 100% 100%, 50% 100%, 0 80%, 0 0);
+    clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 60%);
+    padding-top: 10vh;
+    padding-bottom: 20vh;
+    position: relative;
+    .section-header {
+        font-family: var(--title-font);
+        font-size: 2rem;
+    }
+    .advert {
+        text-justify: center;
+        width: 50%;
+    }
+    .mint-triangle {
+        // clip-path: polygon(50% 100%, 100% 100%, 100% 0);
+        clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+        background-color: #92FEE0;
+        width: 100%;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        height: 40%;
+    }
+}
+
+.section-followus {
+    background-color: white;
+    color: black;
+    margin-top: -15vh;
+    .section-header {
+        font-family: var(--title-font);
+        font-size: 2rem;
+    }
+    .columns {
+        width: 80%;
+        margin: auto;
+        div {
+            margin: auto;
+        }
+        font-size: 1.5rem;
+    }
+    .fab {
+        color: black;
+        font-size: 2.3rem;
+    }
+}
+
+.section-team {
+    color: white;
+    clip-path: polygon(50% 0%, 100% 38%, 100% 100%, 0 100%, 0% 38%);
+    background: rgb(255, 122, 98);
+    background: linear-gradient(45deg, rgba(255, 122, 98, 1) 0%, rgba(211, 104, 182, 1) 100%);
+    padding-top: 8vh;
+    .section-header {
+        font-family: var(--title-font);
+        font-size: 2.4rem;
+        width: 100%;
+        text-align: center;
+    }
+    .section-subheader {
+        font-size: 1.8rem;
+        width: 100%;
+        text-align: center;
+    }
 }
 
 .static-section {

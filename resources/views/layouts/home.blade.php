@@ -71,17 +71,17 @@
     <section id="footer-section" class="section-diagonal-top">
         <div class="container">
             <div class="columns col-gapless">
-                <div class="column col-4 footer-element" id="footer-copyright">
+                <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-copyright">
                     HackCambridge&nbsp;©&nbsp;2020
                 </div>
-                <div class="column col-4 footer-element" id="footer-email">
+                <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-email">
                     <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>
                 </div>
-                <div class="column col-4 footer-element" id="footer-thumbnails">
+                <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-thumbnails">
                     <a href="https://www.facebook.com/hackcambridge" target="_blank"><i class="fab fa-facebook-square"></i></a>
                     <a href="https://twitter.com/hack_cambridge" target="_blank"><i class="fab fa-twitter-square"></i></a>
                     <a href="https://www.instagram.com/hack_cambridge" target="_blank"><i class="fab fa-instagram-square"></i></a>
-                    <a href="" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.linkedin.com/company/hack-cambridge/" target="_blank"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
             <!-- <ul id="top-menu" class="breadcrumb" style="text-align: right;">
