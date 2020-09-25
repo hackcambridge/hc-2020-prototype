@@ -24,17 +24,28 @@
 @section('content')
 <section id="" class="section-orange">
     <div class="container" style="padding: 3rem 30px 0.25rem;">
-        <!-- <div id="header-bottom-card">
-            <div id="header-bottom-card-content">
+        <div id="stamp-card">
+            <div id="stamp-card-content">
                 <img style="padding: 0.1rem 0 0.3rem;" src="{{ asset('images/official-hackathon.png') }}" />
                 <img src="{{ asset('images/cambridge.png') }}" />
             </div>
-        </div> -->
+        </div>
         <div class="intro-text">
             <h1>Hack Cambridge is back!</h1>
             <p>In January 2021, the University of Cambridge’s annual hackathon will yet again bring together 300 outstanding hackers, programmers, designers and more from universities all over the world. For 24 hours, <strong>virtually</strong> they will build, break and innovate to produce genuinely remarkable projects that push the boundaries of technology.</p>
             <!-- <button onclick="window.location.href = '{{ route('apply') }}';" class="apply-button">Apply for HexCambridge →</button> -->
         </div>
+        <!-- <div class="prev-logos">
+            <div class="right-aligned">
+                <img src="{{ asset('images/101-white-logo.png') }}" />
+            </div>
+            <div class="left-aligned">
+                <img src="{{ asset('images/4d_logo.png') }}" />
+            </div>
+            <div class="middle-aligned">
+                <img src="{{ asset('images/ternary_logo.png') }}" />
+            </div>
+        </div> -->
     </div>
 </section>
 <div class="orange-gap"></div>

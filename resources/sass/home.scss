@@ -113,6 +113,7 @@ body {
     margin-top: 1.9vh;
     padding-bottom: 25vh;
     clip-path: polygon(100% 0, 100% 100%, 50% 80%, 0 100%, 0 0);
+    position: relative;
     .intro-text {
         margin-left: 10vw;
         width: 40%;
@@ -123,6 +124,41 @@ body {
         }
         font-size: 1.2rem;
         color: white;
+    }
+    #stamp-card {
+        position: absolute;
+        right: 10vw;
+        top: 0;
+        width: 20vw;
+    }
+    #stamp-card-content {
+        background-color: white;
+        border-radius: 5px;
+        padding: 5px;
+    }
+    #stamp-card-content img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+    .prev-logos {
+        width: 40%;
+        position: relative;
+        right: 0;
+        bottom: 0;
+        padding: 5vh;
+        .right-aligned {
+            margin-right: 0;
+        }
+        .left-aligned {
+            margin-left: 0;
+        }
+        .middle-aligned {
+            margin: auto;
+        }
+        img {
+            max-width: 40%;
+        }
     }
 }
 
