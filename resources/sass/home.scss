@@ -142,22 +142,32 @@ body {
         display: block;
     }
     .prev-logos {
-        width: 40%;
-        position: relative;
-        right: 0;
+        width: 20%;
+        min-width: 400px;
+        position: absolute;
+        top: 30vh;
+        right: 10vw;
         bottom: 0;
         padding: 5vh;
         .right-aligned {
-            margin-right: 0;
+            text-align: right;
         }
         .left-aligned {
-            margin-left: 0;
+            text-align: left;
         }
         .middle-aligned {
-            margin: auto;
+            text-align: center;
+        }
+        div {
+            padding-bottom: 5px;
+        }
+        button {
+            background: none;
+            border: none;
+            width: 30%;
         }
         img {
-            max-width: 40%;
+            max-width: 100%;
         }
     }
 }
