@@ -36,21 +36,23 @@
             <!-- <button onclick="window.location.href = '{{ route('apply') }}';" class="apply-button">Apply for HexCambridge →</button> -->
         </div>
         <div class="prev-logos">
-            <div class="left-aligned">
-                <button class="tooltip tooltip-left" data-tooltip="HackCambridge 101, 2020">
-                    <img src="{{ asset('images/101-white-logo.png') }}" />
-                </button>
-            </div>
-            <div class="middle-aligned">
-                <button class="tooltip tooltip-right" data-tooltip="HackCambridge 4D, 2019">
+            <div>
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 4D, 2019">
                     <img src="{{ asset('images/4d_logo.png') }}" />
                 </button>
+                <div id="second-place"></div>
             </div>
-            <div class="right-aligned">
+            <div>
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020">
+                    <img src="{{ asset('images/101-white-logo.png') }}" />
+                </button>
+                <div id="first-place"></div>
+            </div>
+            <div>
                 <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge Ternary, 2018">
                     <img src="{{ asset('images/ternary_logo.png') }}" />
                 </button>
-                <h1>...</h1>
+                <div id="third-place"></div>
             </div>
         </div>
     </div>
@@ -178,12 +180,24 @@
                 </div>
             </div>
         </div>
-
     </div>
 </section>
 
 <section id="" class="section-sponsors">
-    <div class="container" style="padding:1rem 30px 1.5rem">
+    <div class="footer-info">
+        <div class="diagonal-line">
+            <svg style='width: 100%; height: 100%;'>
+                <line x1="0" y1="100%" x2="100%" y2="0" style="stroke:rgb(0,0,0);stroke-width:1.5" />
+            </svg>
+        </div>
+        <div class="text-space">
+            <div class="diagonal-text">
+                Got any other questions? Ask us<br>
+                at <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>.
+            </div>
+        </div>
+    </div>
+    <div class="container" style="">
         <h1 class="section-header">Sponsors</h1>
 
         <!-- Temporary placeholder -->
@@ -320,9 +334,36 @@
             <div style="clear: both;"></div>
         </div> -->
 
+        <div class="slideshow">
+            <section class="hexagon-gallery">
+                <!-- Row 1 -->
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div><div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
 
+                <!-- Row 2 -->
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div><div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+                <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
+            </section>
+        </div>
+
+        <div class="mint-triangle"></div>
     </div>
-    <div class="mint-triangle"></div>
 </section>
 
 <section id="" class="section-followus">
@@ -349,7 +390,55 @@
 <section id="" class="section-team">
     <div class="container" style="padding:1rem 30px 1.5rem">
         <h1 class="section-header">Our Team</h1>
-        <h2 class="section-subheader">The HackCambridge 2021 Team<h2>
+        <h2 class="section-subheader">The HackCambridge 2021 Team</h2>
+        <div class="hex-people">
+            <section class="hexagon-gallery">
+                <div class="hex">
+                    <img src="{{ asset('images/Ivan.jpg') }}" alt="Ivan" />
+                    <div>
+                        <h1>Ivan Ivanov</h1>
+                        <h2>Head of Development</h2>
+                    </div>
+                </div>
+                <div class="hex">
+                    <img src="{{ asset('images/Ivan.jpg') }}" alt="some" />
+                </div>
+                <div class="hex">
+                    <img src="{{ asset('images/Ivan.jpg') }}" alt="some" />
+                </div>
+                <div class="hex">
+                    <img src="{{ asset('images/Ivan.jpg') }}" alt="some" />
+                </div>
+                <div class="hex">
+                    <img src="{{ asset('images/Ivan.jpg') }}" alt="some" />
+                </div>
+                <div class="hex">
+                    <img src="{{ asset('images/Ivan.jpg') }}" alt="some" />
+                </div>
+                <div class="hex">
+                    <img src="{{ asset('images/Ivan.jpg') }}" alt="some" />
+                </div>
+                <div class="hex">
+                    <img src="{{ asset('images/Ivan.jpg') }}" alt="some" />
+                </div>
+                <div class="hex">
+                    <img src="{{ asset('images/Ivan.jpg') }}" alt="some" />
+                </div>
+                <div class="hex">
+                    <img src="{{ asset('images/Ivan.jpg') }}" alt="some" />
+                </div>
+                <!-- <div class="hex"><img src="{{ asset('images/Ivan.jpg') }}" alt="some"></div> -->
+                <!-- <div class="hex"></div>
+                <div class="hex"></div>
+                <div class="hex"></div>
+                <div class="hex"></div>
+                <div class="hex"></div>
+                <div class="hex"></div>
+                <div class="hex"></div>
+                <div class="hex"></div>
+                <div class="hex"></div> -->
+            </section>
+        </div>
     </div>
 </section>
 
