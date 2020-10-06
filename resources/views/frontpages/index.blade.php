@@ -41,14 +41,12 @@
                     <img src="{{ asset('images/4d_logo.png') }}" />
                 </button>
                 <div id="second-place"></div>
-            </div>
-            <div>
+            </div><div>
                 <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020">
                     <img src="{{ asset('images/101-white-logo.png') }}" />
                 </button>
                 <div id="first-place"></div>
-            </div>
-            <div>
+            </div><div>
                 <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge Ternary, 2018">
                     <img src="{{ asset('images/ternary_logo.png') }}" />
                 </button>
@@ -156,20 +154,6 @@
             <div class="col-sm-12 col-6">
                 <div class="accordion">
                     <!-- Question 7 -->
-                    <input type="checkbox" id="accordion-7" name="accordion-checkbox-7" hidden>
-                    <label class="accordion-header" for="accordion-7">
-                        <i class="icon icon-arrow-right mr-1"></i> Do you guys offer travel reimbursements?
-                    </label>
-                    <div class="accordion-body faq-body">
-                        <div class="inner">Yes. If you're travelling from outside of Cambridge, you can apply for an amount of money back. This will be considered on a case by case basis. (Only travel costs will be considered and applying does not guarantee reimbursement)</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="col-sm-12 col-6">
-                <div class="accordion">
-                    <!-- Question 8 -->
                     <input type="checkbox" id="accordion-8" name="accordion-checkbox-8" hidden>
                     <label class="accordion-header" for="accordion-8">
                         <i class="icon icon-arrow-right mr-1"></i> I have other questions / am a member of the press!
@@ -180,6 +164,20 @@
                 </div>
             </div>
         </div>
+        <!-- Extra question for template -->
+        <!-- <div class="columns">
+            <div class="col-sm-12 col-6">
+                <div class="accordion">
+                    <input type="checkbox" id="accordion-8" name="accordion-checkbox-8" hidden>
+                    <label class="accordion-header" for="accordion-8">
+                        <i class="icon icon-arrow-right mr-1"></i> I have other questions / am a member of the press!
+                    </label>
+                    <div class="accordion-body faq-body">
+                        <div class="inner">Send us an email at <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>. We'd love to chat!</div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </div>
 </section>
 
@@ -212,131 +210,11 @@
                 </a>
             </div>
             <div style="clear: both;"></div>
-        </div>
-
-        <h6 class="sponsor-tier-title">— Tera —</h6>
-        <div id="sponsors-tera" class="sponsors-container">
-            <div class="item">
-                <a href="https://www.avast.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/avast.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.microsoft.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/microsoft.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.reply.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/reply.png') }}" />
-                </a>
-            </div>
-            <div style="clear: both;"></div>
-        </div>
-
-        <h6 class="sponsor-tier-title">— Giga —</h6>
-        <div id="sponsors-giga" class="sponsors-container">
-            <div class="item">
-                <a href="https://www.amazon.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/amazon.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.huawei.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/huawei.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.mathworks.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/mathworks.png') }}" />
-                </a>
-            </div>
-            <div style="clear: both;"></div>
-        </div>
-
-        <h6 class="sponsor-tier-title">— Mega —</h6>
-        <div id="sponsors-mega" class="sponsors-container">
-            <div class="item">
-                <a href="https://www.arm.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/arm.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.featurespace.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/featurespace.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.gresearch.co.uk" target="_blank">
-                    <img src="{{ asset('images/sponsors/gresearch.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://improbable.io/" target="_blank">
-                    <img src="{{ asset('images/sponsors/improbable.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.janestreet.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/janestreet.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.man.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/man.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.netcraft.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/netcraft.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.thoughtmachine.net" target="_blank">
-                    <img src="{{ asset('images/sponsors/thoughtmachine.png') }}" />
-                </a>
-            </div>
-            <div style="clear: both;"></div>
-        </div>
-
-        <h6 class="sponsor-tier-title">— Kilo —</h6>
-        <div id="sponsors-kilo" class="sponsors-container">
-            <div class="item">
-                <a href="https://datascope.co.uk" target="_blank">
-                    <img src="{{ asset('images/sponsors/datascope.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="http://hackp.ac/mlh-stickermule-hackathons" target="_blank">
-                    <img src="{{ asset('images/sponsors/stickermule.png') }}">
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://stripe.com/gb" target="_blank">
-                    <img src="{{ asset('images/sponsors/stripe.png') }}">
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.twilio.com/" target="_blank">
-                    <img src="{{ asset('images/sponsors/twilio.png') }}">
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.wolfram.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/wolfram.png') }}" />
-                </a>
-            </div>
-            <div class="item">
-                <a href="https://www.yoyogames.com" target="_blank">
-                    <img src="{{ asset('images/sponsors/yoyogames.png') }}" />
-                </a>
-            </div>
-            <div style="clear: both;"></div>
         </div> -->
 
+        <!-- Sponsors should go here 
         <div class="slideshow">
             <section class="hexagon-gallery">
-                <!-- Row 1 -->
                 <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div><div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
                 <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
                 <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
@@ -348,7 +226,6 @@
                 <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
                 <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
 
-                <!-- Row 2 -->
                 <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div><div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
                 <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
                 <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
@@ -360,7 +237,7 @@
                 <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
                 <div class="hex"><img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1601&q=80" alt="Image" /></div>
             </section>
-        </div>
+        </div> -->
 
         <div class="mint-triangle"></div>
     </div>
