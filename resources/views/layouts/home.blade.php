@@ -5,11 +5,9 @@
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width">
     <meta name="viewport" content="initial-scale=1.0">
-    <!-- TODO: Update description -->
-    <meta name="description" content="Hex Cambridge is back for its sixth year!">
+    <meta name="description" content="Hack Cambridge is back for its sixth year!">
     <meta property="og:title" content="@yield('title')">
-    <!-- TODO: Update description -->
-    <meta property="og:description" content="Hex Cambridge is back for its sixth year!">
+    <meta property="og:description" content="Hack Cambridge is back for its sixth year!">
     <meta property="og:image" content="{{ url('images/meta-image.jpg') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta name="twitter:card" content="summary_large_image">
@@ -33,9 +31,9 @@
     <div class="env-banner" style="background-color: #bd0000;">DEVELOPMENT</div>
     @endenv
 
-    <div id="background-particles"></div>
+    <!-- <div id="background-particles"></div> -->
     <section id="header-section" class="section-diagonal-bottom">
-        <div class="container grid-xl" style="min-height:200px;">
+        <div class="container grid-xl" style="padding-bottom: 5vh">
             <header id="top-menu" class="navbar">
                 <section classs="navbar-section">
                     <a href="/">
@@ -46,9 +44,9 @@
                     </a>
                 </section>
                 <section class="navbar-section">
-                    <a class="options" href="#about">About</a>
-                    <a class="options" href="#faq">FAQs</a>
-                    <a class="options" href="#sponsors">Sponsors</a>
+                    <a class="options" href="/#about">About</a>
+                    <a class="options" href="/#faq">FAQs</a>
+                    <a class="options" href="/#sponsors">Sponsors</a>
                 </section>
                 <!-- <li class="breadcrumb-item">
                     <a href="{{ route('apply') }}">Apply</a>
@@ -68,7 +66,7 @@
 
     @yield('content')
 
-    <section id="footer-section" class="section-diagonal-top">
+    <section id="footer-section">
         <div class="container">
             <div class="columns col-gapless">
                 <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-copyright">

@@ -1,10 +1,11 @@
 @extends('layouts.home')
-@section('title', 'Code of Conduct — Hack Cambridge 101')
+@section('title', 'Code of Conduct — Hex Cambridge')
 
 @section('header-content')
-    <div id="intro-container">
+    <!-- <div id="intro-container">
         <img id="top-logo-solo" src="{{ asset('images/101-white.png') }}" />
-    </div>
+
+    </div> -->
 @endsection
 
 @section('content')
