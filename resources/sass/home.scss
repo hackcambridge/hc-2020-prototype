@@ -320,7 +320,7 @@ body {
 .section-orange {
     background-color: #ff7a62;
     margin-top: 1.9vh;
-    padding-top: 20vh;
+    padding-top: 25vmin;
     padding-bottom: 25vh;
     min-height: 50vh;
     clip-path: polygon(100% 0, 100% 100%, 50% 80%, 0 100%, 0 20%);
@@ -331,17 +331,17 @@ body {
         text-align: justify;
         h1 {
             font-family: var(--title-font);
-            font-size: 2.6rem;
+            font-size: 2.4rem;
         }
-        font-size: 1.2rem;
+        font-size: 1rem;
         color: white;
     }
     #stamp-card {
         position: absolute;
         right: 10vw;
         top: 15vh;
-        width: 40%;
-        max-width: 500px;
+        width: 30%;
+        max-width: 400px;
     }
     #stamp-card-content {
         border-radius: 5px;
@@ -353,9 +353,9 @@ body {
         display: block;
     }
     .prev-logos {
-        width: 40%;
-        max-width: 600px;
-        max-height: 500px;
+        width: 30%;
+        max-width: 500px;
+        max-height: 400px;
         padding-bottom: 15vmin;
         position: absolute;
         top: 40vh;
@@ -432,8 +432,8 @@ body {
 .section-hex {
     color: black;
     background-color: rgb(255, 255, 255, 0.85);
-    margin-top: -20vh;
-    padding-top: 10vh;
+    margin-top: -30vh;
+    padding-top: 20vh;
     margin-bottom: 10vh;
     .section-header {
         font-size: 2rem;
@@ -464,8 +464,8 @@ body {
         clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%);
         z-index: 2;
         position: relative;
-        margin-top: -10vh;
-        padding-top: 10vh;
+        margin-top: -10vmin;
+        padding-top: 15vmin;
         padding-bottom: 20vh;
     }
     position: relative;
@@ -668,7 +668,7 @@ body {
     color: white;
     background-color: rgb(255, 255, 255, 0.85);
     .container {
-        padding-top: 8vh;
+        padding-top: 10vmin;
         padding-bottom: 8vh;
         clip-path: polygon(50% 0%, 100% 38%, 100% 100%, 0 100%, 0% 38%);
         background: linear-gradient(45deg, rgba(255, 122, 98, 1) 0%, rgba(211, 104, 182, 1) 100%);
@@ -680,7 +680,7 @@ body {
         text-align: center;
     }
     .section-subheader {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         width: 100%;
         text-align: center;
     }
@@ -715,17 +715,17 @@ body {
                 color: white;
                 font-family: -var(--body-font);
                 h1 {
-                    font-size: 2em;
+                    font-size: 1.7em;
                 }
                 h2 {
-                    font-size: 1.7em;
+                    font-size: 1.4em;
                 }
                 font-weight: bold;
                 margin: auto;
                 position: absolute;
-                bottom: 2rem;
+                bottom: 2.2rem;
                 text-align: center;
-                padding: 5px;
+                padding: 7px;
             }
         }
         .hex:hover {
@@ -1095,7 +1095,7 @@ body {
             color: black;
             height: 100%;
             vertical-align: middle;
-            // display: inline-block;
+            display: inline-block;
             &>#logo {
                 width: 4rem;
                 height: 4rem;
@@ -1109,7 +1109,7 @@ body {
             &.navbar-brand {
                 font-size: 1.3rem;
                 position: relative;
-                top: -25%;
+                line-height: 4rem;
             }
             &.options {
                 position: relative;
