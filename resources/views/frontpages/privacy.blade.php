@@ -1,14 +1,8 @@
 @extends('layouts.home')
-@section('title', 'Privacy Policy — Hack Cambridge 101')
-
-@section('header-content')
-    <div id="intro-container">
-        <img id="top-logo-solo" src="{{ asset('images/101-white.png') }}" />
-    </div>
-@endsection
+@section('title', 'Privacy Policy — Hex Cambridge')
 
 @section('content')
-    <section id="" class="section-diagonal static-section">
+    <section id="" class="section-privacy">
         <div class="container grid-lg" style="padding:2rem 30px 1rem;">
             <h1 class="section-header">Privacy Policy</h1>
               <p class="body-text">
@@ -20,11 +14,10 @@
 
               <h2 class="title-text">Introduction</h2>
               <p class="body-text">
-                Hack Cambridge (‘us’, ‘we’, or ‘our’) operates Hack Cambridge 101 (the ‘service’ or ‘hackathon’).
+                Hack Cambridge (‘us’, ‘we’, or ‘our’) operates Hex Cambridge (the ‘service’ or ‘hackathon’).
               </p>
               <p class="body-text">
-                We use your personal information to operate and improve Hack Cambridge
-                101. By using this service, you agree to the collection and use of
+                We use your personal information to operate and improve Hex Cambridge. By using this service, you agree to the collection and use of
                 information set out in this policy.
               </p>
 
@@ -67,12 +60,12 @@
                 sharing anonymised aggregate data with media organisations
                 for the purposes of promoting Hack Cambridge.
               </p>
-              <p class="body-text">
+              <!-- <p class="body-text">
                 If you require a visa invitation letter, we collect information
                 from you that we need to provide a visa invitation letter and
                 process this information, in order to provide you a visa
                 invitation letter.
-              </p>
+              </p> -->
 
               <h2 class="title-text"> Browser data </h2>
               <h3 class="title-text"> Log data </h3>
@@ -105,7 +98,7 @@
               <h2 class="title-text"> Transfer and publishing of your data </h2>
               <h3 class="title-text"> Sponsors </h3>
               <p class="body-text">
-                It would not be possible to organize Hack Cambridge without the help of
+                It would not be possible to organize Hex Cambridge without the help of
                 our sponsors. Sponsors, in exchange, will have access to the CV you submit.
                 They may perform processing on and make use of the data within this CV
                 for recruiting purposes, for example to send you a job offer.
@@ -129,7 +122,7 @@
                 winners presenting.
               </p>
               <p class="body-text"> We may share anonymised data with media organisations for the
-                purposes of promoting Hack Cambridge.
+                purposes of promoting Hex Cambridge.
               </p>
               <h3 class="title-text"> Service Providers </h3>
               <p class="body-text">

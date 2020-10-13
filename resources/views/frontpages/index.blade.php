@@ -9,12 +9,11 @@
 @section('content')
 <section id="landing" class="section-landing">
     <div class="container grid-xl">
-        <p id="top-tagline" style="">Hex<br />Cambridge</p>
+        <p id="top-tagline">Hex Cambridge</p>
 
         <div id="intro-description">
-            <p>January 23-24th 2021</p>
-            <p class="normal-text description">Cambridge's biggest 24h hackathon is back for it's sixth edition - running virtual and accessible from every point of the world</p>
-            <br />
+            <p>January&nbsp;23-24th 2021</p>
+            <p class="normal-text description">Cambridge's biggest 24h hackathon is back for it's sixth iteration and this year we're going fully virtual! We're very excited to present a brand new experience to all of you at Hex Cambridge 2021.</p>
             <button class="btn btn-lg btn-primary normal-text" onclick='window.location.href="#about"'>Learn more</button>
         </div>
         <img id="top-logo" src="{{ asset('images/logo.svg') }}" />
@@ -36,24 +35,22 @@
         </div>
         <div class="intro-text">
             <h1>Hack Cambridge is back!</h1>
-            <p>In January 2021, the University of Cambridge’s annual hackathon will yet again bring together 500 outstanding hackers, programmers, designers and more from universities all over the world. For 24 hours, <strong>virtually</strong> they will build, break and innovate to produce genuinely remarkable projects that push the boundaries of technology.</p>
+            <p>In January 2021, the University of Cambridge’s annual hackathon will yet again bring together 500 outstanding hackers, programmers, designers and more from universities all over the world. For 36 hours, <strong>virtually</strong> they will build, break and innovate to produce genuinely remarkable projects that push the boundaries of technology.</p>
         </div>
         <div class="prev-logos">
             <div>
                 <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 4D, 2019">
-                    <img src="{{ asset('images/4d_logo.png') }}" />
+                    <a href="https://hack-cambridge-101.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/4d_logo.png') }}" /></a>
                 </button>
                 <div id="second-place"></div>
-            </div
-            ><div>
+            </div><div>
                 <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020">
-                    <img src="{{ asset('images/101-white-logo.png') }}" />
+                    <a href="https://hackcambridge4d.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/101-white-logo.png') }}" /></a>
                 </button>
                 <div id="first-place"></div>
-            </div
-            ><div>
+            </div><div>
                 <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge Ternary, 2018">
-                    <img src="{{ asset('images/ternary_logo.png') }}" />
+                    <a href="https://ternary.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/ternary_logo.png') }}" /></a>
                 </button>
                 <div id="third-place"></div>
             </div>
@@ -123,7 +120,7 @@
                         <i class="icon icon-arrow-right mr-1"></i> Am I allowed to attend?
                     </label>
                     <div class="accordion-body faq-body">
-                        <div class="inner">Anyone who is currently a registered student or has graduated after 18th January 2020 is eligible to attend. Sadly we can't accommodate anyone under the age of 18 this year.</div>
+                        <div class="inner">Anyone who is currently a registered student or has graduated after 23rd January 2020 is eligible to attend. Sadly we can't accommodate anyone under the age of 18 this year.</div>
                     </div>
                 </div>
             </div>
@@ -132,7 +129,7 @@
                     <!-- Question 5 -->
                     <input type="checkbox" id="accordion-5" name="accordion-checkbox-5" hidden>
                     <label class="accordion-header" for="accordion-5">
-                        <i class="icon icon-arrow-right mr-1"></i> Is Hack Cambridge free to attend?
+                        <i class="icon icon-arrow-right mr-1"></i> Is Hex Cambridge free to attend?
                     </label>
                     <div class="accordion-body faq-body">
                         <div class="inner">Absolutely! Participation is free for all accepted hackers. We provide interesting workshops, entertaining activties, and some swag during the event.</div>
@@ -172,10 +169,10 @@
                 <div class="accordion">
                     <input type="checkbox" id="accordion-8" name="accordion-checkbox-8" hidden>
                     <label class="accordion-header" for="accordion-8">
-                        <i class="icon icon-arrow-right mr-1"></i> I have other questions / am a member of the press!
+                        <i class="icon icon-arrow-right mr-1"></i> Question...
                     </label>
                     <div class="accordion-body faq-body">
-                        <div class="inner">Send us an email at <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>. We'd love to chat!</div>
+                        <div class="inner">Answer...</div>
                     </div>
                 </div>
             </div>
@@ -192,8 +189,9 @@
         </div>
         <div class="text-space">
             <div class="diagonal-text">
-                Got any other questions? Ask us<br>
-                at <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>.
+                
+                <span class="full-email">Got any other questions? Ask us at <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>.</span>
+                <span class="short-email">Contact us <a href="mailto:team@hackcambridge.com">here</a>.</span>
             </div>
         </div>
     </div>
@@ -203,14 +201,14 @@
         <p class="advert">
             Hex Cambridge would not be possible without our incredible sponsors. We are proudly sponsored by:
         </p>
-        
+
         <div class="sponsors-list">
             <div class="cohost-sponsor sponsor-pane">
                 <h1>-- Co-host --</h1>
                 <div class="hexagon-gallery">
                     <div class="hex">
                         <a href="https://www.mwam.com/" targer="_blank">
-                            <img src="{{ asset('images/sponsors/marshallwace.png') }}" alt="Marshall Wace"/>
+                            <img src="{{ asset('images/sponsors/marshallwace.png') }}" alt="Marshall Wace" />
                         </a>
                     </div>
                 </div>
@@ -220,12 +218,12 @@
                 <div class="hexagon-gallery">
                     <div class="hex">
                         <a href="https://www.optiver.com/" targer="_blank">
-                            <img src="{{ asset('images/sponsors/optiver.png') }}" alt="Optiver"/>
+                            <img src="{{ asset('images/sponsors/optiver.png') }}" alt="Optiver" />
                         </a>
                     </div>
                     <div class="hex">
                         <a href="https://www.theodo.co.uk/" targer="_blank">
-                            <img src="{{ asset('images/sponsors/theodo.png') }}" alt="Theodo"/>
+                            <img src="{{ asset('images/sponsors/theodo.png') }}" alt="Theodo" />
                         </a>
                     </div>
                 </div>
@@ -235,7 +233,7 @@
                 <div class="hexagon-gallery">
                     <div class="hex">
                         <a href="https://www.hudsonrivertrading.com/" targer="_blank">
-                            <img src="{{ asset('images/sponsors/hrt.png') }}" alt="Hudson River Trading"/>
+                            <img src="{{ asset('images/sponsors/hrt.png') }}" alt="Hudson River Trading" />
                         </a>
                     </div>
                 </div>
@@ -246,12 +244,12 @@
                 <div class="hexagon-gallery">
                     <div class="hex">
                         <a href="https://www.janestreet.com/" targer="_blank">
-                            <img src="{{ asset('images/sponsors/janestreet.png') }}" alt="Jane Street"/>
+                            <img src="{{ asset('images/sponsors/janestreet.png') }}" alt="Jane Street" />
                         </a>
                     </div>
                     <div class="hex">
                         <a href="https://www.gresearch.co.uk" targer="_blank">
-                            <img src="{{ asset('images/sponsors/gresearch.png') }}" alt="G-Research"/>
+                            <img src="{{ asset('images/sponsors/gresearch.png') }}" alt="G-Research" />
                         </a>
                     </div>
                 </div>
@@ -262,17 +260,17 @@
                 <div class="hexagon-gallery">
                     <div class="hex">
                         <a href="https://stripe.com/gb" targer="_blank">
-                            <img src="{{ asset('images/sponsors/stripe.png') }}" alt="Stripe"/>
+                            <img src="{{ asset('images/sponsors/stripe.png') }}" alt="Stripe" />
                         </a>
                     </div>
                     <div class="hex">
                         <a href="https://www.gresearch.co.uk" targer="_blank">
-                            <img src="{{ asset('images/sponsors/gresearch.png') }}" alt="G-Research"/>
+                            <img src="{{ asset('images/sponsors/gresearch.png') }}" alt="G-Research" />
                         </a>
                     </div>
                     <div class="hex">
                         <a href="https://datascope.co.uk/" targer="_blank">
-                            <img src="{{ asset('images/sponsors/datascope.png') }}" alt="Datascope"/>
+                            <img src="{{ asset('images/sponsors/datascope.png') }}" alt="Datascope" />
                         </a>
                     </div>
                 </div>
@@ -289,17 +287,21 @@
         <h1 class="section-header">Follow Us</h1>
         <!-- <p>Sample text</p> -->
         <div class="columns">
-            <div class="col-sm-12 col-md-6 col-lg-4 col-3">
-                <a href="https://www.facebook.com/hackcambridge" target="_blank"><i class="fab fa-facebook-square"></i></a>&nbsp;@HexCambridge
+            <div class="col-md-3 col-xl-6 col-3">
+                <a href="https://www.facebook.com/hackcambridge" target="_blank"><i class="fab fa-facebook-square"></i>
+                    <span class="text-at">&nbsp;@HexCambridge</span></a>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-4 col-3">
-                <a href="https://twitter.com/hack_cambridge" target="_blank"><i class="fab fa-twitter-square"></i></a>&nbsp;@HexCambridge
+            <div class="col-md-3 col-xl-6 col-3">
+                <a href="https://twitter.com/hack_cambridge" target="_blank"><i class="fab fa-twitter-square"></i>
+                <span class="text-at">&nbsp;@HexCambridge</span></a>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-4 col-3">
-                <a href="https://www.instagram.com/hack_cambridge" target="_blank"><i class="fab fa-instagram-square"></i></a>&nbsp;@HexCambridge
+            <div class="col-md-3 col-xl-6 col-3">
+                <a href="https://www.instagram.com/hack_cambridge" target="_blank"><i class="fab fa-instagram-square"></i>
+                <span class="text-at">&nbsp;@HexCambridge</span></a>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-4 col-3">
-                <a href="https://www.linkedin.com/company/hack-cambridge/" target="_blank"><i class="fab fa-linkedin"></i></a>&nbsp;@HexCambridge
+            <div class="col-md-3 col-xl-6 col-3">
+                <a href="https://www.linkedin.com/company/hack-cambridge/" target="_blank"><i class="fab fa-linkedin"></i>
+                <span class="text-at">&nbsp;@HexCambridge</span></a>
             </div>
         </div>
     </div>
@@ -319,14 +321,14 @@
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Ivan.jpg') }}" alt="Chuen" />
+                    <img src="{{ asset('images/team/Chuen.jpg') }}" alt="Chuen" />
                     <div>
                         <h1>Chuen Leik Low</h1>
                         <h2>General Manager</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Ivan.jpg') }}" alt="Rohit" />
+                    <img src="{{ asset('images/team/Rohit.jpg') }}" alt="Rohit" />
                     <div>
                         <h1>Rohit Kale</h1>
                         <h2>Head of Finance</h2>
@@ -347,30 +349,31 @@
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Ivan.jpg') }}" alt="Zoey" />
+                    <img src="{{ asset('images/team/Zoey.jpg') }}" alt="Zoey" />
+                    <div>
+                        <h1>Zoey Tan</h1>
+                        <h2>Head of Social Relation and Publicity</h2>
+                    </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Ivan.jpg') }}" alt="Peter" />
+                    <img src="{{ asset('images/team/Peter.png') }}" alt="Peter" />
+                    <div>
+                        <h1>Peter Ondus</h1>
+                        <h2>Head of Logistics</h2>
+                    </div>
                 </div>
                 <div class="hex">
+                    <img src="{{ asset('images/team/Soham.jpg') }}" alt="Soham" />
+                    <div>
+                        <h1>Soham Mandal</h1>
+                    </div>
+                </div>
+                <!-- <div class="hex">
                     <img src="{{ asset('images/team/Ivan.jpg') }}" alt="some" />
                 </div>
                 <div class="hex">
                     <img src="{{ asset('images/team/Ivan.jpg') }}" alt="some" />
-                </div>
-                <div class="hex">
-                    <img src="{{ asset('images/team/Ivan.jpg') }}" alt="some" />
-                </div>
-                <!-- <div class="hex"><img src="{{ asset('images/Ivan.jpg') }}" alt="some"></div> -->
-                <!-- <div class="hex"></div>
-                <div class="hex"></div>
-                <div class="hex"></div>
-                <div class="hex"></div>
-                <div class="hex"></div>
-                <div class="hex"></div>
-                <div class="hex"></div>
-                <div class="hex"></div>
-                <div class="hex"></div> -->
+                </div> -->
             </section>
         </div>
     </div>

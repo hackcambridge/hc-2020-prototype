@@ -35,18 +35,34 @@
     <section id="header-section" class="section-diagonal-bottom">
         <div class="container grid-xl" style="padding-bottom: 5vh">
             <header id="top-menu" class="navbar">
-                <section classs="navbar-section">
+                <section>
                     <a href="/">
-                        <div id="logo" style="background-image: url({{ asset('images/logo.svg') }});"></div>
+                        <div id="logo" style="background-image: url({{ asset('images/logo.svg') }})"></div>
                     </a>
                     <a href="/" class="navbar-brand mr-2">
                         Hex Cambridge
                     </a>
                 </section>
                 <section class="navbar-section">
-                    <a class="options" href="/#about">About</a>
-                    <a class="options" href="/#faq">FAQs</a>
-                    <a class="options" href="/#sponsors">Sponsors</a>
+                    <div class="section-full">
+                        <a class="options" href="/#about">About</a>
+                        <a class="options" href="/#faq">FAQs</a>
+                        <a class="options" href="/#sponsors">Sponsors</a>
+                    </div>
+                    <div class="section-menu">
+                        <div class="popover popover-bottom">
+                            <button class="btn btn-primary">
+                                <i class="icon icon-menu"></i>
+                            </button>
+                            <div class="popover-container">
+                                <a class="options" href="/#about">About</a>
+                                <br/><hr/>
+                                <a class="options" href="/#faq">FAQs</a>
+                                <br/><hr/>
+                                <a class="options" href="/#sponsors">Sponsors</a>
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 <!-- <li class="breadcrumb-item">
                     <a href="{{ route('apply') }}">Apply</a>
@@ -70,7 +86,7 @@
         <div class="container">
             <div class="columns col-gapless">
                 <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-copyright">
-                    HackCambridge&nbsp;©&nbsp;2020
+                    HexCambridge&nbsp;©&nbsp;2020
                 </div>
                 <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-email">
                     <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>
@@ -101,7 +117,7 @@
                     <a href="{{route('terms')}}">Terms & Conditions</a>
                 </li>
             </ul> -->
-            <!-- <p id="copyright">© Hack Cambridge 2016-2021. Hack Cambridge is UK registered charity #1177223.</p> -->
+            <!-- <p id="copyright">Hack Cambridge is UK registered charity #1177223.</p> -->
         </div>
     </section>
 
