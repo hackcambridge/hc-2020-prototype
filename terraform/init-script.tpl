@@ -34,7 +34,7 @@ echo "export MAILGUN_SECRET=\"${MAILGUN_SECRET}\"" >> /etc/profile.d/hc-deployme
 # touch /etc/profile.d/.htpasswd
 # echo 'canary:$apr1$.6lFfhed$opJtcT7xrgfDqT7BBPbu5/' >> /etc/profile.d/.htpasswd
 
-exit
+# exit
 
 # Assumes we're using the Bitnami AMI.
 export PATH="/opt/bitnami/php/bin/:$PATH"
