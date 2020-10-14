@@ -78,11 +78,11 @@ echo "MAILGUN_SECRET=\"$MAILGUN_SECRET\"" >> .env
 
 
 # Migrate Database (force to skip confirmation prompt).
-php artisan migrate --force
-if [ $? -ne 0 ]; then
-    >&2 echo "Database migration failed."
-    exit 1;
-fi
+# php artisan migrate --force
+# if [ $? -ne 0 ]; then
+#     >&2 echo "Database migration failed."
+#     exit 1;
+# fi
 echo "Completed database migration."
 echo "--------------------"
 
