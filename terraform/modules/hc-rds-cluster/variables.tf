@@ -3,10 +3,10 @@ variable "name" {
   default     = ""
 } 
 
-variable "vpc" {
-  description = "The VPC for the cluster to exist in"
+variable "name" {
+  description = "The name of the database in the cluster"
   default     = ""
-}
+} 
 
 variable "security_group" {
   description = "The security group for the cluster"
