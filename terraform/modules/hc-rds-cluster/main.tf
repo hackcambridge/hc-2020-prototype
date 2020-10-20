@@ -1,4 +1,4 @@
-resource "aws_rds_cluster" "cluster" {
+resource "aws_rds_cluster" "hc-rds-cluster" {
   cluster_identifier     = var.name
   database_name          = var.database_name
   master_username        = var.DB_USERNAME

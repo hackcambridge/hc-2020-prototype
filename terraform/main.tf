@@ -79,7 +79,7 @@ module "hc-prod-cluster" {
 module "hc-rds-instance" {
   source         = "./modules/hc-rds-instance"
   name           = "hc-rds-instance"
-  cluster_id     = "hc-rds"
+  cluster_id     =  module.hc-rds-cluster.id
 }
 
 module "hc-rds-cluster" {
