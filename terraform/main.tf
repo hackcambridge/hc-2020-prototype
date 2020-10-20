@@ -83,7 +83,7 @@ module "hc-rds-instance" {
 }
 
 module "hc-rds-cluster" {
-  source           = "./modules/hc-cluster"
+  source           = "./modules/hc-rds-cluster"
   name             = "hc-rds"
   vpc              = "${aws_default_vpc.default.id}"
   DB_USERNAME      = "${var.DB_USERNAME}"

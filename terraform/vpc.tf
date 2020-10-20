@@ -70,7 +70,7 @@ resource "aws_security_group" "hc-instance-security-group" {
 resource "aws_security_group" "aurora-security-group" {
   name        = "aurora-security-group"
   description = "Hack Cambridge Database Servers"
-  vpc_id      = "${aws_default_vpc.default.id}"
+  vpc_id      = aws_default_vpc.default.id
 
   ingress {
     protocol    = "tcp"
