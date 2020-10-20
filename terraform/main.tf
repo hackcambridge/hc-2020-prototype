@@ -79,12 +79,12 @@ module "hc-prod-cluster" {
 module "hc-rds-instance" {
   source         = "./modules/hc-rds-instance"
   name           = "hc-rds-instance"
-  cluster_id     = "hc-rds"
+  cluster_id     = "hc_rds"
 }
 
 module "hc-rds-cluster" {
   source           = "./modules/hc-rds-cluster"
-  name             = "hc-rds"
+  name             = "hc_rds"
   vpc              = "${aws_default_vpc.default.id}"
   security_group   = "${aws_security_group.aurora-security-group.id}"
   DB_USERNAME      = "${var.DB_USERNAME}"
