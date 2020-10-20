@@ -368,12 +368,18 @@
                         <h1>Soham Mandal</h1>
                     </div>
                 </div>
-                <!-- <div class="hex">
-                    <img src="{{ asset('images/team/Ivan.jpg') }}" alt="some" />
+                <div class="hex">
+                    <img src="{{ asset('images/team/Charles.jpg') }}" alt="Charles" />
+                    <div>
+                        <h1>Charles Chen</h1>
+                    </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Ivan.jpg') }}" alt="some" />
-                </div> -->
+                    <img src="{{ asset('images/team/Karthik.jpg') }}" alt="Karthik" />
+                    <div>
+                        <h1>Karthik Neelamegam</h1>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
