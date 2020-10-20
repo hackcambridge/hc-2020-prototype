@@ -8,6 +8,11 @@ variable "vpc" {
   default     = ""
 }
 
+variable "security_group" {
+  description = "The security group for the cluster"
+  default     = ""
+}
+
 # --------------------------------------------
 # Environment variables to set on the machines
 # --------------------------------------------

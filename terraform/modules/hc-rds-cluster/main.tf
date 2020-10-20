@@ -3,6 +3,6 @@ resource "aws_rds_cluster" "cluster" {
   database_name          = var.name
   master_username        = var.DB_USERNAME
   master_password        = var.DB_PASSWORD
-  vpc_security_group_ids = ["${aws_security_group.aurora-security-group.id}"]
+  vpc_security_group_ids = [var.security_group]
   skip_final_snapshot    = true
 }

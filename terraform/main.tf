@@ -87,6 +87,7 @@ module "hc-rds-cluster" {
   source           = "./modules/hc-rds-cluster"
   name             = "hc-rds"
   vpc              = "${aws_default_vpc.default.id}"
+  security_group   = "${aws_security_group.aurora-security-group.id}"
   DB_USERNAME      = "${var.DB_USERNAME}"
   DB_PASSWORD      = "${var.DB_PASSWORD}"
 }
