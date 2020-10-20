@@ -5,3 +5,7 @@ output "prod-domain-name" {
 output "staging-domain-name" {
   value = module.hc-staging-cluster.domain-name
 }
+
+output "rds-domain-name" {
+  value = module.hc-rds-cluster.endpoint
+}

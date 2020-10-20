@@ -255,8 +255,8 @@
                 </div>
 
             </div>
-            <div class="meals-sponsor sponsor-pane">
-                <h1>-- Meals --</h1>
+            <div class="kilo-sponsor sponsor-pane">
+                <h1>-- Kilo --</h1>
                 <div class="hexagon-gallery">
                     <div class="hex">
                         <a href="https://stripe.com/gb" targer="_blank">
