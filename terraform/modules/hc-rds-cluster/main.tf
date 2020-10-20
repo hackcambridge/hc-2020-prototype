@@ -1,5 +1,5 @@
 resource "aws_rds_cluster" "cluster" {
-  cluster_identifier     = "${var.cluster_name}"
+  cluster_identifier     = var.vpc
   database_name          = var.name
   master_username        = var.DB_USERNAME
   master_password        = var.DB_PASSWORD

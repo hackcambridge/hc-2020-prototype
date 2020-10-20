@@ -3,6 +3,11 @@ variable "name" {
   default     = ""
 } 
 
+variable "vpc" {
+  description = "The VPC for the cluster to exist in"
+  default     = ""
+}
+
 # --------------------------------------------
 # Environment variables to set on the machines
 # --------------------------------------------
