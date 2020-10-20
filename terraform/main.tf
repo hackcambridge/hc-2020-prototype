@@ -80,7 +80,6 @@ module "hc-rds-instance" {
   source         = "./modules/hc-rds-instance"
   name           = "hc-rds-instance"
   cluster_id     = "hc-rds"
-  # CLUSTER_NAME   = "hc-rds"
 }
 
 module "hc-rds-cluster" {
