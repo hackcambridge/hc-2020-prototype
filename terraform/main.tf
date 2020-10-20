@@ -79,8 +79,7 @@ module "hc-prod-cluster" {
 module "hc-rds-instance" {
   source         = "./modules/hc-rds-instance"
   name           = "hc-rds-instance"
-  security_group = "${aws_security_group.aurora-security-group.id}"
-  cluster_name   = "hc-rds"
+  # CLUSTER_NAME   = "hc-rds"
 }
 
 module "hc-rds-cluster" {
