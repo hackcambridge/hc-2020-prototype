@@ -15,7 +15,8 @@ module "hc-staging-instance" {
   APP_DEBUG             = "true"
   APP_ENV               = "staging"
   DB_PREFIX             = "staging_"
-  DB_HOST               = "${var.DB_HOST}"
+  # DB_HOST               = "${var.DB_HOST}"
+  DB_HOST               = module.hc-rds-cluster.endpoint
   DB_DATABASE           = "${var.DB_DATABASE}"
   DB_USERNAME           = "${var.DB_USERNAME}"
   DB_PASSWORD           = "${var.DB_PASSWORD}"
@@ -48,7 +49,8 @@ module "hc-prod-instance" {
   APP_DEBUG             = "false"
   APP_ENV               = "production"
   DB_PREFIX             = "prod_"
-  DB_HOST               = "${var.DB_HOST}"
+  # DB_HOST               = "${var.DB_HOST}"
+  DB_HOST               = module.hc-rds-cluster.endpoint
   DB_DATABASE           = "${var.DB_DATABASE}"
   DB_USERNAME           = "${var.DB_USERNAME}"
   DB_PASSWORD           = "${var.DB_PASSWORD}"
@@ -68,4 +70,23 @@ module "hc-prod-cluster" {
   launch_template  = module.hc-prod-instance.id
   vpc              = "${aws_default_vpc.default.id}"
   subnets          = ["${aws_default_subnet.default_A.id}", "${aws_default_subnet.default_B.id}"]
+}
+
+# -------------------------------
+# ---------- DATABASE -----------
+# -------------------------------
+
+module "hc-rds-instance" {
+  source         = "./modules/hc-rds-instance"
+  name           = "hc-rds-instance"
+  security_group = "${aws_security_group.aurora-security-group.id}"
+  cluster_name   = "hc-rds"
+}
+
+module "hc-prod-cluster" {
+  source           = "./modules/hc-cluster"
+  name             = "hc-rds"
+  vpc              = "${aws_default_vpc.default.id}"
+  DB_USERNAME      = "${var.DB_USERNAME}"
+  DB_PASSWORD      = "${var.DB_PASSWORD}"
 }
