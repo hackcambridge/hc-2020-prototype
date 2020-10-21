@@ -137,6 +137,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
     private theme = {
         colors: {
             topBar: {
+                // background: linear-gradient(45deg, rgba(255, 122, 98, 1) 0%, rgba(211, 104, 182, 1) 100%);
                 background: '#b71515',
                 backgroundLighter: '#c52e2f',
                 // background: '#2e0058',
@@ -145,10 +146,10 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             },
         },
         logo: {
-            width: 144,
-            topBarSource: '/images/101-sponsors.png',
+            height: 70,
+            topBarSource: '/images/logo_black.svg',
             url: `${this.props.baseUrl}/`,
-            accessibilityLabel: 'Hack Cambridge',
+            accessibilityLabel: 'Hex Cambridge',
         },
     };
 
@@ -163,7 +164,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
 
 
     componentDidMount(): void {
-        //this.getAllSponsors();
+        this.getAllSponsors();
     }
 
     render() {

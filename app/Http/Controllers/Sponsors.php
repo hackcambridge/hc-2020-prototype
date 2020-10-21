@@ -74,7 +74,7 @@ class Sponsors extends Controller
     }
 
     private function canContinue($allowed = [], $r, $stringChecks = []) {
-        array_push($allowed, "admin"); // TODO "committee" temporary
+        array_push($allowed, "committee", "admin"); // TODO "committee" temporary
 
         // Check the request provides all required arguments.
         array_push($stringChecks, "sponsor_id", "sponsor_slug");
@@ -212,7 +212,7 @@ class Sponsors extends Controller
 
     private function addSponsor($r) {
         // TODO "committee" is temporary.
-        if(Auth::check() && in_array(Auth::user()->type, ["admin"])) {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin","committee"])) {
             $name = $r->get("name");
             $slug = $this->slugify($name);
             if (strlen($slug) > 0) {
