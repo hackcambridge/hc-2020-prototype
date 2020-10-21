@@ -185,7 +185,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             }
         });
 
-        const renderAdminMenuItems = this.props.user ? ["admin"].includes(this.props.user.type) : false;
+        const renderAdminMenuItems = this.props.user ? ["admin","committee"].includes(this.props.user.type) : false;
         const navigationMarkup = (
             <Navigation location={`${this.props.location.pathname}`}>  
                 { renderAdminMenuItems ? 
