@@ -56,12 +56,12 @@ resource "aws_lb_target_group" "hc-load_balancer_target_group" {
   }
 
   health_check {
-    healthy_threshold   = 5
+    healthy_threshold   = 2 # reduced from 5
     unhealthy_threshold = 2
     path                = "/health"
     timeout             = 5
     protocol            = "HTTP"
-    interval            = 30
+    interval            = 10 # reduced from 30
   }
 }
 
