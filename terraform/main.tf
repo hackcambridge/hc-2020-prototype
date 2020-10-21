@@ -7,34 +7,34 @@ provider "aws" {
 # ----------- STAGING -----------
 # -------------------------------
 
-module "hc-staging-instance" {
-  source                = "./modules/hc-instance"
-  name                  = "hc-staging-instance"
-  security_group        = "${aws_security_group.hc-instance-security-group.id}"
-  APP_URL               = "https://canary.hackcambridge.com"
-  APP_DEBUG             = "true"
-  APP_ENV               = "staging"
-  DB_PREFIX             = "staging_"
-  DB_HOST               = module.hc-rds-cluster.endpoint
-  DB_DATABASE           = "${var.DB_DATABASE}"
-  DB_USERNAME           = "${var.DB_USERNAME}"
-  DB_PASSWORD           = "${var.DB_PASSWORD}"
-  AWS_ACCESS_KEY_ID     = "${var.AWS_ACCESS_KEY_ID}"
-  AWS_SECRET_ACCESS_KEY = "${var.AWS_SECRET_ACCESS_KEY}"
-  AWS_BUCKET            = "${var.STAGING_AWS_BUCKET}"
-  AUTH0_DOMAIN          = "${var.AUTH0_DOMAIN}"
-  AUTH0_CLIENT_ID       = "${var.AUTH0_CLIENT_ID}"
-  AUTH0_CLIENT_SECRET   = "${var.AUTH0_CLIENT_SECRET}"
-  MAILGUN_SECRET        = "${var.MAILGUN_SECRET}"
-}
+# module "hc-staging-instance" {
+#   source                = "./modules/hc-instance"
+#   name                  = "hc-staging-instance"
+#   security_group        = "${aws_security_group.hc-instance-security-group.id}"
+#   APP_URL               = "https://canary.hackcambridge.com"
+#   APP_DEBUG             = "true"
+#   APP_ENV               = "staging"
+#   DB_PREFIX             = "staging_"
+#   DB_HOST               = module.hc-rds-cluster.endpoint
+#   DB_DATABASE           = "${var.DB_DATABASE}"
+#   DB_USERNAME           = "${var.DB_USERNAME}"
+#   DB_PASSWORD           = "${var.DB_PASSWORD}"
+#   AWS_ACCESS_KEY_ID     = "${var.AWS_ACCESS_KEY_ID}"
+#   AWS_SECRET_ACCESS_KEY = "${var.AWS_SECRET_ACCESS_KEY}"
+#   AWS_BUCKET            = "${var.STAGING_AWS_BUCKET}"
+#   AUTH0_DOMAIN          = "${var.AUTH0_DOMAIN}"
+#   AUTH0_CLIENT_ID       = "${var.AUTH0_CLIENT_ID}"
+#   AUTH0_CLIENT_SECRET   = "${var.AUTH0_CLIENT_SECRET}"
+#   MAILGUN_SECRET        = "${var.MAILGUN_SECRET}"
+# }
 
-module "hc-staging-cluster" {
-  source          = "./modules/hc-cluster"
-  name            = "hc-staging"
-  launch_template = module.hc-staging-instance.id
-  vpc             = "${aws_default_vpc.default.id}"
-  subnets         = ["${aws_default_subnet.default_A.id}", "${aws_default_subnet.default_B.id}"]
-}
+# module "hc-staging-cluster" {
+#   source          = "./modules/hc-cluster"
+#   name            = "hc-staging"
+#   launch_template = module.hc-staging-instance.id
+#   vpc             = "${aws_default_vpc.default.id}"
+#   subnets         = ["${aws_default_subnet.default_A.id}", "${aws_default_subnet.default_B.id}"]
+# }
 
 # -------------------------------
 # ------------ PROD -------------
