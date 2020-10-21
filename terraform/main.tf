@@ -15,7 +15,6 @@ module "hc-staging-instance" {
   APP_DEBUG             = "true"
   APP_ENV               = "staging"
   DB_PREFIX             = "staging_"
-  # DB_HOST               = "${var.DB_HOST}"
   DB_HOST               = module.hc-rds-cluster.endpoint
   DB_DATABASE           = "${var.DB_DATABASE}"
   DB_USERNAME           = "${var.DB_USERNAME}"
@@ -49,7 +48,6 @@ module "hc-prod-instance" {
   APP_DEBUG             = "false"
   APP_ENV               = "production"
   DB_PREFIX             = "prod_"
-  # DB_HOST               = "${var.DB_HOST}"
   DB_HOST               = module.hc-rds-cluster.endpoint
   DB_DATABASE           = "${var.DB_DATABASE}"
   DB_USERNAME           = "${var.DB_USERNAME}"
@@ -85,7 +83,7 @@ module "hc-rds-instance" {
 module "hc-rds-cluster" {
   source           = "./modules/hc-rds-cluster"
   name             = "hc-rds"
-  database_name    = "hc_rds"
+  database_name    = "hc_staging"
   security_group   = "${aws_security_group.aurora-security-group.id}"
   DB_USERNAME      = "${var.DB_USERNAME}"
   DB_PASSWORD      = "${var.DB_PASSWORD}"
