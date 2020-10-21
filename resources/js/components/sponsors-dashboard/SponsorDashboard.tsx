@@ -146,7 +146,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             },
         },
         logo: {
-            height: 70,
+            width: 65,
             topBarSource: '/images/logo_black.svg',
             url: `${this.props.baseUrl}/`,
             accessibilityLabel: 'Hex Cambridge',
