@@ -1,5 +1,5 @@
-resource "aws_codepipeline" "static_web_pipeline" {
-  name     = "static-web-pipeline"
+resource "aws_codepipeline" "hc-codepipeline" {
+  name     = var.name
   role_arn = data.aws_iam_role.pipeline_role.arn
   tags     = {
     Environment = var.env
@@ -47,7 +47,7 @@ resource "aws_codepipeline" "static_web_pipeline" {
             },
           ]
         )
-        "ProjectName" = "static-web-build"
+        "ProjectName" = var.codebuild
       }
       input_artifacts = [
         "SourceArtifact",

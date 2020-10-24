@@ -5,19 +5,19 @@ data "template_file" "buildspec" {
   }
 }
 
-resource "aws_codebuild_project" "static_web_build" {
+resource "aws_codebuild_project" "hc-codebuild" {
   badge_enabled  = false
   build_timeout  = 60
-  name           = "static-web-build"
+  name           = var.name
   queued_timeout = 480
-  service_role   = data.aws_iam_role.static_build_role.arn
+  service_role   = data.aws_iam_role.hc-codebuild.arn
   tags = {
     Environment = var.env
   }
 
   artifacts {
     encryption_disabled    = false
-    name                   = "static-web-build-${var.env}"
+    name                   = "hc-codebuild-${var.env}"
     override_artifact_name = false
     packaging              = "NONE"
     type                   = "CODEPIPELINE"
