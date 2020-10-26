@@ -107,21 +107,11 @@ Route::middleware(['auth.check_staging'])->group(function() {
             'as' => 'committee_dashboard',
             'where' => ['path' => '.*']
         ]);
-        Route::get('/sponsors/dashboard/{path?}', [
-            'uses' => 'Sponsors@dashboard',
-            'as' => 'sponsors_dashboard',
-            'where' => ['path' => '.*']
-        ]);
-
 
         // Private API
         Route::get('/committee/admin-api/{path}.json', 'Committee@api_get')->name('committee_api_get');
         Route::middleware(['verifyCsrf'])
             ->post('/committee/admin-api/{path}.json', 'Committee@api_post')
             ->name('committee_api_post');
-        Route::get('/sponsors/dashboard-api/{path}.json', 'Sponsors@api_get')->name('sponsors_api_get');
-        Route::middleware(['verifyCsrf'])
-            ->post('/sponsors/dashboard-api/{path}.json', 'Sponsors@api_post')
-            ->name('sponsors_api_post');
     });
 });
