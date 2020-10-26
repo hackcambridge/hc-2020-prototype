@@ -117,3 +117,6 @@ fabric.properties
 
 # Terraform files
 .terraform
+
+# VS-Code files
+.vs-code
