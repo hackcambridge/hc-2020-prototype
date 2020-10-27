@@ -3,7 +3,7 @@ import { Page, Card, ResourceList, TextStyle, Modal, Form, FormLayout, Layout, C
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { ISponsorChallenge } from "../../../interfaces/dashboard.interfaces";
-import uuid from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 import AceEditor from "react-ace";
 import DestructiveConfirmation from "../../common/DestructiveConfirmation";
 
@@ -174,7 +174,7 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
 
     private addNewChallenge = () => {
         const challenge: ISponsorChallenge = {
-            id: uuid(),
+            id: uuidv4(),
             title: "",
             description: "",
             content: "",

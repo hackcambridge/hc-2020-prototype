@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Layout, Card, Page, Modal, Heading } from "@shopify/polaris";
 import ReactMarkdown from "react-markdown";
-import { SocialPostMajorMonotone } from "@shopify/polaris-icons";
+import { SocialPostMajor } from "@shopify/polaris-icons";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { IDashboardProps, ISponsorChallenge } from "../../../interfaces/dashboard.interfaces";
@@ -77,7 +77,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
         return (
             <Card key={`${Math.random()}`} sectioned   
                 secondaryFooterActions={data.slackChannel ? [{
-                    content: 'Slack Channel', icon: SocialPostMajorMonotone, 
+                    content: 'Slack Channel', icon: SocialPostMajor, 
                     onAction: () => window.open(`${this.slackWorkspaceBaseUrl}${data.slackChannel}`, '_blank')
                 }] : []}
                 primaryFooterAction={{

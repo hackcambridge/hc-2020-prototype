@@ -7,7 +7,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajorMonotone, HomeMajorMonotone, PackageMajorMonotone, ProfileMajorMonotone, BillingStatementPoundMajorMonotone, SmileyJoyMajorMonotone, FilterMajorMonotone, CodeMajorMonotone, FlagMajorMonotone, SocialAdMajorMonotone, QuestionMarkMajorMonotone, ChecklistMajorMonotone} from '@shopify/polaris-icons';
+import {LogOutMinor, IqMajor, HomeMajor, PackageMajor, ProfileMajor, BillingStatementPoundMajor, SmileyJoyMajor, FilterMajor, CodeMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ChecklistMajor} from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import CheckIn from "./components/CheckIn";
 import Overview from "./components/Overview";
@@ -95,9 +95,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         {
             id: "logout",
             items: [
-                {content: 'Frontpage', url: "/", icon: HomeMajorMonotone},
-                {content: 'Hackers\' Dashboard', url: "/dashboard", icon: SmileyJoyMajorMonotone},
-                {content: 'Sponsors\' Portal', url: "/sponsors/dashboard", icon: BillingStatementPoundMajorMonotone},
+                {content: 'Frontpage', url: "/", icon: HomeMajor},
+                {content: 'Hackers\' Dashboard', url: "/dashboard", icon: SmileyJoyMajor},
+                {content: 'Sponsors\' Portal', url: "/sponsors/dashboard", icon: BillingStatementPoundMajor},
                 {content: 'Logout', url: "/logout", icon: LogOutMinor},
             ],
         },
@@ -135,22 +135,22 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                         {
                             url: `${this.props.baseUrl}/overview`,
                             label: "Overview",
-                            icon: IqMajorMonotone
+                            icon: IqMajor
                         },
                         {
                             url: `${this.props.baseUrl}/applications`,
                             label: "Applications",
-                            icon: PackageMajorMonotone
+                            icon: PackageMajor
                         },
                         {
                             url: `${this.props.baseUrl}/checkin`,
                             label: "Check-in",
-                            icon: ChecklistMajorMonotone
+                            icon: ChecklistMajor
                         },
                         {
                             onClick: this.startReviewing,
                             label: "Start Reviewing",
-                            icon: FilterMajorMonotone
+                            icon: FilterMajor
                         },
                     ]}
                 />
@@ -160,27 +160,27 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                             {
                                 url: `${this.props.baseUrl}/members`,
                                 label: "Members",
-                                icon: ProfileMajorMonotone
+                                icon: ProfileMajor
                             },
                             {
                                 url: `${this.props.baseUrl}/omnitool`,
                                 label: "Omnitool",
-                                icon: CodeMajorMonotone
+                                icon: CodeMajor
                             },
                             {
                                 url: `${this.props.baseUrl}/challenges`,
                                 label: "Challenges",
-                                icon: FlagMajorMonotone
+                                icon: FlagMajor
                             },
                             {
                                 url: `${this.props.baseUrl}/schedule`,
                                 label: "Schedule",
-                                icon: SocialAdMajorMonotone
+                                icon: SocialAdMajor
                             },
                             {
                                 url: `${this.props.baseUrl}/faqs`,
                                 label: "FAQs",
-                                icon: QuestionMarkMajorMonotone
+                                icon: QuestionMarkMajor
                             },
                         ]}
                     /> 

@@ -1,5 +1,5 @@
 import { Button, Modal, Select, Stack, Tag, TextField } from "@shopify/polaris";
-import { AddMajorMonotone } from "@shopify/polaris-icons";
+import { AddMajor } from "@shopify/polaris-icons";
 import axios from "axios";
 import React, { Component } from "react";
 import { IResourceDefinition, ISponsorData } from "../../../../interfaces/sponsors.interfaces";
@@ -107,7 +107,7 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
                         placeholder={"https://api.hackcambridge.com/..."}
                         error={newURLError}
                         connectedRight={
-                            <Button icon={AddMajorMonotone} onClick={this.testAndAddNewURL}></Button>
+                            <Button icon={AddMajor} onClick={this.testAndAddNewURL}></Button>
                         }
                     />
                     <br />
