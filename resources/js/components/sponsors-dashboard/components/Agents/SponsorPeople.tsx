@@ -1,5 +1,5 @@
 import { Avatar, Button, Card, DisplayText, Layout, Page, ResourceList, TextStyle, Banner } from "@shopify/polaris";
-import { AddMajorMonotone } from "@shopify/polaris-icons";
+import { AddMajor } from "@shopify/polaris-icons";
 import axios from "axios";
 import React, { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -245,7 +245,7 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
         if (currentQuantity < this.state.mentorsLimit) {
             return (
                 <Button
-                    plain={inBody ? undefined : true} icon={AddMajorMonotone}
+                    plain={inBody ? undefined : true} icon={AddMajor}
                     onClick={() => this.setState({ sponsorAgentFormForType: "mentor", sponsorAgentFormShowing: true })}>
                     {inBody ? "\xa0Add a Mentor" : ""}
                 </Button>
@@ -253,7 +253,7 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
         } else {
             return (
                 <Button disabled
-                    plain={inBody ? undefined : true} icon={AddMajorMonotone}>{inBody ? "\xa0Add a Mentor" : ""}
+                    plain={inBody ? undefined : true} icon={AddMajor}>{inBody ? "\xa0Add a Mentor" : ""}
                 </Button>
             );
         }
@@ -264,7 +264,7 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
         if (currentQuantity < this.state.recruitersLimit) {
             return (
                 <Button
-                    plain={inBody ? undefined : true} icon={AddMajorMonotone}
+                    plain={inBody ? undefined : true} icon={AddMajor}
                     onClick={() => this.setState({ sponsorAgentFormForType: "recruiter", sponsorAgentFormShowing: true })}>
                     {inBody ? "\xa0Add a Recruiter" : ""}
                 </Button>
@@ -272,7 +272,7 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
         } else {
             return (
                 <Button disabled
-                    plain={inBody ? undefined : true} icon={AddMajorMonotone}>{inBody ? "\xa0Add a Recruiter" : ""}
+                    plain={inBody ? undefined : true} icon={AddMajor}>{inBody ? "\xa0Add a Recruiter" : ""}
                 </Button>
             );
         }

@@ -1,5 +1,5 @@
 import { Avatar, Button, Card, Heading, Page, ResourceList, Stack } from "@shopify/polaris";
-import { AddMajorMonotone } from "@shopify/polaris-icons";
+import { AddMajor } from "@shopify/polaris-icons";
 import axios from "axios";
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
@@ -72,7 +72,7 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
                             resourceName={this.props.resourceNames}
                             alternateTool={
                                 <Button 
-                                    plain icon={AddMajorMonotone} 
+                                    plain icon={AddMajor} 
                                     onClick={() => this.setState({ resourceFormShowing: true })}>
                                 </Button>
                             }
@@ -81,7 +81,7 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
                         <Card.Section>
                             <Button 
                                 loading={loadingDefinitions}
-                                icon={AddMajorMonotone} 
+                                icon={AddMajor} 
                                 onClick={() => this.setState({ resourceFormShowing: true })}
                             >
                                 &nbsp;Add {this.props.resourceNames["singular"]}

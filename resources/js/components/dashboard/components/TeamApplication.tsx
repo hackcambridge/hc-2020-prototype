@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Page, Card, Banner, DropZone, Layout, Subheading, FormLayout, TextField, Button, Stack, Heading, TextStyle, DisplayText, ResourceList, Avatar, Badge, TextContainer } from "@shopify/polaris";
-import { MobilePlusMajorMonotone, CirclePlusMajorMonotone } from "@shopify/polaris-icons";
+import { MobilePlusMajor, CirclePlusMajor } from "@shopify/polaris-icons";
 import axios from 'axios';
 import { ITeamMember } from "../../../interfaces/dashboard.interfaces";
 import DestructiveConfirmation from "../../common/DestructiveConfirmation";
@@ -70,7 +70,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                             primary 
                             fullWidth 
                             onClick={this.createNewTeam}
-                            icon={CirclePlusMajorMonotone}>
+                            icon={CirclePlusMajor}>
                                 &nbsp;New Team
                         </Button>
                     </Card>
@@ -89,7 +89,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                                     loading={busyState} 
                                     disabled={!this.props.canEdit} 
                                     primary 
-                                    icon={MobilePlusMajorMonotone} 
+                                    icon={MobilePlusMajor} 
                                 />
                             }
                         />
