@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="{{ mix('assets/css/app.css') }}" />
-        <link rel="stylesheet" href="https://unpkg.com/@shopify/polaris@4.0.0-rc.6/styles.min.css" />
+        <link rel="stylesheet" href="https://unpkg.com/@shopify/polaris@5.9.1/dist/styles.css" />
         <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}"/>
     </head>
     <body>
