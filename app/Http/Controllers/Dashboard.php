@@ -16,7 +16,8 @@ class Dashboard extends Controller
 {
     private $maximum_team_size = 4;
     private static $accepting_applications = false;
-    private static $slack_invite_url = "https://join.slack.com/t/hackcambridge101/shared_invite/enQtOTAyNTIxNjU2NTk2LTViOTM5MDFjMTRiZmRlMDgxZjVjNzExOThiYmI3NTUxMzZkNzZiZTIxMTM2MjFjMGY4Mzk2ZWE4ODI1MDZiMTI";
+    # TODO: Update URL
+    private static $slack_invite_url = "https://join.slack.com/t/hexcambridge/shared_invite/enQtOTAyNTIxNjU2NTk2LTViOTM5MDFjMTRiZmRlMDgxZjVjNzExOThiYmI3NTUxMzZkNzZiZTIxMTM2MjFjMGY4Mzk2ZWE4ODI1MDZiMTI";
 
     public function index() {
         return view('dashboard/index');

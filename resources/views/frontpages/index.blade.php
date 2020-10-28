@@ -40,12 +40,12 @@
         <div class="prev-logos">
             <div>
                 <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 4D, 2019">
-                    <a href="https://hack-cambridge-101.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/4d_logo.png') }}" /></a>
+                    <a href="https://hackcambridge4d.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/4d_logo.png') }}" /></a>
                 </button>
                 <div id="second-place"></div>
             </div><div>
                 <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020">
-                    <a href="https://hackcambridge4d.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/101-white-logo.png') }}" /></a>
+                    <a href="https://hack-cambridge-101.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/101-white-logo.png') }}" /></a>
                 </button>
                 <div id="first-place"></div>
             </div><div>

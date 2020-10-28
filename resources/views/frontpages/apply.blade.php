@@ -7,7 +7,7 @@
             <h1 class="section-header">Apply for Hex Cambridge</h1>
             @if($open)        
                 <a href="{{ route('dashboard_index') }}">
-                    <img id="register-button" src="{{ asset('images/101-register.png') }}" />
+                    <img id="register-button" src="{{ asset('images/logo.svg') }}" />
                 </a>
             @else
                 <br />
