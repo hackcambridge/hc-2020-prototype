@@ -18,7 +18,8 @@ interface IChallengesState {
 
 class Challenges extends Component<IDashboardProps, IChallengesState> {
 
-    private slackWorkspaceBaseUrl = "https://hackcambridge101.slack.com/app_redirect?channel=";
+    // TODO: Update Slack channel
+    private slackWorkspaceBaseUrl = "https://hexcambridge.slack.com/app_redirect?channel=";
     state = {
         loaded: false,
         modalContent: "",
