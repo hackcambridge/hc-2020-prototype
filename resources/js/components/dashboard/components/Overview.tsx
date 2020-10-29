@@ -55,9 +55,9 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
     render() {
         return (
             <>
-                <img src="/images/HC-HackerHeader-bg.png" alt="hackerHeader pciture" style={{ position: "absolute", width: "100%", marginTop: "-30px", zIndex: -1000 }} />
+                <img src="/images/HC-HackerHeader-bg.png" alt="Hacker Header picture" style={{ position: "absolute", width: "100%", marginTop: "-30px", zIndex: -1000 }} />
                 <Page title={""}>
-                    <img id="hacker-header-fg" src="/images/HC-HackerHeader-fgv2.png" alt="hacker header picture" />
+                    <img id="hacker-header-fg" src="/images/HC-HackerHeader-fgv2.png" alt="Hacker Header picture" />
                     {this.renderStartApplicationBanner()}
                     {this.renderMoreComingSoonBanner()}
                     {this.renderEventOverview()}
