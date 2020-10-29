@@ -61,8 +61,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             },
         },
         logo: {
-            width: 114,
-            topBarSource: '/images/logo.svg',
+            width: 65,
+            topBarSource: '/images/logo_white.png',
             url: `${this.props.baseUrl}/`,
             accessibilityLabel: 'Hex Cambridge',
         },
