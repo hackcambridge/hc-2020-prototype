@@ -314,68 +314,68 @@
         <div class="hex-people">
             <section class="hexagon-gallery">
                 <div class="hex">
-                    <img src="{{ asset('images/team/Ivan.jpg') }}" alt="Ivan" />
+                    <img src="{{ asset('images/team/Ivan.webp') }}" alt="Ivan" />
                     <div>
                         <h1>Ivan Ivanov</h1>
                         <h2>Head of Development</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Chuen.jpg') }}" alt="Chuen" />
+                    <img src="{{ asset('images/team/Chuen.webp') }}" alt="Chuen" />
                     <div>
                         <h1>Chuen Leik Low</h1>
                         <h2>General Manager</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Rohit.jpg') }}" alt="Rohit" />
+                    <img src="{{ asset('images/team/Rohit.webp') }}" alt="Rohit" />
                     <div>
                         <h1>Rohit Kale</h1>
                         <h2>Head of Finance</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Valerie.jpg') }}" alt="Valerie" />
+                    <img src="{{ asset('images/team/Valerie.webp') }}" alt="Valerie" />
                     <div>
                         <h1>Valerie Chuang</h1>
                         <h2>Head of Sponsorship</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Alba.jpg') }}" alt="Alba" />
+                    <img src="{{ asset('images/team/Alba.webp') }}" alt="Alba" />
                     <div>
                         <h1>Alba Navarro Rosales</h1>
                         <h2>Head of Design</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Zoey.jpg') }}" alt="Zoey" />
+                    <img src="{{ asset('images/team/Zoey.webp') }}" alt="Zoey" />
                     <div>
                         <h1>Zoey Tan</h1>
                         <h2>Head of Social Relation and Publicity</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Peter.png') }}" alt="Peter" />
+                    <img src="{{ asset('images/team/Peter.webp') }}" alt="Peter" />
                     <div>
                         <h1>Peter Ondus</h1>
                         <h2>Head of Logistics</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Soham.jpg') }}" alt="Soham" />
+                    <img src="{{ asset('images/team/Soham.webp') }}" alt="Soham" />
                     <div>
                         <h1>Soham Mandal</h1>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Charles.jpg') }}" alt="Charles" />
+                    <img src="{{ asset('images/team/Charles.webp') }}" alt="Charles" />
                     <div>
                         <h1>Charles Chen</h1>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Karthik.jpg') }}" alt="Karthik" />
+                    <img src="{{ asset('images/team/Karthik.webp') }}" alt="Karthik" />
                     <div>
                         <h1>Karthik Neelamegam</h1>
                     </div>
