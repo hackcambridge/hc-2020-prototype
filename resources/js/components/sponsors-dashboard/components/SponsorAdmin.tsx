@@ -168,6 +168,9 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
                             toast.success("Created sponsor agent");
                             this.loadSponsorAgents();
                         }}
+                        onFail={(error_string) => {
+                            toast.error(error_string);
+                        }}
                         onClose={() => this.setState({ sponsorAgentFormShowing: false, isEditingSponsorAgent: undefined })}
                     /> : <></>
                 }
