@@ -39,17 +39,17 @@
         </div>
         <div class="prev-logos">
             <div>
-                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 4D, 2019">
-                    <a href="https://hack-cambridge-101.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/4d_logo.png') }}" /></a>
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 4D, 2019" aria-label="HackCambrdge 4D link">
+                    <a href="https://hackcambridge4d.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/4d_logo.png') }}" /></a>
                 </button>
                 <div id="second-place"></div>
             </div><div>
-                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020">
-                    <a href="https://hackcambridge4d.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/101-white-logo.png') }}" /></a>
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020" aria-label="HackCambridge 101 link">
+                    <a href="https://hack-cambridge-101.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/101-white-logo.png') }}" /></a>
                 </button>
                 <div id="first-place"></div>
             </div><div>
-                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge Ternary, 2018">
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge Ternary, 2018" aria-label="HackCambridge Ternary link">
                     <a href="https://ternary.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/ternary_logo.png') }}" /></a>
                 </button>
                 <div id="third-place"></div>
