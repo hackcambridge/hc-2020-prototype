@@ -51,7 +51,7 @@
 
 <body>
     <div class="header">
-    <img src="https://hackcambridge.com/images/101-black.png" class="logo" />
+    <img src="https://hackcambridge.com/images/lovo.svg" class="logo" />
     </div>
     <div class="body">
         @yield('content')

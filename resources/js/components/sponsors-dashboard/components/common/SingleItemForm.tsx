@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { ISponsorData, IAssetInformation, SingleItemFormFields } from "../../../../interfaces/sponsors.interfaces";
 import { Button, Page, Card, TextField, ResourceList, Thumbnail, TextStyle, Badge } from "@shopify/polaris";
-import { AddMajorMonotone, AttachmentMajorMonotone } from "@shopify/polaris-icons";
+import { AddMajor, AttachmentMajor } from "@shopify/polaris-icons";
 import UploadForm from "./UploadForm";
 import DestructiveConfirmation from "./DestructiveConfirmation";
 import axios from "axios";
@@ -94,12 +94,12 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             loading={isLoading}
                             alternateTool={
                                 <Button 
-                                    plain icon={AddMajorMonotone} 
+                                    plain icon={AddMajor} 
                                     onClick={() => this.setState({ uploadFormShowing: true })}>
                                 </Button>
                             }
                         />
-                    : <Button disabled={isLoading} icon={AttachmentMajorMonotone} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>}
+                    : <Button disabled={isLoading} icon={AttachmentMajor} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>}
 
                     <hr style={{ borderStyle: "solid", borderColor: "#dedede94", margin: "20px 0" }} />
                     <div style={{ float: "right", marginBottom: "20px" }}>

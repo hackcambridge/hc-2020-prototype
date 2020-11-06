@@ -55,9 +55,9 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
     render() {
         return (
             <>
-                <img src="/images/HC-HackerHeader-bg.png" style={{ position: "absolute", width: "100%", marginTop: "-30px", zIndex: -1000 }} />
+                <img src="/images/HC-HackerHeader-bg.png" alt="Hacker Header picture" style={{ position: "absolute", width: "100%", marginTop: "-30px", zIndex: -1000 }} />
                 <Page title={""}>
-                    <img id="hacker-header-fg" src="/images/HC-HackerHeader-fgv2.png" />
+                    <img id="hacker-header-fg" src="/images/HC-HackerHeader-fgv2.png" alt="Hacker Header picture" />
                     {this.renderStartApplicationBanner()}
                     {this.renderMoreComingSoonBanner()}
                     {this.renderEventOverview()}
@@ -100,12 +100,13 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
         }
 
         const longLinks = [
-            { text: "Join the 101 Slack Workspace", link: "/dashboard/join-slack", internal: false },
-            { text: "Hackathon Devpost", link: "https://hack-cambridge-101.devpost.com/", internal: false },
+            // TODO: Update links
+            { text: "Join the Hex Slack Workspace", link: "/dashboard/join-slack", internal: false },
+            { text: "Hackathon Devpost", link: "https://hex-cambridge.devpost.com/", internal: false },
             { text: "View the challenges", link: "/dashboard/challenges", internal: true },
             { text: "What's happening when", link: "/dashboard/schedule", internal: true },
             { text: "Find your way around", link: "/dashboard/map", internal: true },
-            { text: "Report a bug", link: "https://hackcambridge101.slack.com/app_redirect?channel=DS8NVDU0Z", internal: false },
+            { text: "Report a bug", link: "https://hexcambridge.slack.com/app_redirect?channel=DS8NVDU0Z", internal: false },
         ];
         const { expoModalShowing, expoAssignments } = this.state;
         // console.log(expoAssignments);

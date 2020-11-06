@@ -1,6 +1,6 @@
 import React, { Component, ReactNode} from 'react';
 import { Page, Card, Tabs, Button, Modal, TextField, Stack, Select, TextContainer, ButtonGroup, Checkbox, ResourceList } from "@shopify/polaris";
-import { AddCodeMajorMonotone, RefreshMajorMonotone, PlayMajorMonotone, SettingsMajorMonotone } from '@shopify/polaris-icons';
+import { AddCodeMajor, RefreshMajor, PlayMajor, SettingsMajor } from '@shopify/polaris-icons';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -325,10 +325,10 @@ class ApplicationReviewer {
                         </div>
                         <div style={{ display: "inline-block", marginLeft: "0.5rem", verticalAlign: "middle" }}>
                             <ButtonGroup segmented>
-                                <Button disabled={loading} onClick={() => this.setState({ newFileModal: true })} icon={AddCodeMajorMonotone}></Button>
-                                <Button loading={loading && !running} disabled={running} onClick={this.syncScripts} icon={RefreshMajorMonotone}></Button>
-                                <Button disabled={loading} onClick={() => this.setState({ settingsModal: true })} icon={SettingsMajorMonotone}></Button>
-                                <Button disabled={loading && !running} loading={running} onClick={this.runScript} icon={PlayMajorMonotone}></Button>
+                                <Button disabled={loading} onClick={() => this.setState({ newFileModal: true })} icon={AddCodeMajor}></Button>
+                                <Button loading={loading && !running} disabled={running} onClick={this.syncScripts} icon={RefreshMajor}></Button>
+                                <Button disabled={loading} onClick={() => this.setState({ settingsModal: true })} icon={SettingsMajor}></Button>
+                                <Button disabled={loading && !running} loading={running} onClick={this.runScript} icon={PlayMajor}></Button>
                             </ButtonGroup>
                         </div>
                     </div>

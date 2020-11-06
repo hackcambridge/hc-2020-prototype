@@ -7,7 +7,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {DnsSettingsMajorMonotone, HomeMajorMonotone, CirclePlusOutlineMinor, SmileyJoyMajorMonotone, MentionMajorMonotone, ConfettiMajorMonotone, CodeMajorMonotone, DataVisualizationMajorMonotone, SandboxMajorMonotone, GamesConsoleMajorMonotone, MobileBackArrowMajorMonotone, LogOutMinor, MobileChevronMajorMonotone, TransferWithinShopifyMajorMonotone, PackageMajorMonotone, LockMajorMonotone, IqMajorMonotone, TipsMajorTwotone} from '@shopify/polaris-icons';
+import {DnsSettingsMajor, HomeMajor, CirclePlusOutlineMinor, SmileyJoyMajor, MentionMajor, ConfettiMajor, CodeMajor, DataVisualizationMajor, SandboxMajor, GamesConsoleMajor, MobileBackArrowMajor, LogOutMinor, MobileChevronMajor, TransferWithinShopifyMajor, PackageMajor, LockMajor, IqMajor, TipsMajorTwotone} from '@shopify/polaris-icons';
 import { Link, withRouter, RouteComponentProps, Redirect } from "react-router-dom";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
 import Sponsor404 from "./Sponsor404";
@@ -59,22 +59,13 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             });
         };
     };
-    
-    private handleSearchFieldChange = (value) => {
-        this.setState({searchText: value});
-        if (value.length > 0) {
-            this.setState({searchActive: true});
-        } else {
-            this.setState({searchActive: false});
-        }
-    };
 
     private userMenuActions = [
         {
             id: "links",
             items: [
-                {content: 'Go to Dashboard', url: "/dashboard", icon: TransferWithinShopifyMajorMonotone},
-                {content: 'Go to Homepage', url: "/", icon: TransferWithinShopifyMajorMonotone},
+                {content: 'Go to Dashboard', url: "/dashboard", icon: TransferWithinShopifyMajor},
+                {content: 'Go to Homepage', url: "/", icon: TransferWithinShopifyMajor},
             ],
         },
         {
@@ -84,44 +75,10 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
     ];
 
 
-
-    
-    private searchResultsMarkup = (
-        <Card>
-            <ActionList
-                items={[
-                    {content: 'Shopify help center', url: "/sponsors/dashboard/xyz"},
-                    {content: 'Community forums'},
-                ]}
-            />
-        </Card>
-    );
-
-    private searchFieldMarkup = (
-        <TopBar.SearchField
-            onChange={this.handleSearchFieldChange}
-            value={this.state.searchText}
-            placeholder="Search"
-        />
-    );
-
-    private handleSearchResultsDismiss = () => {
-        this.setState(() => {
-            return {
-                searchActive: false,
-                searchText: '',
-            };
-        });
-    };
-
     private topBarMarkup = (userMenuMarkup: ReactNode) => (
         <TopBar
-            showNavigationToggle={true}
+            showNavigationToggle
             userMenu={userMenuMarkup}
-            // searchResultsVisible={searchActive}
-            // searchField={searchFieldMarkup}
-            // searchResults={searchResultsMarkup}
-            // onSearchResultsDismiss={this.handleSearchResultsDismiss}
             onNavigationToggle={this.toggleState('showMobileNavigation')}
         />
     );
@@ -168,7 +125,8 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
     }
 
     render() {
-        const { showMobileNavigation } = this.state;
+        const { showMobileNavigation } = this.state.showMobileNavigation;
+        // const showMobileNavigation = this.state.showMobileNavigation;
         const isRoot = !("sponsor" in this.props.match.params);
         const sponsorSlug = !isRoot ? this.props.match.params["sponsor"] : undefined;
         const section = this.props.match.params["uri"] || "";
@@ -193,7 +151,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
                     items={[{
                         url: `${this.props.baseUrl}/overview`,
                         label: "Overview",
-                        icon: IqMajorMonotone
+                        icon: IqMajor
                     }]}
                 /> : <></> }
                 {this.sponsorSectionsNavMarkup(navSection)}
@@ -231,7 +189,27 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         
         return (
             <>
-                <AppProvider theme={this.theme} linkComponent={this.adapterLink}>
+                <AppProvider
+                    theme={this.theme}
+                    i18n={{
+                        Polaris: {
+                          Avatar: {
+                            label: "Avatar",
+                            labelWithInitials: "Avatar with initials {initials}"
+                          },
+                          TopBar: {
+                            toggleMenuLabel: "Toggle menu",
+                          },
+                          Frame: {
+                            skipToContent: "Skip to content",
+                            Navigation: {
+                              closeMobileNavigationLabel: "Close navigation"
+                            }
+                          }
+                        }
+                      }}
+                    linkComponent={this.adapterLink}
+                >
                     <Frame
                         topBar={this.topBarMarkup(userMenuMarkup)}
                         navigation={navigationMarkup}
@@ -279,68 +257,68 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         if(sponsor) { 
             if(["committee", "admin"].includes(this.props.user.type)) {
                 sections.push({
-                    label: 'Admin', icon: LockMajorMonotone,
+                    label: 'Admin', icon: LockMajor,
                     url: `${this.props.baseUrl}/${sponsorSlug}/admin`
                 });
             }
             sections.push({
-                label: 'Dashboard', icon: HomeMajorMonotone,
+                label: 'Dashboard', icon: HomeMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/overview`
             });
         }
 
         if(privileges.includes("mentors") || privileges.includes("recruiters")) {
             sections.push({
-                label: 'People', icon: SmileyJoyMajorMonotone,
+                label: 'People', icon: SmileyJoyMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/people`
             });
         }
 
         if(privileges.includes("swag")) {
             sections.push({
-                label: 'Swag', icon: ConfettiMajorMonotone,
+                label: 'Swag', icon: ConfettiMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/swag`
             });
         }
 
         if(privileges.includes("resources")) {
             sections.push({
-                label: 'Hardware/API', icon: DnsSettingsMajorMonotone,
+                label: 'Hardware/API', icon: DnsSettingsMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/api`
             });
         }
 
         if(privileges.includes("social_media")) {
             sections.push({
-                label: 'Social Media', icon: MentionMajorMonotone,
+                label: 'Social Media', icon: MentionMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/social-media`
             });
         }
 
         if(privileges.includes("prizes")) {
             sections.push({
-                label: 'Prizes', icon: GamesConsoleMajorMonotone,
+                label: 'Prizes', icon: GamesConsoleMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/prizes`
             });
         }
 
         if(privileges.includes("demo")) {
             sections.push({
-                label: 'Demo Details', icon: CodeMajorMonotone,
+                label: 'Demo Details', icon: CodeMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/demo-details`
             });
         }
 
         if(privileges.includes("workshop")) {
             sections.push({
-                label: 'Workshop', icon: SandboxMajorMonotone,
+                label: 'Workshop', icon: SandboxMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/workshop`
             });
         }
 
         if(privileges.includes("presentation")) {
             sections.push({
-                label: 'Presentation', icon: DataVisualizationMajorMonotone,
+                label: 'Presentation', icon: DataVisualizationMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/presentation`
             });
         }

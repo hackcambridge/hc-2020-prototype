@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajorMonotone, AddCodeMajorMonotone, CustomerPlusMajorMonotone, HomeMajorMonotone, ConfettiMajorMonotone, LocationMajorMonotone, FlagMajorMonotone, SocialAdMajorMonotone, QuestionMarkMajorMonotone } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, LocationMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import MapView from "./components/MapView";
@@ -70,9 +70,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         },
         logo: {
             width: 40,
-            topBarSource: '/images/101-white.png',
+            topBarSource: '/images/logo_white.png',
             url: `${this.props.baseUrl}/`,
-            accessibilityLabel: 'Hack Cambridge',
+            accessibilityLabel: 'Hex Cambridge',
         },
     };
 
@@ -104,7 +104,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         {
             id: "logout",
             items: [
-                { content: 'Frontpage', url: "/", icon: HomeMajorMonotone },
+                { content: 'Frontpage', url: "/", icon: HomeMajor },
                 { content: 'Logout', url: "/logout", icon: LogOutMinor },
             ],
         },
@@ -137,22 +137,22 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         );
 
         const applicationNavigationItems = [
-            { url: `${this.props.baseUrl}/apply/individual`, label: `Details`, icon: AddCodeMajorMonotone },
-            { url: `${this.props.baseUrl}/apply/team`, label: `Team`, icon: CustomerPlusMajorMonotone },
+            { url: `${this.props.baseUrl}/apply/individual`, label: `Details`, icon: AddCodeMajor },
+            { url: `${this.props.baseUrl}/apply/team`, label: `Team`, icon: CustomerPlusMajor },
         ];
         if (application && application.invited) {
-            applicationNavigationItems.push({ url: `${this.props.baseUrl}/apply/invitation`, label: `Invitation`, icon: ConfettiMajorMonotone });
+            applicationNavigationItems.push({ url: `${this.props.baseUrl}/apply/invitation`, label: `Invitation`, icon: ConfettiMajor });
         }
 
         const dashboardNavigationItems = [
-            { url: `${this.props.baseUrl}/overview`, label: "Overview", icon: IqMajorMonotone }
+            { url: `${this.props.baseUrl}/overview`, label: "Overview", icon: IqMajor }
         ]
 
         if (this.allowedEventDetails()) {
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/map`, label: `Map`, icon: LocationMajorMonotone });
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajorMonotone });
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajorMonotone });
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/faqs`, label: `FAQs`, icon: QuestionMarkMajorMonotone });
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/map`, label: `Map`, icon: LocationMajor });
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajor });
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajor });
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/faqs`, label: `FAQs`, icon: QuestionMarkMajor });
         }
 
         const navigationMarkup = (
