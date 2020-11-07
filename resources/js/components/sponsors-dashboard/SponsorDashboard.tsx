@@ -95,7 +95,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         colors: {
             topBar: {
                 // background: linear-gradient(45deg, rgba(255, 122, 98, 1) 0%, rgba(211, 104, 182, 1) 100%);
-                background: '#b71515',
+                background: '#3D82FF',
                 backgroundLighter: '#c52e2f',
                 // background: '#2e0058',
                 // backgroundLighter: '#461571',
@@ -104,7 +104,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         },
         logo: {
             width: 65,
-            topBarSource: '/images/logo_black.svg',
+            topBarSource: '/images/logo_white.png',
             url: `${this.props.baseUrl}/`,
             accessibilityLabel: 'Hex Cambridge',
         },
