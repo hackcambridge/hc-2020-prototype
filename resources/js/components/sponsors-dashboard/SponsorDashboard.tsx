@@ -283,7 +283,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
 
         if(privileges.includes("resources")) {
             sections.push({
-                label: 'Hardware/API', icon: DnsSettingsMajor,
+                label: 'Dataset/API', icon: DnsSettingsMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/api`
             });
         }

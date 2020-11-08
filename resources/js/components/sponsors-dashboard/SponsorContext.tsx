@@ -3,6 +3,7 @@ import { Route, RouteComponentProps, Switch } from "react-router";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
 import SponsorPeople from "./components/Agents/SponsorPeople";
 import SponsorResources from "./components/Resources/SponsorResources";
+import SponsorSwag from "./components/Resources/SponsorSwag";
 import SponsorAdmin from "./components/SponsorAdmin";
 import SponsorHome from "./components/SponsorHome";
 import SponsorOverview from "./components/SponsorOverview";
@@ -37,18 +38,19 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             key={"hw/api"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
-                            title={"Hardware / API"} 
+                            title={"Dataset / API"} 
                             resourceNames={{ singular: "resource", plural: "resources" }} 
                             {...this.props} {...props}
                             types={[
-                                {label: 'Hardware Item', value: 'hardware'},
+                                // {label: 'Hardware Item', value: 'hardware'},
+                                {label: 'Working Dataset', value: 'dataset'},
                                 {label: 'Open API Product', value: 'api'},
                             ]}
                             detailType={"resources"}
                         />
                     } />
                     <Route exact path={`${sponsorBaseUrl}swag`} render={(props) => 
-                        <SponsorResources 
+                        <SponsorSwag 
                             key={"swag"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
