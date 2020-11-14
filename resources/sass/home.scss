@@ -231,6 +231,11 @@ body {
         border-color: #3D82FF;
         border-radius: 7px;
     }
+    & .btn.btn-lg {
+        font-size: 1.2rem;
+        height: 3rem;
+        padding: .5rem 0.75rem; 
+    }
     & #top-logo-solo {
         margin: -26px auto -1.5rem;
         width: 6rem;
@@ -1001,7 +1006,39 @@ body {
     }
 }
 
-.section-apply {}
+.section-apply {
+    clip-path: polygon(50% 0, 100% 27%, 100% 76%, 50% 100%, 0 76%, 0 27%);
+    background: #3D82FF;
+    color: white;
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align: center;
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+    #register-button {
+        max-width: 30%;
+        max-height: 30%;
+        min-width: 200px;
+        background-color: transparent;
+        border: none;
+    }
+    #register-button:hover {
+        background-color: transparent;
+    }
+    a:link,
+    a:hover,
+    a:visited,
+    a:active {
+        color: white;
+    }
+    @media only screen and (max-width: 900px) {
+        clip-path: polygon(50% 0, 100% 20%, 100% 80%, 50% 100%, 0 80%, 0 20%);
+        margin-left: 0;
+        margin-right: 0;
+        padding-top: 15vh;
+        padding-bottom: 17vh;
+    }
+}
 
 #background-particles {
     position: fixed;
