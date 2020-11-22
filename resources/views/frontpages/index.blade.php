@@ -227,6 +227,11 @@
                             <img src="{{ asset('images/sponsors/theodo.png') }}" alt="Theodo" />
                         </a>
                     </div>
+                    <div class="hex">
+                        <a href="https://www.huawei.com/" targer="_blank">
+                            <img src="{{ asset('images/sponsors/huawei.png') }}" alt="Huawei" />
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="giga-sponsor sponsor-pane">
@@ -235,6 +240,11 @@
                     <div class="hex">
                         <a href="https://www.hudsonrivertrading.com/" targer="_blank">
                             <img src="{{ asset('images/sponsors/hrt.png') }}" alt="Hudson River Trading" />
+                        </a>
+                    </div>
+                    <div class="hex">
+                        <a href="https://www.citadel.com/" targer="_blank">
+                            <img src="{{ asset('images/sponsors/citadel.png') }}" alt="Citadel" />
                         </a>
                     </div>
                 </div>
