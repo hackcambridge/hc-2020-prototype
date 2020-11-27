@@ -8,10 +8,8 @@ class SponsorOverview extends Component {
             <Page title={"Overview"}>
                 <Layout>
                     <Layout.Section>
-                        <Card title="Statuses">
+                        <Card title="Statuses_TEMP">
                             <Card.Section>
-                                {/* <ProgressBar progress={Math.floor(Math.random() * 100) + 1} size="medium" />
-                                <br style={{padding: "20px"}} />
                                 <ProgressBar progress={Math.floor(Math.random() * 100) + 1} size="medium" />
                                 <br style={{padding: "20px"}} />
                                 <ProgressBar progress={Math.floor(Math.random() * 100) + 1} size="medium" />
@@ -25,11 +23,13 @@ class SponsorOverview extends Component {
                                 <ProgressBar progress={Math.floor(Math.random() * 100) + 1} size="medium" />
                                 <br style={{padding: "20px"}} />
                                 <ProgressBar progress={Math.floor(Math.random() * 100) + 1} size="medium" />
-                                <br style={{padding: "20px"}} /> */}
-                                {/* <Link to={"/"}> */}
-                                    {/* <p style={{ textDecoration: "none" }}><strong>Facebook</strong></p> */}
-                                    {/* <ProgressBar progress={Math.floor(Math.random() * 100) + 1} size="medium" />
-                                </Link> */}
+                                <br style={{padding: "20px"}} />
+                                <ProgressBar progress={Math.floor(Math.random() * 100) + 1} size="medium" />
+                                <br style={{padding: "20px"}} />
+                                <Link to={"/"}>
+                                    <p style={{ textDecoration: "none" }}><strong>Facebook</strong></p>
+                                    <ProgressBar progress={Math.floor(Math.random() * 100) + 1} size="medium" />
+                                </Link>
                             </Card.Section>
                         </Card>
                     </Layout.Section>
