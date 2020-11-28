@@ -40,17 +40,17 @@
         </div>
         <div class="prev-logos">
             <div>
-                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 4D, 2019">
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 4D, 2019" aria-label="HackCambrdge 4D link">
                     <a href="https://hackcambridge4d.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/4d_logo.png') }}" /></a>
                 </button>
                 <div id="second-place"></div>
             </div><div>
-                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020">
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020" aria-label="HackCambridge 101 link">
                     <a href="https://hack-cambridge-101.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/101-white-logo.png') }}" /></a>
                 </button>
                 <div id="first-place"></div>
             </div><div>
-                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge Ternary, 2018">
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge Ternary, 2018" aria-label="HackCambridge Ternary link">
                     <a href="https://ternary.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/ternary_logo.png') }}" /></a>
                 </button>
                 <div id="third-place"></div>
@@ -227,6 +227,11 @@
                             <img src="{{ asset('images/sponsors/theodo.png') }}" alt="Theodo" />
                         </a>
                     </div>
+                    <div class="hex">
+                        <a href="https://www.huawei.com/" targer="_blank">
+                            <img src="{{ asset('images/sponsors/huawei.png') }}" alt="Huawei" />
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="giga-sponsor sponsor-pane">
@@ -235,6 +240,11 @@
                     <div class="hex">
                         <a href="https://www.hudsonrivertrading.com/" targer="_blank">
                             <img src="{{ asset('images/sponsors/hrt.png') }}" alt="Hudson River Trading" />
+                        </a>
+                    </div>
+                    <div class="hex">
+                        <a href="https://www.citadel.com/" targer="_blank">
+                            <img src="{{ asset('images/sponsors/citadel.png') }}" alt="Citadel" />
                         </a>
                     </div>
                 </div>
@@ -315,68 +325,68 @@
         <div class="hex-people">
             <section class="hexagon-gallery">
                 <div class="hex">
-                    <img src="{{ asset('images/team/Ivan.jpg') }}" alt="Ivan" />
+                    <img src="{{ asset('images/team/Ivan.webp') }}" alt="Ivan" />
                     <div>
                         <h1>Ivan Ivanov</h1>
                         <h2>Head of Development</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Chuen.jpg') }}" alt="Chuen" />
+                    <img src="{{ asset('images/team/Chuen.webp') }}" alt="Chuen" />
                     <div>
                         <h1>Chuen Leik Low</h1>
                         <h2>General Manager</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Rohit.jpg') }}" alt="Rohit" />
+                    <img src="{{ asset('images/team/Rohit.webp') }}" alt="Rohit" />
                     <div>
                         <h1>Rohit Kale</h1>
                         <h2>Head of Finance</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Valerie.jpg') }}" alt="Valerie" />
+                    <img src="{{ asset('images/team/Valerie.webp') }}" alt="Valerie" />
                     <div>
                         <h1>Valerie Chuang</h1>
                         <h2>Head of Sponsorship</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Alba.jpg') }}" alt="Alba" />
+                    <img src="{{ asset('images/team/Alba.webp') }}" alt="Alba" />
                     <div>
                         <h1>Alba Navarro Rosales</h1>
                         <h2>Head of Design</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Zoey.jpg') }}" alt="Zoey" />
+                    <img src="{{ asset('images/team/Zoey.webp') }}" alt="Zoey" />
                     <div>
                         <h1>Zoey Tan</h1>
                         <h2>Head of Social Relation and Publicity</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Peter.png') }}" alt="Peter" />
+                    <img src="{{ asset('images/team/Peter.webp') }}" alt="Peter" />
                     <div>
                         <h1>Peter Ondus</h1>
                         <h2>Head of Logistics</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Soham.jpg') }}" alt="Soham" />
+                    <img src="{{ asset('images/team/Soham.webp') }}" alt="Soham" />
                     <div>
                         <h1>Soham Mandal</h1>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Charles.jpg') }}" alt="Charles" />
+                    <img src="{{ asset('images/team/Charles.webp') }}" alt="Charles" />
                     <div>
                         <h1>Charles Chen</h1>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Karthik.jpg') }}" alt="Karthik" />
+                    <img src="{{ asset('images/team/Karthik.webp') }}" alt="Karthik" />
                     <div>
                         <h1>Karthik Neelamegam</h1>
                     </div>

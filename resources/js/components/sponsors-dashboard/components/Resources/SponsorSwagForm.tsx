@@ -97,7 +97,7 @@ class SponsorSwagForm extends Component<ISponsorSwagFormProps, ISponsorSwagFormS
                         type="number"
                         value={quantity}
                         onChange={this.handleQuantityChange}
-                        helpText="We will be having around 500 hackers participating, so please send quantities that can be distributed evenly among them."
+                        helpText="We plan to distribute stash for a minimum of 300 participants, subject to logistics closer to the date of the event."
                     />
                     <br />
                 </Modal.Section>

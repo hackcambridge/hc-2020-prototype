@@ -51,7 +51,7 @@
                     </div>
                     <div class="section-menu">
                         <div class="popover popover-bottom">
-                            <button class="btn btn-primary">
+                            <button class="btn btn-primary" aria-label="Mobile menu">
                                 <i class="icon icon-menu"></i>
                             </button>
                             <div class="popover-container">
