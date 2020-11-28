@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { ISponsorData, IAssetInformation, SingleItemFormFields } from "../../../../interfaces/sponsors.interfaces";
-import { Button, Page, Card, TextField, ResourceList, Thumbnail, TextStyle, Badge } from "@shopify/polaris";
+import { Button, Page, Card, Heading, TextField, ResourceList, Thumbnail, TextStyle, Badge } from "@shopify/polaris";
 import { AddMajor, AttachmentMajor } from "@shopify/polaris-icons";
 import UploadForm from "./UploadForm";
 import DestructiveConfirmation from "./DestructiveConfirmation";
@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 interface ISingleItemFormProps extends RouteComponentProps {
     hasTitle: boolean,
     hasDescription: boolean,
+    hasAddress: boolean,
     hasAssets: boolean,
     detailType: string,
     baseSponsorPath: string,
@@ -35,6 +36,11 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
         fields: {
             title: "",
             description: "",
+            name: "",
+            address: "",
+            city: "",
+            county: "",
+            postalCode: "",
             files: [],
         },
         uploadFormShowing: false,
@@ -54,7 +60,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             showDestructiveForm,
             isLoading,
         } = this.state;
-        const { title, description, files } = fields;
+        const { title, description, name, address, city, county, postalCode, files } = fields;
 
         return (
             <Page
@@ -85,21 +91,39 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             <br />
                         </>
                     : <></>}
-                    {files.length > 0 ? 
-                        <ResourceList
-                            resourceName={{singular: 'asset', plural: 'assets'}}
-                            items={files}
-                            renderItem={this.renderAssetThumbnail}
-                            showHeader={true}
-                            loading={isLoading}
-                            alternateTool={
-                                <Button 
-                                    plain icon={AddMajor} 
-                                    onClick={() => this.setState({ uploadFormShowing: true })}>
-                                </Button>
-                            }
-                        />
-                    : <Button disabled={isLoading} icon={AttachmentMajor} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>}
+                    {this.props.hasAddress ?
+                        <>
+                            <Heading>Address details:</Heading>
+                            <br/>
+                            <TextField label="Name" placeholder="eg. John Smith" value={name} onChange={this.handleNameChange} disabled={isLoading}/>
+                            <br/>
+                            <TextField label="Address" placeholder="eg. 10 Example Street" value={address} onChange={this.handleAddressChange} disabled={isLoading}/>
+                            <br/>
+                            <TextField label="City" placeholder="eg. London" value={city} onChange={this.handleCityChange} disabled={isLoading}/>
+                            <br/>
+                            <TextField label="County" value={county} onChange={this.handleCountyChange} disabled={isLoading}/>
+                            <br />
+                            <TextField label="Postal code" value={postalCode} onChange={this.handlePostCodeChange} disabled={isLoading}/>
+                            <br />
+                        </>
+                    : <></>}
+                    {this.props.hasAssets ? 
+                        files.length > 0 ? 
+                            <ResourceList
+                                resourceName={{singular: 'asset', plural: 'assets'}}
+                                items={files}
+                                renderItem={this.renderAssetThumbnail}
+                                showHeader={true}
+                                loading={isLoading}
+                                alternateTool={
+                                    <Button 
+                                        plain icon={AddMajor} 
+                                        onClick={() => this.setState({ uploadFormShowing: true })}>
+                                    </Button>
+                                }
+                            />
+                        : <Button disabled={isLoading} icon={AttachmentMajor} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>
+                    : <></>}
 
                     <hr style={{ borderStyle: "solid", borderColor: "#dedede94", margin: "20px 0" }} />
                     <div style={{ textAlign: "right" }}>
@@ -139,6 +163,36 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
     handleDescriptionChange = (value: string) => {
         const newFields = this.state.fields;
         newFields.description = value;
+        this.setState({ fields: newFields });
+    }
+
+    handleNameChange = (value: string) => {
+        const newFields = this.state.fields;
+        newFields.name = value;
+        this.setState({ fields: newFields });
+    }
+
+    handleAddressChange = (value: string) => {
+        const newFields = this.state.fields;
+        newFields.address = value;
+        this.setState({ fields: newFields });
+    }
+
+    handleCityChange = (value: string) => {
+        const newFields = this.state.fields;
+        newFields.city = value;
+        this.setState({ fields: newFields });
+    }
+
+    handleCountyChange = (value: string) => {
+        const newFields = this.state.fields;
+        newFields.county = value;
+        this.setState({ fields: newFields });
+    }
+
+    handlePostCodeChange = (value: string) => {
+        const newFields = this.state.fields;
+        newFields.postalCode = value;
         this.setState({ fields: newFields });
     }
 
@@ -226,6 +280,14 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             }
         }
 
+        if(this.props.hasAddress) {
+            if(this.state.fields.address.length > 0 && this.state.fields.postalCode.length > 0) {
+                complete++;
+            } else {
+                incomplete++;
+            }
+        }
+
         if(this.props.hasAssets) {
             if(this.state.fields.files.length > 0) {
                 complete++;
@@ -264,6 +326,11 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                         const details: {
                             title: string,
                             description: string,
+                            name: string,
+                            address: string,
+                            city: string,
+                            county: string,
+                            postalCode: string,
                             files: IAssetInformation[]
                         } = JSON.parse(detail[0]["payload"]);
 
@@ -274,6 +341,11 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             fields: {
                                 title: details.title,
                                 description: details.description,
+                                name: details.name,
+                                address: details.address,
+                                city: details.city,
+                                county: details.county,
+                                postalCode: details.postalCode,
                                 files: details.files,
                             }
                         });
@@ -306,6 +378,11 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                     const details: {
                         title: string,
                         description: string,
+                        name: string,
+                        address: string,
+                        city: string,
+                        county: string,
+                        postalCode: string,
                         files: IAssetInformation[]
                     } = JSON.parse(detailData["payload"]);
                     
@@ -315,6 +392,11 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                         fields: {
                             title: details.title,
                             description: details.description,
+                            name: details.name,
+                            address: details.address,
+                            city: details.city,
+                            county: details.county,
+                            postalCode: details.postalCode,
                             files: details.files,
                         }
                     });

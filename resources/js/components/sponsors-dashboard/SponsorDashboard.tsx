@@ -7,7 +7,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {DnsSettingsMajor, HomeMajor, CirclePlusOutlineMinor, SmileyJoyMajor, MentionMajor, ConfettiMajor, CodeMajor, DataVisualizationMajor, SandboxMajor, GamesConsoleMajor, MobileBackArrowMajor, LogOutMinor, MobileChevronMajor, TransferWithinShopifyMajor, PackageMajor, LockMajor, IqMajor, TipsMajorTwotone} from '@shopify/polaris-icons';
+import {DnsSettingsMajor, HomeMajor, EnvelopeMajor, CirclePlusOutlineMinor, SmileyJoyMajor, MentionMajor, ConfettiMajor, CodeMajor, DataVisualizationMajor, SandboxMajor, GamesConsoleMajor, MobileBackArrowMajor, LogOutMinor, MobileChevronMajor, TransferWithinShopifyMajor, PackageMajor, LockMajor, IqMajor, TipsMajorTwotone} from '@shopify/polaris-icons';
 import { Link, withRouter, RouteComponentProps, Redirect } from "react-router-dom";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
 import Sponsor404 from "./Sponsor404";
@@ -264,6 +264,10 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             sections.push({
                 label: 'Dashboard', icon: HomeMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/overview`
+            });
+            sections.push({
+                label: 'Invoice details', icon: EnvelopeMajor,
+                url: `${this.props.baseUrl}/${sponsorSlug}/invoice`
             });
         }
 
