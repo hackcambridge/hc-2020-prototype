@@ -60,13 +60,24 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             {...this.props} {...props}
                         />
                     } />
+                    <Route exact path={`${sponsorBaseUrl}invoice`} render={(props) => 
+                        <SingleItemForm 
+                            key={"invoice"}
+                            baseSponsorPath={sponsorBaseUrl} 
+                            sponsor={this.props.sponsor} 
+                            pageTitle={"Invoice information"}
+                            hasTitle={false} hasDescription={false} hasAddress hasAssets={false}
+                            detailType={"invoice-address"} 
+                            {...this.props} {...props}
+                        />
+                    } />
                     <Route exact path={`${sponsorBaseUrl}workshop`} render={(props) => 
                         <SingleItemForm 
                             key={"workshop"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Workshop Information"}
-                            hasTitle hasDescription hasAssets
+                            hasTitle hasDescription hasAddress={false} hasAssets
                             detailType={"workshop"}
                             {...this.props} {...props}
                         />
@@ -77,7 +88,7 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Social Media Shoutout Information"}
-                            hasTitle={false} hasDescription hasAssets
+                            hasTitle={false} hasDescription hasAddress={false} hasAssets
                             detailType={"social_media"}
                             {...this.props} {...props}
                         />
@@ -88,7 +99,7 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Product Demo Details"}
-                            hasTitle hasDescription hasAssets
+                            hasTitle hasDescription hasAddress={false} hasAssets
                             detailType={"demo"}
                             {...this.props} {...props}
                         />
@@ -99,7 +110,7 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Product Prize"}
-                            hasTitle hasDescription hasAssets
+                            hasTitle hasDescription hasAddress={false} hasAssets
                             detailType={"prizes"}
                             {...this.props} {...props}
                         />
@@ -110,7 +121,7 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Opening Ceremony Presentation"}
-                            hasTitle hasAssets hasDescription={false}
+                            hasTitle hasAssets hasAddress={false} hasDescription={false}
                             detailType={"presentation"}
                             {...this.props} {...props}
                         />
