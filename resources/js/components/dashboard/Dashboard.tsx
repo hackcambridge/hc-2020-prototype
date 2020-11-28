@@ -231,13 +231,14 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private renderApplicationBanner(): JSX.Element {
         const states: {
             [key: string]: {
-                status: "warning" | "info" | "critical" | "success" | undefined,
+                status: "warning" | "info" | "critical" | "success" | "incomplete" | undefined,
                 text: string,
                 noLink?: boolean
             }
         } = {
             "notStarted": { status: undefined, text: "Start Application" },
             "started": { status: "warning", text: "Finish Application" },
+            "incomplete": { status: "incomplete", text: "Incomplete Application" },
             "pending": { status: "info", text: "Application Pending" },
             "rejected": { status: "critical", text: "Unsuccessful" },
             "declined": { status: "critical", text: "Place Declined" },
@@ -287,7 +288,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             }
 
             if (applicationOpen) {
-                return application.isSubmitted ? (complete ? "pending" : "started") : "started";
+                return application.isSubmitted ? (complete ? "pending" : "incomplete" ) : "started";
             } else {
                 return application.isSubmitted ? (complete ? "pending" : "rejected") : "rejected";
             }
