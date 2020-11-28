@@ -266,7 +266,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                 newValues["0"] = value;
                                 this.setState({ questionValues: newValues });
                             }}
-                            placeholder="2021"
+                            placeholder="eg. 2021"
                             disabled={!this.props.canEdit}
                         />
                     </div>
