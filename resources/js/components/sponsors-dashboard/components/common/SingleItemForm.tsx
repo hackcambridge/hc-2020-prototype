@@ -6,7 +6,6 @@ import { AddMajor, AttachmentMajor } from "@shopify/polaris-icons";
 import UploadForm from "./UploadForm";
 import DestructiveConfirmation from "./DestructiveConfirmation";
 import axios from "axios";
-import { descriptions } from "./descriptions";
 import { toast } from "react-toastify";
 
 interface ISingleItemFormProps extends RouteComponentProps {
@@ -37,6 +36,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             title: "",
             description: "",
             name: "",
+            buildName: "",
             address: "",
             city: "",
             county: "",
@@ -60,7 +60,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             showDestructiveForm,
             isLoading,
         } = this.state;
-        const { title, description, name, address, city, county, postalCode, files } = fields;
+        const { title, description, name, buildName, address, city, county, postalCode, files } = fields;
 
         return (
             <Page
@@ -95,7 +95,9 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                         <>
                             <Heading>Address details:</Heading>
                             <br/>
-                            <TextField label="Name" placeholder="eg. John Smith" value={name} onChange={this.handleNameChange} disabled={isLoading}/>
+                            <TextField label="Name" placeholder="eg. My Company" value={name} onChange={this.handleNameChange} disabled={isLoading} />
+                            <br/>
+                            <TextField label="Building name" placeholder="eg. Working house" value={buildName} onChange={this.handleBuildNameChange} disabled={isLoading} />
                             <br/>
                             <TextField label="Address" placeholder="eg. 10 Example Street" value={address} onChange={this.handleAddressChange} disabled={isLoading}/>
                             <br/>
@@ -169,6 +171,12 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
     handleNameChange = (value: string) => {
         const newFields = this.state.fields;
         newFields.name = value;
+        this.setState({ fields: newFields });
+    }
+
+    handleBuildNameChange = (value: string) => {
+        const newFields = this.state.fields;
+        newFields.buildName = value;
         this.setState({ fields: newFields });
     }
 
@@ -327,6 +335,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             title: string,
                             description: string,
                             name: string,
+                            buildName: string,
                             address: string,
                             city: string,
                             county: string,
@@ -342,6 +351,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                                 title: details.title,
                                 description: details.description,
                                 name: details.name,
+                                buildName: details.buildName,
                                 address: details.address,
                                 city: details.city,
                                 county: details.county,
@@ -380,6 +390,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                         description: string,
                         name: string,
                         address: string,
+                        buildName: string,
                         city: string,
                         county: string,
                         postalCode: string,
@@ -393,6 +404,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             title: details.title,
                             description: details.description,
                             name: details.name,
+                            buildName: details.buildName,
                             address: details.address,
                             city: details.city,
                             county: details.county,
