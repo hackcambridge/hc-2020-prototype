@@ -131,6 +131,24 @@ class Committee extends Controller
                 ->groupBy('application_reviews.user_id')
                 ->select("name", DB::raw('count(*) as reviews'))->get();
 
+            $user_profiles = DB::table('users')->select("profile")->get();
+            $universities_raw = [];
+            foreach ($user_profiles as $profile) {
+                $profile_data = json_decode($profile->profile);
+                if (property_exists($profile_data, "school")) {
+                    $universities_raw[] = $profile_data->school->name;
+                }
+            }
+            $universities_names = array_unique($universities_raw);
+            $universities_count = array_count_values($universities_raw);
+            $universities = [];
+            foreach ($universities_names as $name) {
+                $universities[] = (object)[
+                    "name" => $name,
+                    "participants" => $universities_count[$name],
+                ];
+            }
+
             return response()->json([
                 "success" => true,
                 "overview" => array(
@@ -153,6 +171,7 @@ class Committee extends Controller
                             ->where("rejected", "=", 1)
                             ->count(),
                     ),
+                    "universities" => $universities,
                     "reviews" => $reviews
                 ),
             ]);
