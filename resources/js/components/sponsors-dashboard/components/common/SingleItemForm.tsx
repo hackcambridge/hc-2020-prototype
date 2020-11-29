@@ -198,7 +198,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
 
     renderAssetThumbnail = (item: IAssetInformation) => {
         const { name, url } = item;
-        const thumbnail = <Thumbnail source={url} alt={name}></Thumbnail>;
+        const thumbnail = <Thumbnail source={url} size="large" alt={name}></Thumbnail>;
         const actions = [{
             content: 'Delete',
             onAction: () => this.deleteAsset(item)
