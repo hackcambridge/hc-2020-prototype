@@ -68,6 +68,17 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
                         </div>
                     </Card>
                 </Layout.Section>
+                <Layout.Section oneHalf>
+                    <Card title={"Universities Leaderboard"}>
+                        <div style={{ padding: "0 2rem" }}>
+                            <DescriptionList
+                                items={overview.universities.sort((a, b) => (a.participants < b.participants) ? 1 : -1).map(u => {
+                                    return { term: u.participants, description: u.name };
+                                })}
+                            />
+                        </div>
+                    </Card>
+                </Layout.Section>
             </Layout>
         );
     }
