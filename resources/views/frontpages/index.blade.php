@@ -77,8 +77,8 @@
             </div>
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <input type="checkbox" id="accordion-8" name="accordion-checkbox-8" hidden>
-                    <label class="accordion-header" for="accordion-8">
+                    <input type="checkbox" id="accordion-2" name="accordion-checkbox-2" hidden>
+                    <label class="accordion-header" for="accordion-2">
                         <i class="icon icon-arrow-right mr-1"></i> How is the hackathon going to take place?
                     </label>
                     <div class="accordion-body faq-body">
@@ -90,8 +90,8 @@
         <div class="columns">
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <input type="checkbox" id="accordion-2" name="accordion-checkbox-2" hidden>
-                    <label class="accordion-header" for="accordion-2">
+                    <input type="checkbox" id="accordion-3" name="accordion-checkbox-3" hidden>
+                    <label class="accordion-header" for="accordion-3">
                         <i class="icon icon-arrow-right mr-1"></i> Do I need a team?
                     </label>
                     <div class="accordion-body faq-body">
@@ -101,9 +101,8 @@
             </div>
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <!-- Question 9 -->
-                    <input type="checkbox" id="accordion-9" name="accordion-checkbox-2" hidden>
-                    <label class="accordion-header" for="accordion-9">
+                    <input type="checkbox" id="accordion-4" name="accordion-checkbox-4" hidden>
+                    <label class="accordion-header" for="accordion-4">
                         <i class="icon icon-arrow-right mr-1"></i> How large are the teams?
                     </label>
                     <div class="accordion-body faq-body">
@@ -115,9 +114,8 @@
         <div class="columns">
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <!-- Question 4 -->
-                    <input type="checkbox" id="accordion-4" name="accordion-checkbox-4" hidden>
-                    <label class="accordion-header" for="accordion-4">
+                    <input type="checkbox" id="accordion-5" name="accordion-checkbox-5" hidden>
+                    <label class="accordion-header" for="accordion-5">
                         <i class="icon icon-arrow-right mr-1"></i> Am I allowed to attend?
                     </label>
                     <div class="accordion-body faq-body">
@@ -127,9 +125,8 @@
             </div>
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <!-- Question 5 -->
-                    <input type="checkbox" id="accordion-5" name="accordion-checkbox-5" hidden>
-                    <label class="accordion-header" for="accordion-5">
+                    <input type="checkbox" id="accordion-6" name="accordion-checkbox-6" hidden>
+                    <label class="accordion-header" for="accordion-6">
                         <i class="icon icon-arrow-right mr-1"></i> Is Hex Cambridge free to attend?
                     </label>
                     <div class="accordion-body faq-body">
@@ -138,12 +135,11 @@
                 </div>
             </div>
         </div>
-        <div class=" columns">
+        <div class="columns">
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <!-- Question 3 -->
-                    <input type="checkbox" id="accordion-3" name="accordion-checkbox-3" hidden>
-                    <label class="accordion-header" for="accordion-3">
+                    <input type="checkbox" id="accordion-7" name="accordion-checkbox-7" hidden>
+                    <label class="accordion-header" for="accordion-7">
                         <i class="icon icon-arrow-right mr-1"></i> What am I allowed to build?
                     </label>
                     <div class="accordion-body faq-body">
@@ -153,9 +149,21 @@
             </div>
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <!-- Question 6 -->
-                    <input type="checkbox" id="accordion-6" name="accordion-checkbox-6" hidden>
-                    <label class="accordion-header" for="accordion-6">
+                    <input type="checkbox" id="accordion-8" name="accordion-checkbox-8" hidden>
+                    <label class="accordion-header" for="accordion-8">
+                        <i class="icon icon-arrow-right mr-1"></i> Do I need to have experience coding?
+                    </label>
+                    <div class="accordion-body faq-body">
+                        <div class="inner">Not at all! People from all levels and background are welcome to register for our event. We will ensure you are paired up with more experienced coders for the best possible experience.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="col-sm-12 col-6">
+                <div class="accordion">
+                    <input type="checkbox" id="accordion-9" name="accordion-checkbox-9" hidden>
+                    <label class="accordion-header" for="accordion-9">
                         <i class="icon icon-arrow-right mr-1"></i> Do you have a code of conduct?
                     </label>
                     <div class="accordion-body faq-body">

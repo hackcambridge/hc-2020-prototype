@@ -39,7 +39,7 @@ function RequiredStar() {
 export const textFieldQuestions: { id: string, title: string, placeholder: string }[] = [
     { id: "1", title: "What do you want to get out of this event?", placeholder: "" },
     { id: "2", title: "What are you interested in?", placeholder: "Mention anything you want -- it doesn’t have to be technology-related!" },
-    { id: "3", title: "Tell us about a recent accomplishment you’re proud of.", placeholder: "" },
+    { id: "3", title: "Tell us about a recent accomplishment you’re proud of.", placeholder: "Again, mention anything you want -- it doesn’t have to be technology-related!" },
     { id: "4", title: "Are there any links you’d like to share so we can get to know you better?", placeholder: "For example GitHub, LinkedIn or your website. Put each link on a new line. " },
 ]
 
@@ -371,7 +371,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                         />
                         <Checkbox
                             disabled={!this.props.canEdit}
-                            label={<span>I have read and agreed to Hack Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link>.</span>}
+                            label={<span>I have read and agreed to Hex Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link>.</span>}
                             checked={agreedToTerms}
                             onChange={(val) => this.setState({ agreedToTerms: val })}
                         />
@@ -451,8 +451,8 @@ class Apply extends Component<IApplyProps, IApplyState> {
         let formData = new FormData();
         formData.append('questionResponses', JSON.stringify(questions));
         formData.append('country', this.state.countrySelection);
-        formData.append('visaRequired', this.state.visaRequired ? "true" : "false");
-        formData.append('visaRequiredDate', (this.state.visaDate || "").toString());
+        // formData.append('visaRequired', this.state.visaRequired ? "true" : "false");
+        // formData.append('visaRequiredDate', (this.state.visaDate || "").toString());
         formData.append('isSubmitted', isSubmitted ? "true" : "false");
         formData.append('acceptedConduct', this.state.agreedToConduct ? "true" : "false");
         formData.append('acceptedPrivacy', this.state.agreedToPrivacy ? "true" : "false");
