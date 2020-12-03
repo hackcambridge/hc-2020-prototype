@@ -167,7 +167,7 @@ class Dashboard extends Controller
         $r = $request->request;
         if(!self::$accepting_applications) return $this->fail("Applications are closed.");
 
-        if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "visaRequired", "visaRequiredDate", "acceptedConduct", "acceptedPrivacy", "acceptedTerms"])) {
+        if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "acceptedConduct", "acceptedPrivacy", "acceptedTerms"])) {
             $app = Application::where("user_id", Auth::user()->id)->first();
             if(!$app) {
                 $app = new Application();
