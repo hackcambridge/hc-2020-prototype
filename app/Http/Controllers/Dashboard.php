@@ -193,8 +193,8 @@ class Dashboard extends Controller
             $app->setAttribute("questionResponses", $r->get("questionResponses"));
             $app->setAttribute("country", $r->get("country"));
             $app->setAttribute("isSubmitted", $r->get("isSubmitted") == 'true');
-            $app->setAttribute("visaRequired", $r->get("visaRequired") == 'true');
-            $app->setAttribute("visaRequiredDate", $r->get("visaRequiredDate"));
+            // $app->setAttribute("visaRequired", $r->get("visaRequired") == 'true');
+            // $app->setAttribute("visaRequiredDate", $r->get("visaRequiredDate"));
             $app->setAttribute("acceptedConduct", $r->get("acceptedConduct") == 'true');
             $app->setAttribute("acceptedPrivacy", $r->get("acceptedPrivacy") == 'true');
             $app->setAttribute("acceptedTerms", $r->get("acceptedTerms") == 'true');
