@@ -282,11 +282,11 @@
                             <img src="{{ asset('images/sponsors/stripe.png') }}" alt="Stripe" />
                         </a>
                     </div>
-                    <div class="hex">
+                    <!-- <div class="hex">
                         <a href="https://www.gresearch.co.uk" targer="_blank">
                             <img src="{{ asset('images/sponsors/gresearch.png') }}" alt="G-Research" />
                         </a>
-                    </div>
+                    </div> -->
                     <div class="hex">
                         <a href="https://datascope.co.uk/" targer="_blank">
                             <img src="{{ asset('images/sponsors/datascope.png') }}" alt="Datascope" />
