@@ -39,8 +39,18 @@ function RequiredStar() {
 export const textFieldQuestions: { id: string, title: string, placeholder: string }[] = [
     { id: "1", title: "What do you want to get out of this event?", placeholder: "" },
     { id: "2", title: "What are you interested in?", placeholder: "Mention anything you want -- it doesn’t have to be technology-related!" },
-    { id: "3", title: "Tell us about a recent accomplishment you’re proud of.", placeholder: "" },
+    { id: "3", title: "Tell us about a recent accomplishment you’re proud of.", placeholder: "Again, mention anything you want -- it doesn’t have to be technology-related!" },
     { id: "4", title: "Are there any links you’d like to share so we can get to know you better?", placeholder: "For example GitHub, LinkedIn or your website. Put each link on a new line. " },
+]
+
+export const raceEthnicitiesMLH: { label: string, value: string }[] = [
+    { label: "American Indian or Alaskan Native", value: "americanindian_alaskannative" },
+    { label: "Asian / Pacific Islander", value: "asian_pacific_islander" },
+    { label: "Black of African American", value: "black_african_american" },
+    { label: "Hispanic", value: "hispanic" },
+    { label: "White / Caucasian", value: "white_caucasian" },
+    { label: "Multiple ethnicity", value: "multiple" },
+    { label: "Prefer not to answer", value: "prefer_no_answer" },
 ]
 
 class Apply extends Component<IApplyProps, IApplyState> {
@@ -226,7 +236,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             </>
                             <>
                                 <div style={{ paddingBottom: "12px", paddingTop: "0px" }}>
-                                    <Heading>Country travelling from:</Heading>
+                                    <Heading>Country participating from:</Heading>
                                 </div>
                                 <Select
                                     label=""
@@ -242,10 +252,28 @@ class Apply extends Component<IApplyProps, IApplyState> {
                 <br />
 
                 <Card sectioned>
+                    <div key="0">
+                        <div style={{ paddingBottom: "12px", paddingTop: "0" }}>
+                            <Heading>Expected year of graduation:</Heading>
+                        </div>
+                        <TextField
+                            id="0"
+                            label=""
+                            type="number"
+                            value={"0" in questionValues ? questionValues["0"] : ""}
+                            onChange={(value) => {
+                                const newValues = questionValues;
+                                newValues["0"] = value;
+                                this.setState({ questionValues: newValues });
+                            }}
+                            placeholder="eg. 2021"
+                            disabled={!this.props.canEdit}
+                        />
+                    </div>
                     {textFieldQuestions.map((q, index) => {
                         return (
                             <div key={q.id}>
-                                <div style={{ paddingBottom: "12px", paddingTop: (index == 0 ? "0" : "20px") }}>
+                                <div style={{ paddingBottom: "12px", paddingTop: "20px" }}>
                                     <Heading>{q.title}</Heading>
                                 </div>
                                 <TextField
@@ -266,9 +294,26 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             </div>
                         );
                     })}
+                    <div key="5">
+                        <div style={{ paddingBottom: "12px", paddingTop: "20px" }}>
+                            <Heading>Race/ethnicity:</Heading>
+                        </div>
+                        <Select
+                            id="5"
+                            label=""
+                            options={raceEthnicitiesMLH}
+                            onChange={(value) => {
+                                const newValues = questionValues;
+                                newValues["5"] = value;
+                                this.setState({ questionValues: newValues });
+                            }}
+                            value={"5" in questionValues ? questionValues["5"] : ""}
+                            disabled={!this.props.canEdit}
+                        />
+                    </div>
                 </Card>
 
-                <Card sectioned title={"Visas"}>
+                {/* <Card sectioned title={"Visas"}>
                     <TextContainer>
                         We understand that some of our participants will need more time than others to organise a visa for their trip to Hack Cambridge. If this affects you we are are willing to help, ensuring we give you a decision on an invitation in time to start the process of requesting one.
                     </TextContainer>
@@ -313,7 +358,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                                 : <></>}
                         </FormLayout.Group>
                     </FormLayout>
-                </Card>
+                </Card> */}
 
 
                 <Card sectioned title={"The Legal Bit"}>
@@ -326,7 +371,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                         />
                         <Checkbox
                             disabled={!this.props.canEdit}
-                            label={<span>I have read and agreed to Hack Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link>.</span>}
+                            label={<span>I have read and agreed to Hex Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link>.</span>}
                             checked={agreedToTerms}
                             onChange={(val) => this.setState({ agreedToTerms: val })}
                         />
@@ -400,12 +445,14 @@ class Apply extends Component<IApplyProps, IApplyState> {
         textFieldQuestions.forEach(q => {
             questions[q.id] = q.id in questionValues ? questionValues[q.id] : ""
         });
+        questions["0"] = "0" in questionValues ? questionValues["0"] : "";
+        questions["5"] = "5" in questionValues ? questionValues["5"] : "";
 
         let formData = new FormData();
         formData.append('questionResponses', JSON.stringify(questions));
         formData.append('country', this.state.countrySelection);
-        formData.append('visaRequired', this.state.visaRequired ? "true" : "false");
-        formData.append('visaRequiredDate', (this.state.visaDate || "").toString());
+        // formData.append('visaRequired', this.state.visaRequired ? "true" : "false");
+        // formData.append('visaRequiredDate', (this.state.visaDate || "").toString());
         formData.append('isSubmitted', isSubmitted ? "true" : "false");
         formData.append('acceptedConduct', this.state.agreedToConduct ? "true" : "false");
         formData.append('acceptedPrivacy', this.state.agreedToPrivacy ? "true" : "false");

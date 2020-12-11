@@ -131,6 +131,24 @@ class Committee extends Controller
                 ->groupBy('application_reviews.user_id')
                 ->select("name", DB::raw('count(*) as reviews'))->get();
 
+            $user_profiles = DB::table('users')->select("profile")->get();
+            $universities_raw = [];
+            foreach ($user_profiles as $profile) {
+                $profile_data = json_decode($profile->profile);
+                if (property_exists($profile_data, "school")) {
+                    $universities_raw[] = $profile_data->school->name;
+                }
+            }
+            $universities_names = array_unique($universities_raw);
+            $universities_count = array_count_values($universities_raw);
+            $universities = [];
+            foreach ($universities_names as $name) {
+                $universities[] = (object)[
+                    "name" => $name,
+                    "participants" => $universities_count[$name],
+                ];
+            }
+
             return response()->json([
                 "success" => true,
                 "overview" => array(
@@ -153,6 +171,7 @@ class Committee extends Controller
                             ->where("rejected", "=", 1)
                             ->count(),
                     ),
+                    "universities" => $universities,
                     "reviews" => $reviews
                 ),
             ]);
@@ -521,7 +540,7 @@ class Committee extends Controller
             // Send emails.
             $data = [
                 "content" => [
-                    "Good news, we would like to invite you to join us at Hack Cambridge 101!",
+                    "Good news, we would like to invite you to join us at Hex Cambridge!",
                     "You can RSVP via the portal you used to apply; the link below will take you straight there. Invitations expire three days after they're sent, so if you're coming let us know ASAP! Please note that we don't accept RSVPs via email.",
                     "Hopefully see you in a couple of weeks!"
                 ],
@@ -531,7 +550,7 @@ class Committee extends Controller
                     "name" => "there"
                 ]
             ];
-            $mailer = new BatchMailer(['mail/InvitationLink','mail/text/InvitationLink'], "Invitation — Hack Cambridge 101", $data);
+            $mailer = new BatchMailer(['mail/InvitationLink','mail/text/InvitationLink'], "Invitation — Hex Cambridge", $data);
             foreach($successful as $app) {
                 $name = (isset($app->user->name) ? explode(" ", $app->user->name)[0] : "there");
                 $mailer->addRecipient($app->user->email, ["name" => $name]);

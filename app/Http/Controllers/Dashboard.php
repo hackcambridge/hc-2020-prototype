@@ -14,9 +14,10 @@ use App\Http\Resources\TeamMember as TeamMemberResource;
 
 class Dashboard extends Controller
 {
-    private $maximum_team_size = 4;
-    private static $accepting_applications = false;
-    private static $slack_invite_url = "https://join.slack.com/t/hackcambridge101/shared_invite/enQtOTAyNTIxNjU2NTk2LTViOTM5MDFjMTRiZmRlMDgxZjVjNzExOThiYmI3NTUxMzZkNzZiZTIxMTM2MjFjMGY4Mzk2ZWE4ODI1MDZiMTI";
+    private $maximum_team_size = 5;
+    private static $accepting_applications = true;
+    # TODO: Update URL
+    private static $slack_invite_url = "https://join.slack.com/t/hexcambridge/shared_invite/enQtOTAyNTIxNjU2NTk2LTViOTM5MDFjMTRiZmRlMDgxZjVjNzExOThiYmI3NTUxMzZkNzZiZTIxMTM2MjFjMGY4Mzk2ZWE4ODI1MDZiMTI";
 
     public function index() {
         return view('dashboard/index');
@@ -166,7 +167,7 @@ class Dashboard extends Controller
         $r = $request->request;
         if(!self::$accepting_applications) return $this->fail("Applications are closed.");
 
-        if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "visaRequired", "visaRequiredDate", "acceptedConduct", "acceptedPrivacy", "acceptedTerms"])) {
+        if($this->canContinue(["hacker"], $r, ["questionResponses", "country", "isSubmitted", "acceptedConduct", "acceptedPrivacy", "acceptedTerms"])) {
             $app = Application::where("user_id", Auth::user()->id)->first();
             if(!$app) {
                 $app = new Application();
@@ -192,8 +193,8 @@ class Dashboard extends Controller
             $app->setAttribute("questionResponses", $r->get("questionResponses"));
             $app->setAttribute("country", $r->get("country"));
             $app->setAttribute("isSubmitted", $r->get("isSubmitted") == 'true');
-            $app->setAttribute("visaRequired", $r->get("visaRequired") == 'true');
-            $app->setAttribute("visaRequiredDate", $r->get("visaRequiredDate"));
+            // $app->setAttribute("visaRequired", $r->get("visaRequired") == 'true');
+            // $app->setAttribute("visaRequiredDate", $r->get("visaRequiredDate"));
             $app->setAttribute("acceptedConduct", $r->get("acceptedConduct") == 'true');
             $app->setAttribute("acceptedPrivacy", $r->get("acceptedPrivacy") == 'true');
             $app->setAttribute("acceptedTerms", $r->get("acceptedTerms") == 'true');

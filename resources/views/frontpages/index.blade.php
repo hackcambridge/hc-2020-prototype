@@ -13,8 +13,9 @@
 
         <div id="intro-description">
             <p>January&nbsp;23-24th 2021</p>
-            <p class="normal-text description">Cambridge's biggest 24h hackathon is back for it's sixth iteration and this year we're going fully virtual! We're very excited to present a brand new experience to all of you at Hex Cambridge 2021.</p>
-            <button class="btn btn-lg btn-primary normal-text" onclick='window.location.href="#about"'>Learn more</button>
+            <p class="normal-text description">Cambridge's biggest <strong>36h</strong> hackathon is back for it's sixth iteration and this year we're going fully virtual! We're very excited to present a brand new experience to all of you at Hex Cambridge 2021.</p>
+            <a href="{{ route('dashboard_index') }}"><button class="btn btn-lg btn-primary normal-text"><strong>Apply now</strong></button></a> <br>
+            <!-- <button class="btn btn-primary normal-text" onclick='window.location.href="#about"'>Learn more</button> -->
         </div>
         <img id="top-logo" src="{{ asset('images/logo.svg') }}" />
         <div id="green-hexagon"></div>
@@ -39,17 +40,17 @@
         </div>
         <div class="prev-logos">
             <div>
-                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 4D, 2019">
-                    <a href="https://hack-cambridge-101.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/4d_logo.png') }}" /></a>
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 4D, 2019" aria-label="HackCambrdge 4D link">
+                    <a href="https://hackcambridge4d.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/4d_logo.png') }}" /></a>
                 </button>
                 <div id="second-place"></div>
             </div><div>
-                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020">
-                    <a href="https://hackcambridge4d.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/101-white-logo.png') }}" /></a>
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020" aria-label="HackCambridge 101 link">
+                    <a href="https://hack-cambridge-101.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/101-white-logo.png') }}" /></a>
                 </button>
                 <div id="first-place"></div>
             </div><div>
-                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge Ternary, 2018">
+                <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge Ternary, 2018" aria-label="HackCambridge Ternary link">
                     <a href="https://ternary.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/ternary_logo.png') }}" /></a>
                 </button>
                 <div id="third-place"></div>
@@ -76,8 +77,8 @@
             </div>
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <input type="checkbox" id="accordion-8" name="accordion-checkbox-8" hidden>
-                    <label class="accordion-header" for="accordion-8">
+                    <input type="checkbox" id="accordion-2" name="accordion-checkbox-2" hidden>
+                    <label class="accordion-header" for="accordion-2">
                         <i class="icon icon-arrow-right mr-1"></i> How is the hackathon going to take place?
                     </label>
                     <div class="accordion-body faq-body">
@@ -89,8 +90,8 @@
         <div class="columns">
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <input type="checkbox" id="accordion-2" name="accordion-checkbox-2" hidden>
-                    <label class="accordion-header" for="accordion-2">
+                    <input type="checkbox" id="accordion-3" name="accordion-checkbox-3" hidden>
+                    <label class="accordion-header" for="accordion-3">
                         <i class="icon icon-arrow-right mr-1"></i> Do I need a team?
                     </label>
                     <div class="accordion-body faq-body">
@@ -100,9 +101,8 @@
             </div>
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <!-- Question 9 -->
-                    <input type="checkbox" id="accordion-9" name="accordion-checkbox-2" hidden>
-                    <label class="accordion-header" for="accordion-9">
+                    <input type="checkbox" id="accordion-4" name="accordion-checkbox-4" hidden>
+                    <label class="accordion-header" for="accordion-4">
                         <i class="icon icon-arrow-right mr-1"></i> How large are the teams?
                     </label>
                     <div class="accordion-body faq-body">
@@ -114,9 +114,8 @@
         <div class="columns">
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <!-- Question 4 -->
-                    <input type="checkbox" id="accordion-4" name="accordion-checkbox-4" hidden>
-                    <label class="accordion-header" for="accordion-4">
+                    <input type="checkbox" id="accordion-5" name="accordion-checkbox-5" hidden>
+                    <label class="accordion-header" for="accordion-5">
                         <i class="icon icon-arrow-right mr-1"></i> Am I allowed to attend?
                     </label>
                     <div class="accordion-body faq-body">
@@ -126,9 +125,8 @@
             </div>
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <!-- Question 5 -->
-                    <input type="checkbox" id="accordion-5" name="accordion-checkbox-5" hidden>
-                    <label class="accordion-header" for="accordion-5">
+                    <input type="checkbox" id="accordion-6" name="accordion-checkbox-6" hidden>
+                    <label class="accordion-header" for="accordion-6">
                         <i class="icon icon-arrow-right mr-1"></i> Is Hex Cambridge free to attend?
                     </label>
                     <div class="accordion-body faq-body">
@@ -137,12 +135,11 @@
                 </div>
             </div>
         </div>
-        <div class=" columns">
+        <div class="columns">
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <!-- Question 3 -->
-                    <input type="checkbox" id="accordion-3" name="accordion-checkbox-3" hidden>
-                    <label class="accordion-header" for="accordion-3">
+                    <input type="checkbox" id="accordion-7" name="accordion-checkbox-7" hidden>
+                    <label class="accordion-header" for="accordion-7">
                         <i class="icon icon-arrow-right mr-1"></i> What am I allowed to build?
                     </label>
                     <div class="accordion-body faq-body">
@@ -152,9 +149,21 @@
             </div>
             <div class="col-sm-12 col-6">
                 <div class="accordion">
-                    <!-- Question 6 -->
-                    <input type="checkbox" id="accordion-6" name="accordion-checkbox-6" hidden>
-                    <label class="accordion-header" for="accordion-6">
+                    <input type="checkbox" id="accordion-8" name="accordion-checkbox-8" hidden>
+                    <label class="accordion-header" for="accordion-8">
+                        <i class="icon icon-arrow-right mr-1"></i> Do I need to have experience coding?
+                    </label>
+                    <div class="accordion-body faq-body">
+                        <div class="inner">Not at all! People from all levels and background are welcome to register for our event. We will ensure you are paired up with more experienced coders for the best possible experience.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="col-sm-12 col-6">
+                <div class="accordion">
+                    <input type="checkbox" id="accordion-9" name="accordion-checkbox-9" hidden>
+                    <label class="accordion-header" for="accordion-9">
                         <i class="icon icon-arrow-right mr-1"></i> Do you have a code of conduct?
                     </label>
                     <div class="accordion-body faq-body">
@@ -226,6 +235,11 @@
                             <img src="{{ asset('images/sponsors/theodo.png') }}" alt="Theodo" />
                         </a>
                     </div>
+                    <div class="hex">
+                        <a href="https://www.huawei.com/" targer="_blank">
+                            <img src="{{ asset('images/sponsors/huawei.png') }}" alt="Huawei" />
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="giga-sponsor sponsor-pane">
@@ -234,6 +248,11 @@
                     <div class="hex">
                         <a href="https://www.hudsonrivertrading.com/" targer="_blank">
                             <img src="{{ asset('images/sponsors/hrt.png') }}" alt="Hudson River Trading" />
+                        </a>
+                    </div>
+                    <div class="hex">
+                        <a href="https://www.citadel.com/" targer="_blank">
+                            <img src="{{ asset('images/sponsors/citadel.png') }}" alt="Citadel" />
                         </a>
                     </div>
                 </div>
@@ -263,11 +282,11 @@
                             <img src="{{ asset('images/sponsors/stripe.png') }}" alt="Stripe" />
                         </a>
                     </div>
-                    <div class="hex">
+                    <!-- <div class="hex">
                         <a href="https://www.gresearch.co.uk" targer="_blank">
                             <img src="{{ asset('images/sponsors/gresearch.png') }}" alt="G-Research" />
                         </a>
-                    </div>
+                    </div> -->
                     <div class="hex">
                         <a href="https://datascope.co.uk/" targer="_blank">
                             <img src="{{ asset('images/sponsors/datascope.png') }}" alt="Datascope" />
@@ -314,68 +333,68 @@
         <div class="hex-people">
             <section class="hexagon-gallery">
                 <div class="hex">
-                    <img src="{{ asset('images/team/Ivan.jpg') }}" alt="Ivan" />
+                    <img src="{{ asset('images/team/Ivan.webp') }}" alt="Ivan" />
                     <div>
                         <h1>Ivan Ivanov</h1>
                         <h2>Head of Development</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Chuen.jpg') }}" alt="Chuen" />
+                    <img src="{{ asset('images/team/Chuen.webp') }}" alt="Chuen" />
                     <div>
                         <h1>Chuen Leik Low</h1>
                         <h2>General Manager</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Rohit.jpg') }}" alt="Rohit" />
+                    <img src="{{ asset('images/team/Rohit.webp') }}" alt="Rohit" />
                     <div>
                         <h1>Rohit Kale</h1>
                         <h2>Head of Finance</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Valerie.jpg') }}" alt="Valerie" />
+                    <img src="{{ asset('images/team/Valerie.webp') }}" alt="Valerie" />
                     <div>
                         <h1>Valerie Chuang</h1>
                         <h2>Head of Sponsorship</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Alba.jpg') }}" alt="Alba" />
+                    <img src="{{ asset('images/team/Alba.webp') }}" alt="Alba" />
                     <div>
                         <h1>Alba Navarro Rosales</h1>
                         <h2>Head of Design</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Zoey.jpg') }}" alt="Zoey" />
+                    <img src="{{ asset('images/team/Zoey.webp') }}" alt="Zoey" />
                     <div>
                         <h1>Zoey Tan</h1>
                         <h2>Head of Social Relation and Publicity</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Peter.png') }}" alt="Peter" />
+                    <img src="{{ asset('images/team/Peter.webp') }}" alt="Peter" />
                     <div>
                         <h1>Peter Ondus</h1>
                         <h2>Head of Logistics</h2>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Soham.jpg') }}" alt="Soham" />
+                    <img src="{{ asset('images/team/Soham.webp') }}" alt="Soham" />
                     <div>
                         <h1>Soham Mandal</h1>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Charles.jpg') }}" alt="Charles" />
+                    <img src="{{ asset('images/team/Charles.webp') }}" alt="Charles" />
                     <div>
                         <h1>Charles Chen</h1>
                     </div>
                 </div>
                 <div class="hex">
-                    <img src="{{ asset('images/team/Karthik.jpg') }}" alt="Karthik" />
+                    <img src="{{ asset('images/team/Karthik.webp') }}" alt="Karthik" />
                     <div>
                         <h1>Karthik Neelamegam</h1>
                     </div>

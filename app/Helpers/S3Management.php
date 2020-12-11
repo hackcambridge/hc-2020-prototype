@@ -64,11 +64,8 @@ class S3Management {
     }
 
     public static function deleteAsset($url) {
-        // echo $url;
         $index_aws = strpos($url,".amazonaws.com/");
         $length = strlen($url);
-        // $region = substr($url, 11, $index_aws - 11);
-        // echo $region;
         $path = substr($url, $index_aws + 15, $length - $index_aws - 15);
         $filepath = explode("/", $path, 2)[1];
 

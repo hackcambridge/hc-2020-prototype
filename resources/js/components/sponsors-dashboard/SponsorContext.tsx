@@ -3,6 +3,7 @@ import { Route, RouteComponentProps, Switch } from "react-router";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
 import SponsorPeople from "./components/Agents/SponsorPeople";
 import SponsorResources from "./components/Resources/SponsorResources";
+import SponsorSwag from "./components/Resources/SponsorSwag";
 import SponsorAdmin from "./components/SponsorAdmin";
 import SponsorHome from "./components/SponsorHome";
 import SponsorOverview from "./components/SponsorOverview";
@@ -37,18 +38,19 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             key={"hw/api"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
-                            title={"Hardware / API"} 
+                            title={"Dataset / API"} 
                             resourceNames={{ singular: "resource", plural: "resources" }} 
                             {...this.props} {...props}
                             types={[
-                                {label: 'Hardware Item', value: 'hardware'},
+                                // {label: 'Hardware Item', value: 'hardware'},
+                                {label: 'Working Dataset', value: 'dataset'},
                                 {label: 'Open API Product', value: 'api'},
                             ]}
                             detailType={"resources"}
                         />
                     } />
                     <Route exact path={`${sponsorBaseUrl}swag`} render={(props) => 
-                        <SponsorResources 
+                        <SponsorSwag 
                             key={"swag"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
@@ -58,13 +60,24 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             {...this.props} {...props}
                         />
                     } />
+                    <Route exact path={`${sponsorBaseUrl}invoice`} render={(props) => 
+                        <SingleItemForm 
+                            key={"invoice"}
+                            baseSponsorPath={sponsorBaseUrl} 
+                            sponsor={this.props.sponsor} 
+                            pageTitle={"Invoice information"}
+                            hasTitle={false} hasDescription={false} hasAddress hasAssets={false}
+                            detailType={"invoice-address"} 
+                            {...this.props} {...props}
+                        />
+                    } />
                     <Route exact path={`${sponsorBaseUrl}workshop`} render={(props) => 
                         <SingleItemForm 
                             key={"workshop"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Workshop Information"}
-                            hasTitle hasDescription hasAssets
+                            hasTitle hasDescription hasAddress={false} hasAssets
                             detailType={"workshop"}
                             {...this.props} {...props}
                         />
@@ -75,7 +88,7 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Social Media Shoutout Information"}
-                            hasTitle={false} hasDescription hasAssets
+                            hasTitle={false} hasDescription hasAddress={false} hasAssets
                             detailType={"social_media"}
                             {...this.props} {...props}
                         />
@@ -86,7 +99,7 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Product Demo Details"}
-                            hasTitle hasDescription hasAssets
+                            hasTitle hasDescription hasAddress={false} hasAssets
                             detailType={"demo"}
                             {...this.props} {...props}
                         />
@@ -97,7 +110,7 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Product Prize"}
-                            hasTitle hasDescription hasAssets
+                            hasTitle hasDescription hasAddress={false} hasAssets
                             detailType={"prizes"}
                             {...this.props} {...props}
                         />
@@ -108,7 +121,7 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
                             pageTitle={"Opening Ceremony Presentation"}
-                            hasTitle hasAssets hasDescription={false}
+                            hasTitle hasAssets hasAddress={false} hasDescription={false}
                             detailType={"presentation"}
                             {...this.props} {...props}
                         />

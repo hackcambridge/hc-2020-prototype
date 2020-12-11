@@ -5,6 +5,7 @@
 /public/assets/css/*.css
 /public/assets/js/*.js
 /public/mix-manifest.json
+/public/php_errors.log
 /storage/*.key
 /vendor
 .env
@@ -117,3 +118,6 @@ fabric.properties
 
 # Terraform files
 .terraform
+
+# VS-Code files
+.vs-code

@@ -1,7 +1,7 @@
 import React, { Component, useState, useCallback } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Page, ChoiceList, TextField, Layout, Card, RangeSlider, Avatar, ResourceList, TextStyle, Button, Icon } from "@shopify/polaris";
-import { AddMajorMonotone } from '@shopify/polaris-icons';
+import { AddMajor } from '@shopify/polaris-icons';
 import { ISponsorAgent, ISponsorData } from "../../../interfaces/sponsors.interfaces";
 import axios from "axios";
 import SponsorAgentForm from "./Agents/SponsorAgentForm";
@@ -144,13 +144,13 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
                                     resourceName={resourceName}
                                     alternateTool={
                                         <Button 
-                                            plain icon={AddMajorMonotone} 
+                                            plain icon={AddMajor} 
                                             onClick={() => this.setState({ sponsorAgentFormShowing: true })}>
                                         </Button>}
                                 />
                             :  <Card.Section>
                                     <Button 
-                                        icon={AddMajorMonotone} 
+                                        icon={AddMajor} 
                                         onClick={() => this.setState({ sponsorAgentFormShowing: true })}
                                     >
                                         &nbsp;Add a Sponsor Agent
@@ -167,6 +167,9 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
                         onCreate={() => {
                             toast.success("Created sponsor agent");
                             this.loadSponsorAgents();
+                        }}
+                        onFail={(error_string) => {
+                            toast.error(error_string);
                         }}
                         onClose={() => this.setState({ sponsorAgentFormShowing: false, isEditingSponsorAgent: undefined })}
                     /> : <></>

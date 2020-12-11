@@ -74,7 +74,7 @@ class Sponsors extends Controller
     }
 
     private function canContinue($allowed = [], $r, $stringChecks = []) {
-        array_push($allowed, "admin"); // TODO "committee" temporary
+        array_push($allowed, "committee", "admin"); // TODO "committee" temporary
 
         // Check the request provides all required arguments.
         array_push($stringChecks, "sponsor_id", "sponsor_slug");
@@ -212,7 +212,7 @@ class Sponsors extends Controller
 
     private function addSponsor($r) {
         // TODO "committee" is temporary.
-        if(Auth::check() && in_array(Auth::user()->type, ["admin"])) {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin","committee"])) {
             $name = $r->get("name");
             $slug = $this->slugify($name);
             if (strlen($slug) > 0) {
@@ -238,7 +238,7 @@ class Sponsors extends Controller
     }
 
     private function deleteSponsor($r) {
-        if($this->canContinue(["admin"], $r, ["sponsor_id", "sponsor_slug"])) {
+        if($this->canContinue(["admin","committee"], $r, ["sponsor_id", "sponsor_slug"])) {
             $id = $r->get("sponsor_id");
             $slug = $r->get("sponsor_slug");
             $sponsor = Sponsor::where("id", $id)
@@ -260,7 +260,7 @@ class Sponsors extends Controller
     }
 
     private function sponsorAdminDetailsUpdate($r) {
-        if($this->canContinue(["admin"], $r, ["sponsor_slug"])) {
+        if($this->canContinue(["admin","committee"], $r, ["sponsor_slug"])) {
             $id = $r->get("sponsor_id");
             $slug = $r->get("sponsor_slug");
             $tier = $r->get("tier");
