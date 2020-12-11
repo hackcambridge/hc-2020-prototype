@@ -60,16 +60,7 @@ class SponsorPeople extends Component<ISponsorPeopleProps, ISponsorPeopleState> 
                     url: this.props.baseSponsorPath
                 }]}
                 title="People"
-                // titleMetadata={<Badge status="attention">Outstanding</Badge>}
-                // primaryAction={{content: 'Save', disabled: false}}
-                // secondaryActions={[{content: 'Duplicate'}, {content: 'View on your store'}]}
             >
-                {/* <Card>
-                    <div style={{ padding: "2rem" }}>
-                        <DisplayText size="small">This is where we explain what the f*ck is going on.</DisplayText>
-                    </div>
-                </Card>
-                <br style={{ margin: "30px" }} /> */}
                 <Layout>
                     <Layout.Section oneHalf>
                         <Card title="Mentors">

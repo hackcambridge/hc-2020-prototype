@@ -109,7 +109,7 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             key={"prizes"}
                             baseSponsorPath={sponsorBaseUrl} 
                             sponsor={this.props.sponsor} 
-                            pageTitle={"Product Prize"}
+                            pageTitle={"Product/Themed Prize"}
                             hasTitle hasDescription hasAddress={false} hasAssets
                             detailType={"prizes"}
                             {...this.props} {...props}
