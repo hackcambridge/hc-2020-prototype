@@ -7,7 +7,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {LogOutMinor, IqMajor, HomeMajor, PackageMajor, ProfileMajor, BillingStatementPoundMajor, SmileyJoyMajor, FilterMajor, CodeMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ChecklistMajor} from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, HomeMajor, PackageMajor, ProfileMajor, BillingStatementPoundMajor, SmileyJoyMajor, FilterMajor, CodeMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ChecklistMajor } from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import CheckIn from "./components/CheckIn";
 import Overview from "./components/Overview";
@@ -70,9 +70,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
     private adapterLink = ({ url, ...rest }) => {
         const _url = url as string;
-        if(_url.startsWith(this.props.baseUrl)) {
+        if (_url.startsWith(this.props.baseUrl)) {
             return <Link to={url} {...rest} onClick={() => {
-                if(this.state.showMobileNavigation) {
+                if (this.state.showMobileNavigation) {
                     this.setState({ showMobileNavigation: false });
                 }
             }} />
@@ -95,10 +95,10 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         {
             id: "logout",
             items: [
-                {content: 'Frontpage', url: "/", icon: HomeMajor},
-                {content: 'Hackers\' Dashboard', url: "/dashboard", icon: SmileyJoyMajor},
-                {content: 'Sponsors\' Portal', url: "/sponsors/dashboard", icon: BillingStatementPoundMajor},
-                {content: 'Logout', url: "/logout", icon: LogOutMinor},
+                { content: 'Frontpage', url: "/", icon: HomeMajor },
+                { content: 'Hackers\' Dashboard', url: "/dashboard", icon: SmileyJoyMajor },
+                { content: 'Sponsors\' Portal', url: "/sponsors/dashboard", icon: BillingStatementPoundMajor },
+                { content: 'Logout', url: "/logout", icon: LogOutMinor },
             ],
         },
     ];
@@ -183,8 +183,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                                 icon: QuestionMarkMajor
                             },
                         ]}
-                    /> 
-                : <></>}
+                    />
+                    : <></>}
 
                 {/* {this.sponsorSectionsNavMarkup(navSection)} */}
                 {/* {this.props.sponsors.length > 1 ? 
@@ -202,7 +202,13 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
         return (
             <>
-                <AppProvider theme={this.theme} linkComponent={this.adapterLink}>
+                <AppProvider i18n={{
+                    Polaris: {
+                        Frame: { skipToContent: 'Skip to content' },
+                        TopBar: {
+                        },
+                    },
+                }} theme={this.theme} linkComponent={this.adapterLink}>
                     <Frame
                         topBar={this.topBarMarkup(userMenuMarkup)}
                         navigation={navigationMarkup}
@@ -257,9 +263,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         toast.info("Finding a random application...");
         axios.get("/committee/admin-api/random-application-for-review.json").then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const next = +payload["message"];
                     if (!Number.isNaN(next) && next >= 0) {
                         this.props.history.push(`${this.props.baseUrl}/applications/${next}`);

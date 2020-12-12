@@ -328,7 +328,7 @@ class Committee extends Controller
                 ->where("invited", "=", 0)
                 ->whereNotIn("id", $my_reviews)
                 ->orderBy('reviews_count', 'ASC')
-                ->first();
+                ->get()->random();
 
             if($app) {
                 return $this->success($app->id);
