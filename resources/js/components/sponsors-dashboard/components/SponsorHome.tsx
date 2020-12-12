@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Page, Layout, Card, ProgressBar, DisplayText, TextStyle, Subheading } from "@shopify/polaris";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { ISponsorData, SingleItemFormFields } from "../../../interfaces/sponsors.interfaces";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { ISponsorData } from "../../../interfaces/sponsors.interfaces";
 import axios from "axios";
 
 interface ISponsorAdminProps extends RouteComponentProps {
@@ -55,7 +55,7 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
                     <Layout.Section secondary>
                         <Card sectioned>
                             <Subheading>Package:</Subheading>
-                            <div style={{ textAlign: "center", marginTop: "-20px" }}><DisplayText size="medium"><TextStyle variation="strong">{this.props.sponsor.tier}</TextStyle></DisplayText></div>
+                            <div style={{ wordBreak: "break-word", textAlign: "center"}}><DisplayText size={this.props.sponsor.tier.length < 10 ? "medium" : "small"}><TextStyle variation="strong">{this.props.sponsor.tier}</TextStyle></DisplayText></div>
                         </Card>
                         <br />
                         <Card sectioned>

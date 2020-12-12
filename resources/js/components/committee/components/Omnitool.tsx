@@ -110,19 +110,19 @@ class ApplicationReviewer {
 
     keyboardShortcuts(e: KeyboardEvent) {
         // cmd + s will save
-        if (this.state.selectedTab == 1 && e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+        if (this.state.selectedTab == 1 && e.code == "KeyS" && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
             e.preventDefault();
             this.saveScript();
         }
 
         // Does not work on Safari (cannot override cmd + NUM)
         // cmd + 1/2 will change tab
-        if (e.keyCode == 49 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+        if (e.code == "Digit1" && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
             e.preventDefault();
             this.setState({selectedTab: 0})
         }
 
-        if (e.keyCode == 50 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+        if (e.code == "Digit2" && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
             e.preventDefault();
             this.setState({selectedTab: 1})
         }

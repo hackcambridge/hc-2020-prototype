@@ -149,7 +149,6 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         ]
 
         if (this.allowedEventDetails()) {
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/map`, label: `Map`, icon: LocationMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/faqs`, label: `FAQs`, icon: QuestionMarkMajor });
@@ -206,16 +205,15 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private renderContent(): JSX.Element {
         const { applicationOpen } = this.state;
         const eventDetailRoutes = this.allowedEventDetails() ? [
-            <Route exact path={`${this.props.baseUrl}/map`} render={(props) => <MapView {...props} {...this.props} />} />,
-            <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <Challenges {...props} {...this.props} />} />,
-            <Route exact path={`${this.props.baseUrl}/schedule`} render={(props) => <Schedule {...props} {...this.props} />} />,
-            <Route exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
+            <Route key="challenges" exact path={`${this.props.baseUrl}/challenges`} render={(props) => <Challenges {...props} {...this.props} />} />,
+            <Route key="schedule" exact path={`${this.props.baseUrl}/schedule`} render={(props) => <Schedule {...props} {...this.props} />} />,
+            <Route key="faqs" exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
         ] : [];
         const applicationDetailRoutes = this.canSeeApplicationItems() ? [
-            <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,
-            <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} applicationsOpen={this.props.canApply} />} />,
-            <Route exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />,
-            <Route exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />,
+            <Redirect key="apply" exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,
+            <Route key="apply_individual" exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} applicationsOpen={this.props.canApply} />} />,
+            <Route key="apply_team" exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />,
+            <Route key="apply_invitation" exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />,
         ] : [];
         return (
             <Switch>
@@ -231,14 +229,14 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private renderApplicationBanner(): JSX.Element {
         const states: {
             [key: string]: {
-                status: "warning" | "info" | "critical" | "success" | "incomplete" | undefined,
+                status: "warning" | "info" | "critical" | "success" | undefined,
                 text: string,
                 noLink?: boolean
             }
         } = {
             "notStarted": { status: undefined, text: "Start Application" },
             "started": { status: "warning", text: "Finish Application" },
-            "incomplete": { status: "incomplete", text: "Incomplete Application" },
+            "incomplete": { status: undefined, text: "Incomplete Application" },
             "pending": { status: "info", text: "Application Pending" },
             "rejected": { status: "critical", text: "Unsuccessful" },
             "declined": { status: "critical", text: "Place Declined" },

@@ -318,7 +318,7 @@ class Committee extends Controller
                 $my_reviews[] = $r->application_id;
             }
 
-            $app = Application::withCount(["reviews"])
+            $app_collection = Application::withCount(["reviews"])
                 ->whereHas('user', function ($query) {
                     $query->where('type', '=', "hacker");
                 })
@@ -327,11 +327,10 @@ class Committee extends Controller
                 ->where("isSubmitted", "=", 1)
                 ->where("invited", "=", 0)
                 ->whereNotIn("id", $my_reviews)
-                ->orderBy('reviews_count', 'ASC')
-                ->first();
+                ->get();
 
-            if($app) {
-                return $this->success($app->id);
+            if($app_collection->count() > 0) {
+                return $this->success($app_collection->random()->id);
             } else {
                 return $this->fail("No more applications to review");
             }
