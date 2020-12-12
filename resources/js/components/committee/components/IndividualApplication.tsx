@@ -64,19 +64,19 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
 
     arrowFunctions(event: KeyboardEvent){
         const { cvModalOpen, isSubmitted } = this.state;
-        if(event.keyCode === 32) { // space
+        if(event.code === "Space") { // space
             this.setState({ cvModalOpen: !cvModalOpen });
         }
-        if(event.keyCode === 40) { // down
+        if(event.code === "ArrowDown") { // down
             this.setState({ cvModalOpen: false });
         }
-        if(event.keyCode === 39) { // right
+        if(event.code === "ArrowRight") { // right
             this.setState({ reviewModalOpen: true && isSubmitted });
         }
-        if(event.keyCode === 38) { // up
+        if(event.code === "ArrowUp") { // up
             this.setState({ cvModalOpen: true });
         }
-        if(event.keyCode === 37) { // left
+        if(event.code === "ArrowLeft") { // left
             this.setState({ reviewModalOpen: false });
         }
     }
