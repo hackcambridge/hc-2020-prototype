@@ -61,7 +61,7 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             value: 'social_media',
         },
         {
-            label: 'Can give a product prize',
+            label: 'Can give a product/themed prize',
             value: 'prizes',
         },
         {
