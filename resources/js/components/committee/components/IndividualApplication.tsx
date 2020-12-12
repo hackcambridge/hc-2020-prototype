@@ -184,10 +184,10 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                 {textFieldQuestions.map((value) => {
                                     const answer: string = questions[value.id];
                                     const answerMarkup = answer.length > 0 ? answer.split('\n').map(i => {
-                                        return <TextContainer>{i}</TextContainer>
+                                        return <TextContainer key={i.length}>{i}</TextContainer>
                                     }) : <TextContainer>(Blank)</TextContainer>;
-                                    return (<Linkify tagName="a" options={{ target: {url: '_blank'} }}>
-                                        <div style={{ padding: "1.4rem 2rem" }} key={value.id}>
+                                    return (<Linkify tagName="a" options={{ target: {url: '_blank'} }} key={value.id}>
+                                        <div style={{ padding: "1.4rem 2rem" }}>
                                             <Heading>{value.title}</Heading>
                                             <br style={{ lineHeight: "3px" }} />
                                             {answerMarkup}

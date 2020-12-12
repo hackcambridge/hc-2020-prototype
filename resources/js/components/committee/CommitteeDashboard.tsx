@@ -107,10 +107,6 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         <TopBar
             showNavigationToggle={true}
             userMenu={userMenuMarkup}
-            // searchResultsVisible={searchActive}
-            // searchField={searchFieldMarkup}
-            // searchResults={searchResultsMarkup}
-            // onSearchResultsDismiss={this.handleSearchResultsDismiss}
             onNavigationToggle={this.toggleState('showMobileNavigation')}
         />
     );
@@ -240,11 +236,11 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private renderContent(): JSX.Element {
         const showAdmin = this.props.user.type == "admin";
         const adminRoutes = showAdmin ? [
-            <Route exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />,
-            <Route exact path={`${this.props.baseUrl}/omnitool`} render={(props) => <Omnitool {...props} />} />,
-            <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <ChallengesEditor {...props} />} />,
-            <Route exact path={`${this.props.baseUrl}/schedule`} render={(props) => <ScheduleEditor {...props} />} />,
-            <Route exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQEditor {...props} />} />,
+            <Route key="members" exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />,
+            <Route key="omnitool" exact path={`${this.props.baseUrl}/omnitool`} render={(props) => <Omnitool {...props} />} />,
+            <Route key="challenges" exact path={`${this.props.baseUrl}/challenges`} render={(props) => <ChallengesEditor {...props} />} />,
+            <Route key="schedule" exact path={`${this.props.baseUrl}/schedule`} render={(props) => <ScheduleEditor {...props} />} />,
+            <Route key="faqs" exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQEditor {...props} />} />,
         ] : [];
         return (
             <Switch>
