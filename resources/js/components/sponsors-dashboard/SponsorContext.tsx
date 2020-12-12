@@ -12,6 +12,7 @@ import SingleItemForm from "./components/common/SingleItemForm";
 
 interface ISponsorContextProps extends RouteComponentProps, ISponsorDashboardProps {
     sponsor: ISponsorData,
+    sponsorData: ISponsorData[],
     onUpdate: () => void
 }
 
@@ -23,7 +24,9 @@ class SponsorContext extends Component<ISponsorContextProps> {
         return (
             <div style={{ marginTop: "30px" }}>
                 <Switch>
-                    <Route exact path={`${this.props.baseUrl}/overview`} component={SponsorOverview} />
+                    <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => 
+                        <SponsorOverview sponsorData={this.props.sponsorData} onUpdate={this.props.onUpdate} {...this.props} {...props}/>}
+                    />
                     <Route exact path={`${sponsorBaseUrl}overview`} render={(props) => 
                         <SponsorHome baseSponsorPath={sponsorBaseUrl} sponsor={this.props.sponsor} {...this.props} {...props}/>} 
                     />
