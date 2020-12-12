@@ -59,8 +59,6 @@ class SponsorOverview extends Component<ISponsorOverview> {
                                                     <br />
                                                     <ProgressBar progress={complete} size="small" />
                                                 </Stack.Item>
-                                                <br />
-                                                <hr></hr>
                                             </Stack>
                                         </ResourceItem>
                                     }}
