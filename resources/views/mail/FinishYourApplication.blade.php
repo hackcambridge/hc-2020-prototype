@@ -8,5 +8,5 @@
     <div style="margin: 2rem 0;">
         <a class="noline" href="https://hackcambridge.com/dashboard"><span class="button">Apply for Hack Cambridge →</span></a>
     </div>
-    <p class="signoff">Merry Christmas,<br/>The Hack Cambridge Team</p>
+    <p class="signoff">Happy Holidays,<br/>The Hex Cambridge Team</p>
 @endsection

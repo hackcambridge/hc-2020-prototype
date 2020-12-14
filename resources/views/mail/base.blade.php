@@ -51,11 +51,11 @@
 
 <body>
     <div class="header">
-    <img src="https://hackcambridge.com/images/lovo.svg" class="logo" />
+    <img src="https://hackcambridge.com/images/logo.svg" class="logo" />
     </div>
     <div class="body">
         @yield('content')
     </div>
-    <div class="footer">Hack Cambridge is UK registered charity #1177223.</div>
+    <!-- <div class="footer">Hack Cambridge is UK registered charity #1177223.</div> -->
 </body>
 </html>

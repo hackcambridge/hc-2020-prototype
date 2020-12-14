@@ -7,5 +7,5 @@ Hi %recipient.name%!
 
 Continue you application here: https://hackcambridge.com/dashboard/.
 
-Merry Christmas,
-The Hack Cambridge Team
+Happy Holidays,
+The Hex Cambridge Team
