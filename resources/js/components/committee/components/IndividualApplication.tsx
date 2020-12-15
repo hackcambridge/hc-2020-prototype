@@ -160,7 +160,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                             {cvButton}
                             <br />
                             <Card>
-                                <div style={{ padding: "0 2rem" }}>
+                                <div style={{ padding: "0 1.5rem" }}>
                                     <DescriptionList
                                         items={[
                                             { term: 'Email', description: profile["email"] || "" },
