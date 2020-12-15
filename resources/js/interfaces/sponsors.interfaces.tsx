@@ -31,6 +31,14 @@ export interface IResourceDefinition {
     description: string,
 }
 
+export interface ISwagItemDefinition {
+    id: number,
+    quantity: string, 
+    name: string, 
+    type: string,
+    description: string,
+}
+
 export interface IAssetInformation {
     name: string, 
     url: string

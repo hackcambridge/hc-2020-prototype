@@ -71,9 +71,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         },
         logo: {
             width: 40,
-            topBarSource: '/images/101-white.png',
+            topBarSource: '/images/logo_white.png',
             url: `${this.props.baseUrl}/`,
-            accessibilityLabel: 'Hack Cambridge',
+            accessibilityLabel: 'Hex Cambridge',
         },
     };
 

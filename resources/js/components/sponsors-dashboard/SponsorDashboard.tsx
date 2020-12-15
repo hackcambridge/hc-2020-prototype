@@ -7,7 +7,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {DnsSettingsMajor, HomeMajor, CirclePlusOutlineMinor, SmileyJoyMajor, MentionMajor, ConfettiMajor, CodeMajor, DataVisualizationMajor, SandboxMajor, GamesConsoleMajor, MobileBackArrowMajorMonotone, LogOutMinor, MobileChevronMajorMonotone, TransferWithinShopifyMajor, PackageMajor, LockMajor, IqMajor, TipsMajorTwotone} from '@shopify/polaris-icons';
+import {DnsSettingsMajor, HomeMajor, CirclePlusOutlineMinor, SmileyJoyMajor, MentionMajor, ConfettiMajor, CodeMajor, DataVisualizationMajor, SandboxMajor, GamesConsoleMajor, MobileBackArrowMajor, LogOutMinor, MobileChevronMajor, TransferWithinShopifyMajor, PackageMajor, LockMajor, IqMajor, TipsMajorTwotone} from '@shopify/polaris-icons';
 import { Link, withRouter, RouteComponentProps, Redirect } from "react-router-dom";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
 import Sponsor404 from "./Sponsor404";
@@ -59,15 +59,6 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             });
         };
     };
-    
-    private handleSearchFieldChange = (value) => {
-        this.setState({searchText: value});
-        if (value.length > 0) {
-            this.setState({searchActive: true});
-        } else {
-            this.setState({searchActive: false});
-        }
-    };
 
     private userMenuActions = [
         {
@@ -84,44 +75,10 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
     ];
 
 
-
-    
-    private searchResultsMarkup = (
-        <Card>
-            <ActionList
-                items={[
-                    {content: 'Shopify help center', url: "/sponsors/dashboard/xyz"},
-                    {content: 'Community forums'},
-                ]}
-            />
-        </Card>
-    );
-
-    private searchFieldMarkup = (
-        <TopBar.SearchField
-            onChange={this.handleSearchFieldChange}
-            value={this.state.searchText}
-            placeholder="Search"
-        />
-    );
-
-    private handleSearchResultsDismiss = () => {
-        this.setState(() => {
-            return {
-                searchActive: false,
-                searchText: '',
-            };
-        });
-    };
-
     private topBarMarkup = (userMenuMarkup: ReactNode) => (
         <TopBar
-            showNavigationToggle={true}
+            showNavigationToggle
             userMenu={userMenuMarkup}
-            // searchResultsVisible={searchActive}
-            // searchField={searchFieldMarkup}
-            // searchResults={searchResultsMarkup}
-            // onSearchResultsDismiss={this.handleSearchResultsDismiss}
             onNavigationToggle={this.toggleState('showMobileNavigation')}
         />
     );
@@ -138,7 +95,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         colors: {
             topBar: {
                 // background: linear-gradient(45deg, rgba(255, 122, 98, 1) 0%, rgba(211, 104, 182, 1) 100%);
-                background: '#b71515',
+                background: '#3D82FF',
                 backgroundLighter: '#c52e2f',
                 // background: '#2e0058',
                 // backgroundLighter: '#461571',
@@ -147,7 +104,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         },
         logo: {
             width: 65,
-            topBarSource: '/images/logo_black.svg',
+            topBarSource: '/images/logo_white.png',
             url: `${this.props.baseUrl}/`,
             accessibilityLabel: 'Hex Cambridge',
         },
@@ -168,7 +125,8 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
     }
 
     render() {
-        const { showMobileNavigation } = this.state;
+        const { showMobileNavigation } = this.state.showMobileNavigation;
+        // const showMobileNavigation = this.state.showMobileNavigation;
         const isRoot = !("sponsor" in this.props.match.params);
         const sponsorSlug = !isRoot ? this.props.match.params["sponsor"] : undefined;
         const section = this.props.match.params["uri"] || "";
@@ -231,7 +189,27 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         
         return (
             <>
-                <AppProvider theme={this.theme} linkComponent={this.adapterLink}>
+                <AppProvider
+                    theme={this.theme}
+                    i18n={{
+                        Polaris: {
+                          Avatar: {
+                            label: "Avatar",
+                            labelWithInitials: "Avatar with initials {initials}"
+                          },
+                          TopBar: {
+                            toggleMenuLabel: "Toggle menu",
+                          },
+                          Frame: {
+                            skipToContent: "Skip to content",
+                            Navigation: {
+                              closeMobileNavigationLabel: "Close navigation"
+                            }
+                          }
+                        }
+                      }}
+                    linkComponent={this.adapterLink}
+                >
                     <Frame
                         topBar={this.topBarMarkup(userMenuMarkup)}
                         navigation={navigationMarkup}
@@ -305,7 +283,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
 
         if(privileges.includes("resources")) {
             sections.push({
-                label: 'Hardware/API', icon: DnsSettingsMajor,
+                label: 'Dataset/API', icon: DnsSettingsMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/api`
             });
         }

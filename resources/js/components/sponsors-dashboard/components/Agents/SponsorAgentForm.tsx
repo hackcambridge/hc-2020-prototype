@@ -9,6 +9,7 @@ interface ISponsorFormProps {
     active: boolean,
     type?: string,
     onCreate: () => void,
+    onFail: (error_text: string) => void,
     onClose: () => void,
 }
 interface ISponsorFormState {
@@ -84,8 +85,12 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
             }).then(res => {
                 const status = res.status;
                 if(status >= 200 && status < 300) {
-                    this.props.onCreate();
                     this.setState({ loading: false });
+                    if(! res.data.success) {
+                        this.props.onFail(res.data.message || "Unknown error");
+                        return;
+                    }
+                    this.props.onCreate();
                     this.toggleModal();
                     return;
                 } else {

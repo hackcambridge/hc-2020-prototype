@@ -13,8 +13,9 @@
 
         <div id="intro-description">
             <p>January&nbsp;23-24th 2021</p>
-            <p class="normal-text description">Cambridge's biggest 24h hackathon is back for it's sixth iteration and this year we're going fully virtual! We're very excited to present a brand new experience to all of you at Hex Cambridge 2021.</p>
-            <button class="btn btn-lg btn-primary normal-text" onclick='window.location.href="#about"'>Learn more</button>
+            <p class="normal-text description">Cambridge's biggest <strong>36h</strong> hackathon is back for it's sixth iteration and this year we're going fully virtual! We're very excited to present a brand new experience to all of you at Hex Cambridge 2021.</p>
+            <a href="{{ route('dashboard_index') }}"><button class="btn btn-lg btn-primary normal-text"><strong>Apply now</strong></button></a> <br>
+            <!-- <button class="btn btn-primary normal-text" onclick='window.location.href="#about"'>Learn more</button> -->
         </div>
         <img id="top-logo" src="{{ asset('images/logo.svg') }}" />
         <div id="green-hexagon"></div>
@@ -40,12 +41,12 @@
         <div class="prev-logos">
             <div>
                 <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 4D, 2019">
-                    <a href="https://hack-cambridge-101.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/4d_logo.png') }}" /></a>
+                    <a href="https://hackcambridge4d.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/4d_logo.png') }}" /></a>
                 </button>
                 <div id="second-place"></div>
             </div><div>
                 <button class="tooltip tooltip-bottom" data-tooltip="HackCambridge 101, 2020">
-                    <a href="https://hackcambridge4d.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/101-white-logo.png') }}" /></a>
+                    <a href="https://hack-cambridge-101.devpost.com/project-gallery" target="_blank"><img src="{{ asset('images/101-white-logo.png') }}" /></a>
                 </button>
                 <div id="first-place"></div>
             </div><div>
