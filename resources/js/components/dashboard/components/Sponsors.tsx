@@ -27,9 +27,9 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
 
     render() {
         const { loaded } = this.state;
-        var loading =
-            <div>
-                <Spinner size="small" color="teal" /> 
+        var loading = 
+            <div style={{textAlign:"center"}}>
+                <Spinner color="teal" /> 
                 <Card sectioned><Heading>Loading sponsors...</Heading></Card>
             </div>
         return (
@@ -82,7 +82,7 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                     objectFit: "cover",
                     objectPosition: "center"
                     }}
-                    src="https://media-exp1.licdn.com/dms/image/C560BAQERNw3GMGLaoA/company-logo_200_200/0/1519856895092?e=2159024400&v=beta&t=wdo1GL0aCmBg-RMThc030aMoUk2ZgT7NFxlRlUPG_B0"
+                    src={logoUrl}
                 />
                 <div style={{ padding: "1.5rem" }}>
                 </div>
@@ -111,26 +111,26 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
 
     private viewSponsor = (sponsorData: ISponsor) => {
         toast.info("Loading sponsor info...");
-        this.props.history.push(`${this.props.baseUrl}/applications/${next}`);
-
-        axios.get("/committee/admin-api/random-application-for-review.json").then(res => {
-            const status = res.status;
-            if(status == 200) {
-                const payload = res.data;
-                if("success" in payload && payload["success"]) {
-                    const next = +payload["message"];
-                    if (!Number.isNaN(next) && next >= 0) {
-                        this.props.history.push(`${this.props.baseUrl}/applications/${next}`);
-                    } else {
-                        toast.error("Couldn't find next application to review");
-                    }
-                } else {
-                    toast.error(payload["message"]);
-                }
-            } else {
-                toast.error("Failed to load application to review");
-            }
-        });
+        var sponsorId = sponsorData.id;
+        this.props.history.push(`${this.props.baseUrl}/sponsors/${sponsorId}`);
+        // axios.get("/committee/admin-api/random-application-for-review.json").then(res => {
+        //     const status = res.status;
+        //     if(status == 200) {
+        //         const payload = res.data;
+        //         if("success" in payload && payload["success"]) {
+        //             const next = +payload["message"];
+        //             if (!Number.isNaN(next) && next >= 0) {
+        //                 this.props.history.push(`${this.props.baseUrl}/applications/${next}`);
+        //             } else {
+        //                 toast.error("Couldn't find next application to review");
+        //             }
+        //         } else {
+        //             toast.error(payload["message"]);
+        //         }
+        //     } else {
+        //         toast.error("Failed to load application to review");
+        //     }
+        // });
     }
 
     private loadAllSponsors() {

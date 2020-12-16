@@ -17,13 +17,8 @@ interface IIndividualSponsorState {
     SponsorId: number | undefined,
     loading: boolean,
     Sponsor: ISponsor | undefined,
+    spon_name: string,
     user: IUserDetails | undefined,
-    reviewTotal: number,
-    reviewMax: number,
-    savingReview: boolean,
-    alreadyReviewed: boolean,
-    isSubmitted: boolean,
-    team: string,
 }
 
 
@@ -115,20 +110,22 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     }
 
     private renderSponsor = () => {
-        const { Sponsor, user }: { Sponsor: ISponsor | undefined, user: IUserDetails | undefined } = this.state;
+        const { sponsor, user }: { sponsor: ISponsor | undefined, user: IUserDetails | undefined } = this.state;
         const { cvModalOpen, reviewModalOpen, reviewAnswers, reviewTotal, reviewMax, savingReview, alreadyReviewed, team } = this.state;
-        if(Sponsor && user) {
-            const app: ISponsor = Sponsor;
-            const usr: IUserDetails = user;
-            const profile = JSON.parse(usr.profile);
+        if(sponsor) {
+            console.log("rendering stuff here!",user,sponsor);
+            const app: ISponsor = sponsor;
+            // const usr: IUserDetails = user;
+            // const profile = JSON.parse(usr.profile);
             const metadata = <>
                 {alreadyReviewed ? <Badge status="success">Reviewed</Badge> : <></>}
-                {usr.type != "hacker" ? <Badge status="warning">{"Type: " + usr.type}</Badge> : <></>}
+                {/* {usr.type != "hacker" ? <Badge status="warning">{"Type: " + usr.type}</Badge> : <></>} */}
             </>;
+            const logoUrl = "https://media-exp1.licdn.com/dms/image/C560BAQERNw3GMGLaoA/company-logo_200_200/0/1519856895092?e=2159024400&v=beta&t=wdo1GL0aCmBg-RMThc030aMoUk2ZgT7NFxlRlUPG_B0"
             return (
                 <Page 
                     breadcrumbs={[{content: 'Sponsors', url: '../sponsors'}]}
-                    title={`${usr.name}`}
+                    title={`${app.name}`}
                     titleMetadata={metadata}
                     subtitle={`Sponsor #${app.id}`}
                     pagination={{
@@ -138,9 +135,9 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                     }}
                     primaryAction={{content: 'Review', destructive: true, onAction: () => {}}}
                     thumbnail={<Thumbnail
-                        source={`https://www.gravatar.com/avatar/${md5(usr.email.toLowerCase())}?d=retro&s=200`}
+                        source={logoUrl}
                         size="large"
-                        alt={`${usr.name}`}
+                        alt={`${app.name}`}
                     />}
                 >
                     <Layout>
@@ -150,12 +147,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                                 <div style={{ padding: "0 2rem" }}>
                                     <DescriptionList
                                         items={[
-                                            { term: 'Email', description: profile["email"] || "" },
-                                            { term: 'Gender', description: profile["gender"] || "" },
-                                            { term: 'School', description: "school" in profile ? (profile["school"]["name"] || "") : "" },
-                                            { term: 'Subject', description: profile["major"] || "" },
-                                            { term: 'Level', description: profile["level_of_study"] || "" },
-                                            { term: 'Team', description: team }]
+                                            { term: 'Temp', description: "Temp" }]
                                         }
                                     />
                                 </div>
@@ -186,34 +178,32 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
     private retrieveSponsor = (SponsorId: number) => {
         this.setState({ loading: true });
-        axios.post("/committee/admin-api/get-Sponsor.json", {
-            id: SponsorId
-        }).then(res => {
+        axios.get(`/sponsors/dashboard-api/get-sponsors.json`).then(res => {
             const status = res.status;
-            if(status == 200) {
+            console.log("Here",res)
+            if(status >= 200 && status <= 300) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
-                    const Sponsor : ISponsor = payload["Sponsor"];
-                    const user : IUserDetails = payload["user"];
-                    const team: string = payload["team"];
+                    const target: ISponsor = payload["data"].find(sponsor =>{
+                        return sponsor.id === SponsorId
+                    })
                     this.setState({ 
                         loading: false, 
-                        SponsorId: SponsorId, 
-                        Sponsor: Sponsor,
-                        team: team,
-                        user: user,
-
-                        reviewTotal: reviewQuestions.reduce((a, b) => a + (b.default * b.weight), 0),
-                        alreadyReviewed: false,
+                        SponsorId: SponsorId,
+                        sponsor: target,
+                        spon_name: target.name
+                        // name:payload["data"]["name"],
                     });
+                    //{"id":2,"name":"Chuen","slug":"chuen","tier":"Chuen2","privileges":";swag;resources;workshop;social_media;mentors[42];recruiters[42]","created_at":"2020-10-31 15:27:29","updated_at":"2020-10-31 15:28:08"}
+                    return;
                 } else {
+                    console.log(payload);
                     toast.error(payload["message"]);
                 }
             } else {
-                toast.error("Failed to load Sponsor.");
+                toast.error("Failed to load sponsors");
+                this.setState({ loading: false });
             }
-            // console.log(status, res.data);
-            this.setState({ loading: false });
         });
     }
 }

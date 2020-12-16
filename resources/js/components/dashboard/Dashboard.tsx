@@ -23,6 +23,7 @@ import Challenges from "./components/Challenges";
 import Schedule from "./components/Schedule";
 import Sponsors from "./components/Sponsors";
 import FAQs from "./components/FAQs";
+import IndividualSponsor from "./components/IndividualSponsor";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -224,6 +225,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Switch>
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props} />} />
+                <Route exact path={`${this.props.baseUrl}/sponsors/:id`} render={(props) => <IndividualSponsor SponsorId={props.match.params.id} {...props} />} />
                 {applicationDetailRoutes.map(i => i)}
                 {eventDetailRoutes.map(i => i)}
                 <Route component={Dashboard404}></Route>
