@@ -14,6 +14,7 @@ export interface ISponsorData {
     slug: string,
     tier: string,
     privileges: string,
+    image: string,
 }
 
 export interface ISponsorAgent {
