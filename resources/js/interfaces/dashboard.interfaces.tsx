@@ -15,6 +15,13 @@ export interface IDashboardProps {
     }
 }
 
+export interface IUserDetails {
+    name: string,
+    email: string,
+    type: string,
+    profile: string,
+}
+
 export interface IApplicationRecord extends IApplicationRecordContent {
     reviewed: boolean,
     invited: boolean,

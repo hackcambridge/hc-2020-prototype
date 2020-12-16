@@ -21,7 +21,7 @@ import md5 from "md5";
 import Invitation from "./components/Invitation";
 import Challenges from "./components/Challenges";
 import Schedule from "./components/Schedule";
-import Sponsor from "./components/Sponsor";
+import Sponsors from "./components/Sponsors";
 import FAQs from "./components/FAQs";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
@@ -210,7 +210,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         const eventDetailRoutes = this.allowedEventDetails() ? [
             <Route exact path={`${this.props.baseUrl}/map`} render={(props) => <MapView {...props} {...this.props} />} />,
             <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <Challenges {...props} {...this.props} />} />,
-            <Route exact path={`${this.props.baseUrl}/sponsors`} render={(props) => <Sponsor {...props} {...this.props} />} />,
+            <Route exact path={`${this.props.baseUrl}/sponsors`} render={(props) => <Sponsors {...props} {...this.props} />} />,
             <Route exact path={`${this.props.baseUrl}/schedule`} render={(props) => <Schedule {...props} {...this.props} />} />,
             <Route exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
         ] : [];
