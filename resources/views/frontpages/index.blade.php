@@ -290,6 +290,17 @@
                 </div>
 
             </div>
+            <div class="partner-sponsor sponsor-pane">
+                <h1>-- Partners --</h1>
+                <div class="hexagon-gallery">
+                    <div class="hex">
+                        <a href="https://hack.athon.uk/" targer="_blank">
+                            <img src="{{ asset('images/sponsors/HackUK.png') }}" alt="Hackathons.UK" />
+                        </a>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="mint-triangle"></div>
