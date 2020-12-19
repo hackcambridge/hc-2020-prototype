@@ -80,7 +80,7 @@ class Committee extends Controller
     }
 
     private function initSession() {
-        if(Auth::check() && in_array(Auth::user()->type, ["committee", "admin"])) {
+        if(Auth::check() && in_array(Auth::user()->type, ["committee", "admin", "sponsor-reviewer"])) {
             return response()->json([
                 "success" => true,
                 "payload" => array(
@@ -99,7 +99,8 @@ class Committee extends Controller
     }
 
     private function canContinue($r, $stringChecks = [], $admin_only = true) {
-        $allowed = $admin_only ? ["admin"] : ["admin", "committee"];
+        $allowed = $admin_only ? ["admin"] : ["admin", "committee", "sponsor-reviewer"];
+        error_log(Auth::user(), 3, "/tmp/my-errors.log");
         if(Auth::check() && in_array(Auth::user()->type, $allowed)) {
             if($r) {
                 foreach ($stringChecks as $param) {

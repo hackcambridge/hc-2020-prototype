@@ -71,6 +71,10 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
         {
             label: 'Can give opening ceremony presentation',
             value: 'presentation',
+        },
+        {
+            label: 'Can view and review hackers\' applications',
+            value: 'reviewing',
         }
     ];
 

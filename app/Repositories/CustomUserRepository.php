@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 use Auth0\Login\Auth0User;
 use Auth0\Login\Auth0JWTUser;
@@ -37,6 +38,12 @@ class CustomUserRepository extends Auth0UserRepository {
             $user->setAttribute('profile', '{}');
         }
 
+        $privileges = DB::table("sponsor_agents")
+                ->where("email", "=", $user->email)
+                ->join("sponsors","sponsors.id","=","sponsor_agents.sponsor_id")->select("privileges")->first();
+        if ($user->type == "sponsors" && strpos($privileges,"reviewing")) {
+            $user->setAttribute('type', "sponsor-reviewer");
+        }
         $user->setAttribute('email', isset( $profile['email'] ) ? $profile['email'] : '');
         $user->setAttribute('name', isset( $profile['name'] ) ? $profile['name'] : '');
                 
