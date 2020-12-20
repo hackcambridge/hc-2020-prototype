@@ -10,9 +10,9 @@ class SponsorFrame extends Component<ISponsorDashboardProps> {
             <BrowserRouter>
                 <Switch>
                     <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
-                    <Route exact path={`${this.props.baseUrl}/overview`} render={ (props) => <SponsorDashboard validRoute={true} {...props} {...this.props}/> } />
-                    <Route exact path={`${this.props.baseUrl}/:sponsor/:uri?`} render={ (props) => <SponsorDashboard validRoute={true} {...props} {...this.props}/> } />
-                    <Route path={""} render={ (props) => <SponsorDashboard validRoute={false} {...props} {...this.props}/>} />
+                    <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <SponsorDashboard validRoute={true} {...props} {...this.props} />} />
+                    <Route exact path={`${this.props.baseUrl}/:sponsor/:uri?`} render={(props) => <SponsorDashboard validRoute={true} {...props} {...this.props} />} />
+                    <Route path={""} render={(props) => <SponsorDashboard validRoute={false} {...props} {...this.props} />} />
                 </Switch>
             </BrowserRouter>
         );

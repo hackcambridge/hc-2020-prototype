@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Page, Card, Banner, DropZone, Layout, Subheading, FormLayout, TextField, Button, Stack, Heading, TextStyle, DisplayText, ResourceList, Avatar, Badge, TextContainer } from "@shopify/polaris";
+import { Page, Card, Banner, Layout, TextField, Button, TextStyle, DisplayText, ResourceList, Avatar, Badge, TextContainer } from "@shopify/polaris";
 import { MobilePlusMajor, CirclePlusMajor } from "@shopify/polaris-icons";
 import axios from 'axios';
 import { ITeamMember } from "../../../interfaces/dashboard.interfaces";
@@ -64,14 +64,14 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
             <Layout>
                 <Layout.Section oneHalf>
                     <Card sectioned title={"Create a New Team"}>
-                        <Button 
+                        <Button
                             disabled={!this.props.canEdit}
                             loading={busyState}
-                            primary 
-                            fullWidth 
+                            primary
+                            fullWidth
                             onClick={this.createNewTeam}
                             icon={CirclePlusMajor}>
-                                &nbsp;New Team
+                            &nbsp;New Team
                         </Button>
                     </Card>
                 </Layout.Section>
@@ -84,12 +84,12 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                             onChange={(s) => this.setState({ joinTeamID: s })}
                             disabled={busyState || !this.props.canEdit}
                             connectedRight={
-                                <Button 
-                                    onClick={this.setTeam} 
-                                    loading={busyState} 
-                                    disabled={!this.props.canEdit} 
-                                    primary 
-                                    icon={MobilePlusMajor} 
+                                <Button
+                                    onClick={this.setTeam}
+                                    loading={busyState}
+                                    disabled={!this.props.canEdit}
+                                    primary
+                                    icon={MobilePlusMajor}
                                 />
                             }
                         />
@@ -100,7 +100,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
     }
 
     private buildTeamOverview(busyState: boolean) {
-        const { teamID, teamMembers, teamOwner } = this.state;        
+        const { teamID, teamMembers, teamOwner } = this.state;
         return (
             <Card>
                 <div style={{ padding: "22px" }}>
@@ -114,7 +114,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                     </DisplayText>
                 </div>
                 <ResourceList
-                    resourceName={{singular: 'team member', plural: 'team members'}}
+                    resourceName={{ singular: 'team member', plural: 'team members' }}
                     items={teamMembers}
                     renderItem={(member: ITeamMember) => {
                         const shortcutActions = teamOwner ? [{
@@ -127,7 +127,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                             <ResourceList.Item
                                 id={`${member.user_id}`}
                                 onClick={() => {
-                                    if(teamOwner && this.props.canEdit) {
+                                    if (teamOwner && this.props.canEdit) {
                                         this.removeTeamMember(member);
                                     }
                                 }}
@@ -136,10 +136,10 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
                                     <Avatar customer size="small" name={member.user_name} source={`https://www.gravatar.com/avatar/${member.user_email_hash}?d=retro`} />
                                 }
                             >
-                            <h3>
-                                <TextStyle variation="strong">{member.user_name}</TextStyle>
-                                { member.team_owner ? <>&nbsp;<Badge status="info">Owner</Badge></> : <></> }
-                            </h3>
+                                <h3>
+                                    <TextStyle variation="strong">{member.user_name}</TextStyle>
+                                    {member.team_owner ? <>&nbsp;<Badge status="info">Owner</Badge></> : <></>}
+                                </h3>
                             </ResourceList.Item>
                         );
                     }}
@@ -149,17 +149,17 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
     }
 
     private createNewTeam = () => {
-        if(!this.props.canEdit) return;
+        if (!this.props.canEdit) return;
         this.setState({ doingAction: true });
         axios.post(`/dashboard-api/create-team.json`, {}).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const teamMembers: ITeamMember[] = payload["team"];
                     const teamID: string = payload["team_id"];
-                    this.setState({ 
-                        initialState: false, 
+                    this.setState({
+                        initialState: false,
                         doingAction: false,
                         teamID: teamID,
                         teamMembers: teamMembers,
@@ -172,13 +172,13 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
             toast.error("An error occurred.");
             // console.log(status, res.data);
             this.setState({ doingAction: false });
-        });   
+        });
     }
 
     private leaveTeam = () => {
-        if(!this.props.canEdit) return;
-        const destructor : JSX.Element = (
-            <DestructiveConfirmation 
+        if (!this.props.canEdit) return;
+        const destructor: JSX.Element = (
+            <DestructiveConfirmation
                 onConfirm={() => this.handleLeaveTeam()}
                 onClose={() => this.setState({ showDestructiveForm: undefined })}
                 confirmText={"Yes, leave group"}
@@ -188,17 +188,17 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
     }
 
     private handleLeaveTeam = () => {
-        if(!this.props.canEdit) return;
+        if (!this.props.canEdit) return;
         this.setState({ doingAction: true });
         axios.post(`/dashboard-api/leave-team.json`, {}).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
-                    this.setState({ 
-                        initialState: true, 
-                        doingAction: false, 
-                        teamID: "Loading...", 
+                if ("success" in payload && payload["success"]) {
+                    this.setState({
+                        initialState: true,
+                        doingAction: false,
+                        teamID: "Loading...",
                         teamMembers: [],
                         teamOwner: false,
                     });
@@ -212,37 +212,22 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
         });
     }
 
-    private getTeam = () => {
-        this.setState({ doingAction: true });
-        axios.post(`/dashboard-api/get-team.json`, {}).then(res => {
-            const status = res.status;
-            if(status == 200) {
-                const payload = res.data;
-                if("success" in payload && payload["success"]) {
-                    this.setState({ doingAction: false });
-                    return;
-                }
-            }
-            // console.log(status, res.data);
-            this.setState({ doingAction: false });
-        });
-    }
 
     private setTeam = () => {
-        if(!this.props.canEdit) return;
+        if (!this.props.canEdit) return;
         const { joinTeamID } = this.state;
         this.setState({ doingAction: true });
         axios.post(`/dashboard-api/set-team.json`, {
             "team_id": joinTeamID
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const teamMembers: ITeamMember[] = payload["team"];
                     const teamID: string = joinTeamID;
-                    this.setState({ 
-                        initialState: false, 
+                    this.setState({
+                        initialState: false,
                         doingAction: false,
                         teamID: teamID,
                         teamMembers: teamMembers,
@@ -264,10 +249,10 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
     }
 
     private removeTeamMember = (member: ITeamMember) => {
-        if(!this.props.canEdit) return;
-        if(!member.team_owner) {
-            const destructor : JSX.Element = (
-                <DestructiveConfirmation 
+        if (!this.props.canEdit) return;
+        if (!member.team_owner) {
+            const destructor: JSX.Element = (
+                <DestructiveConfirmation
                     onConfirm={() => this.handleTeamMemberRemoval(member)}
                     onClose={() => this.setState({ showDestructiveForm: undefined })}
                     title={`Remove ${member.user_name} from this group?`}
@@ -277,8 +262,8 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
 
             this.setState({ showDestructiveForm: destructor });
         } else {
-            const destructor : JSX.Element = (
-                <DestructiveConfirmation 
+            const destructor: JSX.Element = (
+                <DestructiveConfirmation
                     onConfirm={() => this.handleLeaveTeam()}
                     onClose={() => this.setState({ showDestructiveForm: undefined })}
                     title={`Are you sure?`}
@@ -297,12 +282,12 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
             "user_id": member.user_id,
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const teamMembers: ITeamMember[] = payload["team"];
-                    this.setState({ 
-                        initialState: false, 
+                    this.setState({
+                        initialState: false,
                         doingAction: false,
                         teamMembers: teamMembers,
                     });

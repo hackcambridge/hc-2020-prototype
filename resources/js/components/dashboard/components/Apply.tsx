@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from "react";
-import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton, Link, Tooltip } from "@shopify/polaris";
+import { Page, Card, Banner, Button, ButtonGroup, TextField, Heading, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, Link, Tooltip } from "@shopify/polaris";
 import axios from 'axios';
 import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
 import countryList from 'country-list';
@@ -32,9 +32,6 @@ interface IApplyState {
     reviewed: boolean,
 }
 
-function RequiredStar() {
-    return <span style={{ color: "red" }}>*</span>;
-}
 
 export const textFieldQuestions: { id: string, title: string, placeholder: string }[] = [
     { id: "1", title: "What do you want to get out of this event?", placeholder: "" },
@@ -185,12 +182,9 @@ class Apply extends Component<IApplyProps, IApplyState> {
             isSaving,
             countrySelection,
             showingVisaDateSelector,
-            visaRequired,
-            visaDate,
             agreedToConduct,
             agreedToPrivacy,
             agreedToTerms,
-            reviewed,
         } = this.state;
 
         const countriesNoGB = countryList().getData()
@@ -270,7 +264,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             disabled={!this.props.canEdit}
                         />
                     </div>
-                    {textFieldQuestions.map((q, index) => {
+                    {textFieldQuestions.map((q) => {
                         return (
                             <div key={q.id}>
                                 <div style={{ paddingBottom: "12px", paddingTop: "20px" }}>

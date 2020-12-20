@@ -15,39 +15,38 @@ interface IDestructiveConfirmationState {
 }
 
 class DestructiveConfirmation extends Component<IDestructiveConfirmationProps, IDestructiveConfirmationState> {
-    
+
     state = {
         isActive: this.props.show || true
     }
-    
+
     render() {
         return (
             <Modal
-                size="Small"
                 open={this.state.isActive}
                 onClose={this.toggleModal}
                 title={this.props.title || "Are you sure?"}
                 footer={
-                    <Button 
+                    <Button
                         onClick={this.handleConfirm}
                         destructive
                     >
                         {this.props.confirmText || "Yes, I'm sure"}
                     </Button>
                 }
-                // primaryAction={{
-                //     content: this.props.confirmText || "Delete",
-                //     onAction: this.handleConfirm,
-                //     destructive: true
-                // }}
-                >
-                    {this.props.bodyContent ? <Modal.Section>{this.props.bodyContent}</Modal.Section> : <></>}
+            // primaryAction={{
+            //     content: this.props.confirmText || "Delete",
+            //     onAction: this.handleConfirm,
+            //     destructive: true
+            // }}
+            >
+                {this.props.bodyContent ? <Modal.Section>{this.props.bodyContent}</Modal.Section> : <></>}
             </Modal>
         );
     }
 
     toggleModal = () => {
-        this.setState(({isActive}) => ({isActive: !isActive}));
+        this.setState(({ isActive }) => ({ isActive: !isActive }));
         this.props.onClose();
     };
 

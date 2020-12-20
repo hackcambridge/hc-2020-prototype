@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Page, Button, Card, ResourceList, Avatar, TextStyle, TextContainer, Heading, Filters, Stack, Layout, DescriptionList } from "@shopify/polaris";
+import { Page, Button, Card, Stack, Layout, DescriptionList } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { IAdminOverview } from '../../../interfaces/committee.interfaces';
@@ -36,7 +36,7 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
     }
 
     private renderLoadedContent(overview: IAdminOverview | undefined) {
-        if(!overview) {
+        if (!overview) {
             return <p>No data.</p>
         }
 
@@ -85,12 +85,12 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
         this.setState({ isLoading: true });
         axios.get(`/committee/admin-api/admin-overview.json`).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const overview: IAdminOverview = payload["overview"];
                     console.log(overview);
-                    this.setState({ 
+                    this.setState({
                         overview: overview,
                         isLoading: false,
                     });

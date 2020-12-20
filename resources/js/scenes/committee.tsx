@@ -7,7 +7,7 @@ import CommitteeDashboard from '../components/committee/CommitteeDashboard';
 
 if (document.getElementById('committee-root')) {
     const element = document.getElementById('committee-root')
-    if(element) initialise(element);
+    if (element) initialise(element);
 }
 
 
@@ -15,18 +15,18 @@ function initialise(root: HTMLElement) {
     console.log("Initialising Admin...");
     axios.get(`/committee/admin-api/init.json`).then(res => {
         const status = res.status;
-        if(status == 200) {
+        if (status == 200) {
             const obj = res.data;
             if ("success" in obj && obj["success"]) {
-                const payload : ICommitteeProps = obj["payload"];
+                const payload: ICommitteeProps = obj["payload"];
                 ReactDOM.render(
                     <BrowserRouter>
                         <CommitteeDashboard {...payload} />
-                    </BrowserRouter>, 
-                root);
+                    </BrowserRouter>,
+                    root);
 
                 const loadingElement = document.getElementById('loading');
-                if(loadingElement) {
+                if (loadingElement) {
                     loadingElement.remove();
                 }
             }

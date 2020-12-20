@@ -18,7 +18,7 @@ interface IInvitationState {
 }
 
 class Invitation extends Component<IInvitationProps, IInvitationState> {
-    
+
     private expires_after = 3; // days
     state = {
         attending: undefined,
@@ -28,7 +28,7 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
     }
 
     componentDidMount() {
-        if(this.props.application) {
+        if (this.props.application) {
             const confirmed = this.props.application.confirmed;
             const declined = this.props.application.rejected;
 
@@ -36,13 +36,13 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
             expiresOn = Math.floor(expiresOn / 3600000) * 3600000;
             this.setState({ expiration: expiresOn });
 
-            if(confirmed || declined) {
+            if (confirmed || declined) {
                 this.setState({ attending: !declined });
-            } else if(new Date().getTime() > expiresOn) {
+            } else if (new Date().getTime() > expiresOn) {
                 this.setState({ attending: false });
             }
         }
-        
+
     }
 
     render() {
@@ -63,7 +63,7 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
     renderContent(): ReactNode {
         const { attending, expiration } = this.state;
         var expirationBlock = <><p>Expiration: <strong>31st December</strong></p><br /></>;
-        if(this.props.application && expiration) {
+        if (this.props.application && expiration) {
             expirationBlock = <><p>Expiration: <strong>{new Date(expiration).toLocaleString()}</strong></p><br /></>;
         }
         return (<>
@@ -115,11 +115,11 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
         this.setState({ loading: true });
         axios.get(`/dashboard-api/accept-invitation.json`).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const obj = res.data;
                 if ("success" in obj && obj["success"]) {
                     const record: IApplicationRecord = obj["application"] as IApplicationRecord;
-                    if(record) {
+                    if (record) {
                         this.props.updateApplication(record);
                         toast.success("You're coming to Hack Cambridge!");
                         this.setState({ attending: true });
@@ -139,8 +139,8 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
     }
 
     private checkDeclineInvitation = () => {
-        const destructor : JSX.Element = (
-            <DestructiveConfirmation 
+        const destructor: JSX.Element = (
+            <DestructiveConfirmation
                 title={`Are you sure you don't want to come?`}
                 onConfirm={this.handleDeclineInvitation}
                 bodyContent={"This is permanent; your place will be reassigned immediately."}
@@ -154,11 +154,11 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
         this.setState({ loading: true });
         axios.get(`/dashboard-api/decline-invitation.json`).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const obj = res.data;
                 if ("success" in obj && obj["success"]) {
                     const record: IApplicationRecord = obj["application"] as IApplicationRecord;
-                    if(record) {
+                    if (record) {
                         this.props.updateApplication(record);
                         toast.success("Invitation declined");
                         this.setState({ attending: false });

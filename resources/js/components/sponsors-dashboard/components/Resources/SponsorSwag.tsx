@@ -1,11 +1,10 @@
-import { Avatar, Button, Card, Heading, Page, ResourceList, Stack } from "@shopify/polaris";
+import { Avatar, Button, Card, Heading, Page, ResourceList } from "@shopify/polaris";
 import { AddMajor } from "@shopify/polaris-icons";
 import axios from "axios";
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { ISwagItemDefinition, ISponsorData } from "../../../../interfaces/sponsors.interfaces";
 import DestructiveConfirmation from "../common/DestructiveConfirmation";
-import { extractHostname } from "../common/url_helpers";
 import SponsorSwagForm from "./SponsorSwagForm";
 import { toast } from "react-toastify";
 
@@ -44,17 +43,17 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
     }
 
     render() {
-        const { 
-            resources, 
-            resourceFormShowing, 
-            editingResource, 
+        const {
+            resources,
+            resourceFormShowing,
+            editingResource,
             loadingDefinitions,
             showDestructiveForm
         } = this.state;
         return (
             <Page
                 breadcrumbs={[{
-                    content: this.props.sponsor.name, 
+                    content: this.props.sponsor.name,
                     url: this.props.baseSponsorPath
                 }]}
                 title={this.props.title}
@@ -68,17 +67,17 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
                             loading={loadingDefinitions}
                             resourceName={this.props.resourceNames}
                             alternateTool={
-                                <Button 
-                                    plain icon={AddMajor} 
+                                <Button
+                                    plain icon={AddMajor}
                                     onClick={() => this.setState({ resourceFormShowing: true })}>
                                 </Button>
                             }
                         />
                         :
                         <Card.Section>
-                            <Button 
+                            <Button
                                 loading={loadingDefinitions}
-                                icon={AddMajor} 
+                                icon={AddMajor}
                                 onClick={() => this.setState({ resourceFormShowing: true })}
                             >
                                 &nbsp;Add {this.props.resourceNames["singular"]}
@@ -86,8 +85,8 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
                         </Card.Section>
                     }
                 </Card>
-                {resourceFormShowing ? 
-                    <SponsorSwagForm 
+                {resourceFormShowing ?
+                    <SponsorSwagForm
                         onClose={() => this.setState({ resourceFormShowing: false, editingResource: undefined })}
                         onCreate={() => this.loadResources()}
                         item={editingResource}
@@ -99,13 +98,12 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
                 }
                 {showDestructiveForm || <></>}
             </Page>
-          );
+        );
     }
 
     renderRow = (item: ISwagItemDefinition) => {
-        const {id, quantity, name, description} = item;
-        const media = <Avatar customer size="medium" name={name} />;
-    
+        const { id, quantity, name, description } = item;
+
         return (
             <ResourceList.Item
                 id={`${id}`}
@@ -114,11 +112,11 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
                 accessibilityLabel={`View details for ${name}`}
                 shortcutActions={[
                     {
-                        content: 'Edit', 
+                        content: 'Edit',
                         onAction: () => this.setState({ editingResource: item, resourceFormShowing: true })
                     },
                     {
-                        content: 'Delete', 
+                        content: 'Delete',
                         onAction: () => this.handleResourceDeletion(item)
                     },
                 ]}
@@ -135,7 +133,7 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
     };
 
     loadResources() {
-        if(!this.state.loadingDefinitions) {
+        if (!this.state.loadingDefinitions) {
             this.setState({ loadingDefinitions: true });
         }
 
@@ -145,11 +143,11 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
             detail_type: this.props.detailType
         }).then(res => {
             const status = res.status;
-            if(status >= 200 && status < 300) {
+            if (status >= 200 && status < 300) {
                 const data = res.data;
-                if("success" in data && data["success"]) {
+                if ("success" in data && data["success"]) {
                     const resources = data["details"];
-                    if(Array.isArray(resources)) {
+                    if (Array.isArray(resources)) {
                         const definitions = resources.map(r => {
                             const id: number = r["id"];
                             const payload = r["payload"];
@@ -163,7 +161,7 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
                             }
                             return spec;
                         });
-                        
+
                         this.setState({ resources: definitions, loadingDefinitions: false });
                         return;
                     }
@@ -175,8 +173,8 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
     }
 
     handleResourceDeletion = (resource: ISwagItemDefinition) => {
-        const destructor : JSX.Element = (
-            <DestructiveConfirmation 
+        const destructor: JSX.Element = (
+            <DestructiveConfirmation
                 onConfirm={() => this.actuallyDeleteResource(resource)}
                 onClose={() => this.setState({ showDestructiveForm: undefined })}
             />
@@ -186,7 +184,7 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
     }
 
     private actuallyDeleteResource(resource: ISwagItemDefinition) {
-        if(!this.state.loadingDefinitions) {
+        if (!this.state.loadingDefinitions) {
             this.setState({ loadingDefinitions: true });
         }
         axios.post(`/sponsors/dashboard-api/delete-resource.json`, {
@@ -196,9 +194,9 @@ class SponsorSwag extends Component<ISponsorSwagProps, ISponsorSwagState> {
             detail_type: this.props.detailType,
         }).then(res => {
             const status = res.status;
-            if(status >= 200 && status < 300) {
+            if (status >= 200 && status < 300) {
                 const data = res.data;
-                if("success" in data && data["success"]) {
+                if ("success" in data && data["success"]) {
                     toast.success("Resource deleted");
                     this.loadResources();
                 }

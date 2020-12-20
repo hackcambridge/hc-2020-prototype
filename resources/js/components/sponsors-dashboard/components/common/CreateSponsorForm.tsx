@@ -14,7 +14,7 @@ interface ICreateSponsorFormState {
 }
 
 class CreateSponsorForm extends Component<ICreateSponsorFormProps, ICreateSponsorFormState> {
-    
+
     node = null;
     state = {
         isActive: this.props.active,
@@ -31,16 +31,16 @@ class CreateSponsorForm extends Component<ICreateSponsorFormProps, ICreateSponso
                     content: 'Create',
                     onAction: this.createSponsor,
                 }}
-                >
+            >
                 <Modal.Section>
                     <Stack>
                         <Stack.Item fill>
-                        <TextField
-                            label="Sponsor Name"
-                            value={this.state.value}
-                            onChange={this.handleChange}
-                            placeholder="e.g. HackCambridge"
-                        />
+                            <TextField
+                                label="Sponsor Name"
+                                value={this.state.value}
+                                onChange={this.handleChange}
+                                placeholder="e.g. HackCambridge"
+                            />
                         </Stack.Item>
                     </Stack>
                 </Modal.Section>
@@ -54,15 +54,15 @@ class CreateSponsorForm extends Component<ICreateSponsorFormProps, ICreateSponso
             name: value
         }).then(res => {
             const status = res.status;
-            if(status >= 200 && status < 300) {
+            if (status >= 200 && status < 300) {
                 const data = res.data;
-                if("success" in data && data["success"]) {
+                if ("success" in data && data["success"]) {
                     toast.success(`New sponsor: ${value}`);
                     const sponsorSlug = data["data"]["slug"];
                     this.props.onCreateSponsor(sponsorSlug);
                     return;
                 }
-            } 
+            }
             console.log(`Status: ${status}`);
             console.log(res.data);
         })
@@ -70,12 +70,12 @@ class CreateSponsorForm extends Component<ICreateSponsorFormProps, ICreateSponso
     }
 
     toggleModal = () => {
-        this.setState(({isActive}) => ({isActive: !isActive}));
+        this.setState(({ isActive }) => ({ isActive: !isActive }));
         this.props.onClose();
     };
 
-    handleChange = (value) => {
-        this.setState({value});
+    handleChange = (value: string) => {
+        this.setState({ value });
     };
 }
 

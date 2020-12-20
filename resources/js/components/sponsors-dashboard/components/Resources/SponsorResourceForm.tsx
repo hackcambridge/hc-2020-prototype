@@ -22,34 +22,34 @@ interface ISponsorResourceFormState {
     description: string,
     urls: string[],
     newURL: string,
-    newURLError: string, 
+    newURLError: string,
     titleError: string,
     loading: boolean,
 }
 
 class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorResourceFormState> {
-    
+
     state = {
         isActive: true,
         title: this.props.item ? this.props.item.name : "",
         type: this.props.item ? this.props.item.type : "",
         description: this.props.item ? this.props.item.description : "",
-        newURL: "", 
+        newURL: "",
         urls: this.props.item ? this.props.item.urls : [],
         newURLError: "",
         titleError: "",
         loading: false,
-    }    
+    }
 
     render() {
-        const { 
-            isActive, 
-            title, 
-            type, 
-            description, 
-            urls, 
-            newURL, 
-            newURLError, 
+        const {
+            isActive,
+            title,
+            type,
+            description,
+            urls,
+            newURL,
+            newURLError,
             titleError,
             loading
         } = this.state;
@@ -64,11 +64,11 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
                     onAction: this.handleFormSubmit,
                 }}
                 loading={loading}
-                // secondaryActions={this.props.item ? [{
-                //     content: "Delete",
-                //     onAction: () => console.log("deleting"),
-                // }] : []}
-                >
+            // secondaryActions={this.props.item ? [{
+            //     content: "Delete",
+            //     onAction: () => console.log("deleting"),
+            // }] : []}
+            >
                 <Modal.Section>
                     <Stack distribution={"fillEvenly"}>
                         <Stack.Item>
@@ -80,7 +80,7 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
                                 error={titleError}
                             />
                         </Stack.Item>
-                        {this.props.types ? 
+                        {this.props.types ?
                             <Stack.Item>
                                 <Select
                                     label="Type"
@@ -88,8 +88,8 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
                                     onChange={this.handleTypeChange}
                                     value={type}
                                 />
-                            </Stack.Item> 
-                        : <></>}
+                            </Stack.Item>
+                            : <></>}
                     </Stack>
                     <br />
                     <TextField
@@ -142,15 +142,15 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
 
     handleFormSubmit = () => {
         this.setState({ loading: true });
-        if(this.state.title.trim().length == 0) {
+        if (this.state.title.trim().length == 0) {
             this.setState({ titleError: "Title can't be blank", loading: false });
             return;
         }
 
 
         const payload = {
-            urls: this.state.urls, 
-            name: this.state.title, 
+            urls: this.state.urls,
+            name: this.state.title,
             type: this.state.type,
             description: this.state.description,
         }
@@ -164,16 +164,16 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
             complete: "unknown",
         }).then(res => {
             const status = res.status;
-            if(status >= 200 && status < 300) {
+            if (status >= 200 && status < 300) {
                 const data = res.data;
-                if("success" in data && data["success"]) {
+                if ("success" in data && data["success"]) {
                     this.toggleModal();
                     this.setState({ loading: false });
                     toast.success(`Successfully saved ${this.props.detailType}`);
                     this.props.onCreate();
                     return;
                 }
-            } 
+            }
             toast.error("An error occurred");
             this.setState({ loading: false });
             console.log(`Status: ${status}`);
@@ -183,11 +183,11 @@ class SponsorResourceForm extends Component<ISponsorResourceFormProps, ISponsorR
 
     testAndAddNewURL = () => {
         const currentURL = this.state.newURL;
-        if(validURL(currentURL)) {
-            this.setState({ 
-                newURL: "", 
-                newURLError: "", 
-                urls: [currentURL, ...this.state.urls] 
+        if (validURL(currentURL)) {
+            this.setState({
+                newURL: "",
+                newURLError: "",
+                urls: [currentURL, ...this.state.urls]
             });
         } else {
             this.setState({ newURLError: "Invalid URL" })
