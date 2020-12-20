@@ -28,7 +28,7 @@ class Dashboard extends Controller
             $application = Application::where("user_id", "=", Auth::user()->id)->first();
             if($application) {
                 $is_attendee = $application->confirmed && !$application->rejected;
-                if($is_attendee || in_array(Auth::user()->type, ["admin", "committee", "sponsor"])) {
+                if($is_attendee || in_array(Auth::user()->type, ["admin", "committee", "sponsor", "sponsor-reviewer"])) {
                     return redirect(self::$slack_invite_url);
                 }
             }
@@ -142,7 +142,7 @@ class Dashboard extends Controller
 
     private function getOverviewStats() {
         if(Auth::check()) {
-            $allowed = in_array(Auth::user()->type, ["admin", "committee", "sponsor"]);
+            $allowed = in_array(Auth::user()->type, ["admin", "committee", "sponsor", "sponsor-reviewer"]);
             if(!$allowed) {
                 $application = Application::where("user_id", "=", Auth::user()->id)->first();
                 $allowed = $application && $application->confirmed && !$application->rejected;
