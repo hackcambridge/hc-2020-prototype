@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Page, Card, TextContainer, Heading, DisplayText, Link, Layout, ResourceList, Modal } from "@shopify/polaris";
+import { Page, Card, Link } from "@shopify/polaris";
 import { IDashboardProps } from "../../../interfaces/dashboard.interfaces";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
@@ -16,8 +16,8 @@ interface IOverviewState {
     majors: { id: string, count: number }[],
     universities: { id: string, count: number }[],
     studyLevels: { id: string, count: number }[],
-    expoAssignments: IExpoAssigments[],
-    expoModalShowing: boolean,
+    // expoAssignments: IExpoAssigments[],
+    // expoModalShowing: boolean,
 }
 
 interface IOverviewStats {
@@ -30,9 +30,7 @@ interface IExpoAssigments {
 }
 
 class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
-    private detailsReady = true;
-    private expoMapUrl = "https://assets.hackcambridge.com/table-allocations.png?t=" + Date.now();
-    private teamAllocationsUrl = "https://assets.hackcambridge.com/team_assignments.json";
+    // private teamAllocationsUrl = "https://assets.hackcambridge.com/team_assignments.json";
 
     state = {
         loading: true,
@@ -43,13 +41,13 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
         universities: [] as { id: string, count: number }[],
         studyLevels: [] as { id: string, count: number }[],
         expoAssignments: [] as IExpoAssigments[],
-        expoModalShowing: false,
+        // expoModalShowing: false,
     }
 
     componentDidMount() {
         this.loadStats();
         this.loadDatafile();
-        this.loadTeamAllocations();
+        // this.loadTeamAllocations();
     }
 
     render() {
@@ -77,68 +75,6 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                 </Link>
             </Card>
         );
-    }
-
-
-
-    private renderStats() {
-        const { loading, stats } = this.state;
-        if (loading) { return <Heading>Loading stats...</Heading>; }
-        else if (!stats) { return <Heading>Nothing here right now!</Heading>; }
-
-        const statistics: IOverviewStats = stats!;
-        return (<>
-            <div style={{ textAlign: "center", fontSize: "1.8rem" }}>
-                <span style={{
-                    paddingRight: "1rem",
-                    fontSize: "1.2rem",
-                    lineHeight: "1.8rem",
-                    verticalAlign: "middle",
-                    fontWeight: 700,
-                    color: "red",
-                }}>LIVE</span>
-                <span>Hacker Count: <span style={{ fontWeight: 700 }}>{statistics.checkedIn}</span></span>
-            </div>
-        </>);
-    }
-
-    private renderDatafileStats() {
-        const { loadedDatafile, universities, majors, studyLevels, modalShowing } = this.state;
-        if (!loadedDatafile) { return <></>; }
-
-        const cards = [
-            { set: universities, modalKey: "uni", title: "Universities" },
-            { set: majors, modalKey: "degree", title: "Degrees" },
-            { set: studyLevels, modalKey: "level", title: "Experience" },
-        ];
-        return <>
-            {cards.map(c => {
-                const { set, modalKey, title } = c;
-                const amOpen = modalKey == modalShowing;
-                const subset = amOpen ? set : set.slice(0, 3);
-                return <>
-                    <Card
-                        sectioned
-                        title={title}
-                        actions={[{
-                            content: (!amOpen ? "All" : "Collapse"),
-                            onAction: () => this.setState({ modalShowing: (!amOpen ? modalKey : "") })
-                        }]}
-                    >
-                        {subset.map(u => {
-                            return <>
-                                <div style={{ display: "inline-block", width: "100%", fontSize: "1.5rem", padding: "0.3rem 0" }}>
-                                    <span><strong>{u.id}</strong></span>
-                                    <span style={{ float: "right" }}>{u.count}</span>
-                                </div>
-                                <br />
-                            </>;
-                        })}
-                    </Card>
-                    <br />
-                </>
-            })}
-        </>;
     }
 
     private loadStats() {
@@ -185,20 +121,20 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
         });
     }
 
-    private loadTeamAllocations() {
-        axios.get(this.teamAllocationsUrl).then(res => {
-            const status = res.status;
-            if (status == 200) {
-                const payload = res.data as { assignments: IExpoAssigments[] };
-                this.setState({
-                    expoAssignments: payload.assignments ? payload.assignments.sort((a, b) => a.title.localeCompare(b.title)) : [] as IExpoAssigments[]
-                });
-            } else {
-                this.setState({ expoAssignments: [] as IExpoAssigments[] });
-                console.log(`Request failed. Status: ${status}`);
-            }
-        });
-    }
+    // private loadTeamAllocations() {
+    //     axios.get(this.teamAllocationsUrl).then(res => {
+    //         const status = res.status;
+    //         if (status == 200) {
+    //             const payload = res.data as { assignments: IExpoAssigments[] };
+    //             this.setState({
+    //                 expoAssignments: payload.assignments ? payload.assignments.sort((a, b) => a.title.localeCompare(b.title)) : [] as IExpoAssigments[]
+    //             });
+    //         } else {
+    //             this.setState({ expoAssignments: [] as IExpoAssigments[] });
+    //             console.log(`Request failed. Status: ${status}`);
+    //         }
+    //     });
+    // }
 }
 
 export default withRouter(Overview);
