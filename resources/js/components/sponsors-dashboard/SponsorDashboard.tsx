@@ -178,7 +178,7 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
             />
         );
 
-        if(isRoot && this.props.user.type == "sponsor" && this.props.sponsors.length > 0) {
+        if(isRoot && (this.props.user.type == "sponsor" || this.props.user.type == "sponsor-reviewer") && this.props.sponsors.length > 0) {
             return <Redirect to={`${this.props.sponsors[0].slug}/overview`} />;
         }
         else if(section.length == 0 && sponsor && this.props.validRoute) {

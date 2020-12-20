@@ -141,7 +141,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                         {
                             url: `${this.props.baseUrl}/checkin`,
                             label: "Check-in",
-                            icon: ChecklistMajor
+                            icon: ChecklistMajor,
+                            disabled: this.props.user.type == "sponsor-reviewer"
                         },
                         {
                             onClick: this.startReviewing,

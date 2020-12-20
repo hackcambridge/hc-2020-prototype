@@ -39,14 +39,14 @@ class Sponsors extends Controller
             case 'delete-sponsor': return $this->deleteSponsor($r);
             case 'update-sponsor': return $this->sponsorAdminDetailsUpdate($r);
             case 'load-agents-access': return $this->loadSponsorAgents($r, "access");
-            case 'load-agents-mentor': return $this->loadSponsorAgents($r, "mentor", ["sponsor", "admin"]);
-            case 'load-agents-recruiter': return $this->loadSponsorAgents($r, "recruiter", ["sponsor", "admin"]);
+            case 'load-agents-mentor': return $this->loadSponsorAgents($r, "mentor", ["sponsor", "sponsor-reviewer", "admin"]);
+            case 'load-agents-recruiter': return $this->loadSponsorAgents($r, "recruiter", ["sponsor", "sponsor-reviewer", "admin"]);
             case 'add-agent-access': return $this->addSponsorAgent($r, "access");
-            case 'add-agent-mentor': return $this->addSponsorAgent($r, "mentor", ["sponsor", "admin"]);
-            case 'add-agent-recruiter': return $this->addSponsorAgent($r, "recruiter", ["sponsor", "admin"]);
+            case 'add-agent-mentor': return $this->addSponsorAgent($r, "mentor", ["sponsor", "sponsor-reviewer", "admin"]);
+            case 'add-agent-recruiter': return $this->addSponsorAgent($r, "recruiter", ["sponsor", "sponsor-reviewer", "admin"]);
             case 'remove-agent-access': return $this->removeSponsorAgent($r, "access");
-            case 'remove-agent-mentor': return $this->removeSponsorAgent($r, "mentor", ["sponsor", "admin"]);
-            case 'remove-agent-recruiter': return $this->removeSponsorAgent($r, "recruiter", ["sponsor", "admin"]);
+            case 'remove-agent-mentor': return $this->removeSponsorAgent($r, "mentor", ["sponsor", "sponsor-reviewer", "admin"]);
+            case 'remove-agent-recruiter': return $this->removeSponsorAgent($r, "recruiter", ["sponsor", "sponsor-reviewer", "admin"]);
             case 'add-resource': return $this->addResource($r);
             case 'load-resources': return $this->loadResources($r);
             case 'delete-resource': return $this->deleteResource($r);
@@ -104,7 +104,7 @@ class Sponsors extends Controller
                               ->where("type", "agent")
                               ->where("email", Auth::user()->email)
                               ->get();
-            if($agent && Auth::user()->type == "sponsor") {
+            if($agent && (Auth::user()->type == "sponsor" || Auth::user()->type == "sponsor-reviewer")) {
                 return true;
             }
         }
@@ -153,7 +153,7 @@ class Sponsors extends Controller
     }
 
     public function storeAsset(Request $r) {
-        if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug"])) {
+        if($this->canContinue(["admin", "sponsor-reviewer", "sponsor"], $r->request, ["sponsor_slug"])) {
             $sponsor_slug = $r->request->get("sponsor_slug");
             if ($r->hasFile('asset')) {
                 $directory = "sponsors/" . $sponsor_slug;
@@ -171,7 +171,7 @@ class Sponsors extends Controller
     }
 
     public function removeAsset(Request $r) {
-        if($this->canContinue(["admin", "sponsor"], $r->request, ["sponsor_slug", "asset_url"])) {
+        if($this->canContinue(["admin", "sponsor-reviewer", "sponsor"], $r->request, ["sponsor_slug", "asset_url"])) {
             $sponsor_slug = $r->request->get("sponsor_slug");
             $url =  $r->request->get("asset_url");
 
@@ -409,7 +409,7 @@ class Sponsors extends Controller
     }
 
     private function addResource($r) {
-        if($this->canContinue(["admin", "sponsor"], $r, ["sponsor_id", "sponsor_slug", "payload", "detail_id", "detail_type", "complete"])) {
+        if($this->canContinue(["admin", "sponsor-reviewer", "sponsor"], $r, ["sponsor_id", "sponsor_slug", "payload", "detail_id", "detail_type", "complete"])) {
             $id = $r->get("sponsor_id");
             $slug = $r->get("sponsor_slug");
             $payload = $r->get("payload");
@@ -462,7 +462,7 @@ class Sponsors extends Controller
     }
 
     private function loadResources($r) {
-        if($this->canContinue(["admin", "committee", "sponsor"], $r, ["sponsor_id", "sponsor_slug"])) {
+        if($this->canContinue(["admin", "committee", "sponsor-reviewer", "sponsor"], $r, ["sponsor_id", "sponsor_slug"])) {
             $id = $r->get("sponsor_id");
             $slug = $r->get("sponsor_slug");
             $detail_type = $r->get("detail_type");
@@ -495,7 +495,7 @@ class Sponsors extends Controller
     }
 
     private function deleteResource($r) {
-        if($this->canContinue(["admin", "sponsor"], $r, ["sponsor_id", "sponsor_slug", "detail_id", "detail_type"])) {
+        if($this->canContinue(["admin", "sponsor-reviewer", "sponsor"], $r, ["sponsor_id", "sponsor_slug", "detail_id", "detail_type"])) {
             $detail_id = $r->get("detail_id");
             $id = $r->get("sponsor_id");
             $slug = $r->get("sponsor_slug");

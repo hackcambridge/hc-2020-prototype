@@ -8,10 +8,9 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, LocationMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
-import MapView from "./components/MapView";
 import Apply from "./components/Apply";
 import TeamApplication from "./components/TeamApplication";
 import axios from 'axios';
