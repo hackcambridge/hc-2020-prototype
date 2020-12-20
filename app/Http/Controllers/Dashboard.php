@@ -28,7 +28,7 @@ class Dashboard extends Controller
             $application = Application::where("user_id", "=", Auth::user()->id)->first();
             if($application) {
                 $is_attendee = $application->confirmed && !$application->rejected;
-                if($is_attendee || in_array(Auth::user()->type, ["admin", "committee", "sponsor", "sponsor-reviewer")) {
+                if($is_attendee || in_array(Auth::user()->type, ["admin", "committee", "sponsor", "sponsor-reviewer"])) {
                     return redirect(self::$slack_invite_url);
                 }
             }

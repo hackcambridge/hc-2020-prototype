@@ -38,12 +38,17 @@ class CustomUserRepository extends Auth0UserRepository {
             $user->setAttribute('profile', '{}');
         }
 
-        $privileges = DB::table("sponsor_agents")
-                ->where("email", "=", $user->email)
-                ->join("sponsors","sponsors.id","=","sponsor_agents.sponsor_id")->select("privileges")->first();
-        if ($user->type == "sponsors" && strpos($privileges,"reviewing")) {
-            $user->setAttribute('type', "sponsor-reviewer");
+        if ($user->type == "sponsor" || $user->type == "sponsor-reviewer") {
+            $sponsor = DB::table("sponsor_agents")
+                    ->where("email", "=", $user->email)
+                    ->join("sponsors","sponsors.id","=","sponsor_agents.sponsor_id")->select("privileges")->first();
+            if (strpos($sponsor->privileges,"reviewing")) {
+                $user->setAttribute('type', "sponsor-reviewer");
+            } else {
+                $user->setAttribute('type', "sponsor");
+            }
         }
+        
         $user->setAttribute('email', isset( $profile['email'] ) ? $profile['email'] : '');
         $user->setAttribute('name', isset( $profile['name'] ) ? $profile['name'] : '');
                 

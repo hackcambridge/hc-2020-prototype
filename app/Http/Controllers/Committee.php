@@ -100,7 +100,6 @@ class Committee extends Controller
 
     private function canContinue($r, $stringChecks = [], $admin_only = true) {
         $allowed = $admin_only ? ["admin"] : ["admin", "committee", "sponsor-reviewer"];
-        error_log(Auth::user(), 3, "/tmp/my-errors.log");
         if(Auth::check() && in_array(Auth::user()->type, $allowed)) {
             if($r) {
                 foreach ($stringChecks as $param) {
@@ -121,8 +120,7 @@ class Committee extends Controller
             ->select('applications.id', 'applications.isSubmitted', 'applications.user_id')
             ->join('users', 'users.id', '=', 'applications.user_id')
             ->select('applications.id', 'applications.isSubmitted')
-            ->where('users.type', '=', 'hacker')
-            ->where('applications.isSubmitted', "=", 1);
+            ->where('users.type', '=', 'hacker');
     }
 
     private function getAdminOverview() {
@@ -155,8 +153,14 @@ class Committee extends Controller
                 "overview" => array(
                     "users" => DB::table('users')->where('users.type', '=', 'hacker')->count(),
                     "applications" => array(
-                        "total" => $this->overviewBaseQuery()->count(),
-                        "invited" => $this->overviewBaseQuery()->where("invited", "=", 1)->count(),
+                        "total" => $this->overviewBaseQuery()
+                            ->count(),
+                        "submitted" => $this->overviewBaseQuery()
+                            ->where('isSubmitted', "=", 1)
+                            ->count(),
+                        "invited" => $this->overviewBaseQuery()
+                            ->where("invited", "=", 1)
+                            ->count(),
                         "invitations_pending" => $this->overviewBaseQuery()
                             ->where("invited", "=", 1)
                             ->where("rejected", "=", 0)

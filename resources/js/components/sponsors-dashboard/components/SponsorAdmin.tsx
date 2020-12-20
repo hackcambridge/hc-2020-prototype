@@ -1,13 +1,12 @@
-import React, { Component, useState, useCallback } from "react";
+import React, { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Page, ChoiceList, TextField, Layout, Card, RangeSlider, Avatar, ResourceList, TextStyle, Button, Icon } from "@shopify/polaris";
+import { Page, ChoiceList, TextField, Layout, Card, Avatar, ResourceList, TextStyle, Button } from "@shopify/polaris";
 import { AddMajor } from '@shopify/polaris-icons';
 import { ISponsorAgent, ISponsorData } from "../../../interfaces/sponsors.interfaces";
 import axios from "axios";
 import SponsorAgentForm from "./Agents/SponsorAgentForm";
 import DestructiveConfirmation from "./common/DestructiveConfirmation";
 import { toast } from "react-toastify";
-import { toAdminPath } from "@shopify/app-bridge/actions/Navigation/Redirect";
 
 interface ISponsorAdminProps extends RouteComponentProps {
     baseSponsorPath: string,

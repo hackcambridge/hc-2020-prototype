@@ -46,10 +46,8 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
                     <Card sectioned title={""}>
                         <Stack>
                             <Button monochrome outline>{`${overview.users}`} registrations</Button>
-                            <Button url={`applications`} monochrome outline>{`${overview.applications.total}`} applications</Button>
-                        </Stack>
-                        <br />
-                        <Stack>
+                            <Button monochrome outline>{`${overview.applications.total}`} applications</Button>
+                            <Button url={`applications`} monochrome outline>{`${overview.applications.submitted}`} submitted</Button>
                             <Button monochrome outline>{`${overview.applications.invited}`} invited</Button>
                             <Button monochrome outline>{`${overview.applications.invitations_pending}`} pending</Button>
                             <Button monochrome outline>{`${overview.applications.accepted}`} confirmed</Button>
@@ -100,7 +98,6 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
                 }
             }
             toast.error("Failed to load data.");
-            // console.log(status, res.data);
             this.setState({ isLoading: false });
         });
     }
