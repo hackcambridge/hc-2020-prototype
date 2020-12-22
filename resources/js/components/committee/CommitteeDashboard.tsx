@@ -22,6 +22,7 @@ import Omnitool from "./components/Omnitool";
 import ChallengesEditor from "./components/ChallengesEditor";
 import ScheduleEditor from "./components/ScheduleEditor";
 import FAQEditor from "./components/FAQEditor";
+import Mailing from "./components/Mailing";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {

@@ -62,8 +62,21 @@ class Mailing extends Component<IMailingProps & RouteComponentProps, IMailingSta
         running: false,
     };
 
-    private defaultHTMLTemplate = ``;
-    private defaultPlaintextTemplate = ``;
+    private defaultHTMLTemplate = `<p class="greeting">Hi %recipient.name%!</p>
+<p>We are happy to invite you to participate in Hex Cambridge 2021!</p>
+<div style="margin: 2rem 0;">
+    <a class="noline" href="https://hackcambridge.com/dashboard/apply/invitation"><span class="button">Your Hex Cambridge Invitation →</span></a>
+</div>
+<p class="signoff">All the best,<br/>The Hex Cambridge Team</p>`;
+    private defaultPlaintextTemplate = `Hi %recipient.name%!
+
+We are happy to invite you to participate in Hex Cambridge 2021!
+
+Your Hack Cambridge invitation: https://hackcambridge.com/dashboard/apply/invitation/.
+
+All the best,
+
+The Hack Cambridge Team`;
 
     constructor(props: IMailingProps & RouteComponentProps) {
         super(props);
@@ -100,20 +113,15 @@ class Mailing extends Component<IMailingProps & RouteComponentProps, IMailingSta
 
     }
 
-    private handleRecipientChange(newValue: string) {
-        this.state.recipient = newValue;
-    }
-
-    private handleSubjectChange(newValue: string) {
-        this.state.subject = newValue;
-    }
-
     render() {
         const tabs = [
             { id: "plaintext", content: "Plaintext" },
             { id: "html", content: "HTML" }
         ];
         const {
+            recipient,
+            subject,
+            emailList,
             newFileModal,
             selectedTab,
             newFileName,
@@ -126,9 +134,13 @@ class Mailing extends Component<IMailingProps & RouteComponentProps, IMailingSta
                     label="Recipient"
                     options={options}
                     onChange={this.handleRecipientChange}
-                    value={this.state.recipient}
-                />
-                <TextField label="Subject" value={this.state.subject} onChange={this.handleSubjectChange} />;
+                    value={recipient}
+                /><br />
+                { this.state.recipient == "custom" ?
+                    <TextField label="Email list:" placeholder=";-separated values" value={emailList} onChange={this.handleEmailListChange} /> : ''}
+                <br />
+                <TextField label="Subject" value={subject} onChange={this.handleSubjectChange} />
+                <br />
                 <Card>
                     {this.renderOverview()}
                     <Tabs tabs={tabs} selected={selectedTab} onSelect={this.handleTabChange} fitted>
@@ -222,7 +234,7 @@ class Mailing extends Component<IMailingProps & RouteComponentProps, IMailingSta
                                 disabled={loading}
                                 labelInline
                                 placeholder={"-- Select --"}
-                                label="Script: "
+                                label="Template: "
                                 options={files.map(f => {
                                     return { label: `${f}`, value: f };
                                 })}
@@ -267,6 +279,17 @@ class Mailing extends Component<IMailingProps & RouteComponentProps, IMailingSta
 
     private handleFileNameChange = (name: string) => {
         this.setState({ newFileName: name });
+    }
+    private handleRecipientChange = (newValue: string) => {
+        this.setState({ recipient: newValue });
+    }
+
+    private handleSubjectChange = (newValue: string) => {
+        this.setState({ subject: newValue });
+    }
+
+    private handleEmailListChange = (newValue: string) => {
+        this.setState({ emailList: newValue });
     }
 
     private addNewFile = () => {
