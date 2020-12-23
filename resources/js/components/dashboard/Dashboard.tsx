@@ -159,12 +159,12 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
                 {showApplicationItems && this.canSeeApplicationItems()
                     ?
-                        <>
-                            {this.renderApplicationBanner()}
-                            <div style={{ marginTop: "-1.6rem" }}>
-                                <Navigation.Section items={applicationNavigationItems} />
-                            </div>
-                        </>
+                    <>
+                        {this.renderApplicationBanner()}
+                        <div style={{ marginTop: "-1.6rem" }}>
+                            <Navigation.Section items={applicationNavigationItems} />
+                        </div>
+                    </>
                     : <></>
                 }
             </Navigation>
@@ -285,7 +285,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             }
 
             if (applicationOpen) {
-                return application.isSubmitted ? (complete ? "pending" : "incomplete" ) : "started";
+                return application.isSubmitted ? (complete ? "pending" : "incomplete") : "started";
             } else {
                 return application.isSubmitted ? (complete ? "pending" : "rejected") : "rejected";
             }
@@ -302,7 +302,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 if ("success" in obj && obj["success"]) {
                     // TODO: check flow, maybe return blank record instead of null.
                     const record: IApplicationRecord = obj["record"];
-                    if(record) {
+                    if (record) {
                         this.setState({ applicationOpen: !record.reviewed });
                         this.updateApplicationRecord(record);
                     }

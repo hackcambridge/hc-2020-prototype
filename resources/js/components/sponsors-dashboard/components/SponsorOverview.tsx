@@ -48,7 +48,7 @@ class SponsorOverview extends Component<ISponsorOverview> {
                                     items={items}
                                     renderItem={(item: ISponsorStatusDisplay) => {
                                         const { sponsorName, complete } = item;
-                                        return <ResourceItem>
+                                        return ( <ResourceItem>
                                             <Stack>
                                                 <Stack.Item fill><DisplayText size="medium">{sponsorName}</DisplayText></Stack.Item>
                                                 <Stack.Item>
@@ -60,7 +60,7 @@ class SponsorOverview extends Component<ISponsorOverview> {
                                                     <ProgressBar progress={complete} size="small" />
                                                 </Stack.Item>
                                             </Stack>
-                                        </ResourceItem>
+                                        </ResourceItem>);
                                     }}
                                 />
                             </Card.Section>

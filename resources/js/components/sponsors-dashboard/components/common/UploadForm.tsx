@@ -17,7 +17,7 @@ interface IUploadFormState {
 }
 
 class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
-    
+
     state = {
         files: [],
         isActive: true,
@@ -33,20 +33,20 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
         const uploadedFiles = files.length > 0 && (
             <Stack vertical>
                 {files.map((file: File, index) => (
-                <Stack alignment="center" key={index}>
-                    <Thumbnail
-                        size="small"
-                        alt={file.name}
-                        source={
-                            validImageTypes.indexOf(file.type) > 0
-                            ? window.URL.createObjectURL(file)
-                            : 'https://cdn.shopify.com/s/files/1/0757/9955/files/New_Post.png?12678548500147524304'
-                        }
-                    />
-                    <div>
-                    {file.name} <Caption>{file.size} bytes</Caption>
-                    </div>
-                </Stack>
+                    <Stack alignment="center" key={index}>
+                        <Thumbnail
+                            size="small"
+                            alt={file.name}
+                            source={
+                                validImageTypes.indexOf(file.type) > 0
+                                    ? window.URL.createObjectURL(file)
+                                    : 'https://cdn.shopify.com/s/files/1/0757/9955/files/New_Post.png?12678548500147524304'
+                            }
+                        />
+                        <div>
+                            {file.name} <Caption>{file.size} bytes</Caption>
+                        </div>
+                    </Stack>
                 ))}
             </Stack>
         );
@@ -57,7 +57,7 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
                 open={isActive}
                 onClose={this.toggleModal}
                 title={"Upload assets (20MB max.)"}
-                footer={<Button primary onClick={this.handleFormSubmit} loading={isSaving}>Save</Button> }
+                footer={<Button primary onClick={this.handleFormSubmit} loading={isSaving}>Save</Button>}
             >
                 <Modal.Section>
                     <DropZone
@@ -68,7 +68,7 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
                             this.setState({
                                 files: [...this.state.files, ...acceptedFiles]
                             });
-                            if(rejectedFiles.length > 0) {
+                            if (rejectedFiles.length > 0) {
                                 toast.error(`${rejectedFiles.length} file(s) too large`);
                             }
                         }}
@@ -92,7 +92,7 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
     }
 
     private uploadFiles(files: File[], urls: IAssetInformation[]) {
-        if(files.length > 0) {
+        if (files.length > 0) {
             let formData = new FormData();
             formData.append('asset', files[0]);
             formData.append('sponsor_id', this.props.sponsor.id);
@@ -103,9 +103,9 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
                 }
             }).then(res => {
                 const currentURLs = urls;
-                if(res.status == 200) {
+                if (res.status == 200) {
                     const response = res.data;
-                    if("success" in response && response["success"]) {
+                    if ("success" in response && response["success"]) {
                         currentURLs.push({
                             name: response["originalName"],
                             url: response["data"]
@@ -118,7 +118,7 @@ class UploadForm extends Component<IUploadFormProps, IUploadFormState> {
                     console.log(res.status, res.data);
                 }
 
-                if(files.length > 1) {
+                if (files.length > 1) {
                     this.uploadFiles(files.splice(1), urls);
                 } else {
                     this.props.onSubmit(urls);

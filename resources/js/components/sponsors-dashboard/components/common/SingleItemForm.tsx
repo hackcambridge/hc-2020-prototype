@@ -65,13 +65,13 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
         return (
             <Page
                 breadcrumbs={[{
-                    content: this.props.sponsor.name, 
+                    content: this.props.sponsor.name,
                     url: this.props.baseSponsorPath
                 }]}
                 title={this.props.pageTitle}
                 titleMetadata={isLoading ? <></> : this.generateStatusBadge(complete)}
-                // primaryAction={{content: 'Save', disabled: false}}
-                // secondaryActions={[{content: 'Duplicate'}, {content: 'View on your store'}]}
+            // primaryAction={{content: 'Save', disabled: false}}
+            // secondaryActions={[{content: 'Duplicate'}, {content: 'View on your store'}]}
             >
                 {/* {this.props.detailType in descriptions ? 
                 <Card sectioned>
@@ -84,67 +84,67 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             <TextField label="Title" value={title} onChange={this.handleTitleChange} disabled={isLoading} />
                             <br />
                         </>
-                    : <></>}
+                        : <></>}
                     {this.props.hasDescription ?
                         <>
-                            <TextField label="Description" value={description} onChange={this.handleDescriptionChange} multiline={4} disabled={isLoading}/>
+                            <TextField label="Description" value={description} onChange={this.handleDescriptionChange} multiline={4} disabled={isLoading} />
                             <br />
                         </>
-                    : <></>}
+                        : <></>}
                     {this.props.hasAddress ?
                         <>
                             <Heading>Address details:</Heading>
-                            <br/>
-                            <TextField label="Name" placeholder="eg. My Company" value={name} onChange={this.handleNameChange} disabled={isLoading} />
-                            <br/>
-                            <TextField label="Building name" placeholder="eg. Working house" value={buildName} onChange={this.handleBuildNameChange} disabled={isLoading} />
-                            <br/>
-                            <TextField label="Address" placeholder="eg. 10 Example Street" value={address} onChange={this.handleAddressChange} disabled={isLoading}/>
-                            <br/>
-                            <TextField label="City" placeholder="eg. London" value={city} onChange={this.handleCityChange} disabled={isLoading}/>
-                            <br/>
-                            <TextField label="County" value={county} onChange={this.handleCountyChange} disabled={isLoading}/>
                             <br />
-                            <TextField label="Postal code" value={postalCode} onChange={this.handlePostCodeChange} disabled={isLoading}/>
+                            <TextField label="Name" placeholder="eg. My Company" value={name} onChange={this.handleNameChange} disabled={isLoading} />
+                            <br />
+                            <TextField label="Building name" placeholder="eg. Working house" value={buildName} onChange={this.handleBuildNameChange} disabled={isLoading} />
+                            <br />
+                            <TextField label="Address" placeholder="eg. 10 Example Street" value={address} onChange={this.handleAddressChange} disabled={isLoading} />
+                            <br />
+                            <TextField label="City" placeholder="eg. London" value={city} onChange={this.handleCityChange} disabled={isLoading} />
+                            <br />
+                            <TextField label="County" value={county} onChange={this.handleCountyChange} disabled={isLoading} />
+                            <br />
+                            <TextField label="Postal code" value={postalCode} onChange={this.handlePostCodeChange} disabled={isLoading} />
                             <br />
                         </>
-                    : <></>}
-                    {this.props.hasAssets ? 
-                        files.length > 0 ? 
+                        : <></>}
+                    {this.props.hasAssets ?
+                        files.length > 0 ?
                             <ResourceList
-                                resourceName={{singular: 'asset', plural: 'assets'}}
+                                resourceName={{ singular: 'asset', plural: 'assets' }}
                                 items={files}
                                 renderItem={this.renderAssetThumbnail}
                                 showHeader={true}
                                 loading={isLoading}
                                 alternateTool={
-                                    <Button 
-                                        plain icon={AddMajor} 
+                                    <Button
+                                        plain icon={AddMajor}
                                         onClick={() => this.setState({ uploadFormShowing: true })}>
                                     </Button>
                                 }
                             />
-                        : <Button disabled={isLoading} icon={AttachmentMajor} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>
-                    : <></>}
+                            : <Button disabled={isLoading} icon={AttachmentMajor} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>
+                        : <></>}
 
                     <hr style={{ borderStyle: "solid", borderColor: "#dedede94", margin: "20px 0" }} />
                     <div style={{ textAlign: "right" }}>
-                        <Button 
-                            primary 
+                        <Button
+                            primary
                             loading={isLoading}
                             onClick={() => this.saveContent(false)}
-                            style={{ background: "#3D82FF"}}
+                            style={{ background: "#3D82FF" }}
                         >
                             Save
                         </Button>
                     </div>
                 </Card>
-                {uploadFormShowing ? <UploadForm 
+                {uploadFormShowing ? <UploadForm
                     sponsor={this.props.sponsor}
                     onClose={() => this.setState({ uploadFormShowing: false })}
                     onSubmit={(urls: IAssetInformation[]) => {
                         const newURLs: IAssetInformation[] = urls;
-                        const oldFiles: IAssetInformation[] = files; 
+                        const oldFiles: IAssetInformation[] = files;
                         const newFields = fields;
                         newFields.files = oldFiles.concat(newURLs);
                         this.setState({ fields: newFields });
@@ -230,8 +230,8 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
     }
 
     deleteAsset(item: IAssetInformation) {
-        const destructor : JSX.Element = (
-            <DestructiveConfirmation 
+        const destructor: JSX.Element = (
+            <DestructiveConfirmation
                 onConfirm={() => this.actuallyDeleteAsset(item)}
                 onClose={() => this.setState({ showDestructiveForm: undefined })}
             />
@@ -241,7 +241,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
     }
 
     actuallyDeleteAsset(item: IAssetInformation) {
-        if(!this.state.isLoading) {
+        if (!this.state.isLoading) {
             this.setState({ isLoading: true });
         }
         // console.log("Trying to delete");
@@ -251,9 +251,9 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             asset_url: item.url
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const newFields = this.state.fields;
                     newFields.files = newFields.files.filter(f => f.url !== item.url)
                     this.setState({ fields: newFields });
@@ -272,52 +272,52 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
     calculateCompleteness(): string {
         let complete = 0;
         let incomplete = 0;
-        if(this.props.hasTitle) {
-            if(this.state.fields.title.length > 0) {
+        if (this.props.hasTitle) {
+            if (this.state.fields.title.length > 0) {
                 complete++;
             } else {
                 incomplete++;
             }
         }
 
-        if(this.props.hasDescription) {
-            if(this.state.fields.description.length > 0) {
+        if (this.props.hasDescription) {
+            if (this.state.fields.description.length > 0) {
                 complete++;
             } else {
                 incomplete++;
             }
         }
 
-        if(this.props.hasAddress) {
-            if(this.state.fields.address.length > 0 && this.state.fields.postalCode.length > 0) {
+        if (this.props.hasAddress) {
+            if (this.state.fields.address.length > 0 && this.state.fields.postalCode.length > 0) {
                 complete++;
             } else {
                 incomplete++;
             }
         }
 
-        if(this.props.hasAssets) {
-            if(this.state.fields.files.length > 0) {
+        if (this.props.hasAssets) {
+            if (this.state.fields.files.length > 0) {
                 complete++;
             } else {
                 incomplete++;
             }
         }
 
-        if(complete == 0) return "no";
-        else if(incomplete == 0) return "yes";
+        if (complete == 0) return "no";
+        else if (incomplete == 0) return "yes";
         else return "partial";
     }
 
     generateStatusBadge(completeness: string) {
-        if(completeness == "no") return <Badge status={'warning'}>{"Incomplete"}</Badge>;
-        else if(completeness == "yes") return <Badge status={'success'}>{"Complete"}</Badge>;
-        else if(completeness == "partial")return <Badge status={'attention'}>{"Partially Complete"}</Badge>;        
-        else return <Badge status={'new'}>{"Unknown"}</Badge>;        
+        if (completeness == "no") return <Badge status={'warning'}>{"Incomplete"}</Badge>;
+        else if (completeness == "yes") return <Badge status={'success'}>{"Complete"}</Badge>;
+        else if (completeness == "partial") return <Badge status={'attention'}>{"Partially Complete"}</Badge>;
+        else return <Badge status={'new'}>{"Unknown"}</Badge>;
     }
 
     private loadContent() {
-        if(!this.state.isLoading) {
+        if (!this.state.isLoading) {
             this.setState({ isLoading: true });
         }
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
@@ -326,11 +326,11 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             detail_type: this.props.detailType
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const detail = payload["details"];
-                    if(Array.isArray(detail) && detail.length > 0) {
+                    if (Array.isArray(detail) && detail.length > 0) {
                         const details: {
                             title: string,
                             description: string,
@@ -343,7 +343,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             files: IAssetInformation[]
                         } = JSON.parse(detail[0]["payload"]);
 
-                        this.setState({ 
+                        this.setState({
                             isLoading: false,
                             detail_id: detail[0]["id"],
                             complete: detail[0]["complete"],
@@ -366,8 +366,8 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
         }).finally(() => this.setState({ isLoading: false }));
     }
 
-    private saveContent = (silent: boolean = false, then: () => void = () => {}) => {
-        if(!this.state.isLoading) {
+    private saveContent = (silent: boolean = false, then: () => void = () => { }) => {
+        if (!this.state.isLoading) {
             this.setState({ isLoading: true });
         }
 
@@ -381,9 +381,9 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             complete: this.calculateCompleteness(),
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const detailData = payload["detail"];
                     const details: {
                         title: string,
@@ -396,8 +396,8 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                         postalCode: string,
                         files: IAssetInformation[]
                     } = JSON.parse(detailData["payload"]);
-                    
-                    this.setState({ 
+
+                    this.setState({
                         isLoading: false,
                         complete: detailData["complete"],
                         fields: {
@@ -412,7 +412,7 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                             files: details.files,
                         }
                     });
-                    if(!silent) {
+                    if (!silent) {
                         toast.success("Form saved");
                     }
                     then();

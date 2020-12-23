@@ -80,16 +80,16 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
     componentDidMount() {
         this.loadSponsorAgents();
     }
-    
+
     render() {
-        const { 
-            selected, 
-            packageName, 
-            recruiters, 
-            mentors, 
-            doingSave, 
-            agents, 
-            loadingAgents, 
+        const {
+            selected,
+            packageName,
+            recruiters,
+            mentors,
+            doingSave,
+            agents,
+            loadingAgents,
             sponsorAgentFormShowing,
             isEditingSponsorAgent,
             showDestructiveForm
@@ -98,12 +98,12 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             singular: 'sponsor agent',
             plural: 'sponsor agents',
         };
-      
+
         return (
             <Page
-                breadcrumbs={[{content: `${this.props.sponsor.name}`, url: `${this.props.baseSponsorPath}overview`}]}
+                breadcrumbs={[{ content: `${this.props.sponsor.name}`, url: `${this.props.baseSponsorPath}overview` }]}
                 title="Admin"
-                primaryAction={{content: 'Delete', onAction: this.handleDeleteClicked, destructive: true}}
+                primaryAction={{ content: 'Delete', onAction: this.handleDeleteClicked, destructive: true }}
             >
                 <Layout>
                     <Layout.Section oneHalf>
@@ -146,14 +146,14 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
                                     renderItem={this.renderItem}
                                     resourceName={resourceName}
                                     alternateTool={
-                                        <Button 
-                                            plain icon={AddMajor} 
+                                        <Button
+                                            plain icon={AddMajor}
                                             onClick={() => this.setState({ sponsorAgentFormShowing: true })}>
                                         </Button>}
                                 />
-                            :  <Card.Section>
-                                    <Button 
-                                        icon={AddMajor} 
+                                : <Card.Section>
+                                    <Button
+                                        icon={AddMajor}
                                         onClick={() => this.setState({ sponsorAgentFormShowing: true })}
                                     >
                                         &nbsp;Add a Sponsor Agent
@@ -162,9 +162,9 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
                         </Card>
                     </Layout.Section>
                 </Layout>
-                {sponsorAgentFormShowing ? 
-                    <SponsorAgentForm 
-                        active={true} 
+                {sponsorAgentFormShowing ?
+                    <SponsorAgentForm
+                        active={true}
                         sponsor={this.props.sponsor}
                         editing={isEditingSponsorAgent}
                         onCreate={() => {
@@ -183,19 +183,19 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
     }
 
     handlePrivilegeChange = (value: string[]) => {
-        this.setState({selected: value});
+        this.setState({ selected: value });
     };
 
     handlePackageNameChange = (value: string) => {
-        this.setState({packageName: value});
+        this.setState({ packageName: value });
     }
 
     handleRecruiterNumberChange = (value: string) => {
-        this.setState({recruiters: +value});
+        this.setState({ recruiters: +value });
     }
 
     handleMentorNumberChange = (value: string) => {
-        this.setState({mentors: +value});
+        this.setState({ mentors: +value });
     }
 
     handleSaveClicked = () => {
@@ -207,7 +207,7 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             privileges: this.generatePrivilegeString()
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 toast.success("Sponsor updated");
                 this.props.onUpdate();
             } else {
@@ -218,8 +218,8 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
     }
 
     handleDeleteClicked = () => {
-        const destructor : JSX.Element = (
-            <DestructiveConfirmation 
+        const destructor: JSX.Element = (
+            <DestructiveConfirmation
                 title={`Are you sure you want to delete '${this.props.sponsor.name}'?`}
                 onConfirm={this.doDeleteSponsor}
                 onClose={() => this.setState({ showDestructiveForm: undefined })}
@@ -235,9 +235,9 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             sponsor_slug: this.props.sponsor.slug,
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     this.props.onUpdate();
                     this.props.history.push('/sponsors/dashboard/');
                     toast.success("Sponsor deleted");
@@ -253,27 +253,27 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
         });
     }
 
-    private generatePrivilegeString() : string {
+    private generatePrivilegeString(): string {
         const textOptions = this.state.selected.join(";");
         const optionsArray = [textOptions];
-        if(this.state.mentors > 0) {
+        if (this.state.mentors > 0) {
             optionsArray.push(`mentors[${this.state.mentors}]`);
         }
-        if(this.state.recruiters > 0) {
+        if (this.state.recruiters > 0) {
             optionsArray.push(`recruiters[${this.state.recruiters}]`);
         }
         return optionsArray.join(";");
     }
 
-    private parsePrivilegeString() : string[] {
-        return this.props.sponsor.privileges.split(";").filter(i => !i.includes("["));   
+    private parsePrivilegeString(): string[] {
+        return this.props.sponsor.privileges.split(";").filter(i => !i.includes("["));
     }
 
-    private getParameterisedPrivilege(name: string) : number {
+    private getParameterisedPrivilege(name: string): number {
         const option = this.props.sponsor.privileges.split(";").filter(i => i.startsWith(name));
-        if(option.length > 0) {
+        if (option.length > 0) {
             const parts = (option[0].split(/\[([^\]]*)\]/));
-            if(parts.length == 3) {
+            if (parts.length == 3) {
                 return +(parts[1]);
             }
         }
@@ -281,49 +281,49 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
     }
 
     private renderItem = (item: ISponsorAgent) => {
-        const {id, name, email} = item;
+        const { id, name, email } = item;
         const media = <Avatar customer size="medium" name={name} />;
-    
+
         return (
-          <ResourceList.Item
-            id={`${id}`}
-            onClick={() => this.setState({ isEditingSponsorAgent: item, sponsorAgentFormShowing: true })}
-            media={media}
-            accessibilityLabel={`View details for ${name}`}
-            shortcutActions={[
-                {
-                    content: 'Edit', 
-                    onAction: () => this.setState({ isEditingSponsorAgent: item, sponsorAgentFormShowing: true })
-                },
-                {
-                    content: 'Delete', 
-                    onAction: this.handleDeleteSponsorAgent(item)
-                },
-            ]}
-          >
-            <h3>
-              <TextStyle variation="strong">{name}</TextStyle>
-            </h3>
-            <div>{email}</div>
-          </ResourceList.Item>
+            <ResourceList.Item
+                id={`${id}`}
+                onClick={() => this.setState({ isEditingSponsorAgent: item, sponsorAgentFormShowing: true })}
+                media={media}
+                accessibilityLabel={`View details for ${name}`}
+                shortcutActions={[
+                    {
+                        content: 'Edit',
+                        onAction: () => this.setState({ isEditingSponsorAgent: item, sponsorAgentFormShowing: true })
+                    },
+                    {
+                        content: 'Delete',
+                        onAction: this.handleDeleteSponsorAgent(item)
+                    },
+                ]}
+            >
+                <h3>
+                    <TextStyle variation="strong">{name}</TextStyle>
+                </h3>
+                <div>{email}</div>
+            </ResourceList.Item>
         );
     };
 
     handleDeleteSponsorAgent(agent: ISponsorAgent) {
         return () => {
-            const destructor : JSX.Element = (
-                <DestructiveConfirmation 
+            const destructor: JSX.Element = (
+                <DestructiveConfirmation
                     onConfirm={() => this.deleteSponsorAgent(agent)}
                     onClose={() => this.setState({ showDestructiveForm: undefined })}
                 />
             );
-    
+
             this.setState({ showDestructiveForm: destructor });
         }
     }
 
     loadSponsorAgents() {
-        if(!this.state.loadingAgents) {
+        if (!this.state.loadingAgents) {
             this.setState({ loadingAgents: true });
         }
         axios.post(`/sponsors/dashboard-api/load-agents-access.json`, {
@@ -332,10 +332,10 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             type: "access"
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if(payload && "success" in payload && payload["success"] && "agents" in payload) {
-                    const agents : ISponsorAgent[] = payload["agents"];
+                if (payload && "success" in payload && payload["success"] && "agents" in payload) {
+                    const agents: ISponsorAgent[] = payload["agents"];
                     this.setState({ agents: agents, loadingAgents: false });
                     return;
                 }
@@ -346,7 +346,7 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
     }
 
     private deleteSponsorAgent(agent: ISponsorAgent) {
-        if(!this.state.loadingAgents) {
+        if (!this.state.loadingAgents) {
             this.setState({ loadingAgents: true });
         }
         axios.post(`/sponsors/dashboard-api/remove-agent-access.json`, {
@@ -355,10 +355,10 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             email: agent.email
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 console.log(res.data);
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     this.loadSponsorAgents();
                     toast.success("Successfully deleted sponsor agent.");
                     return;
@@ -372,7 +372,7 @@ class SponsorAdmin extends Component<ISponsorAdminProps, ISponsorAdminState> {
             this.setState({ loadingAgents: false });
         });
     }
-    
+
 }
 
 export default withRouter(SponsorAdmin);

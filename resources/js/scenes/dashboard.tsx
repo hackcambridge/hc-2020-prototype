@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 if (document.getElementById('dashboard-root')) {
     const element = document.getElementById('dashboard-root')
-    if(element) initialise(element);
+    if (element) initialise(element);
 }
 
 
@@ -15,18 +15,18 @@ function initialise(root: HTMLElement) {
     console.log("Initialising Dashboard...");
     axios.get(`/dashboard-api/init.json`).then(res => {
         const status = res.status;
-        if(status == 200) {
+        if (status == 200) {
             const obj = res.data;
             if ("success" in obj && obj["success"]) {
-                const payload : IDashboardProps = obj["payload"];
+                const payload: IDashboardProps = obj["payload"];
                 ReactDOM.render(
                     <BrowserRouter>
-                        <Dashboard {...payload}/>
-                    </BrowserRouter>, 
-                root);
+                        <Dashboard {...payload} />
+                    </BrowserRouter>,
+                    root);
 
                 const loadingElement = document.getElementById('loading');
-                if(loadingElement) {
+                if (loadingElement) {
                     loadingElement.remove();
                 }
             }

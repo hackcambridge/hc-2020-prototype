@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from "react";
-import { Page, Card, Banner, DropZone, Button, ButtonGroup, Stack, Subheading, TextStyle, TextField, Heading, PageActions, Layout, Select, FormLayout, Modal, TextContainer, Checkbox, DatePicker, RadioButton, Link, Tooltip } from "@shopify/polaris";
+import { Page, Card, Banner, Button, ButtonGroup, TextField, Heading, Select, FormLayout, Checkbox, Link, Tooltip } from "@shopify/polaris";
 import axios from 'axios';
 import { IApplicationRecord } from "../../../interfaces/dashboard.interfaces";
 import countryList from 'country-list';
@@ -24,17 +24,14 @@ interface IApplyState {
     agreedToPrivacy: boolean,
     agreedToTerms: boolean,
 
-    showingVisaDateSelector: boolean,
-    visaRequired: boolean,
-    visaPickerMonthYear: { month: number, year: number },
-    visaDate: Date | undefined,
-    visaDateTemp: Date | undefined,
+    // showingVisaDateSelector: boolean,
+    // visaRequired: boolean,
+    // visaPickerMonthYear: { month: number, year: number },
+    // visaDate: Date | undefined,
+    // visaDateTemp: Date | undefined,
     reviewed: boolean,
 }
 
-function RequiredStar() {
-    return <span style={{ color: "red" }}>*</span>;
-}
 
 export const textFieldQuestions: { id: string, title: string, placeholder: string }[] = [
     { id: "1", title: "What do you want to get out of this event?", placeholder: "" },
@@ -64,14 +61,14 @@ class Apply extends Component<IApplyProps, IApplyState> {
         questionValues: (this.props.initialRecord ? JSON.parse(this.props.initialRecord.questionResponses) : {}) as { [key: string]: string },
         isSubmitted: this.props.initialRecord ? this.props.initialRecord.isSubmitted : false,
         countrySelection: this.props.initialRecord ? this.props.initialRecord.country : "GB",
-        visaRequired: this.props.initialRecord ? this.props.initialRecord.visaRequired : false,
-        visaPickerMonthYear: { month: new Date().getMonth(), year: new Date().getFullYear() },
-        visaDate: this.props.initialRecord
-            ? (this.props.initialRecord.visaRequiredDate ? new Date(this.props.initialRecord.visaRequiredDate) : undefined)
-            : undefined,
-        visaDateTemp: this.props.initialRecord
-            ? (this.props.initialRecord.visaRequiredDate ? new Date(this.props.initialRecord.visaRequiredDate) : undefined)
-            : undefined,
+        // visaRequired: this.props.initialRecord ? this.props.initialRecord.visaRequired : false,
+        // visaPickerMonthYear: { month: new Date().getMonth(), year: new Date().getFullYear() },
+        // visaDate: this.props.initialRecord
+        //     ? (this.props.initialRecord.visaRequiredDate ? new Date(this.props.initialRecord.visaRequiredDate) : undefined)
+        //     : undefined,
+        // visaDateTemp: this.props.initialRecord
+        //     ? (this.props.initialRecord.visaRequiredDate ? new Date(this.props.initialRecord.visaRequiredDate) : undefined)
+        //     : undefined,
         agreedToConduct: this.props.initialRecord ? this.props.initialRecord.acceptedConduct : false,
         agreedToPrivacy: this.props.initialRecord ? this.props.initialRecord.acceptedPrivacy : false,
         agreedToTerms: this.props.initialRecord ? this.props.initialRecord.acceptedTerms : false,
@@ -184,13 +181,9 @@ class Apply extends Component<IApplyProps, IApplyState> {
             isSubmitted,
             isSaving,
             countrySelection,
-            showingVisaDateSelector,
-            visaRequired,
-            visaDate,
             agreedToConduct,
             agreedToPrivacy,
             agreedToTerms,
-            reviewed,
         } = this.state;
 
         const countriesNoGB = countryList().getData()
@@ -270,7 +263,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             disabled={!this.props.canEdit}
                         />
                     </div>
-                    {textFieldQuestions.map((q, index) => {
+                    {textFieldQuestions.map((q) => {
                         return (
                             <div key={q.id}>
                                 <div style={{ paddingBottom: "12px", paddingTop: "20px" }}>
@@ -403,7 +396,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     }
                 </> : <></>}
 
-                <Modal
+                {/* <Modal
                     title={"Deadline for organising a visa"}
                     open={showingVisaDateSelector}
                     onClose={() => this.setState({
@@ -428,7 +421,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             {this.buildDatePicker()}
                         </TextContainer>
                     </Modal.Section>
-                </Modal>
+                </Modal> */}
 
             </Page>
         );
@@ -523,23 +516,23 @@ class Apply extends Component<IApplyProps, IApplyState> {
         });
     }
 
-    private buildDatePicker() {
-        const { visaPickerMonthYear, visaDateTemp } = this.state;
-        return (
-            <DatePicker
-                disableDatesBefore={new Date()}
-                disableDatesAfter={new Date('Fri Jan 17 2020 00:00:00 GMT')} // The event date
-                month={visaPickerMonthYear.month}
-                year={visaPickerMonthYear.year}
-                onChange={(dates) => this.setState({ visaDateTemp: dates.start })}
-                onMonthChange={(month, year) => this.setState({ visaPickerMonthYear: { month: month, year: year } })}
-                selected={{
-                    start: visaDateTemp || new Date(),
-                    end: visaDateTemp || new Date(),
-                }}
-            />
-        );
-    }
+    // private buildDatePicker() {
+    //     const { visaPickerMonthYear, visaDateTemp } = this.state;
+    //     return (
+    //         <DatePicker
+    //             disableDatesBefore={new Date()}
+    //             disableDatesAfter={new Date('Fri Jan 17 2020 00:00:00 GMT')} // The event date
+    //             month={visaPickerMonthYear.month}
+    //             year={visaPickerMonthYear.year}
+    //             onChange={(dates) => this.setState({ visaDateTemp: dates.start })}
+    //             onMonthChange={(month, year) => this.setState({ visaPickerMonthYear: { month: month, year: year } })}
+    //             selected={{
+    //                 start: visaDateTemp || new Date(),
+    //                 end: visaDateTemp || new Date(),
+    //             }}
+    //         />
+    //     );
+    // }
 }
 
 export default Apply;
