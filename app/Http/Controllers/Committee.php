@@ -663,9 +663,9 @@ class Committee extends Controller
             $type = $r->get("type");
             $emails = $r->get("emails");
             try {
-                $path = storage_path() . "/app/reviewing/${name}";
-                $html_content = file_get_contents($path . ".html") . ".html";
-                $plaintext_content = file_get_contents($path . ".txt") . ".txt";
+                $path = storage_path() . "/app/templates/${name}";
+                $html_content = file_get_contents($path . ".html");
+                $plaintext_content = file_get_contents($path . ".txt");
                 $data = [
                     "html_content" => $html_content,
                     "plaintext_content" => $plaintext_content,
@@ -680,9 +680,10 @@ class Committee extends Controller
                 $base_query = DB::table('applications')
                     ->select('applications.id', 'applications.isSubmitted', 'applications.user_id')
                     ->rightJoin('users', 'users.id', '=', 'applications.user_id')
-                    ->select('users.name', 'users.email');
+                    ->select('users.name', 'users.email')
+                    ->where('users.type','=','hacker');
                 if ($type == "hacker") {
-                    $users = DB::table("users")->where('type', 'hacker');
+                    $users = $base_query->get();
                 } elseif ($type == "hacker_app") {
                     $users = $base_query
                         ->whereNotNull('applications.user_id')->get();
@@ -715,12 +716,17 @@ class Committee extends Controller
                         ->where('applications.rejected','=',1)->get();
                 } else {
                     $emailList = explode(";", $emails);
-                    $users = DB::table("users")->whereIn("email", $emailList)->get();
+                    $users = $base_query->whereIn("users.email", $emailList)->get();
                 }
 
+                if (empty($users)) {
+                    return response()->json([
+                        "success" => false,
+                    ]);
+                }
                 foreach ($users as $app) {
-                    $name = (isset($app->user->name) ? explode(" ", $app->user->name)[0] : "there");
-                    $mailer->addRecipient($app->user->email, ["name" => $name]);
+                    $name = (isset($app->name) ? explode(" ", $app->name)[0] : "there");
+                    $mailer->addRecipient($app->email, ["name" => $name]);
                 }
                 $mailer->sendAll();
                 return response()->json([
@@ -741,8 +747,8 @@ class Committee extends Controller
             if ($files) {
                 return response()->json([
                     "success" => true,
-                    "scripts" => array_unique(array_map(function ($file) {
-                        return substr(strstr(preg_replace("\.(html|txt)", '', $file), "/"), 1);
+                    "templates" => array_unique(array_map(function ($file) {
+                        return substr(strstr(preg_replace('/[.](html|txt)$/', '', $file), "/"), 1);
                     }, $files)),
                 ]);
             } else {

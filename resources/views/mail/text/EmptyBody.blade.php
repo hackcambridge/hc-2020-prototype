@@ -1,3 +1,1 @@
-@foreach ($plaintext_content as $line)
-    {{ $line }}
-@endforeach
+{!! $plaintext_content !!}

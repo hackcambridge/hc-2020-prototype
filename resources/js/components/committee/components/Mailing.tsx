@@ -85,7 +85,7 @@ The Hack Cambridge Team`;
 
     componentDidMount() {
         document.addEventListener("keydown", this.keyboardShortcuts, false);
-        this.getScripts();
+        this.getTemplates();
     }
 
     componentWillUnmount() {
@@ -96,7 +96,7 @@ The Hack Cambridge Team`;
         // cmd + s will save
         if (this.state.selectedTab == 1 && e.code == "KeyS" && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
             e.preventDefault();
-            this.saveScript();
+            this.saveTemplate();
         }
 
         // Does not work on Safari (cannot override cmd + NUM)
@@ -208,7 +208,7 @@ The Hack Cambridge Team`;
                     <Card.Section>
                         <Stack distribution="equalSpacing">
                             <Button loading={loading} onClick={() => this.setState({ confirmDeleteModal: true })} monochrome destructive> Delete</Button>
-                            <Button loading={loading} onClick={this.saveScript} primary> Save</Button>
+                            <Button loading={loading} onClick={this.saveTemplate} primary> Save</Button>
                         </Stack>
                     </Card.Section>
                 </>
@@ -241,7 +241,7 @@ The Hack Cambridge Team`;
                                 onChange={(s) => {
                                     const newId = files.findIndex(x => x == s);
                                     this.setState({ selectedTemplate: newId });
-                                    this.loadScript(this.state.files[newId]);
+                                    this.loadTemplate(this.state.files[newId]);
                                 }}
                                 value={selectedTemplate >= 0 ? files[selectedTemplate] : ""}
                             />
@@ -249,7 +249,7 @@ The Hack Cambridge Team`;
                         <div style={{ display: "inline-block", marginLeft: "0.5rem", verticalAlign: "middle" }}>
                             <ButtonGroup segmented>
                                 <Button disabled={loading} onClick={() => this.setState({ newFileModal: true })} icon={AddCodeMajor}></Button>
-                                <Button loading={loading && !running} disabled={running} onClick={this.syncScripts} icon={RefreshMajor}></Button>
+                                <Button loading={loading && !running} disabled={running} onClick={this.syncTemplates} icon={RefreshMajor}></Button>
                                 <Button disabled={loading && !running} loading={running} onClick={this.sendEmail} icon={PlayMajor}></Button>
                             </ButtonGroup>
                         </div>
@@ -274,7 +274,7 @@ The Hack Cambridge Team`;
     private handleDelete = () => {
         const { selectedTemplate } = this.state;
         const files: string[] = this.state.files;
-        this.deleteScript(files[selectedTemplate]);
+        this.deleteTemplate(files[selectedTemplate]);
     }
 
     private handleFileNameChange = (name: string) => {
@@ -309,11 +309,11 @@ The Hack Cambridge Team`;
             selectedTemplate: files.length - 1,
             html_content: this.defaultHTMLTemplate,
             plaintext_content: this.defaultPlaintextTemplate,
-        }, () => this.saveScript());
+        }, () => this.saveTemplate());
         this.setState({ loading: true });
     }
 
-    private saveScript = () => {
+    private saveTemplate = () => {
         this.setState({ loading: true });
         const { selectedTemplate, html_content, plaintext_content } = this.state;
         const file: string = this.state.files[selectedTemplate];
@@ -336,7 +336,7 @@ The Hack Cambridge Team`;
         });
     }
 
-    private syncScripts = () => {
+    private syncTemplates = () => {
         this.setState({ loading: true });
         axios.get(`/committee/admin-api/sync-mail-templates.json`).then(res => {
             const status = res.status;
@@ -344,7 +344,7 @@ The Hack Cambridge Team`;
                 const payload = res.data;
                 if ("success" in payload && payload["success"]) {
                     toast.success("Templates synced");
-                    this.getScripts();
+                    this.getTemplates();
                     return;
                 }
             }
@@ -354,7 +354,7 @@ The Hack Cambridge Team`;
         });
     }
 
-    private getScripts = () => {
+    private getTemplates = () => {
         this.setState({ loading: true });
         axios.get(`/committee/admin-api/list-mail-templates.json`).then(res => {
             const status = res.status;
@@ -366,9 +366,9 @@ The Hack Cambridge Team`;
                         this.setState({ loading: false, files: scripts });
                         if (scripts.length > 0 && (this.state.selectedTemplate < 0 || this.state.selectedTemplate > scripts.length)) {
                             this.setState({ selectedTemplate: 0 });
-                            this.loadScript(scripts[0]);
+                            this.loadTemplate(scripts[0]);
                         } else {
-                            this.loadScript(scripts[this.state.selectedTemplate]);
+                            this.loadTemplate(scripts[this.state.selectedTemplate]);
                         }
                     } else {
                         this.setState({ loading: false });
@@ -382,7 +382,7 @@ The Hack Cambridge Team`;
         });
     }
 
-    private loadScript(name: string) {
+    private loadTemplate(name: string) {
         this.setState({ loading: true });
         axios.post(`/committee/admin-api/load-mail-template.json`, {
             name: name
@@ -405,7 +405,7 @@ The Hack Cambridge Team`;
         });
     }
 
-    private deleteScript(name: string) {
+    private deleteTemplate(name: string) {
         this.setState({ loading: true });
         axios.post(`/committee/admin-api/delete-mail-template.json`, {
             name: name
@@ -423,7 +423,7 @@ The Hack Cambridge Team`;
                             loading: false,
                             confirmDeleteModal: false,
                             selectedTab: 0,
-                        }, () => this.loadScript(newFiles[0]));
+                        }, () => this.loadTemplate(newFiles[0]));
                     } else {
                         this.setState({
                             selectedTemplate: -1,
@@ -447,13 +447,14 @@ The Hack Cambridge Team`;
 
     private sendEmail = () => {
         const { files }: { files: string[] } = this.state;
-        const { selectedTemplate } = this.state;
+        const { selectedTemplate,recipient,emailList,subject } = this.state;
         const name = files[selectedTemplate];
         this.setState({ loading: true, running: true });
         axios.post(`/committee/admin-api/send-mail.json`, {
             name: name,
-            type: this.state.recipient,
-            email: this.state.emailList,
+            subject: subject,
+            type: recipient,
+            emails: emailList,
         }, {
             headers: { CacheControl: "no-cache, no-store, max-age=0, must-revalidate" }
         }).then(res => {
