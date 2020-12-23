@@ -13,7 +13,7 @@ export interface IAdminOverview {
         accepted: number,
         rejected: number,
     },
-    universities: { name: string, participants: number}[],
+    universities: { name: string, participants: number }[],
     reviews: { name: string, reviews: number }[]
 }
 

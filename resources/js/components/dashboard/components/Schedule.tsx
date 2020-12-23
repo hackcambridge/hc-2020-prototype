@@ -29,7 +29,7 @@ class Schedule extends Component<IDashboardProps, IScheduleState> {
             <>
                 <div id={"sponsor-schedule"}>
                     <Page title={"Schedule"}>
-                        {loaded 
+                        {loaded
                             ? this.renderSchedule()
                             : <Card sectioned><Heading>Loading schedule...</Heading></Card>
                         }
@@ -42,11 +42,11 @@ class Schedule extends Component<IDashboardProps, IScheduleState> {
 
     private renderSchedule() {
         const { schedule, scheduleLive } = this.state;
-        if(!scheduleLive) {
-            return <Card sectioned><Heading>Details will be published soon!</Heading></Card>; 
+        if (!scheduleLive) {
+            return <Card sectioned><Heading>Details will be published soon!</Heading></Card>;
         }
 
-        if(schedule.length == 0) {
+        if (schedule.length == 0) {
             return <Card sectioned><Heading>No schedule to show.</Heading></Card>;
         }
 
@@ -65,13 +65,13 @@ class Schedule extends Component<IDashboardProps, IScheduleState> {
                     }}>
                         {data.time}
                     </div>
-                    {data.logoUrl.trim().length > 0 
+                    {data.logoUrl.trim().length > 0
                         ? <img style={{
-                                maxWidth: "120px",
-                                maxHeight: "60px",
-                                float: "right",
-                                padding: "0 2rem 1rem 0",
-                            }} src={data.logoUrl} /> 
+                            maxWidth: "120px",
+                            maxHeight: "60px",
+                            float: "right",
+                            padding: "0 2rem 1rem 0",
+                        }} src={data.logoUrl} />
                         : <></>}
                 </Layout.Section>
                 <Layout.Section>
@@ -94,9 +94,9 @@ class Schedule extends Component<IDashboardProps, IScheduleState> {
     private loadSchedule() {
         axios.get(this.dataUrl).then(res => {
             const status = res.status;
-            if(status >= 200 && status <= 300) {
+            if (status >= 200 && status <= 300) {
                 const payload = res.data;
-                if("schedule" in payload) {
+                if ("schedule" in payload) {
                     const schedule: IScheduleItem[] = payload["schedule"];
                     this.setState({
                         schedule: schedule,
@@ -112,7 +112,7 @@ class Schedule extends Component<IDashboardProps, IScheduleState> {
     }
 }
 
-export default Schedule; 
+export default Schedule;
 
 
 

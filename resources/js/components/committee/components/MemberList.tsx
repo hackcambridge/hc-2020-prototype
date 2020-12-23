@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Page, Button, Card, ResourceList, Avatar, TextStyle, TextContainer, Heading, Filters, Stack, Layout, Thumbnail, Spinner } from "@shopify/polaris";
+import { Page, Card, ResourceList, Avatar, TextStyle, TextContainer, Layout, Spinner } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ICommitteeProps } from '../../../interfaces/committee.interfaces';

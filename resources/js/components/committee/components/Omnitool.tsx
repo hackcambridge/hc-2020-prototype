@@ -1,4 +1,4 @@
-import React, { Component, ReactNode} from 'react';
+import React, { Component, ReactNode } from 'react';
 import { Page, Card, Tabs, Button, Modal, TextField, Stack, Select, TextContainer, ButtonGroup, Checkbox, ResourceList } from "@shopify/polaris";
 import { AddCodeMajor, RefreshMajor, PlayMajor, SettingsMajor } from '@shopify/polaris-icons';
 import axios from 'axios';
@@ -12,7 +12,7 @@ import ReactJson from 'react-json-view'
 import { IApplicationDetail, IUserDetails } from '../../../interfaces/committee.interfaces';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-interface IOmnitoolProps {}
+interface IOmnitoolProps { }
 
 interface IOmnitoolState {
     selectedTab: number
@@ -92,19 +92,19 @@ class ApplicationReviewer {
     }
 }`;
 
-    
 
-    constructor(props: IOmnitoolProps & RouteComponentProps){
+
+    constructor(props: IOmnitoolProps & RouteComponentProps) {
         super(props);
         this.keyboardShortcuts = this.keyboardShortcuts.bind(this);
     }
 
     componentDidMount() {
-        document.addEventListener("keydown", this.keyboardShortcuts , false);
+        document.addEventListener("keydown", this.keyboardShortcuts, false);
         this.getScripts();
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         document.removeEventListener("keydown", this.keyboardShortcuts, false);
     }
 
@@ -119,14 +119,14 @@ class ApplicationReviewer {
         // cmd + 1/2 will change tab
         if (e.code == "Digit1" && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
             e.preventDefault();
-            this.setState({selectedTab: 0})
+            this.setState({ selectedTab: 0 })
         }
 
         if (e.code == "Digit2" && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
             e.preventDefault();
-            this.setState({selectedTab: 1})
+            this.setState({ selectedTab: 1 })
         }
-        
+
 
 
     }
@@ -136,7 +136,7 @@ class ApplicationReviewer {
             { id: "overview", content: "Overview" },
             { id: "code", content: "Code" }
         ];
-        const { 
+        const {
             newFileModal,
             selectedTab,
             newFileName,
@@ -160,7 +160,7 @@ class ApplicationReviewer {
                 <Modal
                     loading={loading}
                     open={newFileModal}
-                    onClose={() => this.setState({ newFileModal: false, newFileName:"" })}
+                    onClose={() => this.setState({ newFileModal: false, newFileName: "" })}
                     title="New Script"
                     primaryAction={{
                         content: 'Create',
@@ -186,7 +186,7 @@ class ApplicationReviewer {
                 <Modal
                     loading={loading}
                     open={confirmDeleteModal}
-                    onClose={() => this.setState({ confirmDeleteModal: false})}
+                    onClose={() => this.setState({ confirmDeleteModal: false })}
                     title="Are you sure?"
                     primaryAction={{
                         content: 'Delete',
@@ -194,7 +194,7 @@ class ApplicationReviewer {
                     }}
                     secondaryActions={[{
                         content: 'Cancel',
-                        onAction: () => this.setState({ confirmDeleteModal: false}),
+                        onAction: () => this.setState({ confirmDeleteModal: false }),
                     }]}
                 >
                     <Modal.Section>
@@ -210,7 +210,7 @@ class ApplicationReviewer {
                     primaryAction={{
                         content: 'Accept',
                         onAction: () => {
-                            if(modalDetails) {
+                            if (modalDetails) {
                                 this.inviteApplications(
                                     modalDetails.applications.map(i => i.application.id),
                                     modalDetails.teamName,
@@ -221,17 +221,17 @@ class ApplicationReviewer {
                             }
                         },
                     }}
-                    // secondaryActions={[{
-                    //     content: 'Ignore',
-                    //     onAction: () => {
+                // secondaryActions={[{
+                //     content: 'Ignore',
+                //     onAction: () => {
 
-                    //     },
-                    // }]}
+                //     },
+                // }]}
                 >
                     {modalDetails
                         ? (
                             <ResourceList
-                                resourceName={{singular: 'application', plural: 'applications'}}
+                                resourceName={{ singular: 'application', plural: 'applications' }}
                                 items={modalDetails.applications}
                                 renderItem={(item: IReviewDecisionApplicationDetail) => {
                                     return (
@@ -255,7 +255,7 @@ class ApplicationReviewer {
         );
     }
 
-    private renderPage() : ReactNode {
+    private renderPage(): ReactNode {
         if (this.state.selectedTab == 0) {
             return this.renderOverview();
         }
@@ -265,7 +265,7 @@ class ApplicationReviewer {
     private renderEditor(): ReactNode {
         const { selectedFile, loading, current_file_content } = this.state;
         const { files }: { files: string[] } = this.state;
-        if(selectedFile >= 0) {
+        if (selectedFile >= 0) {
             const file = files[selectedFile];
             return (
                 <>
@@ -298,8 +298,8 @@ class ApplicationReviewer {
             );
         }
     }
-      
-    private renderOverview() : ReactNode {
+
+    private renderOverview(): ReactNode {
         const { selectedFile, loading, results, running, reviewMode } = this.state;
         const { files }: { files: string[] } = this.state;
         return (
@@ -356,8 +356,8 @@ class ApplicationReviewer {
         this.setState({ current_file_content: newValue });
     }
 
-    private handleTabChange = (index:number) => {
-        this.setState({selectedTab: index});
+    private handleTabChange = (index: number) => {
+        this.setState({ selectedTab: index });
     }
 
     private handleDelete = () => {
@@ -366,19 +366,19 @@ class ApplicationReviewer {
         this.deleteScript(files[selectedFile]);
     }
 
-    private handleFileNameChange = (name:string) => {
-        this.setState({newFileName: name});
+    private handleFileNameChange = (name: string) => {
+        this.setState({ newFileName: name });
     }
 
     private addNewFile = () => {
         const { newFileName } = this.state;
-        if(newFileName.trim().length == 0) {
+        if (newFileName.trim().length == 0) {
             toast.error("File name can't be blank");
             return;
         }
 
         const { files }: { files: string[] } = this.state;
-        const newFileNameTrimmed = newFileName.trim().replace(/\.php/, '').toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+        const newFileNameTrimmed = newFileName.trim().replace(/\.php/, '').toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
         files.push(newFileNameTrimmed);
 
         this.setState({
@@ -399,9 +399,9 @@ class ApplicationReviewer {
             content: current_file_content
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     toast.success(payload["message"]);
                     this.setState({ loading: false });
                     return;
@@ -419,9 +419,9 @@ class ApplicationReviewer {
         const file: string = this.state.files[selectedFile];
         axios.get(`/committee/admin-api/sync-review-scripts.json`).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     toast.success("Scripts synced");
                     this.getScripts();
                     return;
@@ -437,13 +437,13 @@ class ApplicationReviewer {
         this.setState({ loading: true });
         axios.get(`/committee/admin-api/list-review-scripts.json`).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
-                    if("scripts" in payload) {
+                if ("success" in payload && payload["success"]) {
+                    if ("scripts" in payload) {
                         const scripts = payload["scripts"].map((s: string) => s.replace(/\.php/, ''));
                         this.setState({ loading: false, files: scripts });
-                        if(scripts.length > 0 && (this.state.selectedFile < 0 || this.state.selectedFile > scripts.length)) {
+                        if (scripts.length > 0 && (this.state.selectedFile < 0 || this.state.selectedFile > scripts.length)) {
                             this.setState({ selectedFile: 0 });
                             this.loadScript(scripts[0]);
                         } else {
@@ -467,10 +467,10 @@ class ApplicationReviewer {
             name: name
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
-                    this.setState({ 
+                if ("success" in payload && payload["success"]) {
+                    this.setState({
                         current_file_content: payload["content"],
                         loading: false,
                     });
@@ -489,23 +489,23 @@ class ApplicationReviewer {
             name: name
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const files: string[] = this.state.files;
                     const newFiles = files.filter(f => f != name);
-                    if(newFiles.length > 0) {
-                        this.setState({ 
-                            selectedFile: 0, 
-                            files: newFiles, 
+                    if (newFiles.length > 0) {
+                        this.setState({
+                            selectedFile: 0,
+                            files: newFiles,
                             loading: false,
                             confirmDeleteModal: false,
                             selectedTab: 0,
                         }, () => this.loadScript(newFiles[0]));
                     } else {
-                        this.setState({ 
-                            selectedFile: -1, 
-                            files: [], 
+                        this.setState({
+                            selectedFile: -1,
+                            files: [],
                             loading: false,
                             confirmDeleteModal: false,
                             selectedTab: 0,
@@ -534,9 +534,9 @@ class ApplicationReviewer {
         }).then(res => {
             const status = res.status;
             console.log(res);
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     this.setState({ results: payload["results"] });
                     toast.success("Script run");
                 } else {
@@ -568,26 +568,26 @@ class ApplicationReviewer {
     private renderReviewMode() {
         try {
             const reviewDecisions: IReviewDecisionSet = this.state.results as any;
-            if(reviewDecisions.details) {
+            if (reviewDecisions.details) {
                 const keys = Object.keys(reviewDecisions.details);
                 const show = keys
                     .map(app => reviewDecisions.details[app])
                     .filter(app => app.decision == "accept");
-                
+
                 return (
                     <Card>
                         <ResourceList
-                            resourceName={{singular: 'application', plural: 'applications'}}
+                            resourceName={{ singular: 'application', plural: 'applications' }}
                             items={show}
                             renderItem={(item: IReviewDecisionDetails) => {
-                                if(!item) return <>No data.</>;
+                                if (!item) return <>No data.</>;
                                 const { alreadyInvited }: { alreadyInvited: string[] } = this.state;
                                 const greyOut = alreadyInvited.includes(item.teamName || `${item.applications[0].application.id}`);
                                 return (
                                     <ResourceList.Item
                                         id={`${item.applications.length == 1 ? item.applications[0].id : item.teamName}`}
                                         onClick={() => {
-                                            this.setState({ 
+                                            this.setState({
                                                 reviewDecisionModalShowing: true,
                                                 reviewDecisionModalInformation: { details: item }
                                             });
@@ -615,7 +615,7 @@ class ApplicationReviewer {
                 );
             }
             return <></>;
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }
@@ -626,9 +626,9 @@ class ApplicationReviewer {
             ids: appIDs
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     toast.info(payload["message"]);
                     const { alreadyInvited }: { alreadyInvited: string[] } = this.state;
                     alreadyInvited.push(appIDs.length > 1 && teamId ? teamId : `${appIDs[0]}`);

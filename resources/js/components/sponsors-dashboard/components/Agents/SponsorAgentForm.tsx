@@ -5,7 +5,7 @@ import { ISponsorAgent, ISponsorData } from "../../../../interfaces/sponsors.int
 
 interface ISponsorFormProps {
     sponsor: ISponsorData,
-    editing? : ISponsorAgent,
+    editing?: ISponsorAgent,
     active: boolean,
     type?: string,
     onCreate: () => void,
@@ -22,7 +22,7 @@ interface ISponsorFormState {
 }
 
 class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
-    
+
     node = null;
     state = {
         isActive: this.props.active,
@@ -45,7 +45,7 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
                     content: this.props.editing ? "Amend" : "Add",
                     onAction: this.createSponsorAgent,
                 }}
-                >
+            >
                 <Modal.Section>
                     <Stack>
                         <Stack.Item fill>
@@ -63,12 +63,12 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
                                 value={this.state.email}
                                 onChange={this.handleEmailChange}
                                 placeholder="e.g. john@cam.ac.uk"
-                                disabled={typeof(this.props.editing) !== "undefined"}
+                                disabled={typeof (this.props.editing) !== "undefined"}
                             />
                         </Stack.Item>
                     </Stack>
                 </Modal.Section>
-                </Modal>
+            </Modal>
         );
     }
 
@@ -76,7 +76,7 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
         const name = this.state.name;
         const email = this.state.email;
         this.setState({ loading: true });
-        if(name.length > 0 && email.length > 0) {
+        if (name.length > 0 && email.length > 0) {
             axios.post(`/sponsors/dashboard-api/add-agent-${this.state.type}.json`, {
                 name: name,
                 email: email,
@@ -84,9 +84,9 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
                 sponsor_slug: this.props.sponsor.slug
             }).then(res => {
                 const status = res.status;
-                if(status >= 200 && status < 300) {
+                if (status >= 200 && status < 300) {
                     this.setState({ loading: false });
-                    if(! res.data.success) {
+                    if (!res.data.success) {
                         this.props.onFail(res.data.message || "Unknown error");
                         return;
                     }
@@ -103,16 +103,16 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
     }
 
     toggleModal = () => {
-        this.setState(({isActive}) => ({isActive: !isActive}));
+        this.setState(({ isActive }) => ({ isActive: !isActive }));
         this.props.onClose();
     };
 
     handleNameChange = (name: string) => {
-        this.setState({name});
+        this.setState({ name });
     };
 
     handleEmailChange = (email: string) => {
-        this.setState({email});
+        this.setState({ email });
     };
 }
 

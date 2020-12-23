@@ -1,7 +1,7 @@
 export interface ISponsorDashboardProps {
     baseUrl: string;
-    user: { 
-        type: string, 
+    user: {
+        type: string,
         name: string,
         email: string,
     }
@@ -25,22 +25,22 @@ export interface ISponsorAgent {
 
 export interface IResourceDefinition {
     id: number,
-    urls: string[], 
-    name: string, 
+    urls: string[],
+    name: string,
     type: string,
     description: string,
 }
 
 export interface ISwagItemDefinition {
     id: number,
-    quantity: string, 
-    name: string, 
+    quantity: string,
+    name: string,
     type: string,
     description: string,
 }
 
 export interface IAssetInformation {
-    name: string, 
+    name: string,
     url: string
 }
 
