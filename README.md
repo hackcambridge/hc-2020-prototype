@@ -1,5 +1,8 @@
 # Hack Cambridge 2020 Platform Prototype
 
+[![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/github/hackcambridge/hc2020-prototype)](https://lgtm.com/projects/g/hackcambridge/hc2020-prototype/)
+[![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/hackcambridge/hc2020-prototype)](https://lgtm.com/projects/g/hackcambridge/hc2020-prototype/)
+
 The `hc2020` platform consists of a Laravel skeleton that provides a static front site and three independant [React](https://reactjs.org/) web apps (the Hackers' dashboard, the Sponsors' dashboard, and the Committee admin dashboard).
 
 The structure of this respository is defined by the [Laravel standard](https://www.w3schools.in/laravel-tutorial/application-directory-structure/). Notable folders are:
