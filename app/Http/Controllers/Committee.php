@@ -584,21 +584,20 @@ class Committee extends Controller
             $output = "templates/" . Committee::slugify($name);
             if (Storage::disk('s3')->put($output . ".html", $html_content)) {
                 if (Storage::disk('local')->put($output . ".html", $html_content)) {
-                    return $this->success("HTML file successfully saved.");
+                    if (Storage::disk('s3')->put($output . ".txt", $plaintext_content)) {
+                        if (Storage::disk('local')->put($output . ".txt", $plaintext_content)) {
+                            return $this->success("Both files successfully saved.");
+                        } else {
+                            return $this->fail("Failed to save TXT file locally.");
+                        }
+                    } else {
+                        return $this->fail("Failed to save TXT file remotely.");
+                    }
                 } else {
                     return $this->fail("Failed to save HTML file locally.");
                 }
             } else {
                 return $this->fail("Failed to save HTML file remotely.");
-            }
-            if (Storage::disk('s3')->put($output . ".txt", $plaintext_content)) {
-                if (Storage::disk('local')->put($output . ".txt", $plaintext_content)) {
-                    return $this->success("TXT file successfully saved.");
-                } else {
-                    return $this->fail("Failed to save TXT file locally.");
-                }
-            } else {
-                return $this->fail("Failed to save TXT file remotely.");
             }
         } else {
             return $this->fail("Checks failed.");
@@ -613,21 +612,20 @@ class Committee extends Controller
             $output = "templates/" . Committee::slugify($name);
             if (Storage::disk('s3')->delete($output . '.html')) {
                 if (Storage::disk('local')->delete($output . '.html')) {
-                    return $this->success("HTML file deleted");
+                    if (Storage::disk('s3')->delete($output . '.txt')) {
+                        if (Storage::disk('local')->delete($output . '.txt')) {
+                            return $this->success("Both files deleted");
+                        } else {
+                            return $this->fail("Failed to delete TXT local copy");
+                        }
+                    } else {
+                        return $this->fail("Failed to delete TXT remote copy");
+                    }
                 } else {
                     return $this->fail("Failed to delete HTML local copy");
                 }
             } else {
                 return $this->fail("Failed to delete HTML remote copy");
-            }
-            if (Storage::disk('s3')->delete($output . '.txt')) {
-                if (Storage::disk('local')->delete($output . '.txt')) {
-                    return $this->success("TXT file deleted");
-                } else {
-                    return $this->fail("Failed to delete TXT local copy");
-                }
-            } else {
-                return $this->fail("Failed to delete TXT remote copy");
             }
         } else {
             return $this->fail("Checks failed.");
