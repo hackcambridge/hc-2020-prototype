@@ -362,13 +362,17 @@ The Hack Cambridge Team`;
                 const payload = res.data;
                 if ("success" in payload && payload["success"]) {
                     if ("templates" in payload) {
-                        const scripts = payload["templates"].map((s: string) => s.replace(/\.(html|txt)/, ''));
-                        this.setState({ loading: false, files: scripts });
-                        if (scripts.length > 0 && (this.state.selectedTemplate < 0 || this.state.selectedTemplate > scripts.length)) {
+                        var templates_array = []
+                        for (let index in payload["templates"]) {
+                            templates_array.push(payload["templates"][index]);
+                        }
+                        const templates = templates_array.map((s: string) => s.replace(/\.(html|txt)/, ''));
+                        this.setState({ loading: false, files: templates });
+                        if (templates.length > 0 && (this.state.selectedTemplate < 0 || this.state.selectedTemplate > templates.length)) {
                             this.setState({ selectedTemplate: 0 });
-                            this.loadTemplate(scripts[0]);
+                            this.loadTemplate(templates[0]);
                         } else {
-                            this.loadTemplate(scripts[this.state.selectedTemplate]);
+                            this.loadTemplate(templates[this.state.selectedTemplate]);
                         }
                     } else {
                         this.setState({ loading: false });
