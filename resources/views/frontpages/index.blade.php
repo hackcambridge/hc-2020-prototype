@@ -294,7 +294,7 @@
                 <h1>-- Partners --</h1>
                 <div class="hexagon-gallery">
                     <div class="hex">
-                        <a href="https://hack.athon.uk/" targer="_blank">
+                        <a href="https://hackathons.org.uk/" targer="_blank">
                             <img src="{{ asset('images/sponsors/HackUK.png') }}" alt="Hackathons.UK" />
                         </a>
                     </div>
