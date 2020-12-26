@@ -15,7 +15,7 @@ use App\Http\Resources\TeamMember as TeamMemberResource;
 class Dashboard extends Controller
 {
     private $maximum_team_size = 5;
-    private static $accepting_applications = true;
+    private static $accepting_applications = false;
     # TODO: Update URL
     private static $slack_invite_url = "https://join.slack.com/t/hexcambridge/shared_invite/enQtOTAyNTIxNjU2NTk2LTViOTM5MDFjMTRiZmRlMDgxZjVjNzExOThiYmI3NTUxMzZkNzZiZTIxMTM2MjFjMGY4Mzk2ZWE4ODI1MDZiMTI";
 
