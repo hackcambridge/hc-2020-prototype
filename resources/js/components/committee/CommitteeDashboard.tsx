@@ -35,7 +35,7 @@ interface IDashboardState {
     currentLocation: string,
 }
 
-const applicationsOpen = true;
+const applicationsOpen = false;
 
 class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
