@@ -6,6 +6,7 @@ use App\Models\Application;
 use App\Models\ApplicationReview;
 use App\Models\TeamMember;
 use App\Models\Checkin;
+use App\User;
 use App\Helpers\S3Management;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +49,7 @@ class Dashboard extends Controller
             case "accept-invitation": return $this->acceptInvitation();
             case "decline-invitation": return $this->declineInvitation();
             case "get-overview-stats": return $this->getOverviewStats();
+            case "get-profile": return $this->getProfile($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -62,6 +64,7 @@ class Dashboard extends Controller
             case "leave-team": return $this->leaveTeam($r);
             case "get-team": return $this->getTeam($r);
             case "remove-team-member": return $this->removeTeamMember($r);
+            case "update-profile": return $this->updateProfile($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -160,6 +163,25 @@ class Dashboard extends Controller
             }
         } else {
             return $this->fail("Not logged in.");
+        }
+    }
+
+    private function getProfile($r) {
+        if($this->canContinue(["hacker", "committee", "admin"], $r)) {
+            $user = User::where("id", Auth::user()->id)->first();
+            if($user) {
+                return response()->json([
+                    "success" => true,
+                    "user" => $user,
+                ]);
+            } else {
+                return response()->json([
+                    "success" => true,
+                ]);
+            }
+        }
+        else {
+            return $this->fail("Checks failed.");
         }
     }
 
@@ -399,7 +421,6 @@ class Dashboard extends Controller
         }
     }
 
-
     public function acceptInvitation() {
         if($this->canContinue(["hacker"], null)) {
             $application = Application::where("user_id", "=", Auth::user()->id)->first();
@@ -455,7 +476,7 @@ class Dashboard extends Controller
                         }
                     }
                 } else {
-                    return $this->fail("This invitastion doesn't exist.");
+                    return $this->fail("This invitation doesn't exist.");
                 }
             } else {
                 return $this->fail("Application not found.");
@@ -465,7 +486,26 @@ class Dashboard extends Controller
         }
     }
 
-
+    private function updateProfile($r) {
+        if($this->canContinue(["hacker", "committee", "admin"], $r, ["eventDetails"])) {
+            $user = User::where("id", Auth::user()->id)->first();
+            if($user) {
+                $user->setAttribute("eventDetails", $r->get("eventDetails"));
+                if($user->save()) {
+                    return response()->json([
+                        "success" => true,
+                    ]);
+                } else {
+                    return $this->fail("An error occurred.");
+                }
+            } else {
+                return $this->fail("User not found.");
+            }
+        }
+        else {
+            return $this->fail("Checks failed.");
+        }
+    }
 
     private function generateRandomString($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

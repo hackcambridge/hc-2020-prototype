@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, CustomersMajor } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
@@ -21,6 +21,7 @@ import Invitation from "./components/Invitation";
 import Challenges from "./components/Challenges";
 import Schedule from "./components/Schedule";
 import FAQs from "./components/FAQs";
+import Profile from "./components/Profile";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -104,6 +105,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             id: "logout",
             items: [
                 { content: 'Frontpage', url: "/", icon: HomeMajor },
+                { content: 'Profile', url: `${this.props.baseUrl}/profile`, icon: CustomersMajor},
                 { content: 'Logout', url: "/logout", icon: LogOutMinor },
             ],
         },
@@ -113,10 +115,6 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         <TopBar
             showNavigationToggle={true}
             userMenu={userMenuMarkup}
-            // searchResultsVisible={searchActive}
-            // searchField={searchFieldMarkup}
-            // searchResults={searchResultsMarkup}
-            // onSearchResultsDismiss={this.handleSearchResultsDismiss}
             onNavigationToggle={this.toggleState('showMobileNavigation')}
         />
     );
@@ -218,13 +216,14 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Switch>
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props} />} />
+                <Route exact path={`${this.props.baseUrl}/profile`} render={(props) => <Profile {...props} {...this.props.user} />} />
                 {applicationDetailRoutes.map(i => i)}
                 {eventDetailRoutes.map(i => i)}
                 <Route component={Dashboard404}></Route>
             </Switch>
         );
     }
-
+    
     private renderApplicationBanner(): JSX.Element {
         const states: {
             [key: string]: {

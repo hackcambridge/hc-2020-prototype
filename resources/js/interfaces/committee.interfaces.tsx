@@ -40,6 +40,7 @@ export interface IUserDetails {
     email: string,
     type: string,
     profile: string,
+    eventDetails: string,
 }
 
 export interface IApplicationReview {
