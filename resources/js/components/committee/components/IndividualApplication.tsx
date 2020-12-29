@@ -31,8 +31,8 @@ interface IIndividualApplicationState {
 
 
 export const reviewQuestions = [
-    { id: 1, question: "Technical Ability [0-100, greater is better]", range: 100, step: 5, default: 20, weight: 1 },
-    { id: 2, question: "Enthusiasm [0-100, greater is better]", range: 100, step: 5, default: 20, weight: 1 },
+    { id: 1, question: "Technical Ability [0-1], greater is better", range: 1, step: 0.1, default: 0.2, weight: 1 },
+    { id: 2, question: "Enthusiasm [0-1], greater is better", range: 1, step: 0.1, default: 0.2, weight: 1 },
     { id: 3, question: "Bonus [0-1]", range: 1, step: 1, default: 0, weight: 30, width: "10rem" },
 ]
 
