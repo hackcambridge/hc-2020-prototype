@@ -76,7 +76,6 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
                     <Icon source={SearchMinor} />
                     <div style={{ textAlign: 'center' }}>
                         <Button plain monochrome onClick={this.newTag}>Add {currentTag}</Button>
-                        {/* <TextContainer>Add {currentTag}</TextContainer> */}
                     </div>
                 </React.Fragment>
             );
