@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ShopcodesMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ShopcodesMajor, CustomersMajor } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";

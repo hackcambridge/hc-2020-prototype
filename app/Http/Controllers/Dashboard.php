@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\S3Management;
 use App\Models\Application;
 use App\Models\ApplicationReview;
 use App\Models\TeamMember;
 use App\Models\Checkin;
-use App\User;
-use App\Helpers\S3Management;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -546,9 +545,34 @@ class Dashboard extends Controller
     public function addEventCode($r)
     {
         if ($this->canContinue(["hacker", "admin", "committee"], $r, ['qrcode'])) {
-            $user = User::where("id", Auth::user()->id)->first();
-            if ($user) {
-                return $this->success("Successfully updated.");
+            $workshopName = base64_decode($r->get("qrcode"), true);
+            $token_start = "/^hexcambridge\//";
+            $token_pattern = "/^hexcambridge\/[a-zA-Z0-9]+$/";
+            if (preg_match($token_pattern, $workshopName)) {
+                $workshopName = preg_replace($token_start, "", $workshopName);
+                $user = User::where("id", Auth::user()->id)->first();
+                if ($user) {
+                    $eventDetails = json_decode($user->getAttribute("eventDetails"));
+                    if ($eventDetails == null) {
+                        $eventDetails = (object) ['workshops' => []];
+                    }
+                    if (!property_exists($eventDetails, "workshops") || !is_array($eventDetails->workshops)) {
+                        $eventDetails->workshops = [];
+                    }
+                    if (!in_array($workshopName, $eventDetails->workshops)) {
+                        array_push($eventDetails->workshops, $workshopName);
+                    }
+                    $user->setAttribute("eventDetails", json_encode($eventDetails));
+                    if ($user->save()) {
+                        return response()->json([
+                            "success" => true,
+                        ]);
+                    } else {
+                        return $this->fail("Could not update user.");
+                    }
+                }
+            } else {
+                return $this->fail("Invalid code.");
             }
         } else {
             return $this->fail("Checks failed.");
