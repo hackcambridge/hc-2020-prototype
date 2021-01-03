@@ -7,6 +7,7 @@ use App\Models\ApplicationReview;
 use App\Models\TeamMember;
 use App\Models\Checkin;
 use App\Helpers\S3Management;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -62,6 +63,7 @@ class Dashboard extends Controller
             case "leave-team": return $this->leaveTeam($r);
             case "get-team": return $this->getTeam($r);
             case "remove-team-member": return $this->removeTeamMember($r);
+            case "event-code": return $this->addEventCode($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -399,7 +401,6 @@ class Dashboard extends Controller
         }
     }
 
-
     public function acceptInvitation() {
         if($this->canContinue(["hacker"], null)) {
             $application = Application::where("user_id", "=", Auth::user()->id)->first();
@@ -431,7 +432,6 @@ class Dashboard extends Controller
             return $this->fail("Checks failed.");
         }
     }
-
 
     public function declineInvitation() {
         if($this->canContinue(["hacker"], null)) {
@@ -465,7 +465,16 @@ class Dashboard extends Controller
         }
     }
 
-
+    public function addEventCode($r) {
+        if($this->canContinue(["hacker","admin","committee"], $r, ['qrcode'])) {
+            $user = User::where("id", Auth::user()->id)->first();
+            if($user) {
+                return $this->success("Successfully updated.");
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
 
     private function generateRandomString($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
