@@ -151,7 +151,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                     primaryAction={{ content: 'Review', disabled: !reviewable, destructive: true, onAction: () => this.setState({ reviewModalOpen: true }) }}
                     thumbnail={<Thumbnail
                         source={`https://www.gravatar.com/avatar/${md5(usr.email.toLowerCase())}?d=retro&s=200`}
-                        size="large"
+                        // size="large"
                         alt={`${usr.name}`}
                     />}
                 >
