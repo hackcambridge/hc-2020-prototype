@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Page, Card, SkeletonBodyText, Thumbnail, Layout, Heading, TextContainer, DescriptionList, Button, Badge, Modal, Stack, RangeSlider, KeyboardKey } from '@shopify/polaris';
+import { Page, Card, SkeletonBodyText, Layout, Heading, TextContainer, DescriptionList, Button, Badge, Modal, Stack, RangeSlider, KeyboardKey, Avatar } from '@shopify/polaris';
 import Committee404 from '../Committee404';
 import { IApplicationDetail, IUserDetails, IApplicationReview } from '../../../interfaces/committee.interfaces';
 import axios from 'axios';
@@ -149,10 +149,12 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                         onNext: this.randomNextApplication
                     }}
                     primaryAction={{ content: 'Review', disabled: !reviewable, destructive: true, onAction: () => this.setState({ reviewModalOpen: true }) }}
-                    thumbnail={<Thumbnail
+                    thumbnail={<Avatar
+                        customer={true}
                         source={`https://www.gravatar.com/avatar/${md5(usr.email.toLowerCase())}?d=retro&s=200`}
-                        // size="large"
-                        alt={`${usr.name}`}
+                        size="large"
+                        name={`${usr.name}`}
+                        accessibilityLabel={`${usr.name}`}
                     />}
                 >
                     <Layout>
