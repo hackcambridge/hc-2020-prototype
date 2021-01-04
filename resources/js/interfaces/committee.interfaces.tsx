@@ -8,6 +8,7 @@ export interface IAdminOverview {
     applications: {
         total: number,
         submitted: number,
+        reviewed: number,
         invited: number,
         invitations_pending: number,
         accepted: number,
