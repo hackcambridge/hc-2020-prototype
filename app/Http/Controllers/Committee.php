@@ -172,6 +172,17 @@ class Committee extends Controller
                 ->groupBy('application_reviews.user_id')
                 ->select("name", DB::raw('count(*) as reviews'))->get();
 
+            $not_reviewed_count = Application::withCount(["reviews"])
+                ->whereHas('user', function ($query) {
+                    $query->where('type', '=', "hacker");
+                })
+                ->with(["user"])
+                ->having("reviews_count", ">", 0)
+                ->where("isSubmitted", "=", 1)
+                ->where("invited", "=", 0)
+                ->get()
+                ->count();
+
             $user_profiles = DB::table('users')->select("profile")->get();
             $universities_raw = [];
             foreach ($user_profiles as $profile) {
@@ -200,6 +211,7 @@ class Committee extends Controller
                         "submitted" => $this->overviewBaseQuery()
                             ->where('isSubmitted', "=", 1)
                             ->count(),
+                        "reviewed" => $not_reviewed_count,
                         "invited" => $this->overviewBaseQuery()
                             ->where("invited", "=", 1)
                             ->count(),
@@ -244,7 +256,6 @@ class Committee extends Controller
             return $this->fail(Auth::user()->type);
         }
     }
-
 
     private function getMembers()
     {
@@ -330,7 +341,6 @@ class Committee extends Controller
         }
     }
 
-
     private function getApplication($r)
     {
         if ($this->canContinue($r, ["id"], false)) {
@@ -376,7 +386,7 @@ class Committee extends Controller
                     $query->where('type', '=', "hacker");
                 })
                 ->with(["user"])
-                ->having("reviews_count", "<", 4)
+                ->having("reviews_count", "<", 1)
                 ->where("isSubmitted", "=", 1)
                 ->where("invited", "=", 0)
                 ->whereNotIn("id", $my_reviews)
@@ -679,7 +689,7 @@ class Committee extends Controller
                     ->select('applications.id', 'applications.isSubmitted', 'applications.user_id')
                     ->rightJoin('users', 'users.id', '=', 'applications.user_id')
                     ->select('users.name', 'users.email')
-                    ->where('users.type','=','hacker');
+                    ->where('users.type', '=', 'hacker');
                 if ($type == "hacker") {
                     $users = $base_query->get();
                 } elseif ($type == "hacker_app") {
@@ -690,28 +700,28 @@ class Committee extends Controller
                         ->whereNull('applications.user_id')->get();
                 } elseif ($type == "hacker_sub_app") {
                     $users = $base_query
-                        ->where('applications.isSubmitted','=',1)->get();
+                        ->where('applications.isSubmitted', '=', 1)->get();
                 } elseif ($type == "hacker_nosub_app") {
                     $users = $base_query
-                        ->where('applications.isSubmitted','=',0)->get();
+                        ->where('applications.isSubmitted', '=', 0)->get();
                 } elseif ($type == "hacker_inv") {
                     $users = $base_query
-                        ->where('applications.invited','=',1)->get();
+                        ->where('applications.invited', '=', 1)->get();
                 } elseif ($type == "hacker_noinv") {
                     $users = $base_query
-                        ->where('applications.invited','=',0)->get();
+                        ->where('applications.invited', '=', 0)->get();
                 } elseif ($type == "hacker_pend") {
                     $users = $base_query
-                        ->where('applications.invited','=',1)
-                        ->where('applications.confirmed','=',0)
-                        ->where('applications.rejected','=',0)
+                        ->where('applications.invited', '=', 1)
+                        ->where('applications.confirmed', '=', 0)
+                        ->where('applications.rejected', '=', 0)
                         ->get();
                 } elseif ($type == "hacker_conf") {
                     $users = $base_query
-                        ->where('applications.confirmed','=',1)->get();
+                        ->where('applications.confirmed', '=', 1)->get();
                 } elseif ($type == "hacker_rej") {
                     $users = $base_query
-                        ->where('applications.rejected','=',1)->get();
+                        ->where('applications.rejected', '=', 1)->get();
                 } else {
                     $emailList = explode(";", $emails);
                     $users = $base_query->whereIn("users.email", $emailList)->get();
