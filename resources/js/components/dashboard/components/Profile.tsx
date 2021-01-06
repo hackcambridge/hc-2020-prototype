@@ -7,6 +7,7 @@ import { IUserDetails } from "../../../interfaces/committee.interfaces";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { SearchMinor } from "@shopify/polaris-icons";
+import { tag_options } from "../../../data/tag.options";
 
 interface IHackerProfileState {
     loading: boolean,
@@ -16,14 +17,6 @@ interface IHackerProfileState {
     workIdeas: string,
     workTags: Array<string>,
 }
-const options = [
-    { value: 'Machine Learning', label: 'Machine Learning' },
-    { value: 'Computer Vision', label: 'Computer Vision' },
-    { value: 'E-Commerce', label: 'E-Commerce' },
-    { value: 'Robotics', label: 'Robotics' },
-    { value: 'Neural Networks', label: 'Neural Networks' },
-];
-
 
 class Profile extends Component<RouteComponentProps, IHackerProfileState> {
 
@@ -31,7 +24,7 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
         loading: false,
         user: undefined,
         currentTag: "",
-        tagOptions: options,
+        tagOptions: tag_options,
         workIdeas: "",
         workTags: [],
     }
@@ -143,12 +136,12 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
         this.setState({ currentTag: newValue });
 
         if (newValue === "") {
-            this.setState({ tagOptions: options });
+            this.setState({ tagOptions: tag_options });
             return;
         }
 
         const filterRegex = new RegExp(newValue, 'i');
-        const resultOptions = options.filter((option) =>
+        const resultOptions = tag_options.filter((option) =>
             option.label.match(filterRegex),
         );
         let endIndex = resultOptions.length - 1;

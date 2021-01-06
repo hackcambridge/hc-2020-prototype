@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ShopcodesMajor, CustomersMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ShopcodesMajor, CustomersMajor, TeamMajor } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
@@ -23,6 +23,7 @@ import Schedule from "./components/Schedule";
 import FAQs from "./components/FAQs";
 import Profile from "./components/Profile";
 import QRScanner from "./components/QRScanner"
+import TeamMatch from "./components/TeamMatch";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -150,7 +151,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/faqs`, label: `FAQs`, icon: QuestionMarkMajor });
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/qrscan`, label: `Scan QR code`, icon: ShopcodesMajor });
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/teammates`, label: `Team Matching`, icon: TeamMajor });
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/qrscan`, label: `Scan QR Code`, icon: ShopcodesMajor });
         }
 
         const navigationMarkup = (
@@ -207,6 +209,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Route key="challenges" exact path={`${this.props.baseUrl}/challenges`} render={(props) => <Challenges {...props} {...this.props} />} />,
             <Route key="schedule" exact path={`${this.props.baseUrl}/schedule`} render={(props) => <Schedule {...props} {...this.props} />} />,
             <Route key="faqs" exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
+            <Route key="teammates" exact path={`${this.props.baseUrl}/teammates`} render={(props) => <TeamMatch {...props} {...this.props} />} />,
             <Route key="qrscan" exact path={`${this.props.baseUrl}/qrscan`} render={(props) => <QRScanner {...props} {...this.props} />} />,
         ] : [];
         const applicationDetailRoutes = this.canSeeApplicationItems() ? [

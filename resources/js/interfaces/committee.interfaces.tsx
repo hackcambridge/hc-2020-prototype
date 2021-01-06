@@ -25,6 +25,12 @@ export interface IApplicationSummary {
     hasSubmitted: boolean,
 }
 
+export interface IHackerSummary {
+    name: string,
+    email: string,
+    handle: string,
+}
+
 export interface IApplicationDetail {
     id: number,
     cvFilename: string,
