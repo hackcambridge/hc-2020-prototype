@@ -14,6 +14,7 @@ class Auth0ControllerError extends Auth0Controller
     {
         try {
             // try calling auth0 parent method
+            error_log("Attempting callback...", 3, '/tmp/auth0_login_errors.txt');
             return parent::callback();
 
         } catch (CoreException $exception) {
