@@ -43,7 +43,7 @@ class CustomUserRepository extends Auth0UserRepository
             $sponsor = DB::table("sponsor_agents")
                 ->where("email", "=", $user->email)
                 ->join("sponsors", "sponsors.id", "=", "sponsor_agents.sponsor_id")->select("privileges")->first();
-            if (!is_null($sponsor->privileges) && strpos($sponsor->privileges, "reviewing")) {
+            if ($sponsor && strpos($sponsor->privileges, "reviewing")) {
                 $user->setAttribute('type', "sponsor-reviewer");
             } else {
                 $user->setAttribute('type', "sponsor");
