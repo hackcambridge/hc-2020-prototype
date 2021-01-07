@@ -14,13 +14,13 @@ class Auth0ControllerError extends Auth0Controller
     {
         try {
             // try calling auth0 parent method
-            error_log("Attempting callback...", 3, '/tmp/auth0_login_errors.txt');
+            error_log("Attempting callback...\n", 3, '/tmp/auth0_login_errors.txt');
             return parent::callback();
 
         } catch (CoreException $exception) {
             $message = $exception->getMessage();
 
-            error_log($message, 3, '/tmp/auth0_login_errors.txt');
+            error_log($message . "\n", 3, '/tmp/auth0_login_errors.txt');
 
             // if active session exists, then user is already logged-in - no need to throw an error
             if ($message == "Can't initialize a new session while there is one active session already")
