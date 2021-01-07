@@ -70,7 +70,7 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
             <Card sectioned title="RSVP for Hex Cambridge &nbsp; 🥳">
                 <p>We're delighted to offer you a place at Hex Cambridge this year. The standard of applications this year was higher than ever, and you made the cut. Please accept the invite below — it will expire {this.expires_after} days after it was sent, so be sure to let us know if you can come as soon as possible. We can't wait to meet all of you in Cambridge!</p>
                 <br />
-                <p>The event will take place on the weekend of the <strong>13-24th January 2021 virtually</strong>. No worries if you can't now come, but please let us know so we can invite someone else to come along and enjoy the event instead.</p>
+                <p>The event will take place on the weekend of the <strong>23-24th January 2021 virtually</strong>. No worries if you can't now come, but please let us know so we can invite someone else to come along and enjoy the event instead.</p>
                 <br />
                 {attending !== true ? expirationBlock : <></>}
                 <div style={{ margin: "0.5rem 0" }}>
