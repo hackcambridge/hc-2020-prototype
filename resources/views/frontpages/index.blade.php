@@ -255,6 +255,11 @@
                             <img src="{{ asset('images/sponsors/citadel.png') }}" alt="Citadel" />
                         </a>
                     </div>
+                    <div class="hex">
+                        <a href="https://www.blackrock.com/uk" targer="_blank">
+                            <img src="{{ asset('images/sponsors/blackrock.png') }}" alt="BlackRock" />
+                        </a>
+                    </div>
                 </div>
 
             </div>
@@ -277,11 +282,6 @@
             <div class="kilo-sponsor sponsor-pane">
                 <h1>-- Kilo --</h1>
                 <div class="hexagon-gallery">
-                    <div class="hex">
-                        <a href="https://stripe.com/gb" targer="_blank">
-                            <img src="{{ asset('images/sponsors/stripe.png') }}" alt="Stripe" />
-                        </a>
-                    </div>
                     <div class="hex">
                         <a href="https://datascope.co.uk/" targer="_blank">
                             <img src="{{ asset('images/sponsors/datascope.png') }}" alt="Datascope" />
