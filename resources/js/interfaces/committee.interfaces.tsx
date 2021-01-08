@@ -26,6 +26,13 @@ export interface IApplicationSummary {
     hasSubmitted: boolean,
 }
 
+export interface IHackerSummary {
+    name: string,
+    email: string,
+    team: boolean,
+    discord: string,
+}
+
 export interface IApplicationDetail {
     id: number,
     cvFilename: string,
@@ -41,6 +48,7 @@ export interface IUserDetails {
     email: string,
     type: string,
     profile: string,
+    eventDetails: string,
 }
 
 export interface IApplicationReview {
