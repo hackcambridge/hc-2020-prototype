@@ -45,7 +45,6 @@ class Dashboard extends Controller
         switch ($path) {
             case "init": return $this->initSession();
             case "application-record": return $this->getApplicationRecord($r);
-            case "accept-invitation": return $this->acceptInvitation();
             case "decline-invitation": return $this->declineInvitation();
             case "get-overview-stats": return $this->getOverviewStats();
             default: return $this->fail("Route not found");
@@ -62,6 +61,7 @@ class Dashboard extends Controller
             case "leave-team": return $this->leaveTeam($r);
             case "get-team": return $this->getTeam($r);
             case "remove-team-member": return $this->removeTeamMember($r);
+            case "accept-invitation": return $this->acceptInvitation($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -400,8 +400,8 @@ class Dashboard extends Controller
     }
 
 
-    public function acceptInvitation() {
-        if($this->canContinue(["hacker"], null)) {
+    public function acceptInvitation($r) {
+        if($this->canContinue(["hacker"], null, ["info","messages"])) {
             $application = Application::where("user_id", "=", Auth::user()->id)->first();
             if($application) {
                 if($application->invited) {
@@ -410,6 +410,8 @@ class Dashboard extends Controller
                     } else if ($application->confirmed) {
                         return $this->success("You have already accepted the invitation.");
                     } else {
+                        $application->setAttribute("agreedToInfo", $r->get("info"));
+                        $application->setAttribute("agreedToMessages", $r->get("messages"));
                         $application->setAttribute("confirmed", 1);
                         if($application->save()) {
                             $application->reviewed = 1;
