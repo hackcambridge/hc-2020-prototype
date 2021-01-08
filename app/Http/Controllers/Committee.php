@@ -820,7 +820,7 @@ class Committee extends Controller
                     "Hopefully see you in a couple of weeks!"
                 ],
                 "name" => "%name%",
-                "signoff" => "Happy Holidays",
+                "signoff" => "Best wishes",
                 "_defaults" => [
                     "name" => "there"
                 ]
