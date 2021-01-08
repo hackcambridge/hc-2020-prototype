@@ -139,20 +139,22 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
     private updateTagText = (newValue: string) => {
         this.setState({ currentTag: newValue });
 
-        if (newValue === "") {
-            this.setState({ tagOptions: tag_options });
-            return;
-        }
+        // TODO: Fix to always allow to add symbol
 
-        const filterRegex = new RegExp(newValue, 'i');
-        const resultOptions = tag_options.filter((option) =>
-            option.label.match(filterRegex),
-        );
-        let endIndex = resultOptions.length - 1;
-        if (resultOptions.length === 0) {
-            endIndex = 0;
-        }
-        this.setState({ tagOptions: resultOptions });
+        // if (newValue === "") {
+        //     this.setState({ tagOptions: tag_options });
+        //     return;
+        // }
+
+        // const filterRegex = new RegExp(newValue, 'i');
+        // const resultOptions = tag_options.filter((option) =>
+        //     option.label.match(filterRegex),
+        // );
+        // let endIndex = resultOptions.length - 1;
+        // if (resultOptions.length === 0) {
+        //     endIndex = 0;
+        // }
+        this.setState({ tagOptions: [] });
     }
 
     private handleIdeasChange = (newIdeas: string) => {
