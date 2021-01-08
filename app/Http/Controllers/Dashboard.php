@@ -551,7 +551,7 @@ class Dashboard extends Controller
     public function findTeammates($r)
     {
         if ($this->canContinue(["hacker", "admin", "committee"], $r, ["keywords"])) {
-            $hackers = User::select("name", "id", "email", "eventDetails")->get();
+            $hackers = User::where("type","=","hacker")->select("name", "id", "email", "eventDetails")->get();
             $keywords = $r->get("keywords");
 
             $teams_obj = TeamMember::select('team_id', DB::raw("count(*) as members"), DB::raw('group_concat(user_id) as members'))
