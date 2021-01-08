@@ -22,7 +22,7 @@ Invitations expire five days after they're sent, so if you're coming let us know
 
 <p>
 <h3>If you do not have a team yet</h3>
-    We will organise team matching sessions days before the event for you to join others with similar interests. To make this process more efficient, please fill your profile in the dashboard by clicking the avatar at the top right and selecting <code>Profile</code>. Your hackathon ideas description and tags you enter here will be visible to all other participants and when other participants search for matches in the <code>Team Match</code> window, your discord username may appear if your keywords match their searches. Team matching will be available once all participants confirm their places. In this way, you can get in touch with other individual participants before the event starts to form a team.
+    We will organise team matching sessions days before the event for you to join others with similar interests. To make this process more efficient, please fill your profile in the dashboard by clicking the avatar at the top right and selecting <code>Profile</code>. The hackathon ideas description and tags you enter here will be visible to all other participants and when other participants search for matches in the <code>Team Match</code> window, your Discord username may appear if your keywords match their searches. Team matching will become available once all participants confirm their places. In this way, you can get in touch with other individual participants before the event starts to form a team.
 </p>
 
 <p>In the meantime, prepare yourself for the amazing 36 hours coming your way!</p>

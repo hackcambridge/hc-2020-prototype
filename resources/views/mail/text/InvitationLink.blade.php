@@ -19,7 +19,7 @@ In the coming weeks, Discord channels will be set up before the event for worksh
 
 ***If you do not have a team yet***
 {!! nl2br(e("\n\n")) !!}
-We will organise team matching sessions days before the event for you to join others with similar interests. To make this process more efficient, please fill your profile in the dashboard by clicking the avatar at the top right and selecting Profile. The idea description and tags you have enter here will be visible to all other participants and when other participants search for matches in the Team Match window, your discord username may appear if your keywords match their searches. In this way, you can get in touch with other individual participants before the event starts to form a team.
+We will organise team matching sessions days before the event for you to join others with similar interests. To make this process more efficient, please fill your profile in the dashboard by clicking the avatar at the top right and selecting Profile. The hackathon ideas description and tags you enter here will be visible to all other participants and when other participants search for matches in the Team Match window, your Discord username may appear if your keywords match their searches. Team matching will become available once all participants confirm their places. In this way, you can get in touch with other individual participants before the event starts to form a team.
 {!! nl2br(e("\n\n")) !!}
 
 In the meantime, prepare yourself for the amazing 36 hours coming your way!
