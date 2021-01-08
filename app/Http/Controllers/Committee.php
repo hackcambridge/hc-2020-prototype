@@ -825,7 +825,7 @@ class Committee extends Controller
                     "name" => "there"
                 ]
             ];
-            $mailer = new BatchMailer(['mail/InvitationLink', 'mail/text/InvitationLink'], "Invitation — Hex Cambridge", $data);
+            $mailer = new BatchMailer(['mail/InvitationLink', 'mail/text/InvitationLink'], "Hex Cambridge 2021 | Invitation", $data);
             foreach ($successful as $app) {
                 $name = (isset($app->user->name) ? explode(" ", $app->user->name)[0] : "there");
                 $mailer->addRecipient($app->user->email, ["name" => $name]);

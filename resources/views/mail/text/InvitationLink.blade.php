@@ -1,4 +1,4 @@
-Hi %recipient.name%!
+Hi %recipient.name%,
 {!! nl2br(e("\n\n")) !!}
 <!-- @foreach ($content as $line)
     {{ $line }}
