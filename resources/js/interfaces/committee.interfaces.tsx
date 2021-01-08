@@ -28,7 +28,8 @@ export interface IApplicationSummary {
 export interface IHackerSummary {
     name: string,
     email: string,
-    handle: string,
+    team: boolean,
+    discord: string,
 }
 
 export interface IApplicationDetail {

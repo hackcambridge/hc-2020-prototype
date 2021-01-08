@@ -10,6 +10,7 @@ use App\Models\Checkin;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Resources\TeamMember as TeamMemberResource;
 
@@ -87,6 +88,8 @@ class Dashboard extends Controller
                 return $this->updateProfile($r);
             case "event-code":
                 return $this->addEventCode($r);
+            case "teammates-finder":
+                return $this->findTeammates($r);
             default:
                 return $this->fail("Route not found");
         }
@@ -537,6 +540,94 @@ class Dashboard extends Controller
             } else {
                 return $this->fail("User not found.");
             }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    public function findTeammates($r) {
+        if($this->canContinue(["hacker","admin","committee"], $r, ["keywords"])){
+            $hackers = User::select("name","id","email","eventDetails")->get();
+            $keywords = $r->get("keywords");
+
+            $teams_obj = TeamMember::select('team_id', DB::raw("count(*) as members"), DB::raw('group_concat(user_id) as members'))
+                ->having("members", ">", 1)
+                ->groupBy("team_id")
+                ->get();
+            $teams = [];
+            $teams_inverse = [];
+            foreach($teams_obj as $team) {
+                $members = explode(",", $team->members);
+                $teams[$team->team_id] = $members;
+                foreach($members as $member) {
+                    $teams_inverse[$member] = $team->team_id;
+                }
+            }
+
+            $matching = [];
+            foreach($hackers as $hacker) {
+                $application = Application::select("questionResponses")->where("user_id","=",$hacker->id)->first();
+                if(!$application || !$application->invited) {
+                    continue;
+                }
+
+                $add = 0;
+                if($hacker->eventDetails) {
+                    $eventDetails = json_decode($hacker->getAttribute("eventDetails"));
+                    # 1. Search in Hacker's descriptions
+                    if(property_exists($eventDetails, "ideas")) {
+                        foreach($keywords as $keyword) {
+                            if(strpos($eventDetails->ideas, $keyword) !== false){
+                                $add=1;
+                                break;
+                            }
+                        }
+                    }
+
+                    # 2. Search in Hacker's tags
+                    if(!$add && property_exists($eventDetails, "tags") && is_array($eventDetails->tags)) {
+                        foreach($keywords as $keyword) {
+                            foreach($eventDetails->tags as $tag){
+                                if(strpos($tag, $keyword) !== false || strpos($keyword,$tag) !== false){
+                                    $add=1;
+                                    break;
+                                }
+                            }
+                            if($add) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                # 3. Search in Hacker's application
+                if(!$add) {
+                    $responses = $application->getAttribute("questionResponses");
+                    foreach($keywords as $keyword) {
+                        if(strpos($responses, $keyword) !== false){
+                            $add=1;
+                            break;
+                        }
+                    }
+                }
+
+                if($add){
+                    $slim_user = (object) ["name" => $hacker->name, "email" => $hacker->email];
+                    if($hacker->eventDetails) {
+                        $eventDetails = json_decode($hacker->getAttribute("eventDetails"));
+                        if(property_exists($eventDetails, "discord")) {
+                            $slim_user->discord = $eventDetails->discord;
+                        }
+                    }
+                    $slim_user->team = array_key_exists($hacker->id, $teams_inverse);
+                    $matching[] = $slim_user;
+                }
+            }
+
+            return response()->json([
+                "success" => true,
+                "hackers" => $matching,
+            ]);
         } else {
             return $this->fail("Checks failed.");
         }

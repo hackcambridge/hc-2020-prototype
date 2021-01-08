@@ -14,6 +14,7 @@ interface IHackerProfileState {
     user: IUserDetails | undefined,
     currentTag: string,
     tagOptions: { value: string, label: string }[],
+    discordName: string,
     workIdeas: string,
     workTags: Array<string>,
 }
@@ -25,6 +26,7 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
         user: undefined,
         currentTag: "",
         tagOptions: tag_options,
+        discordName: "",
         workIdeas: "",
         workTags: [],
     }
@@ -53,7 +55,7 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
 
     private renderProfile = () => {
         const { user }: { user: IUserDetails | undefined } = this.state;
-        const { currentTag, tagOptions, workIdeas, workTags } = this.state;
+        const { currentTag, tagOptions, discordName, workIdeas, workTags } = this.state;
         if (user) {
             const usr: IUserDetails = user;
             const profile = JSON.parse(usr.profile);
@@ -87,6 +89,8 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
                             <Card>
                                 <div style={{ padding: "1.4rem 2rem" }}>
                                     <Heading>Information for team forming</Heading>
+                                    <br />
+                                    <TextField label="Discord nickname" value={discordName} onChange={this.handleDiscordName} />
                                     <br />
                                     <TextField label="Ideas I would be interested working in" value={workIdeas} onChange={this.handleIdeasChange} multiline={4} />
                                     <br />
@@ -157,6 +161,12 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
         });
     }
 
+    private handleDiscordName = (newName: string) => {
+        this.setState({
+            discordName: newName,
+        });
+    }
+
     private updateTags = (tags: string[]) => {
         this.setState({ workTags: tags });
     }
@@ -183,6 +193,7 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
                         this.setState({
                             loading: false,
                             user: user,
+                            discordName: "discord" in eventDetails ? eventDetails["discord"] : "",
                             workIdeas: "ideas" in eventDetails ? eventDetails["ideas"] : "",
                             workTags: "tags" in eventDetails ? eventDetails["tags"] : [],
                         });
@@ -199,10 +210,11 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
 
     private saveProfile = () => {
         const { user }: { user: IUserDetails | undefined } = this.state;
-        const { workIdeas, workTags} = this.state;
+        const { discordName, workIdeas, workTags} = this.state;
         if (user) {
             const usr: IUserDetails = user;
             var newEventDetails = JSON.parse(usr.eventDetails || "{}");
+            newEventDetails["discord"] = discordName;
             newEventDetails["ideas"] = workIdeas;
             newEventDetails["tags"] = workTags;
             axios.post("/dashboard-api/update-profile.json", {

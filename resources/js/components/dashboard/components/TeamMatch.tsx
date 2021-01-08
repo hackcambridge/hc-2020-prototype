@@ -116,7 +116,7 @@ class TeamMatch extends Component<ITeamMatchProps, ITeamMatchState> {
 
         const emptyStateMarkup = !hackers.length ? (
             <EmptyState
-                heading="Add tags to search for hackers"
+                heading={appliedTags.length ? "No hackers matched your search" : "Add tags to search for hacker"}
                 image={''}
             >
                 <p>
@@ -159,9 +159,13 @@ class TeamMatch extends Component<ITeamMatchProps, ITeamMatchState> {
                         emptyState={emptyStateMarkup}
                         loading={isLoading}
                         resourceName={{ singular: 'hacker', plural: 'hackers' }}
-                        items={hackers.length != 0 ? hackers.filter((app) => {
-                            return (app.name.toLowerCase().includes(filterValue.toLowerCase()) || app.email.toLowerCase().includes(filterValue));
-                        }) : []}
+                        items={hackers.length != 0 ?  
+                            hackers.filter((app: IHackerSummary) => {
+                            return ((app.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+                                (!app.discord || app.discord.toLowerCase().includes(filterValue.toLowerCase()))) &&
+                                (teamed ? true : !app.team));
+                        }) 
+                        : []}
                         renderItem={this.renderApplicationSummaryRow}
                         filterControl={filterControl}
                     />
@@ -171,15 +175,19 @@ class TeamMatch extends Component<ITeamMatchProps, ITeamMatchState> {
     }
 
     private loadMatchingHackers = () => {
+        const { appliedTags } = this.state;
+
         this.setState({ isLoading: true });
-        axios.post(`/dashboard-api/teammates-finder.json`).then(res => {
+        axios.post(`/dashboard-api/teammates-finder.json`, {
+            keywords: appliedTags,
+        }).then(res => {
             const status = res.status;
             if (status == 200) {
                 const payload = res.data;
                 if ("success" in payload && payload["success"]) {
-                    const applications: IHackerSummary[] = payload["hackers"];
+                    const hackers: IHackerSummary[] = payload["hackers"];
                     this.setState({
-                        hackers: applications,
+                        hackers: hackers,
                         isLoading: false,
                     });
                     return;
@@ -201,12 +209,11 @@ class TeamMatch extends Component<ITeamMatchProps, ITeamMatchState> {
                 url={''}
                 media={media}
                 accessibilityLabel={`View details for ${item.name}`}
-                shortcutActions={[{ content: 'View hacker', url: '' }]}
             >
                 <h3>
                     <TextStyle variation="strong">{item.name}</TextStyle>
                 </h3>
-                {/* Insert Discord handle somewhere */}
+                <div>Discord nickname: {item.discord ? item.discord : "<i>(none)</i>"}</div>
             </ResourceList.Item>
         );
         return <h1></h1>
