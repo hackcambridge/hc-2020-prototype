@@ -820,12 +820,12 @@ class Committee extends Controller
                     "Hopefully see you in a couple of weeks!"
                 ],
                 "name" => "%name%",
-                "signoff" => "Happy Holidays",
+                "signoff" => "Best wishes",
                 "_defaults" => [
                     "name" => "there"
                 ]
             ];
-            $mailer = new BatchMailer(['mail/InvitationLink', 'mail/text/InvitationLink'], "Invitation — Hex Cambridge", $data);
+            $mailer = new BatchMailer(['mail/InvitationLink', 'mail/text/InvitationLink'], "Hex Cambridge 2021 | Invitation", $data);
             foreach ($successful as $app) {
                 $name = (isset($app->user->name) ? explode(" ", $app->user->name)[0] : "there");
                 $mailer->addRecipient($app->user->email, ["name" => $name]);

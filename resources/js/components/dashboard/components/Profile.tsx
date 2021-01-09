@@ -144,15 +144,7 @@ class Profile extends Component<RouteComponentProps, IHackerProfileState> {
             return;
         }
 
-        const filterRegex = new RegExp(newValue, 'i');
-        const resultOptions = tag_options.filter((option) =>
-            option.label.match(filterRegex),
-        );
-        let endIndex = resultOptions.length - 1;
-        if (resultOptions.length === 0) {
-            endIndex = 0;
-        }
-        this.setState({ tagOptions: resultOptions });
+        this.setState({ tagOptions: [] });
     }
 
     private handleIdeasChange = (newIdeas: string) => {
