@@ -86,7 +86,14 @@ fi
 echo "Completed database migration."
 echo "--------------------"
 
-
+# Migrate Database (force to skip confirmation prompt).
+nohup php artisan websocket:init > websocket.log &
+if [ $? -ne 0 ]; then
+    >&2 echo "Websockets start failed."
+    exit 1;
+fi
+echo "Completed websockets start."
+echo "--------------------"
 
 # Restart Apache.
 sudo /opt/bitnami/ctlscript.sh restart apache

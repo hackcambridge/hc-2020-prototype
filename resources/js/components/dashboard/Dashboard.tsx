@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { Component, ReactNode, useRef } from "react";
 import { withRouter, RouteComponentProps, Link, Switch, Route, Redirect } from "react-router-dom";
 import { IDashboardProps, IApplicationRecord } from "../../interfaces/dashboard.interfaces";
 import {
@@ -24,6 +24,8 @@ import FAQs from "./components/FAQs";
 import Profile from "./components/Profile";
 import QRScanner from "./components/QRScanner"
 import TeamMatch from "./components/TeamMatch";
+import socketIOClient from "socket.io-client";
+
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -36,6 +38,7 @@ interface IDashboardState {
     currentLocation: string,
     application?: IApplicationRecord | undefined,
     applicationOpen: boolean,
+    socket: any,
 }
 
 
@@ -51,9 +54,13 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         currentLocation: this.props.location.pathname,
         application: this.props.user.application,
         applicationOpen: true,
+        socket: undefined,
     };
 
+    private SOCKET_SERVER_URL: string;
+
     componentDidMount() {
+        this.SOCKET_SERVER_URL = "ws://" + window.location.hostname + ":8080";
         if (this.props.user.application) {
             this.setState({ applicationOpen: !this.props.user.application.reviewed });
             this.updateApplicationRecord(this.props.user.application);
@@ -107,7 +114,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             id: "logout",
             items: [
                 { content: 'Frontpage', url: "/", icon: HomeMajor },
-                { content: 'Profile', url: `${this.props.baseUrl}/profile`, icon: CustomersMajor},
+                { content: 'Profile', url: `${this.props.baseUrl}/profile`, icon: CustomersMajor },
                 { content: 'Logout', url: "/logout", icon: LogOutMinor },
             ],
         },
@@ -229,7 +236,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             </Switch>
         );
     }
-    
+
     private renderApplicationBanner(): JSX.Element {
         const states: {
             [key: string]: {
@@ -319,6 +326,18 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
     private updateApplicationRecord = (record: IApplicationRecord) => {
         this.setState({ application: record });
+        let connectedSocket = socketIOClient(this.SOCKET_SERVER_URL, {
+            query: {
+                id: record.user_id,
+            },
+        });
+        connectedSocket.on('connection', () => {
+            console.log(`I'm connected with the back-end`);
+        });
+        console.log(this.SOCKET_SERVER_URL);
+        this.setState({
+            socket: connectedSocket,
+        });
     }
 
     private allowedEventDetails() {

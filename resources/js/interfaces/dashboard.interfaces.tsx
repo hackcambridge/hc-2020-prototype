@@ -23,6 +23,7 @@ export interface IApplicationRecord extends IApplicationRecordContent {
 }
 
 export interface IApplicationRecordContent {
+    user_id: string,
     cvFilename: string,
     cvUrl: string,
     questionResponses: string,
