@@ -1,6 +1,6 @@
 
 import React, { Component, RefObject } from "react";
-import { Card, Page, Heading, VisuallyHidden, Subheading } from "@shopify/polaris";
+import { Card, Page, Heading, VisuallyHidden, Subheading, Select } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { IDashboardProps } from "../../../interfaces/dashboard.interfaces";
@@ -10,6 +10,8 @@ interface QRScannerState {
     loaded: boolean,
     busy: boolean,
     delay: number,
+    devices: MediaDeviceInfo[],
+    cameraID: string,
     legacyRef: React.RefObject<QrReader> | null,
 }
 
@@ -19,14 +21,41 @@ class QRScanner extends Component<IDashboardProps, QRScannerState> {
         loaded: false,
         busy: false,
         delay: 1000,
+        devices: [],
+        cameraID: "",
         legacyRef: null
+    }
+
+    componentWillMount() {
+        this.setState({
+            loaded: false,
+        });
+
+        navigator.mediaDevices.enumerateDevices()
+            .then((devices) => {
+                const videoSelect: MediaDeviceInfo[] = []
+                devices.forEach((device) => {
+                    if (device.kind === 'videoinput') {
+                        videoSelect.push(device)
+                    }
+                })
+                return videoSelect
+            })
+            .then((devices) => {
+                this.setState({
+                    cameraID: devices[0].deviceId,
+                    devices: devices,
+                    loaded: true,
+                })
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     private handleScan = (data: string) => {
         if (data != null) {
-            console.log("Data:", data);
             let decoded = window.atob(data);
-            console.log("Decoded:", decoded);
             const regex = new RegExp("^[a-zA-Z0-9]+\/[a-zA-Z0-9]+$");
             if (regex.test(decoded)) {
                 toast.success("Code found sending to server...");
@@ -64,7 +93,7 @@ class QRScanner extends Component<IDashboardProps, QRScannerState> {
     }
 
     private setLegacyRef = (element: any) => {
-        this.setState({ legacyRef: element});
+        this.setState({ legacyRef: element });
     }
 
     private openImageDialog = () => {
@@ -72,6 +101,15 @@ class QRScanner extends Component<IDashboardProps, QRScannerState> {
         if (legacyRef != null) {
             legacyRef.openImageDialog();
         }
+    }
+
+    private handleCameraChange = (newID: string) => {
+        this.setState({ cameraID: newID });
+    }
+
+    private selectedCamera = () => {
+        const { cameraID } = this.state;
+        return cameraID;
     }
 
     private renderQRScanner() {
@@ -84,16 +122,33 @@ class QRScanner extends Component<IDashboardProps, QRScannerState> {
             display: "none",
         }
 
-        const { delay } = this.state;
+        const { delay, devices, cameraID } = this.state;
 
-        return (<><QrReader
-            delay={delay}
-            style={previewStyle}
-            onError={this.handleError}
-            onScan={this.handleScan}
-            onLoad={this.isLoaded}
-            facingMode={"rear"}
-        /><br /><Subheading>Or:</Subheading><br />
+        return (<>
+            {
+                devices.length && (
+                    <Select
+                        label="Select camera"
+                        options={devices.map((device: MediaDeviceInfo) => {
+                            return {
+                                label: device.label,
+                                value: device.label
+                            };
+                        })}
+                        value={cameraID}
+                        onChange={this.handleCameraChange}
+                    />
+                )
+            }
+            <QrReader
+                delay={delay}
+                style={previewStyle}
+                onError={this.handleError}
+                onScan={this.handleScan}
+                onLoad={this.isLoaded}
+                facingMode={"rear"}
+                chooseDeviceId={this.selectedCamera}
+            /><br /><Subheading>Or:</Subheading><br />
             <QrReader
                 ref={this.setLegacyRef}
                 delay={delay}
