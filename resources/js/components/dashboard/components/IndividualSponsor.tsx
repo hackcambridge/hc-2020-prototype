@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter, RouteComponentProps} from 'react-router';
-import { Page, Card, SkeletonBodyText, Thumbnail, Layout, Heading, TextContainer, DescriptionList, Button, Badge, Modal, Stack, RangeSlider, KeyboardKey } from '@shopify/polaris';
+import { Page, Card, SkeletonBodyText, MediaCard, Thumbnail, Layout, Heading, TextContainer, DisplayText, Button, Badge, Modal, Stack, RangeSlider, KeyboardKey } from '@shopify/polaris';
 import Dashboard404 from '../Dashboard404';
 import { ISponsor, IUserDetails } from '../../../interfaces/dashboard.interfaces';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import md5 from 'md5';
 import { textFieldQuestions } from './Apply';
 import Linkify from 'linkifyjs/react';
+import { IResourceDefinition } from '../../../interfaces/sponsors.interfaces';
 
 interface IIndividualSponsorProps {
     SponsorId: string
@@ -18,14 +19,16 @@ interface IIndividualSponsorState {
     loading: boolean,
     Sponsor: ISponsor | undefined,
     spon_name: string,
-    user: IUserDetails | undefined,
+    user: IUserDetails | undefined,,
+    loadingDefinitions: boolean,
+    resources: undefined,
 }
 
-
-export const reviewQuestions = [
-    { id: 1, question: "Technical Ability [0-100, greater is better]", range: 100, step: 5, default: 20, weight: 1 },
-    { id: 2, question: "Enthusiasm [0-100, greater is better]", range: 100, step: 5, default: 20, weight: 1 },
-    { id: 3, question: "Bonus [0-1]", range: 1, step: 1, default: 0, weight: 30, width: "10rem" },
+const sponsorFields: { id: string, title: string, placeholder: string }[] = [
+    { id: "1", title: "Industry", placeholder: "" },
+    { id: "2", title: "Homepage", placeholder: "Mention anything you want -- it doesn’t have to be technology-related!" },
+    { id: "3", title: "Description", placeholder: "" },
+    { id: "4", title: "Opportunities", placeholder: "For example GitHub, LinkedIn or your website. Put each link on a new line. " },
 ]
 
 class IndividualSponsor extends Component<IIndividualSponsorProps & RouteComponentProps, IIndividualSponsorState> {
@@ -33,20 +36,10 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     state = {
         SponsorId: undefined,
         loading: true,
-        Sponsor: undefined,
+        spons_obj: undefined,
         user: undefined,
-        team: "(None)",
-        cvModalOpen: false,
-        reviewModalOpen: false,
-        reviewAnswers: reviewQuestions.reduce<{ [id: number]: number }>((map, obj) => {
-            map[obj.id] = obj.default;
-            return map;
-        }, {}),
-        reviewTotal: reviewQuestions.reduce((a, b) => a + (b.default * b.weight), 0),
-        reviewMax: reviewQuestions.reduce((a, b) => a + (b.range * b.weight), 0),
-        savingReview: false,
-        alreadyReviewed: false,
-        isSubmitted: false,
+        loadingDefinitions: true,
+        resources: undefined,
     }
 
     constructor(props: IIndividualSponsorProps & RouteComponentProps){
@@ -110,16 +103,29 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     }
 
     private renderSponsor = () => {
-        const { sponsor, user }: { sponsor: ISponsor | undefined, user: IUserDetails | undefined } = this.state;
-        const { cvModalOpen, reviewModalOpen, reviewAnswers, reviewTotal, reviewMax, savingReview, alreadyReviewed, team } = this.state;
-        if(sponsor) {
-            console.log("rendering stuff here!",user,sponsor);
-            const app: ISponsor = sponsor;
-            // const usr: IUserDetails = user;
-            // const profile = JSON.parse(usr.profile);
+        const {spons_obj,user} = this.state;
+        const Sponsor:ISponsor|undefined= spons_obj;
+        if(Sponsor) {
+            const tier = Sponsor.tier;
+            const tier_badge = () => {
+                switch(tier.toLowerCase()) {
+                    case "co-host":
+                        return "info"
+                    case "tera":
+                        return "success"
+                    case "giga":
+                        return "attention"
+                    case "mega":
+                        return "warning"
+                    case "kilo":
+                        return undefined
+                    default: return undefined
+                }
+              }
+            console.log("rendering stuff here!",user,Sponsor);
+            const app: ISponsor = Sponsor;
             const metadata = <>
-                {alreadyReviewed ? <Badge status="success">Reviewed</Badge> : <></>}
-                {/* {usr.type != "hacker" ? <Badge status="warning">{"Type: " + usr.type}</Badge> : <></>} */}
+                {<Badge status={tier_badge()}>{tier}</Badge>}
             </>;
             const logoUrl = "https://media-exp1.licdn.com/dms/image/C560BAQERNw3GMGLaoA/company-logo_200_200/0/1519856895092?e=2159024400&v=beta&t=wdo1GL0aCmBg-RMThc030aMoUk2ZgT7NFxlRlUPG_B0"
             return (
@@ -133,44 +139,124 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         hasNext: true,
                         onNext: this.nextSponsor
                     }}
-                    primaryAction={{content: 'Review', destructive: true, onAction: () => {}}}
+                    primaryAction={{content: 'Speak To Them!', onAction: () => {}}}
                     thumbnail={<Thumbnail
                         source={logoUrl}
                         size="large"
                         alt={`${app.name}`}
                     />}
                 >
+                    <img style={{width:"100%"}} id="image" src="https://www.unwork.com/wp-content/uploads/2019/08/case-study_body_image-marshall-wace2.jpg"></img>
                     <Layout>
                         <Layout.Section secondary>
                             <br />
                             <Card>
-                                <div style={{ padding: "0 2rem" }}>
-                                    <DescriptionList
-                                        items={[
-                                            { term: 'Temp', description: "Temp" }]
-                                        }
-                                    />
+                                <div style={{ padding: "1.4rem 2rem"}}>
+                                    <DisplayText 
+                                    size="large">
+                                        {app.name}
+                                    </DisplayText>
+                                    <TextContainer>
+                                        <Heading>About</Heading>
+                                        <p>
+                                            Some text about the company and what it'll be doing.
+                                            [SPONSORSHIP TEAM TO WRITE]
+                                        </p>
+                                    </TextContainer>
                                 </div>
                             </Card>
                         </Layout.Section>
                         <Layout.Section>
+                            <br />
                             <Card>
-                                {textFieldQuestions.map((value) => {
-                                    <Linkify tagName="a" options={{ target: {url: '_blank'} }}>
+                                {sponsorFields.map((value) => {
+                                    console.log(value);
+                                    return (<Linkify tagName="a" options={{ target: {url: '_blank'} }}>
                                         <div style={{ padding: "1.4rem 2rem" }} key={value.id}>
                                             <Heading>{value.title}</Heading>
                                             <br style={{ lineHeight: "3px" }} />
                                             <TextContainer>Test text</TextContainer>
                                         </div>
-                                    </Linkify>;
+                                    </Linkify>);
                                 })}
                             </Card>
                         </Layout.Section>
                     </Layout>
+                    <Layout>
+                        {resources.map(c => this.renderResourceCard(c))}
+                    </Layout>
                 </Page>
             );
+        } else{
+            this.invalidSponsor()
         }
     };
+
+
+    private loadInformation() {
+        this.setState({ loadingDefinitions: true });
+        axios.post(`/sponsors/dashboard-api/load-resources.json`, {
+            sponsor_id: this.props.Sponsor.id,
+            sponsor_slug: this.props.Sponsor.slug,
+        }).then(res => {
+            const status = res.status;
+            if(status >= 200 && status < 300) {
+                const data = res.data;
+                if("success" in data && data["success"]) {
+                    const resources = data["details"];
+                    if(Array.isArray(resources)) {
+                        const definitions = resources.map(r => {
+                            const id: number = r["id"];
+                            const payload = r["payload"];
+                            const payloadObj = JSON.parse(payload);
+                            const spec: IResourceDefinition = {
+                                id: id,
+                                urls: (payloadObj["urls"] as string[]) || [],
+                                name: (payloadObj["name"] as string) || "",
+                                type: (payloadObj["type"] as string) || "",
+                                description: payloadObj["description"] as string || "",
+                            }
+                            return spec;
+                        });
+                        
+                        this.setState({ resources: definitions, loadingDefinitions: false });
+                        return;
+                    }
+                }
+            }
+
+            this.setState({ loadingDefinitions: false });
+        });
+    }
+
+    private renderResourceCard(data: ISponsor) {
+        var logoUrl = "https://media-exp1.licdn.com/dms/image/C560BAQERNw3GMGLaoA/company-logo_200_200/0/1519856895092?e=2159024400&v=beta&t=wdo1GL0aCmBg-RMThc030aMoUk2ZgT7NFxlRlUPG_B0"
+        // TODO: Replace with logo URL either on website or on S3 bucket.
+        return (
+            <Layout.Section oneThird>
+            <MediaCard primaryAction={{
+                    content: 'Learn more',
+                    onAction: () => this.viewSponsor(data)
+                }} 
+                description="Testing description" 
+                popoverActions={[{ content: 'Dismiss', onAction: () => {} }]} 
+                title={data.name} portrait={true}
+                key={data.id}>
+                <img
+                    alt=""
+                    width="100%"
+                    style={{
+                    objectFit: "cover",
+                    objectPosition: "center"
+                    }}
+                    src={logoUrl}
+                />
+                <div style={{ padding: "1.5rem" }}>
+                </div>
+                </MediaCard>
+            </Layout.Section>
+        );
+    }
 
     private invalidSponsor = () => {
         return <Dashboard404 />;
@@ -178,6 +264,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
     private retrieveSponsor = (SponsorId: number) => {
         this.setState({ loading: true });
+        console.log("retrieving Sponsor",SponsorId)
         axios.get(`/sponsors/dashboard-api/get-sponsors.json`).then(res => {
             const status = res.status;
             console.log("Here",res)
@@ -190,9 +277,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                     this.setState({ 
                         loading: false, 
                         SponsorId: SponsorId,
-                        sponsor: target,
-                        spon_name: target.name
-                        // name:payload["data"]["name"],
+                        spons_obj: target,
                     });
                     //{"id":2,"name":"Chuen","slug":"chuen","tier":"Chuen2","privileges":";swag;resources;workshop;social_media;mentors[42];recruiters[42]","created_at":"2020-10-31 15:27:29","updated_at":"2020-10-31 15:28:08"}
                     return;

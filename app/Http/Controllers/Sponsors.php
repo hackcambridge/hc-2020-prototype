@@ -139,7 +139,6 @@ class Sponsors extends Controller
             ]);
         }
     }
-
     private function getSponsors() {
         if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee"])) {
             $sponsors = Sponsor::all();
