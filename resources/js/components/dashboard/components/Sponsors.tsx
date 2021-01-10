@@ -29,8 +29,10 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
         const { loaded } = this.state;
         var loading = 
             <div style={{textAlign:"center"}}>
-                <Spinner color="teal" /> 
                 <Card sectioned><Heading>Loading sponsors...</Heading></Card>
+                <div style={{marginTop:"1.5em"}}>
+                    <Spinner color="teal" /> 
+                </div>
             </div>
         return (
             <>
