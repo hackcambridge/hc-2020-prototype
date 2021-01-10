@@ -216,7 +216,7 @@
                 <h1>-- Co-host --</h1>
                 <div class="hexagon-gallery">
                     <div class="hex">
-                        <a href="https://www.mwam.com/" targer="_blank">
+                        <a href="https://www.mwam.com/" target="_blank">
                             <img src="{{ asset('images/sponsors/marshallwace.png') }}" alt="Marshall Wace" />
                         </a>
                     </div>
@@ -226,17 +226,17 @@
                 <h1>-- Tera --</h1>
                 <div class="hexagon-gallery">
                     <div class="hex">
-                        <a href="https://www.optiver.com/" targer="_blank">
+                        <a href="https://www.optiver.com/" target="_blank">
                             <img src="{{ asset('images/sponsors/optiver.png') }}" alt="Optiver" />
                         </a>
                     </div>
                     <div class="hex">
-                        <a href="https://www.theodo.co.uk/" targer="_blank">
+                        <a href="https://www.theodo.co.uk/" target="_blank">
                             <img src="{{ asset('images/sponsors/theodo.png') }}" alt="Theodo" />
                         </a>
                     </div>
                     <div class="hex">
-                        <a href="https://www.huawei.com/" targer="_blank">
+                        <a href="https://www.huawei.com/" target="_blank">
                             <img src="{{ asset('images/sponsors/huawei.png') }}" alt="Huawei" />
                         </a>
                     </div>
@@ -246,17 +246,17 @@
                 <h1>-- Giga --</h1>
                 <div class="hexagon-gallery">
                     <div class="hex">
-                        <a href="https://www.hudsonrivertrading.com/" targer="_blank">
+                        <a href="https://www.hudsonrivertrading.com/" target="_blank">
                             <img src="{{ asset('images/sponsors/hrt.png') }}" alt="Hudson River Trading" />
                         </a>
                     </div>
                     <div class="hex">
-                        <a href="https://www.citadel.com/" targer="_blank">
+                        <a href="https://www.citadel.com/" target="_blank">
                             <img src="{{ asset('images/sponsors/citadel.png') }}" alt="Citadel" />
                         </a>
                     </div>
                     <div class="hex">
-                        <a href="https://www.blackrock.com/uk" targer="_blank">
+                        <a href="https://www.blackrock.com/uk" target="_blank">
                             <img src="{{ asset('images/sponsors/blackrock.png') }}" alt="BlackRock" />
                         </a>
                     </div>
@@ -267,12 +267,12 @@
                 <h1>-- Mega --</h1>
                 <div class="hexagon-gallery">
                     <div class="hex">
-                        <a href="https://www.janestreet.com/" targer="_blank">
+                        <a href="https://www.janestreet.com/" target="_blank">
                             <img src="{{ asset('images/sponsors/janestreet.png') }}" alt="Jane Street" />
                         </a>
                     </div>
                     <div class="hex">
-                        <a href="https://www.gresearch.co.uk" targer="_blank">
+                        <a href="https://www.gresearch.co.uk" target="_blank">
                             <img src="{{ asset('images/sponsors/gresearch.png') }}" alt="G-Research" />
                         </a>
                     </div>
@@ -283,8 +283,13 @@
                 <h1>-- Kilo --</h1>
                 <div class="hexagon-gallery">
                     <div class="hex">
-                        <a href="https://datascope.co.uk/" targer="_blank">
+                        <a href="https://datascope.co.uk/" target="_blank">
                             <img src="{{ asset('images/sponsors/datascope.png') }}" alt="Datascope" />
+                        </a>
+                    </div>
+                    <div class="hex">
+                        <a href="https://www.wolfram.com/language/" target="_blank">
+                            <img src="{{ asset('images/sponsors/wolfram.png') }}" alt="Wolfram Language" />
                         </a>
                     </div>
                 </div>
@@ -294,7 +299,7 @@
                 <h1>-- Partners --</h1>
                 <div class="hexagon-gallery">
                     <div class="hex">
-                        <a href="https://hackathons.org.uk/" targer="_blank">
+                        <a href="https://hackathons.org.uk/" target="_blank">
                             <img src="{{ asset('images/sponsors/HackUK.png') }}" alt="Hackathons.UK" />
                         </a>
                     </div>
