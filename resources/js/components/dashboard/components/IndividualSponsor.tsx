@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter, RouteComponentProps} from 'react-router';
-import { Page, Card, SkeletonBodyText, MediaCard, Thumbnail, Layout, Heading, TextContainer, DisplayText, Button, Badge, Modal, Stack, RangeSlider, KeyboardKey } from '@shopify/polaris';
+import { Page, Card, SkeletonBodyText, Image, MediaCard, Thumbnail, Layout, Heading, TextContainer, DisplayText, Button, Badge, Modal, Stack, RangeSlider, KeyboardKey, Spinner } from '@shopify/polaris';
 import Dashboard404 from '../Dashboard404';
 import { ISponsor, IUserDetails } from '../../../interfaces/dashboard.interfaces';
 import axios from 'axios';
@@ -8,18 +8,17 @@ import { toast } from 'react-toastify';
 import md5 from 'md5';
 import { textFieldQuestions } from './Apply';
 import Linkify from 'linkifyjs/react';
-import { IResourceDefinition } from '../../../interfaces/sponsors.interfaces';
+import { IResourceDefinition, ISponsorData } from '../../../interfaces/sponsors.interfaces';
 
 interface IIndividualSponsorProps {
-    SponsorId: string
+    SponsorId: string,
 }
 
 interface IIndividualSponsorState {
     SponsorId: number | undefined,
     loading: boolean,
     Sponsor: ISponsor | undefined,
-    spon_name: string,
-    user: IUserDetails | undefined,,
+    user: IUserDetails | undefined,
     loadingDefinitions: boolean,
     resources: undefined,
 }
@@ -36,7 +35,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     state = {
         SponsorId: undefined,
         loading: true,
-        spons_obj: undefined,
+        Sponsor: undefined,
         user: undefined,
         loadingDefinitions: true,
         resources: undefined,
@@ -103,8 +102,14 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     }
 
     private renderSponsor = () => {
-        const {spons_obj,user} = this.state;
-        const Sponsor:ISponsor|undefined= spons_obj;
+        const {Sponsor,user,resources} = this.state;
+        var loading = 
+            <div style={{textAlign:"center"}}>
+                <Card sectioned><Heading>Loading sponsors...</Heading></Card>
+                <div style={{marginTop:"1.5em"}}>
+                    <Spinner color="teal" /> 
+                </div>
+            </div>
         if(Sponsor) {
             const tier = Sponsor.tier;
             const tier_badge = () => {
@@ -183,7 +188,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         </Layout.Section>
                     </Layout>
                     <Layout>
-                        {resources.map(c => this.renderResourceCard(c))}
+                        {resources ? resources.map(c => this.renderResourceCard(c)) : loading}
                     </Layout>
                 </Page>
             );
@@ -196,8 +201,8 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     private loadInformation() {
         this.setState({ loadingDefinitions: true });
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
-            sponsor_id: this.props.Sponsor.id,
-            sponsor_slug: this.props.Sponsor.slug,
+            sponsor_id: this.state.Sponsor.id,
+            sponsor_slug: this.state.Sponsor.slug,
         }).then(res => {
             const status = res.status;
             if(status >= 200 && status < 300) {
@@ -207,10 +212,12 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                     if(Array.isArray(resources)) {
                         const definitions = resources.map(r => {
                             const id: number = r["id"];
+                            const type: string = r["type"] // <= need to get this type value out into the title somehow!
                             const payload = r["payload"];
                             const payloadObj = JSON.parse(payload);
-                            const spec: IResourceDefinition = {
+                            const spec = {
                                 id: id,
+                                mainType: type,
                                 urls: (payloadObj["urls"] as string[]) || [],
                                 name: (payloadObj["name"] as string) || "",
                                 type: (payloadObj["type"] as string) || "",
@@ -229,31 +236,18 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         });
     }
 
-    private renderResourceCard(data: ISponsor) {
+    private renderResourceCard(data: IResourceDefinition) {
         var logoUrl = "https://media-exp1.licdn.com/dms/image/C560BAQERNw3GMGLaoA/company-logo_200_200/0/1519856895092?e=2159024400&v=beta&t=wdo1GL0aCmBg-RMThc030aMoUk2ZgT7NFxlRlUPG_B0"
         // TODO: Replace with logo URL either on website or on S3 bucket.
         return (
             <Layout.Section oneThird>
-            <MediaCard primaryAction={{
-                    content: 'Learn more',
-                    onAction: () => this.viewSponsor(data)
-                }} 
-                description="Testing description" 
-                popoverActions={[{ content: 'Dismiss', onAction: () => {} }]} 
-                title={data.name} portrait={true}
-                key={data.id}>
-                <img
-                    alt=""
-                    width="100%"
-                    style={{
-                    objectFit: "cover",
-                    objectPosition: "center"
-                    }}
-                    src={logoUrl}
+            <Card title={data.type} sectioned>
+                <Image
+                    source="https://polaris.shopify.com/bundles/bc7087219578918d62ac40bf4b4f99ce.png"
+                    alt="turtle illustration centered with body text and a button"
                 />
-                <div style={{ padding: "1.5rem" }}>
-                </div>
-                </MediaCard>
+                <p>View a summary of your online store’s performance.</p>
+            </Card>
             </Layout.Section>
         );
     }
@@ -277,7 +271,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                     this.setState({ 
                         loading: false, 
                         SponsorId: SponsorId,
-                        spons_obj: target,
+                        Sponsor: target,
                     });
                     //{"id":2,"name":"Chuen","slug":"chuen","tier":"Chuen2","privileges":";swag;resources;workshop;social_media;mentors[42];recruiters[42]","created_at":"2020-10-31 15:27:29","updated_at":"2020-10-31 15:28:08"}
                     return;
@@ -289,7 +283,8 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                 toast.error("Failed to load sponsors");
                 this.setState({ loading: false });
             }
-        });
+        })
+    this.loadInformation();
     }
 }
 
