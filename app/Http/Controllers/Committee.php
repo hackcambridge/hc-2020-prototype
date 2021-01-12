@@ -690,8 +690,6 @@ class Committee extends Controller
                     ->rightJoin('users', 'users.id', '=', 'applications.user_id')
                     ->select('users.name', 'users.email')
                     ->where('users.type', '=', 'hacker');
-                $submitted_base = $base_query->where('applications.isSubmitted', '=', 1);
-                $invited_base = $submitted_base->where('applications.invited', '=', 1);
                 if ($type == "hacker") {
                     $users = $base_query->get();
                 } elseif ($type == "hacker_app") {
@@ -701,25 +699,30 @@ class Committee extends Controller
                     $users = $base_query
                         ->whereNull('applications.user_id')->get();
                 } elseif ($type == "hacker_sub_app") {
-                    $users = $submitted_base->get();
+                    $users = $base_query
+                        ->where('applications.isSubmitted', '=', 1)->get();
                 } elseif ($type == "hacker_nosub_app") {
                     $users = $base_query
                         ->where('applications.isSubmitted', '=', 0)->get();
                 } elseif ($type == "hacker_inv") {
-                    $users = $invited_base->get();
+                    $users = $base_query
+                        ->where('applications.isSubmitted', '=', 1)
+                        ->where('applications.invited', '=', 1)->get();
                 } elseif ($type == "hacker_noinv") {
-                    $users = $submitted_base
+                    $users = $base_query
+                        ->where('applications.isSubmitted', '=', 1)
                         ->where('applications.invited', '=', 0)->get();
                 } elseif ($type == "hacker_pend") {
-                    $users = $invited_base
+                    $users = $base_query
+                        ->where('applications.invited', '=', 1)
                         ->where('applications.confirmed', '=', 0)
                         ->where('applications.rejected', '=', 0)
                         ->get();
                 } elseif ($type == "hacker_conf") {
-                    $users = $invited_base
+                    $users = $base_query
                         ->where('applications.confirmed', '=', 1)->get();
                 } elseif ($type == "hacker_rej") {
-                    $users = $invited_base
+                    $users = $base_query
                         ->where('applications.rejected', '=', 1)->get();
                 } else {
                     $emailList = explode(";", $emails);

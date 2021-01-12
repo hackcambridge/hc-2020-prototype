@@ -37,9 +37,9 @@ const options = [
     { label: 'Every hacker not submitted application', value: 'hacker_nosub_app' },
     { label: 'Every invited hacker', value: 'hacker_inv' },
     { label: 'Every non-invited hacker', value: 'hacker_noinv' },
-    { label: 'Every pending hacker', value: 'hacker_pend' },
+    { label: 'Every hacker with pending invitation', value: 'hacker_pend' },
     { label: 'Every confirmed hacker', value: 'hacker_conf' },
-    { label: 'Every rejected hacker', value: 'hacker_rej' },
+    { label: 'Every hacker with rejected invitation', value: 'hacker_rej' },
     { label: 'List of emails (; separated)', value: 'custom' },
 ];
 
