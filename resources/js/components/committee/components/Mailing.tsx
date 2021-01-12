@@ -451,7 +451,7 @@ The Hack Cambridge Team`;
 
     private sendEmail = () => {
         const { files }: { files: string[] } = this.state;
-        const { selectedTemplate,recipient,emailList,subject } = this.state;
+        const { selectedTemplate, recipient, emailList, subject } = this.state;
         const name = files[selectedTemplate];
         this.setState({ loading: true, running: true });
         axios.post(`/committee/admin-api/send-mail.json`, {
@@ -467,7 +467,7 @@ The Hack Cambridge Team`;
             if (status == 200 || status == 201) {
                 const payload = res.data;
                 if ("success" in payload && payload["success"]) {
-                    toast.success("Mail sent");
+                    toast.success(payload["emails"] + " emails sent");
                 } else {
                     toast.error(payload["message"]);
                 }

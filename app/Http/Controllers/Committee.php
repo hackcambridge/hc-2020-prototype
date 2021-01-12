@@ -741,6 +741,7 @@ class Committee extends Controller
                 $mailer->sendAll();
                 return response()->json([
                     "success" => true,
+                    "emails"  => count($users),
                 ]);
             } catch (Exception $e) {
                 return $this->fail($e->getMessage());
