@@ -39,7 +39,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
             <>
                 <div id={"sponsor-challenges"}>
                     <Page title={"Challenges"}>
-                        {loaded 
+                        {loaded
                             ? this.renderChallenges()
                             : <Card sectioned><Heading>Loading challenges...</Heading></Card>
                         }
@@ -63,11 +63,11 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
 
     private renderChallenges() {
         const { challenges, challengesLive } = this.state;
-        if(!challengesLive) {
-            return <Card sectioned><Heading>Details will be published soon!</Heading></Card>; 
+        if (!challengesLive) {
+            return <Card sectioned><Heading>Details will be published soon!</Heading></Card>;
         }
 
-        if(challenges.length == 0) {
+        if (challenges.length == 0) {
             return <Card sectioned><Heading>No challenges to show.</Heading></Card>;
         }
 
@@ -76,9 +76,9 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
 
     private renderSponsorChallengeCard(data: ISponsorChallenge) {
         return (
-            <Card key={`${Math.random()}`} sectioned   
+            <Card key={`${Math.random()}`} sectioned
                 secondaryFooterActions={data.slackChannel ? [{
-                    content: 'Slack Channel', icon: SocialPostMajor, 
+                    content: 'Slack Channel', icon: SocialPostMajor,
                     onAction: () => window.open(`${this.slackWorkspaceBaseUrl}${data.slackChannel}`, '_blank')
                 }] : []}
                 primaryFooterAction={{
@@ -87,16 +87,16 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                 }}
             >
                 <Layout>
-                <Layout.Section secondary>
-                    <div className={"sponsor-challenge-logo"}>
-                        <img src={data.logoUrl} />
-                    </div>
-                </Layout.Section>
-                <Layout.Section>
-                    <div className={"sponsor-challenge-content"}>
-                        <p>{data.description}</p>
-                    </div>
-                </Layout.Section>
+                    <Layout.Section secondary>
+                        <div className={"sponsor-challenge-logo"}>
+                            <img src={data.logoUrl} />
+                        </div>
+                    </Layout.Section>
+                    <Layout.Section>
+                        <div className={"sponsor-challenge-content"}>
+                            <p>{data.description}</p>
+                        </div>
+                    </Layout.Section>
                 </Layout>
             </Card>
         );
@@ -106,9 +106,9 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
     private loadChallenges() {
         axios.get(this.dataUrl).then(res => {
             const status = res.status;
-            if(status >= 200 && status <= 300) {
+            if (status >= 200 && status <= 300) {
                 const payload = res.data;
-                if("challenges" in payload) {
+                if ("challenges" in payload) {
                     const challenges: ISponsorChallenge[] = payload["challenges"];
                     this.setState({
                         challenges: challenges,
@@ -124,7 +124,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
     }
 }
 
-export default Challenges; 
+export default Challenges;
 
 
 

@@ -51,7 +51,7 @@
                     </div>
                     <div class="section-menu">
                         <div class="popover popover-bottom">
-                            <button class="btn btn-primary">
+                            <button class="btn btn-primary" aria-label="Mobile menu">
                                 <i class="icon icon-menu"></i>
                             </button>
                             <div class="popover-container">
@@ -86,7 +86,7 @@
         <div class="container">
             <div class="columns col-gapless">
                 <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-copyright">
-                    HexCambridge&nbsp;©&nbsp;2020
+                    HexCambridge&nbsp;©&nbsp;2021
                 </div>
                 <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-email">
                     <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>

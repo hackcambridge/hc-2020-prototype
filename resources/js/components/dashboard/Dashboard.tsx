@@ -8,10 +8,9 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, JobsMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, LocationMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, JobsMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, LocationMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor ,ShopcodesMajor, CustomersMajor, TeamMajor} from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
-import MapView from "./components/MapView";
 import Apply from "./components/Apply";
 import TeamApplication from "./components/TeamApplication";
 import axios from 'axios';
@@ -24,6 +23,9 @@ import Schedule from "./components/Schedule";
 import Sponsors from "./components/Sponsors";
 import FAQs from "./components/FAQs";
 import IndividualSponsor from "./components/IndividualSponsor";
+import Profile from "./components/Profile";
+import QRScanner from "./components/QRScanner"
+import TeamMatch from "./components/TeamMatch";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -107,6 +109,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             id: "logout",
             items: [
                 { content: 'Frontpage', url: "/", icon: HomeMajor },
+                { content: 'Profile', url: `${this.props.baseUrl}/profile`, icon: CustomersMajor},
                 { content: 'Logout', url: "/logout", icon: LogOutMinor },
             ],
         },
@@ -116,10 +119,6 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         <TopBar
             showNavigationToggle={true}
             userMenu={userMenuMarkup}
-            // searchResultsVisible={searchActive}
-            // searchField={searchFieldMarkup}
-            // searchResults={searchResultsMarkup}
-            // onSearchResultsDismiss={this.handleSearchResultsDismiss}
             onNavigationToggle={this.toggleState('showMobileNavigation')}
         />
     );
@@ -151,11 +150,12 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         ]
 
         if (this.allowedEventDetails()) {
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/map`, label: `Map`, icon: LocationMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/sponsors`, label: `Sponsors`, icon: JobsMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/faqs`, label: `FAQs`, icon: QuestionMarkMajor });
+            // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/teammates`, label: `Team Matching`, icon: TeamMajor });
+            // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/qrscan`, label: `Scan QR Code`, icon: ShopcodesMajor });
         }
 
         const navigationMarkup = (
@@ -164,12 +164,12 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
 
                 {showApplicationItems && this.canSeeApplicationItems()
                     ?
-                        <>
-                            {this.renderApplicationBanner()}
-                            <div style={{ marginTop: "-1.6rem" }}>
-                                <Navigation.Section items={applicationNavigationItems} />
-                            </div>
-                        </>
+                    <>
+                        {this.renderApplicationBanner()}
+                        <div style={{ marginTop: "-1.6rem" }}>
+                            <Navigation.Section items={applicationNavigationItems} />
+                        </div>
+                    </>
                     : <></>
                 }
             </Navigation>
@@ -209,30 +209,32 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private renderContent(): JSX.Element {
         const { applicationOpen } = this.state;
         const eventDetailRoutes = this.allowedEventDetails() ? [
-            <Route exact path={`${this.props.baseUrl}/map`} render={(props) => <MapView {...props} {...this.props} />} />,
-            <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <Challenges {...props} {...this.props} />} />,
-            <Route exact path={`${this.props.baseUrl}/sponsors`} render={(props) => <Sponsors {...props} {...this.props} />} />,
-            <Route exact path={`${this.props.baseUrl}/schedule`} render={(props) => <Schedule {...props} {...this.props} />} />,
-            <Route exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
+            <Route key="challenges" exact path={`${this.props.baseUrl}/challenges`} render={(props) => <Challenges {...props} {...this.props} />} />,
+            <Route key="schedule" exact path={`${this.props.baseUrl}/schedule`} render={(props) => <Schedule {...props} {...this.props} />} />,
+            <Route key="sponsors" exact path={`${this.props.baseUrl}/sponsors`} render={(props) => <Sponsors {...props} {...this.props} />} />,
+            <Route key="faqs" exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
+            <Route key="teammates" exact path={`${this.props.baseUrl}/teammates`} render={(props) => <TeamMatch {...props} {...this.props} />} />,
+            <Route key="qrscan" exact path={`${this.props.baseUrl}/qrscan`} render={(props) => <QRScanner {...props} {...this.props} />} />,
         ] : [];
         const applicationDetailRoutes = this.canSeeApplicationItems() ? [
-            <Redirect exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,
-            <Route exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} applicationsOpen={this.props.canApply} />} />,
-            <Route exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />,
-            <Route exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />,
+            <Redirect key="apply" exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,
+            <Route key="apply_individual" exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} applicationsOpen={this.props.canApply} />} />,
+            <Route key="apply_team" exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />,
+            <Route key="apply_invitation" exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />,
         ] : [];
         return (
             <Switch>
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props} />} />
                 <Route exact path={`${this.props.baseUrl}/sponsors/:id`} render={(props) => <IndividualSponsor SponsorId={props.match.params.id} {...props} />} />
+                <Route exact path={`${this.props.baseUrl}/profile`} render={(props) => <Profile {...props} {...this.props.user} />} />
                 {applicationDetailRoutes.map(i => i)}
                 {eventDetailRoutes.map(i => i)}
                 <Route component={Dashboard404}></Route>
             </Switch>
         );
     }
-
+    
     private renderApplicationBanner(): JSX.Element {
         const states: {
             [key: string]: {
@@ -243,6 +245,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         } = {
             "notStarted": { status: undefined, text: "Start Application" },
             "started": { status: "warning", text: "Finish Application" },
+            "incomplete": { status: undefined, text: "Incomplete Application" },
             "pending": { status: "info", text: "Application Pending" },
             "rejected": { status: "critical", text: "Unsuccessful" },
             "declined": { status: "critical", text: "Place Declined" },
@@ -292,7 +295,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             }
 
             if (applicationOpen) {
-                return application.isSubmitted ? (complete ? "pending" : "started") : "started";
+                return application.isSubmitted ? (complete ? "pending" : "incomplete") : "started";
             } else {
                 return application.isSubmitted ? (complete ? "pending" : "rejected") : "rejected";
             }
@@ -309,7 +312,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 if ("success" in obj && obj["success"]) {
                     // TODO: check flow, maybe return blank record instead of null.
                     const record: IApplicationRecord = obj["record"];
-                    if(record) {
+                    if (record) {
                         this.setState({ applicationOpen: !record.reviewed });
                         this.updateApplicationRecord(record);
                     }

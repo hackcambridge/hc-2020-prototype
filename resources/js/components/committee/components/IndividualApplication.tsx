@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {withRouter, RouteComponentProps} from 'react-router';
-import { Page, Card, SkeletonBodyText, Thumbnail, Layout, Heading, TextContainer, DescriptionList, Button, Badge, Modal, Stack, RangeSlider, KeyboardKey } from '@shopify/polaris';
+import { withRouter, RouteComponentProps } from 'react-router';
+import { Page, Card, SkeletonBodyText, Layout, Heading, TextContainer, DescriptionList, Button, Badge, Modal, Stack, RangeSlider, KeyboardKey, Avatar } from '@shopify/polaris';
 import Committee404 from '../Committee404';
 import { IApplicationDetail, IUserDetails, IApplicationReview } from '../../../interfaces/committee.interfaces';
 import axios from 'axios';
@@ -31,13 +31,13 @@ interface IIndividualApplicationState {
 
 
 export const reviewQuestions = [
-    { id: 1, question: "Technical Ability [0-100, greater is better]", range: 100, step: 5, default: 20, weight: 1 },
-    { id: 2, question: "Enthusiasm [0-100, greater is better]", range: 100, step: 5, default: 20, weight: 1 },
+    { id: 1, question: "Technical Ability [0-1], greater is better", range: 100, step: 5, default: 20, weight: 1 },
+    { id: 2, question: "Enthusiasm [0-1], greater is better", range: 100, step: 5, default: 20, weight: 1 },
     { id: 3, question: "Bonus [0-1]", range: 1, step: 1, default: 0, weight: 30, width: "10rem" },
 ]
 
 class IndividualApplication extends Component<IIndividualApplicationProps & RouteComponentProps, IIndividualApplicationState> {
-    
+
     state = {
         applicationId: undefined,
         loading: true,
@@ -57,26 +57,26 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
         isSubmitted: false,
     }
 
-    constructor(props: IIndividualApplicationProps & RouteComponentProps){
+    constructor(props: IIndividualApplicationProps & RouteComponentProps) {
         super(props);
         this.arrowFunctions = this.arrowFunctions.bind(this);
     }
 
-    arrowFunctions(event: KeyboardEvent){
+    arrowFunctions(event: KeyboardEvent) {
         const { cvModalOpen, isSubmitted } = this.state;
-        if(event.keyCode === 32) { // space
+        if (event.code === "Space") { // space
             this.setState({ cvModalOpen: !cvModalOpen });
         }
-        if(event.keyCode === 40) { // down
+        if (event.code === "ArrowDown") { // down
             this.setState({ cvModalOpen: false });
         }
-        if(event.keyCode === 39) { // right
+        if (event.code === "ArrowRight") { // right
             this.setState({ reviewModalOpen: true && isSubmitted });
         }
-        if(event.keyCode === 38) { // up
+        if (event.code === "ArrowUp") { // up
             this.setState({ cvModalOpen: true });
         }
-        if(event.keyCode === 37) { // left
+        if (event.code === "ArrowLeft") { // left
             this.setState({ reviewModalOpen: false });
         }
     }
@@ -91,19 +91,19 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
         }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         document.removeEventListener("keydown", this.arrowFunctions, false);
     }
 
     render() {
         const { applicationId, loading } = this.state;
         return (<>
-            { loading 
+            { loading
                 ? this.loadingMarkup
-                : applicationId 
+                : applicationId
                     ? this.renderApplication()
                     : this.invalidApplication()
-            } 
+            }
         </>);
     }
 
@@ -118,12 +118,12 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
     private renderApplication = () => {
         const { application, user }: { application: IApplicationDetail | undefined, user: IUserDetails | undefined } = this.state;
         const { cvModalOpen, reviewModalOpen, reviewAnswers, reviewTotal, reviewMax, savingReview, alreadyReviewed, team } = this.state;
-        if(application && user) {
+        if (application && user) {
             const app: IApplicationDetail = application;
             const usr: IUserDetails = user;
             const questions = JSON.parse(app.questionResponses);
             const profile = JSON.parse(usr.profile);
-            const cvButton = app.cvUrl.length > 0 
+            const cvButton = app.cvUrl.length > 0
                 ? <a style={{ marginTop: "-0.4rem", textDecoration: "none", cursor: "pointer" }} onClick={() => this.setState({ cvModalOpen: true })}><Button fullWidth primary>View CV</Button></a>
                 : <div style={{ marginTop: "-0.4rem" }}><Button disabled fullWidth primary>CV missing</Button></div>;
 
@@ -138,8 +138,8 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             </>;
             const reviewable = app.isSubmitted && usr.type == "hacker";
             return (
-                <Page 
-                    breadcrumbs={[{content: 'Applications', url: '../applications'}]}
+                <Page
+                    breadcrumbs={[{ content: 'Applications', url: '../applications' }]}
                     title={`${usr.name}`}
                     titleMetadata={metadata}
                     subtitle={`Application #${app.id}`}
@@ -148,11 +148,13 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                         hasNext: true,
                         onNext: this.randomNextApplication
                     }}
-                    primaryAction={{content: 'Review', disabled: !reviewable, destructive: true, onAction: () => this.setState({ reviewModalOpen: true })}}
-                    thumbnail={<Thumbnail
+                    primaryAction={{ content: 'Review', disabled: !reviewable, destructive: true, onAction: () => this.setState({ reviewModalOpen: true }) }}
+                    thumbnail={<Avatar
+                        customer={true}
                         source={`https://www.gravatar.com/avatar/${md5(usr.email.toLowerCase())}?d=retro&s=200`}
                         size="large"
-                        alt={`${usr.name}`}
+                        name={`${usr.name}`}
+                        accessibilityLabel={`${usr.name}`}
                     />}
                 >
                     <Layout>
@@ -160,7 +162,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                             {cvButton}
                             <br />
                             <Card>
-                                <div style={{ padding: "0 2rem" }}>
+                                <div style={{ padding: "0 1.5rem" }}>
                                     <DescriptionList
                                         items={[
                                             { term: 'Email', description: profile["email"] || "" },
@@ -170,11 +172,11 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                             { term: 'Level', description: profile["level_of_study"] || "" },
                                             { term: 'Team', description: team }
                                         ]
-                                        .concat(
-                                            app.visaRequired ? 
-                                            [{term: 'Visa Deadline', description: new Date(app.visaRequiredDate).toDateString()}] 
-                                            : []
-                                        )}
+                                            .concat(
+                                                app.visaRequired ?
+                                                    [{ term: 'Visa Deadline', description: new Date(app.visaRequiredDate).toDateString() }]
+                                                    : []
+                                            )}
                                     />
                                 </div>
                             </Card>
@@ -184,10 +186,10 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                 {textFieldQuestions.map((value) => {
                                     const answer: string = questions[value.id];
                                     const answerMarkup = answer.length > 0 ? answer.split('\n').map(i => {
-                                        return <TextContainer>{i}</TextContainer>
+                                        return <TextContainer key={i.length}>{i}</TextContainer>
                                     }) : <TextContainer>(Blank)</TextContainer>;
-                                    return (<Linkify tagName="a" options={{ target: {url: '_blank'} }}>
-                                        <div style={{ padding: "1.4rem 2rem" }} key={value.id}>
+                                    return (<Linkify tagName="a" options={{ target: { url: '_blank' } }} key={value.id}>
+                                        <div style={{ padding: "1.4rem 2rem" }}>
                                             <Heading>{value.title}</Heading>
                                             <br style={{ lineHeight: "3px" }} />
                                             {answerMarkup}
@@ -205,7 +207,6 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
 
                     <Modal
                         key={1}
-                        size={"Full"}
                         large
                         open={cvModalOpen}
                         onClose={() => this.setState({ cvModalOpen: false })}
@@ -247,9 +248,9 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                         </Stack.Item>
                                     );
                                 })}
-                                
+
                                 <Stack.Item key={-1}>
-                                    <p style={{ textAlign: "center", fontWeight: 700, fontSize: "2rem", padding: "2rem 0 0.5rem" }}>Score: {(Math.round((reviewTotal/reviewMax) * 100) / 100).toFixed(2)}/1.00</p>
+                                    <p style={{ textAlign: "center", fontWeight: 700, fontSize: "2rem", padding: "2rem 0 0.5rem" }}>Score: {(Math.round((reviewTotal / reviewMax) * 100) / 100).toFixed(2)}/1.00</p>
                                 </Stack.Item>
                             </Stack>
                         </Modal.Section>
@@ -269,15 +270,15 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             id: applicationId
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
-                    const application : IApplicationDetail = payload["application"];
-                    const user : IUserDetails = payload["user"];
+                if ("success" in payload && payload["success"]) {
+                    const application: IApplicationDetail = payload["application"];
+                    const user: IUserDetails = payload["user"];
                     const team: string = payload["team"];
-                    this.setState({ 
-                        loading: false, 
-                        applicationId: applicationId, 
+                    this.setState({
+                        loading: false,
+                        applicationId: applicationId,
                         application: application,
                         team: team,
                         user: user,
@@ -290,11 +291,11 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                         isSubmitted: application.isSubmitted,
                     });
 
-                    const review : IApplicationReview = payload["review"];
-                    if(review) {
+                    const review: IApplicationReview = payload["review"];
+                    if (review) {
                         const reviewDetails = JSON.parse(review.review_details);
-                        if(reviewDetails) {
-                            this.setState({ 
+                        if (reviewDetails) {
+                            this.setState({
                                 alreadyReviewed: true,
                                 reviewAnswers: reviewDetails,
                                 reviewTotal: review.review_total,
@@ -307,7 +308,7 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             } else {
                 toast.error("Failed to load application.");
             }
-            
+
             // console.log(status, res.data);
             this.setState({ loading: false });
         });
@@ -319,9 +320,9 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             const status = res.status;
             const currentUrl = this.props.history.location.pathname;
             const base = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const next = +payload["message"];
                     if (!Number.isNaN(next) && next >= 0) {
                         this.props.history.push(`${base}/${next}`);
@@ -360,9 +361,9 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
             review_total: reviewTotal,
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     toast.success("Successfully saved review.");
                     this.setState({ savingReview: false, alreadyReviewed: true });
                     this.randomNextApplication();

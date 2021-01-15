@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Page, Card, TextContainer, CalloutCard, Heading, DisplayText, Link, Layout, ResourceList, TextStyle, Modal } from "@shopify/polaris";
+import { Page, Card, Link, DisplayText, Heading, Layout, Modal, ResourceList, TextContainer } from "@shopify/polaris";
 import { IDashboardProps } from "../../../interfaces/dashboard.interfaces";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
@@ -30,9 +30,8 @@ interface IExpoAssigments {
 }
 
 class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
-    private detailsReady = true;
-    private expoMapUrl = "https://assets.hackcambridge.com/table-allocations.png?t=" + Date.now();
-    private teamAllocationsUrl = "https://assets.hackcambridge.com/team_assignments.json";
+    private detailsReady = false;
+    // private teamAllocationsUrl = "https://assets.hackcambridge.com/team_assignments.json";
 
     state = {
         loading: true,
@@ -49,7 +48,7 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
     componentDidMount() {
         this.loadStats();
         this.loadDatafile();
-        this.loadTeamAllocations();
+        // this.loadTeamAllocations();
     }
 
     render() {
@@ -59,15 +58,15 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                 <Page title={""}>
                     {/* <img id="hacker-header-fg" src="/images/HC-HackerHeader-fgv2.png" alt="Hacker Header picture" /> */}
                     {this.renderStartApplicationBanner()}
-                    {/* {this.renderMoreComingSoonBanner()} */}
-                    {/* {this.renderEventOverview()} */}
+                    {this.renderMoreComingSoonBanner()}
+                    {this.renderEventOverview()}
                 </Page>
             </>
         );
     }
 
     private renderStartApplicationBanner() {
-        if(!this.props.canApply || this.props.user.type != "hacker") {
+        if (!this.props.canApply || this.props.user.type != "hacker") {
             return <></>;
         }
         return (
@@ -100,16 +99,15 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
         }
 
         const longLinks = [
-            // TODO: Update links
-            { text: "Join the Hex Slack Workspace", link: "/dashboard/join-slack", internal: false },
-            { text: "Hackathon Devpost", link: "https://hex-cambridge.devpost.com/", internal: false },
+            { text: "Join the Hex Cambridge Discord Workspace", link: "/dashboard/join-discord", internal: false },
+            { text: "Hackathon Devpost", link: "https://hexcambridge.devpost.com/", internal: false },
             { text: "View the challenges", link: "/dashboard/challenges", internal: true },
             { text: "What's happening when", link: "/dashboard/schedule", internal: true },
-            { text: "Find your way around", link: "/dashboard/map", internal: true },
-            { text: "Report a bug", link: "https://hexcambridge.slack.com/app_redirect?channel=DS8NVDU0Z", internal: false },
+            // { text: "Find your way around", link: "/dashboard/map", internal: true },
+            // TODO: Maybe change to discord
+            { text: "Report a bug", link: "https://hackcambridge101.slack.com/app_redirect?channel=DS8NVDU0Z", internal: false },
         ];
         const { expoModalShowing, expoAssignments } = this.state;
-        // console.log(expoAssignments);
         return <>
             <Layout>
                 <Layout.Section oneHalf>
@@ -133,7 +131,7 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                         content: "Team Allocations", 
                         onAction: () => this.setState({ expoModalShowing: true })
                     }] : []}>
-                        <img style={{ width: "100%" }} src={this.expoMapUrl} />
+                        {/* <img style={{ width: "100%" }} src={this.expoMapUrl} /> */}
                     </Card>
                 </Layout.Section>
                 <Layout.Section oneHalf>
@@ -223,9 +221,9 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
         this.setState({ loading: true });
         axios.get("/dashboard-api/get-overview-stats.json").then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const stats: IOverviewStats = payload["stats"];
                     this.setState({ loading: false, stats: stats });
                     return;
@@ -242,14 +240,14 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
     private loadDatafile() {
         axios.get("/assets/data/public-stats.json").then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                const majorsDict: { [key:string]: number } = payload["major"];
-                const majors = Object.keys(majorsDict).map(k => { return {id: k, count: +majorsDict[k] } }).sort((a,b) => b.count - a.count);
-                const universitiesDict: { [key:string]: number } = payload["school/name"];
-                const universities = Object.keys(universitiesDict).map(k => { return {id: k, count: +universitiesDict[k] } }).sort((a,b) => b.count - a.count);
-                const studyLevelsDict: { [key:string]: number } = payload["level_of_study"];
-                const studyLevels = Object.keys(studyLevelsDict).map(k => { return {id: k, count: +studyLevelsDict[k] } }).sort((a,b) => b.count - a.count);
+                const majorsDict: { [key: string]: number } = payload["major"];
+                const majors = Object.keys(majorsDict).map(k => { return { id: k, count: +majorsDict[k] } }).sort((a, b) => b.count - a.count);
+                const universitiesDict: { [key: string]: number } = payload["school/name"];
+                const universities = Object.keys(universitiesDict).map(k => { return { id: k, count: +universitiesDict[k] } }).sort((a, b) => b.count - a.count);
+                const studyLevelsDict: { [key: string]: number } = payload["level_of_study"];
+                const studyLevels = Object.keys(studyLevelsDict).map(k => { return { id: k, count: +studyLevelsDict[k] } }).sort((a, b) => b.count - a.count);
 
                 this.setState({
                     majors: majors,
@@ -263,20 +261,20 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
         });
     }
 
-    private loadTeamAllocations() {
-        axios.get(this.teamAllocationsUrl).then(res => {
-            const status = res.status;
-            if(status == 200) {
-                const payload = res.data as { assignments: IExpoAssigments[] };
-                this.setState({
-                    expoAssignments: payload.assignments ? payload.assignments.sort((a,b) => a.title.localeCompare(b.title)) : [] as IExpoAssigments[]
-                });
-            } else {
-                this.setState({ expoAssignments: [] as IExpoAssigments[] });
-                console.log(`Request failed. Status: ${status}`);
-            }
-        });
-    }
+    // private loadTeamAllocations() {
+    //     axios.get(this.teamAllocationsUrl).then(res => {
+    //         const status = res.status;
+    //         if (status == 200) {
+    //             const payload = res.data as { assignments: IExpoAssigments[] };
+    //             this.setState({
+    //                 expoAssignments: payload.assignments ? payload.assignments.sort((a, b) => a.title.localeCompare(b.title)) : [] as IExpoAssigments[]
+    //             });
+    //         } else {
+    //             this.setState({ expoAssignments: [] as IExpoAssigments[] });
+    //             console.log(`Request failed. Status: ${status}`);
+    //         }
+    //     });
+    // }
 }
 
 export default withRouter(Overview);

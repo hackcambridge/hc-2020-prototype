@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Page, Button, Card, ResourceList, Avatar, TextStyle, TextContainer, Heading, Filters, SettingToggle, Icon } from "@shopify/polaris";
-import { MobileAcceptMajorMonotone, MobileCancelMajorMonotone } from "@shopify/polaris-icons";
+import { Page, Button, Card, ResourceList, TextStyle, Heading, Filters } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import md5 from 'md5';
 
 interface ICheckInProps {
 
@@ -27,7 +25,7 @@ interface ICheckinItem {
 
 class CheckIn extends Component<ICheckInProps, ICheckInState> {
 
-    private dummyRecord: ICheckinItem = { id:0, user_id:0, checkin:undefined, user: { email: "", name: ""} };
+    private dummyRecord: ICheckinItem = { id: 0, user_id: 0, checkin: undefined, user: { email: "", name: "" } };
     state = {
         isLoading: true,
         hackers: [this.dummyRecord],
@@ -76,13 +74,13 @@ class CheckIn extends Component<ICheckInProps, ICheckInState> {
         this.setState({ isLoading: true });
         axios.get(`/committee/admin-api/init-checkin-tool.json`).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     console.log(payload);
                     const hackers: ICheckinItem[] = payload["applications"];
-                    this.setState({ 
-                        hackers: hackers.sort((a,b) => a.user.name.localeCompare(b.user.name)),
+                    this.setState({
+                        hackers: hackers.sort((a, b) => a.user.name.localeCompare(b.user.name)),
                         isLoading: false,
                     });
                     return;
@@ -101,7 +99,7 @@ class CheckIn extends Component<ICheckInProps, ICheckInState> {
         return (
             <ResourceList.Item
                 id={`${hacker.id}`}
-                onClick={() => {}}
+                onClick={() => { }}
                 accessibilityLabel={`Check-in ${hacker.user.name}`}
             >
                 <span style={{ display: "inline-block" }}>
@@ -127,9 +125,9 @@ class CheckIn extends Component<ICheckInProps, ICheckInState> {
             app_id: hackers[idx].id
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     hackers[idx].checkin = checkedIn ? undefined : {};
                     this.setState({ isLoading: false });
                     return;

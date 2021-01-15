@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Page, Card, ResourceList, TextStyle, Modal, Form, FormLayout, Layout, Checkbox, TextField, ButtonGroup, Button } from "@shopify/polaris";
+import { Page, Card, ResourceList, TextStyle, Modal, TextField } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { ISponsorChallenge } from "../../../interfaces/dashboard.interfaces";
@@ -49,7 +49,7 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
     }
 
     render() {
-        const { 
+        const {
             challenges,
             modalShowing,
             live,
@@ -63,7 +63,7 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
             showDestructiveForm,
         } = this.state;
         return (
-            <Page 
+            <Page
                 title={"Challenges"}
                 primaryAction={{
                     loading: loading,
@@ -75,35 +75,35 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
                 secondaryActions={[{
                     content: "Force Save",
                     onAction: this.saveOutFile
-                },{
+                }, {
                     content: "New Challenge",
                     onAction: this.addNewChallenge
                 }]}
             >
                 <Card>
-                <ResourceList
-                    resourceName={{singular: 'challenge', plural: 'challenges'}}
-                    items={challenges}
-                    loading={loading}
-                    renderItem={(challenge: ISponsorChallenge) => {
-                        const shortcutActions = [
-                            { content: '↑', onAction: () => this.changeOrder(challenge, -1) },
-                            { content: '↓', onAction: () => this.changeOrder(challenge, 1) },
-                        ];
-                        return (<>
-                            <ResourceList.Item
-                                shortcutActions={shortcutActions}
-                                id={challenge.title}
-                                onClick={() => this.showModal(challenge)}
-                            >
-                                <h3>
-                                    <TextStyle variation="strong">{challenge.title}</TextStyle><br />
-                                    {challenge.description}
-                                </h3>
-                            </ResourceList.Item>
-                        </>);
-                    }}
-                />
+                    <ResourceList
+                        resourceName={{ singular: 'challenge', plural: 'challenges' }}
+                        items={challenges}
+                        loading={loading}
+                        renderItem={(challenge: ISponsorChallenge) => {
+                            const shortcutActions = [
+                                { content: '↑', onAction: () => this.changeOrder(challenge, -1) },
+                                { content: '↓', onAction: () => this.changeOrder(challenge, 1) },
+                            ];
+                            return (<>
+                                <ResourceList.Item
+                                    shortcutActions={shortcutActions}
+                                    id={challenge.title}
+                                    onClick={() => this.showModal(challenge)}
+                                >
+                                    <h3>
+                                        <TextStyle variation="strong">{challenge.title}</TextStyle><br />
+                                        {challenge.description}
+                                    </h3>
+                                </ResourceList.Item>
+                            </>);
+                        }}
+                    />
                 </Card>
 
                 <Modal
@@ -186,8 +186,8 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
     }
 
     private deleteChallenge(id: string) {
-        const destructor : JSX.Element = (
-            <DestructiveConfirmation 
+        const destructor: JSX.Element = (
+            <DestructiveConfirmation
                 title={`Are you sure you want to delete this?`}
                 onConfirm={() => {
                     const { challenges } = this.state;
@@ -210,7 +210,7 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
     private changeOrder(challenge: ISponsorChallenge, by: number) {
         const { challenges } = this.state;
         const challengeIndex = challenges.findIndex(c => c.id == challenge.id);
-        if(challengeIndex > -1) {
+        if (challengeIndex > -1) {
             const newIndex = Math.max(0, Math.min(challenges.length - 1, challengeIndex + by));
 
             const mutableChallenges: (ISponsorChallenge | undefined)[] = challenges;
@@ -237,7 +237,7 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
             modalContent_content,
         } = this.state;
         const toUpdate = challenges.find(c => c.id == modalContent_id);
-        if(toUpdate) {
+        if (toUpdate) {
             toUpdate.title = modalContent_title;
             toUpdate.description = modalContent_desc;
             toUpdate.logoUrl = modalContent_logoUrl;
@@ -249,14 +249,14 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
     }
 
     private showModal(challenge: ISponsorChallenge) {
-        this.setState({ 
+        this.setState({
             modalShowing: true,
-            modalContent_id: challenge.id, 
-            modalContent_title: challenge.title, 
-            modalContent_desc: challenge.description, 
-            modalContent_content: challenge.content, 
-            modalContent_logoUrl: challenge.logoUrl, 
-            modalContent_slackChannel: challenge.slackChannel || "", 
+            modalContent_id: challenge.id,
+            modalContent_title: challenge.title,
+            modalContent_desc: challenge.description,
+            modalContent_content: challenge.content,
+            modalContent_logoUrl: challenge.logoUrl,
+            modalContent_slackChannel: challenge.slackChannel || "",
         });
     }
 
@@ -274,12 +274,12 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
             content: JSON.stringify({
                 live: live,
                 challenges: challenges
-            }), 
+            }),
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const newModifiedTime = payload["last_modified"];
                     this.setState({ loading: false, modalShowing: false, lastModified: newModifiedTime });
                     return;
@@ -301,11 +301,11 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
             file: "challenges.json"
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const challengesJSON = JSON.parse(payload["content"]);
-                    if("challenges" in challengesJSON) {
+                    if ("challenges" in challengesJSON) {
                         const challenges: ISponsorChallenge[] = challengesJSON["challenges"];
                         this.setState({
                             lastModified: payload["last_modified"],
@@ -318,7 +318,7 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
                 } else {
                     toast.error(payload["message"]);
                     this.setState({ loading: false });
-                    return 
+                    return
                 }
             }
             toast.error("Failed to load data.");
