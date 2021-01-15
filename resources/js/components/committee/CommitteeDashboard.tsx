@@ -7,7 +7,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, HomeMajor, PackageMajor, ProfileMajor, BillingStatementPoundMajor, SmileyJoyMajor, FilterMajor, CodeMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ChecklistMajor, EmailMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, HomeMajor, PackageMajor, CustomersMajor, ProfileMajor, BillingStatementPoundMajor, SmileyJoyMajor, FilterMajor, CodeMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ChecklistMajor, EmailMajor } from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import CheckIn from "./components/CheckIn";
 import Overview from "./components/Overview";
@@ -23,6 +23,7 @@ import ChallengesEditor from "./components/ChallengesEditor";
 import ScheduleEditor from "./components/ScheduleEditor";
 import FAQEditor from "./components/FAQEditor";
 import Mailing from "./components/Mailing";
+import Participants from "./components/Participants";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {
@@ -136,6 +137,11 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                             url: `${this.props.baseUrl}/applications`,
                             label: "Applications",
                             icon: PackageMajor
+                        },
+                        {
+                            url: `${this.props.baseUrl}/participants`,
+                            label: "Participants",
+                            icon: CustomersMajor
                         },
                         {
                             url: `${this.props.baseUrl}/checkin`,
@@ -253,6 +259,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications`} render={(props) => <Applications {...props} />} />
+                <Route exact path={`${this.props.baseUrl}/participants`} render={(props) => <Participants {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/checkin`} render={(props) => <CheckIn {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications/:id`} render={(props) => <IndividualApplication applicationId={props.match.params.id} {...props} />} />
                 {adminRoutes.map(i => i)}

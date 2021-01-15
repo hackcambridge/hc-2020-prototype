@@ -59,6 +59,8 @@ class Dashboard extends Controller
                 return $this->getOverviewStats();
             case "get-profile":
                 return $this->getProfile($r);
+            case "participants-overview":
+                return $this->getParticipantsOverview();
             default:
                 return $this->fail("Route not found");
         }
@@ -671,6 +673,52 @@ class Dashboard extends Controller
             }
         } else {
             return $this->fail("Checks failed.");
+        }
+    }
+
+    public function getParticipantsOverview()
+    {
+        if ($this->canContinue(["hacker", "admin", "committee"], null)) {
+            $user_profiles = DB::table('users')->select("profile")->get();
+            $raw_data = [];
+            $raw_data["universities"] = [];
+            $raw_data["levels"] = [];
+            $raw_data["majors"] = [];
+            $raw_data["professions"] = [];
+            foreach ($user_profiles as $profile) {
+                $profile_data = json_decode($profile->profile);
+                if (property_exists($profile_data, "school")) {
+                    $raw_data["universities"][] = $profile_data->school->name;
+                }
+                if (property_exists($profile_data, "level_of_study")) {
+                    $raw_data["levels"][] = $profile_data->level_of_study;
+                }
+                if (property_exists($profile_data, "major")) {
+                    $raw_data["majors"][] = $profile_data->major;
+                }
+                if (property_exists($profile_data, "profession_type")) {
+                    $raw_data["professions"][] = $profile_data->profession_type;
+                }
+            }
+            $data_keys = ["universities","levels","majors","professions"];
+            $data = [];
+            foreach ($data_keys as $key) {
+                $names = array_unique($raw_data[$key]);
+                $count = array_count_values($raw_data[$key]);
+                foreach ($names as $name) {
+                    $data[$key][] = (object)[
+                        "name" => $name,
+                        "participants" => $count[$name],
+                    ];
+                }
+            }
+
+            return response()->json([
+                "success" => true,
+                "overview" => $data,
+            ]);
+        } else {
+            return $this->fail(Auth::user()->type);
         }
     }
 

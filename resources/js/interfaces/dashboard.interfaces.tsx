@@ -67,3 +67,10 @@ export interface IFAQItem {
     title: string,
     answer: string,
 }
+
+export interface IParticipantsOverview {
+    universities: { name: string, participants: number }[],
+    majors: { name: string, participants: number }[],
+    professions: { name: string, participants: number }[],
+    levels: { name: string, participants: number }[],
+}
