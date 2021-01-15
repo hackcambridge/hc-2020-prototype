@@ -3,12 +3,15 @@ import { withRouter, RouteComponentProps, Link, Switch, Route, Redirect } from "
 import { Layout, Card, MediaCard, Spinner, Page, Heading, TextStyle, ResourceList, Thumbnail } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from "react-toastify";
-import { IDashboardProps, ISponsor } from "../../../interfaces/dashboard.interfaces";
+import { IDashboardProps, ISponsor, } from "../../../interfaces/dashboard.interfaces";
+import { IResourceDefinition, IAssetInformation } from "../../../interfaces/sponsors.interfaces";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 
 interface ISponsorState {
     loaded: boolean,
+    resources: IResourceDefinition[],
+    resourceLoaded: boolean,
     sponsors: ISponsor[],
     sponsorLive: boolean,
 }
@@ -17,16 +20,19 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
 
     state = {
         loaded: false,
+        resourceLoaded: true,
+        resources: [],
         sponsors: [],
         sponsorLive: false,
     }
 
     componentDidMount() {
         this.loadAllSponsors();
+        this.loadResources();
     }
 
     render() {
-        const { loaded } = this.state;
+        const { loaded,resourceLoaded } = this.state;
         var loading = 
             <div style={{textAlign:"center"}}>
                 <Card sectioned><Heading>Loading sponsors...</Heading></Card>
@@ -39,7 +45,7 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                 <div id={"sponsor-schedule"}>
                     <Page title={"Sponsor"}>
                         <Layout key={`${Math.random()}`}>
-                        {loaded 
+                        {loaded  && resourceLoaded
                             ? this.renderSponsor()
                             : loading
                         }
@@ -65,8 +71,9 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
     }
 
     private renderSponsorCard(data: ISponsor) {
-        var logoUrl = "https://media-exp1.licdn.com/dms/image/C560BAQERNw3GMGLaoA/company-logo_200_200/0/1519856895092?e=2159024400&v=beta&t=wdo1GL0aCmBg-RMThc030aMoUk2ZgT7NFxlRlUPG_B0"
-        // TODO: Replace with logo URL either on website or on S3 bucket.
+        var payload = JSON.parse(data.payload);
+        // "{"data":{"description":"Hi ","url":"www.companywebsite.com"},"files":[THIS HAS NAME and URL]}"
+        var logoUrl = payload.files.find((x:IAssetInformation)=> {x.name.toLowerCase().includes("logo")})
         return (
             <Layout.Section oneThird>
             <MediaCard primaryAction={{
@@ -88,7 +95,7 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                 />
                 <div style={{ padding: "1.5rem" }}>
                 </div>
-                </MediaCard>
+            </MediaCard>
                 {/*
                 <div style={{
                     fontWeight: 400,
@@ -136,7 +143,7 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
     }
 
     private loadAllSponsors() {
-        axios.get(`/sponsors/dashboard-api/get-sponsors.json`).then(res => {
+        axios.get(`/sponsors/dashboard-api/get-sponsors-reduced.json`).then(res => {
             const status = res.status;
             console.log("Here",res)
             if(status >= 200 && status <= 300) {
@@ -156,6 +163,42 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                 toast.error("Failed to load sponsors");
                 this.setState({ loaded: true });
             }
+        });
+    }
+
+    private loadResources() {
+        if(this.state.resourceLoaded) {
+            this.setState({ resourceLoaded: false });
+        }
+        axios.get(`/sponsors/dashboard-api/get-resources.json`).then(res => {
+            const status = res.status;
+            if(status >= 200 && status < 300) {
+                const data = res.data;
+                if("success" in data && data["success"]) {
+                    const resources = data["all_details"];
+                    if(Array.isArray(resources)) {
+                        console.log("Resources",resources)
+                        const definitions = resources.map(r => {
+                            const id: number = r["id"];
+                            const payload = r["payload"];
+                            const payloadObj = JSON.parse(payload);
+                            const spec: IResourceDefinition = {
+                                id: id,
+                                urls: (payloadObj["urls"] as string[]) || [],
+                                name: (payloadObj["name"] as string) || "",
+                                type: (payloadObj["type"] as string) || "",
+                                description: payloadObj["description"] as string || "",
+                            }
+                            return spec;
+                        });
+                        
+                        this.setState({ resources: definitions, resourceLoaded: true });
+                        return;
+                    }
+                }
+            }
+
+            this.setState({ resourceLoaded: true });
         });
     }
 }
