@@ -17,7 +17,7 @@ interface IApplicationsState {
 
 class Applications extends Component<IApplicationsProps, IApplicationsState> {
 
-    private dummyRecord: IApplicationSummary = { name: "", email: "", id: 0, user_id: 0, hasSubmitted: false }
+    private dummyRecord: IApplicationSummary = { name: "", email: "", id: 0, user_id: 0, isSubmitted: false, reviewed: false, invited: false, confirmed: false, rejected: false }
     state = {
         isLoading: true,
         applications: [this.dummyRecord],
@@ -102,6 +102,14 @@ class Applications extends Component<IApplicationsProps, IApplicationsState> {
                     <TextStyle variation="strong">{item.name}</TextStyle>
                 </h3>
                 <div>{item.email}</div>
+                <div>
+                    Status:
+                { item.isSubmitted ? <span>&nbsp;submitted</span> : '' }
+                { item.reviewed ? <span>&nbsp;reviewed</span> : '' }
+                { item.invited ? <span>&nbsp;invited</span> : '' }
+                { item.confirmed ? <span>&nbsp;confirmed</span> : '' }
+                { item.rejected ? <span>&nbsp;rejected</span> : '' }
+                </div>
             </ResourceList.Item>
         );
         return <h1></h1>

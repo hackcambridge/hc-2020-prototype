@@ -23,7 +23,11 @@ export interface IApplicationSummary {
     user_id: number,
     name: string,
     email: string,
-    hasSubmitted: boolean,
+    isSubmitted: boolean,
+    reviewed: boolean,
+    invited: boolean,
+    confirmed: boolean
+    rejected: boolean,
 }
 
 export interface IHackerSummary {

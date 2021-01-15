@@ -244,7 +244,7 @@ class Committee extends Controller
         if ($this->canContinue(null, [], false)) {
             $applications = DB::table('applications')
                 ->join('users', 'users.id', '=', 'applications.user_id')
-                ->select('applications.id', 'applications.user_id', 'users.name', 'users.email', 'applications.isSubmitted')
+                ->select('applications.id', 'applications.user_id', 'users.name', 'users.email', 'applications.isSubmitted', 'applications.invited', 'applications.confirmed', 'applications.rejected')
                 ->where('users.type', '=', 'hacker')
                 ->orderBy('users.name')
                 ->get();
