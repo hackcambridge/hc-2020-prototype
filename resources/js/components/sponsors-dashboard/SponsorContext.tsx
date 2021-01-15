@@ -3,6 +3,7 @@ import { Route, RouteComponentProps, Switch } from "react-router";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
 import SponsorPeople from "./components/Agents/SponsorPeople";
 import SponsorResources from "./components/Resources/SponsorResources";
+import SponsorPortal from "./components/Resources/SponsorPortal";
 import SponsorSwag from "./components/Resources/SponsorSwag";
 import SponsorAdmin from "./components/SponsorAdmin";
 import SponsorHome from "./components/SponsorHome";
@@ -112,6 +113,16 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             pageTitle={"Opening Ceremony Presentation"}
                             hasTitle hasAssets hasDescription={false}
                             detailType={"presentation"}
+                            {...this.props} {...props}
+                        />
+                    } />            
+                    <Route exact path={`${sponsorBaseUrl}portal-info`} render={(props) => 
+                        <SponsorPortal 
+                            key={"portal-info"}
+                            baseSponsorPath={sponsorBaseUrl} 
+                            sponsor={this.props.sponsor} 
+                            title={"Information for Hackers Portal"}
+                            detailType={"portal-info"}
                             {...this.props} {...props}
                         />
                     } />            

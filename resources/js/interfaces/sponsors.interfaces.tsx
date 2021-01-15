@@ -50,3 +50,8 @@ export interface SingleItemFormFields {
     description: string,
     files: IAssetInformation[],
 }
+
+export interface IPortalDefinition {
+    data: {[varName: string]:string},
+    files: IAssetInformation[],
+}

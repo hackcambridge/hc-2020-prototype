@@ -1,45 +1,46 @@
+import { Avatar, TextContainer,TextField, TextStyle, Button, Card, Heading, Page, ResourceList, Stack } from "@shopify/polaris";
+import { AddMajor, AttachmentMajor } from "@shopify/polaris-icons";
+import axios from "axios";
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { ISponsorData, IAssetInformation, SingleItemFormFields } from "../../../../interfaces/sponsors.interfaces";
-import { Heading, TextContainer, Button, Page, Card, TextField, ResourceList, Thumbnail, TextStyle, Badge } from "@shopify/polaris";
-import { AddMajor, AttachmentMajor } from "@shopify/polaris-icons";
-import UploadForm from "./UploadForm";
-import DestructiveConfirmation from "./DestructiveConfirmation";
-import axios from "axios";
-import { descriptions } from "./descriptions";
+import { IResourceDefinition, IPortalDefinition, ISponsorData, IAssetInformation, SingleItemFormFields} from "../../../../interfaces/sponsors.interfaces";
+import DestructiveConfirmation from "../common/DestructiveConfirmation";
+import { extractHostname } from "../common/url_helpers";
+import UploadForm from "../common/UploadForm";
+import SponsorPortalForm from "./SponsorPortalForm";
 import { toast } from "react-toastify";
 
-interface ISingleItemFormProps extends RouteComponentProps {
-    hasTitle: boolean,
-    hasDescription: boolean,
-    hasAssets: boolean,
-    detailType: string,
+interface ISponsorPortalProps extends RouteComponentProps {
     baseSponsorPath: string,
     sponsor: ISponsorData,
-    pageTitle: string
+    title: string,
+    detailType: string,
 }
 
-interface ISingleItemFormState {
+interface ISponsorPortalState {
     detail_id: number,
-    complete: string,
-    fields: SingleItemFormFields,
+    resources: IResourceDefinition[],
     uploadFormShowing: boolean,
-    showDestructiveForm: JSX.Element | undefined,
+    fields: IPortalDefinition,
     isLoading: boolean,
+    showDestructiveForm: JSX.Element | undefined
 }
 
-class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormState> {
+class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> {
+
     state = {
         detail_id: -1,
-        complete: "no",
+        resources: [],
+        uploadFormShowing: false,
         fields: {
-            title: "",
-            description: "",
+            data: {
+                ["description"]:"",
+                ["url"]:""
+            },
             files: [],
         },
-        uploadFormShowing: false,
-        showDestructiveForm: undefined,
         isLoading: true,
+        showDestructiveForm: undefined
     }
 
     componentDidMount() {
@@ -47,44 +48,60 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
     }
 
     render() {
-        const {
-            complete,
+        const { 
+            resources, 
+            uploadFormShowing, 
             fields,
-            uploadFormShowing,
-            showDestructiveForm,
             isLoading,
+            showDestructiveForm
         } = this.state;
-        const { title, description, files } = fields;
-
+        const { data, files} = fields;
+        const textFields = Object.entries(data).forEach(([key,value])=>{
+            console.log("in object foreach",key,value);
+            return(this.renderTextField(key,value,isLoading));
+        })
+        console.log("Showing data in sponsor portal",data);
         return (
             <Page
                 breadcrumbs={[{
                     content: this.props.sponsor.name, 
                     url: this.props.baseSponsorPath
                 }]}
-                title={this.props.pageTitle}
-                titleMetadata={isLoading ? <></> : this.generateStatusBadge(complete)}
-                // primaryAction={{content: 'Save', disabled: false}}
-                // secondaryActions={[{content: 'Duplicate'}, {content: 'View on your store'}]}
+                title={this.props.title}
             >
-                {/* {this.props.detailType in descriptions ? 
                 <Card sectioned>
-                    {descriptions[this.props.detailType.toString()]}
-                </Card>
-                : <></>} */}
-                <Card sectioned>
-                    {this.props.hasTitle ?
-                        <>
-                            <TextField label="Title" value={title} onChange={this.handleTitleChange} disabled={isLoading} />
-                            <br />
-                        </>
-                    : <></>}
-                    {this.props.hasDescription ?
-                        <>
-                            <TextField label="Description" value={description} onChange={this.handleDescriptionChange} multiline={4} disabled={isLoading}/>
-                            <br />
-                        </>
-                    : <></>}
+                    <TextContainer>
+                        <Heading>Please upload the <strong>logo, website URL, description, and any other assets/fields.</strong></Heading>
+                        <p>
+                            Ensure that the <strong>logo image is named "logo.png"</strong>.
+                        </p>
+                    </TextContainer>
+                    <br />
+                    <>
+                    {textFields}
+                    
+                    {/* {
+                        Object.entries(data).forEach(([key,value])=>{
+                            console.log("in object foreach",key,value);
+
+                            return(this.renderTextField(key,value,isLoading));
+                        })
+                    } */}
+                    <div>
+                    {
+                        Object.keys(data).map((key, index) => {
+                            let value = data[key];
+                            return([ 
+                                <>
+                                <TextField label={this.capitalizeFirstLetter(key)} 
+                                                    value={value} onChange={(e)=>this.handleChange(key,e)} multiline={4} disabled={isLoading}/>
+                                                <br />
+                                </>
+                                // <p key={index}> this is my key {key} and this is my value {data[key]}</p> 
+                            ])})
+                    }
+                    </div>
+                    </>
                     {files.length > 0 ? 
                         <ResourceList
                             resourceName={{singular: 'asset', plural: 'assets'}}
@@ -127,19 +144,26 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                 /> : <></>}
                 {showDestructiveForm || <></>}
             </Page>
-        );
+          );
     }
 
-    handleTitleChange = (value: string) => {
-        const newFields = this.state.fields;
-        newFields.title = value;
-        this.setState({ fields: newFields });
+    private renderTextField(key:string,value:string,isLoading:boolean){
+        return(
+            <>
+            <TextField label={this.capitalizeFirstLetter(key)} 
+                                value={value} onChange={(e)=>this.handleChange(key,value)} multiline={4} disabled={isLoading}/>
+                            <br />
+            </>
+        )
     }
-
-    handleDescriptionChange = (value: string) => {
+    private capitalizeFirstLetter(string: string) {
+        return string[0].toUpperCase() + string.slice(1);
+    }
+    
+    private handleChange(key:string,value:string){
         const newFields = this.state.fields;
-        newFields.description = value;
-        this.setState({ fields: newFields });
+        (newFields as IPortalDefinition).data[key] = value;
+        this.setState({fields:newFields});
     }
 
     renderAssetThumbnail = (item: IAssetInformation) => {
@@ -207,45 +231,6 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
         });
     }
 
-    calculateCompleteness(): string {
-        let complete = 0;
-        let incomplete = 0;
-        if(this.props.hasTitle) {
-            if(this.state.fields.title.length > 0) {
-                complete++;
-            } else {
-                incomplete++;
-            }
-        }
-
-        if(this.props.hasDescription) {
-            if(this.state.fields.description.length > 0) {
-                complete++;
-            } else {
-                incomplete++;
-            }
-        }
-
-        if(this.props.hasAssets) {
-            if(this.state.fields.files.length > 0) {
-                complete++;
-            } else {
-                incomplete++;
-            }
-        }
-
-        if(complete == 0) return "no";
-        else if(incomplete == 0) return "yes";
-        else return "partial";
-    }
-
-    generateStatusBadge(completeness: string) {
-        if(completeness == "no") return <Badge status={'warning'}>{"Incomplete"}</Badge>;
-        else if(completeness == "yes") return <Badge status={'success'}>{"Complete"}</Badge>;
-        else if(completeness == "partial")return <Badge status={'attention'}>{"Partially Complete"}</Badge>;        
-        else return <Badge status={'new'}>{"Unknown"}</Badge>;        
-    }
-
     private loadContent() {
         if(!this.state.isLoading) {
             this.setState({ isLoading: true });
@@ -262,18 +247,15 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
                     const detail = payload["details"];
                     if(Array.isArray(detail) && detail.length > 0) {
                         const details: {
-                            title: string,
-                            description: string,
+                            data: {[varName: string]:string},
                             files: IAssetInformation[]
                         } = JSON.parse(detail[0]["payload"]);
 
                         this.setState({ 
                             isLoading: false,
                             detail_id: detail[0]["id"],
-                            complete: detail[0]["complete"],
                             fields: {
-                                title: details.title,
-                                description: details.description,
+                                data: details.data,
                                 files: details.files,
                             }
                         });
@@ -295,26 +277,24 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
             sponsor_slug: this.props.sponsor.slug,
             detail_type: this.props.detailType,
             detail_id: this.state.detail_id,
+            complete: "yes",
             payload: JSON.stringify(payload),
-            complete: this.calculateCompleteness(),
         }).then(res => {
             const status = res.status;
+            console.log("REsult from add resource",res);
             if(status == 200 || status == 201) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
                     const detailData = payload["detail"];
                     const details: {
-                        title: string,
-                        description: string,
+                        data: {[varName: string]:string},
                         files: IAssetInformation[]
                     } = JSON.parse(detailData["payload"]);
                     
                     this.setState({ 
                         isLoading: false,
-                        complete: detailData["complete"],
                         fields: {
-                            title: details.title,
-                            description: details.description,
+                            data: details.data,
                             files: details.files,
                         }
                     });
@@ -332,4 +312,4 @@ class SingleItemForm extends Component<ISingleItemFormProps, ISingleItemFormStat
     }
 }
 
-export default React.memo(SingleItemForm);
+export default SponsorPortal;

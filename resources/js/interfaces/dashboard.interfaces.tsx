@@ -72,9 +72,8 @@ export interface IScheduleItem {
 export interface ISponsor {
     id: string,
     name: string,
-    slug: string,
     tier: string,
-    privileges: string,
+    payload: string,
 }
 
 export interface IFAQItem {

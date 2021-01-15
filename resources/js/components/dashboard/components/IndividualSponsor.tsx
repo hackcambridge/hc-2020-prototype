@@ -21,6 +21,7 @@ interface IIndividualSponsorState {
     user: IUserDetails | undefined,
     loadingDefinitions: boolean,
     resources: undefined,
+    totalNo: number,
 }
 
 const sponsorFields: { id: string, title: string, placeholder: string }[] = [
@@ -39,6 +40,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         user: undefined,
         loadingDefinitions: true,
         resources: undefined,
+        totalNo: 0,
     }
 
     constructor(props: IIndividualSponsorProps & RouteComponentProps){
@@ -47,10 +49,19 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
     componentDidMount() {
         const SponsorId = +this.props.SponsorId;
+        console.log("Mounting and next is state",this.state)
+        console.log("Mounting and next is props",this.props)
         if (Number.isNaN(SponsorId)) {
             this.setState({ loading: false });
-        } else {
+        } else{
             this.retrieveSponsor(SponsorId);
+        }
+    }
+
+    componentDidUpdate(){
+        console.log("Updating and next is state",this.state)
+        if (this.state.Sponsor && this.state.loadingDefinitions === true){
+            this.loadInformation();
         }
     }
 
@@ -76,36 +87,20 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
     private nextSponsor = () => {
         this.setState({ loading: true });
-        // axios.get("/committee/admin-api/random-application-for-review.json").then(res => {
-        //     const status = res.status;
-        //     const currentUrl = this.props.history.location.pathname;
-        //     const base = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-        //     if(status == 200) {
-        //         const payload = res.data;
-        //         if("success" in payload && payload["success"]) {
-        //             const next = +payload["message"];
-        //             if (!Number.isNaN(next) && next >= 0) {
-        //                 this.props.history.push(`${base}/${next}`);
-        //             } else {
-        //                 toast.error("Invalid next application.");
-        //                 this.props.history.push(`${base}`);
-        //             }
-        //         } else {
-        //             toast.error(payload["message"]);
-        //             this.props.history.push(`${base}`);
-        //         }
-        //     } else {
-        //         toast.error("Failed to load next application.");
-        //         this.props.history.push(`${base}`);
-        //     }
-        // });
+        const total = this.state.totalNo;
+        const currentUrl = this.props.history.location.pathname;
+        const base = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
+        const currentSpons:string = currentUrl.substring(currentUrl.lastIndexOf('/')+1);
+        console.log(total,currentUrl,base,currentSpons);
+        const nextSponsor = (currentSpons != null && !(currentSpons==="")) ? (parseInt(currentSpons) + 1)%total : parseInt(currentSpons)
+        this.props.history.push(`${base}/${nextSponsor}`);
     }
 
     private renderSponsor = () => {
         const {Sponsor,user,resources} = this.state;
         var loading = 
-            <div style={{textAlign:"center"}}>
-                <Card sectioned><Heading>Loading sponsors...</Heading></Card>
+            <div style={{textAlign:"center",marginTop:"3em"}}>
+                <Card sectioned><Heading>Loading more info.....</Heading></Card>
                 <div style={{marginTop:"1.5em"}}>
                     <Spinner color="teal" /> 
                 </div>
@@ -130,7 +125,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
             console.log("rendering stuff here!",user,Sponsor);
             const app: ISponsor = Sponsor;
             const metadata = <>
-                {<Badge status={tier_badge()}>{tier}</Badge>}
+                {<Badge status={tier_badge()}>{this.capitalizeFirstLetter(tier)}</Badge>}
             </>;
             const logoUrl = "https://media-exp1.licdn.com/dms/image/C560BAQERNw3GMGLaoA/company-logo_200_200/0/1519856895092?e=2159024400&v=beta&t=wdo1GL0aCmBg-RMThc030aMoUk2ZgT7NFxlRlUPG_B0"
             return (
@@ -197,14 +192,18 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         }
     };
 
+    private capitalizeFirstLetter(string: string) {
+        return string[0].toUpperCase() + string.slice(1);
+    }
 
     private loadInformation() {
-        this.setState({ loadingDefinitions: true });
+        console.log("Called loadInfo",this.state)
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
             sponsor_id: this.state.Sponsor.id,
             sponsor_slug: this.state.Sponsor.slug,
         }).then(res => {
             const status = res.status;
+            console.log("Load info reso",res)
             if(status >= 200 && status < 300) {
                 const data = res.data;
                 if("success" in data && data["success"]) {
@@ -230,23 +229,28 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         return;
                     }
                 }
+            } else {
+                toast.error("Failed to load more information");
+                this.setState({ loadingDefinitions: true });
             }
 
             this.setState({ loadingDefinitions: false });
         });
     }
 
-    private renderResourceCard(data: IResourceDefinition) {
+    private renderResourceCard(data) {
         var logoUrl = "https://media-exp1.licdn.com/dms/image/C560BAQERNw3GMGLaoA/company-logo_200_200/0/1519856895092?e=2159024400&v=beta&t=wdo1GL0aCmBg-RMThc030aMoUk2ZgT7NFxlRlUPG_B0"
         // TODO: Replace with logo URL either on website or on S3 bucket.
         return (
             <Layout.Section oneThird>
-            <Card title={data.type} sectioned>
+            <Card title={this.capitalizeFirstLetter(data.mainType)} sectioned>
                 <Image
                     source="https://polaris.shopify.com/bundles/bc7087219578918d62ac40bf4b4f99ce.png"
                     alt="turtle illustration centered with body text and a button"
                 />
-                <p>View a summary of your online store’s performance.</p>
+                <DisplayText>{data.name}</DisplayText>
+                <p>{this.capitalizeFirstLetter(data.type)}</p> 
+                <p>{data.description}</p>
             </Card>
             </Layout.Section>
         );
@@ -258,13 +262,14 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
     private retrieveSponsor = (SponsorId: number) => {
         this.setState({ loading: true });
-        console.log("retrieving Sponsor",SponsorId)
-        axios.get(`/sponsors/dashboard-api/get-sponsors.json`).then(res => {
+        console.log("retrieving Sponsor",SponsorId);
+        axios.get(`/sponsors/dashboard-api/get-sponsors-reduced.json`).then(res => {
             const status = res.status;
             console.log("Here",res)
             if(status >= 200 && status <= 300) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
+                    var total = payload["data"].length;
                     const target: ISponsor = payload["data"].find(sponsor =>{
                         return sponsor.id === SponsorId
                     })
@@ -272,6 +277,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         loading: false, 
                         SponsorId: SponsorId,
                         Sponsor: target,
+                        totalNo: total,
                     });
                     //{"id":2,"name":"Chuen","slug":"chuen","tier":"Chuen2","privileges":";swag;resources;workshop;social_media;mentors[42];recruiters[42]","created_at":"2020-10-31 15:27:29","updated_at":"2020-10-31 15:28:08"}
                     return;
@@ -284,7 +290,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                 this.setState({ loading: false });
             }
         })
-    this.loadInformation();
     }
 }
 

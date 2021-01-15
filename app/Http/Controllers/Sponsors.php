@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use \RecursiveIteratorIterator,RecursiveArrayIterator;
 use App\Models\Sponsor;
 use App\Models\SponsorAgent;
 use App\Models\SponsorDetail;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\Sponsor as SponsorResource;
 use App\Helpers\S3Management;
 use App\Helpers\Auth0Management;
+
 
 
 class Sponsors extends Controller
@@ -25,6 +28,8 @@ class Sponsors extends Controller
         switch ($path) {
             case "init": return $this->initSession();
             case 'get-sponsors': return $this->getSponsors();
+            case 'get-sponsors-reduced': return $this->getSponsorDisplay();
+            case 'get-resources': return $this->loadAllResources();
             default: return $this->fail("Route not found");
         }
 
@@ -148,6 +153,64 @@ class Sponsors extends Controller
             ]);
         } else {
             $this->fail("Unauthorised/unauthenticated.");
+        }
+    }
+
+    private function getSponsorDisplay() {
+        // I also add on the SponsorDetail that includes the logo URL + description.
+        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee","sponsor","hacker"])) {
+            $sponsors = DB::table('sponsors')
+                ->leftJoin('sponsor_details',function($join) {
+                    $desired_type = "portal-info";
+                    $join->on('sponsors.id','=','sponsor_details.sponsor_id')
+                        ->where('sponsor_details.type','=',$desired_type);
+                })
+                ->select('sponsors.id','name','tier','payload')
+                ->get();
+            return response()->json([
+                "success" => true,
+                "data" => $sponsors
+            ]);
+        } else {
+            $this->fail("Unauthorised/unauthenticated.");
+        }
+    }
+
+    private function array_flatten($array) {
+        $return = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)){ $return = array_merge($return, array_flatten($value));}
+            else {$return[$key] = $value;}
+        }
+        return $return;
+     
+     }
+     
+    private function loadAllResources() {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee","sponsor","hacker"])) {
+            $sponsors = Sponsor::all();
+            if ($sponsors) {
+                $all_details = array();
+                foreach ($sponsors as $s) {
+                    $tmp = $s->details()->get();
+                    if (!$tmp->isEmpty()){
+                        $all_details[] = $tmp;
+                    }
+                }
+                if($all_details) {
+                    $flattened = array_flatten($all_details);
+                    return response()->json([
+                        "success" => true,
+                        "all_details" => $flattened,
+                    ]);
+                } else {
+                    return $this->fail("No details found");
+                }
+            } else {
+                return $this->fail("Sponsor not found");
+            }
+        } else {
+            $this->fail("Checks failed");
         }
     }
 
