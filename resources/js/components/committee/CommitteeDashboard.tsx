@@ -237,6 +237,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Route exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />,
             <Route exact path={`${this.props.baseUrl}/omnitool`} render={(props) => <Omnitool {...props} />} />,
             <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <ChallengesEditor {...props} />} />,
+            <Route exact path={`${this.props.baseUrl}/sponsors`} render={(props) => <ChallengesEditor {...props} />} />,
             <Route exact path={`${this.props.baseUrl}/schedule`} render={(props) => <ScheduleEditor {...props} />} />,
             <Route exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQEditor {...props} />} />,
         ] : [];

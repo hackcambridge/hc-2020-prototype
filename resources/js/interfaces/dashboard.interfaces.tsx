@@ -62,6 +62,14 @@ export interface IScheduleItem {
     logoUrl: string,
 }
 
+export interface ISponsor {
+    id: string,
+    name: string,
+    slug: string,
+    tier: string,
+    privileges: string,
+}
+
 export interface IFAQItem {
     id: string,
     title: string,

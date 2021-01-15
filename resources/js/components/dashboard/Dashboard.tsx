@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, LocationMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, JobsMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, LocationMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import MapView from "./components/MapView";
@@ -21,6 +21,7 @@ import md5 from "md5";
 import Invitation from "./components/Invitation";
 import Challenges from "./components/Challenges";
 import Schedule from "./components/Schedule";
+import Sponsor from "./components/Sponsor";
 import FAQs from "./components/FAQs";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
@@ -151,6 +152,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         if (this.allowedEventDetails()) {
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/map`, label: `Map`, icon: LocationMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajor });
+            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/sponsors`, label: `Sponsors`, icon: JobsMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/faqs`, label: `FAQs`, icon: QuestionMarkMajor });
         }
@@ -208,6 +210,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         const eventDetailRoutes = this.allowedEventDetails() ? [
             <Route exact path={`${this.props.baseUrl}/map`} render={(props) => <MapView {...props} {...this.props} />} />,
             <Route exact path={`${this.props.baseUrl}/challenges`} render={(props) => <Challenges {...props} {...this.props} />} />,
+            <Route exact path={`${this.props.baseUrl}/sponsors`} render={(props) => <Sponsor {...props} {...this.props} />} />,
             <Route exact path={`${this.props.baseUrl}/schedule`} render={(props) => <Schedule {...props} {...this.props} />} />,
             <Route exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
         ] : [];
