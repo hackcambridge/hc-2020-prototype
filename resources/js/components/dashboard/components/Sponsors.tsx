@@ -105,7 +105,6 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                     onAction: () => this.viewSponsor(data)
                 }} 
                 description={description} 
-                popoverActions={[{ content: 'Dismiss', onAction: () => {} }]} 
                 title={data.name} portrait={true}
                 key={data.id}>
                 <img
