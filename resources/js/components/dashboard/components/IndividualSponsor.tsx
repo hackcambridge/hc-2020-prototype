@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import md5 from 'md5';
 import { textFieldQuestions } from './Apply';
 import Linkify from 'linkifyjs/react';
-import { IResourceDefinition, ISponsorData } from '../../../interfaces/sponsors.interfaces';
+import { IAssetInformation, IResourceDefinition, ISponsorData } from '../../../interfaces/sponsors.interfaces';
 
 interface IIndividualSponsorProps {
     SponsorId: string,
@@ -22,6 +22,7 @@ interface IIndividualSponsorState {
     loadingDefinitions: boolean,
     resources: undefined,
     totalNo: number,
+    portalInfo: undefined,
 }
 
 const sponsorFields: { id: string, title: string, placeholder: string }[] = [
@@ -34,13 +35,21 @@ const sponsorFields: { id: string, title: string, placeholder: string }[] = [
 class IndividualSponsor extends Component<IIndividualSponsorProps & RouteComponentProps, IIndividualSponsorState> {
     
     state = {
-        SponsorId: undefined,
-        loading: true,
-        Sponsor: undefined,
+        SponsorId: undefined, // possibly redundant copy of ID
+        loading: true, // loading main spons object
+        loadingDefinitions: true, // loading additional resource cards
+        Sponsor: undefined, // key sponsor object
         user: undefined,
-        loadingDefinitions: true,
-        resources: undefined,
-        totalNo: 0,
+        resources: undefined, //where all resource cards are stored
+        totalNo: 0, //for pagination purposes
+        portalInfo: {
+            data:{
+                description:"",
+                url:"",
+                discord_invite_link:""
+            },
+            files:[],
+        }, //for company main info purposes
     }
 
     constructor(props: IIndividualSponsorProps & RouteComponentProps){
@@ -127,7 +136,11 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
             const metadata = <>
                 {<Badge status={tier_badge()}>{this.capitalizeFirstLetter(tier)}</Badge>}
             </>;
-            const logoUrl = "https://media-exp1.licdn.com/dms/image/C560BAQERNw3GMGLaoA/company-logo_200_200/0/1519856895092?e=2159024400&v=beta&t=wdo1GL0aCmBg-RMThc030aMoUk2ZgT7NFxlRlUPG_B0"
+            let logoUrl: string | undefined = this.state.portalInfo.files.find((x:IAssetInformation)=> {x.name.toLowerCase().includes("logo")});
+            if (!logoUrl || logoUrl === undefined) {
+                // Use backup logo
+                logoUrl = "https://www.pngfind.com/pngs/m/665-6659827_enterprise-comments-default-company-logo-png-transparent-png.png";
+            }
             return (
                 <Page 
                     breadcrumbs={[{content: 'Sponsors', url: '../sponsors'}]}
@@ -139,7 +152,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         hasNext: true,
                         onNext: this.nextSponsor
                     }}
-                    primaryAction={{content: 'Speak To Them!', onAction: () => {}}}
+                    primaryAction={{content: 'Speak To Them!', onAction: () => {window.open(this.state.portalInfo.data.discord_invite_link)}}}
                     thumbnail={<Thumbnail
                         source={logoUrl}
                         size="large"
@@ -182,6 +195,8 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                             </Card>
                         </Layout.Section>
                     </Layout>
+                    <div style={{ padding: "2rem" }}>
+                    </div>
                     <Layout>
                         {resources ? resources.map(c => this.renderResourceCard(c)) : loading}
                     </Layout>
@@ -201,31 +216,43 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
             sponsor_id: this.state.Sponsor.id,
             sponsor_slug: this.state.Sponsor.slug,
+            // THIS IS WHERE I DETERMINE THE TYPES ALLOWED!
+            sponsor_details: ["social-media","prizes","workshop","portal-info","demo-details"]
         }).then(res => {
             const status = res.status;
+            var portalInfo = undefined;
             console.log("Load info reso",res)
             if(status >= 200 && status < 300) {
                 const data = res.data;
-                if("success" in data && data["success"]) {
-                    const resources = data["details"];
-                    if(Array.isArray(resources)) {
-                        const definitions = resources.map(r => {
-                            const id: number = r["id"];
-                            const type: string = r["type"] // <= need to get this type value out into the title somehow!
-                            const payload = r["payload"];
-                            const payloadObj = JSON.parse(payload);
-                            const spec = {
-                                id: id,
-                                mainType: type,
-                                urls: (payloadObj["urls"] as string[]) || [],
-                                name: (payloadObj["name"] as string) || "",
-                                type: (payloadObj["type"] as string) || "",
-                                description: payloadObj["description"] as string || "",
+                if(data && "success" in data && data["success"]) {
+                    const details = data["details"];
+                    if(Array.isArray(details)) {
+                        const detailState = details.map(r => {
+                            if (r.type==="portal-info"){
+                                const pInfo: {
+                                    data: {[varName: string]:string},
+                                    files: IAssetInformation[]
+                                } = JSON.parse(r["payload"]);
+                                portalInfo = pInfo;
+                            } else{
+                                const info: {
+                                    title: string,
+                                    description: string,
+                                    files: IAssetInformation[]
+                                } = JSON.parse(r["payload"]);
+                                // I'm pretty sure there's a nicer way to do this but 
+                                // I didn't have time to look it up.
+                                const rInfo = {
+                                    mainType: r.type,
+                                    title: info.title,
+                                    description: info.description,
+                                    files: info.files,
+                                }
+                                return rInfo
                             }
-                            return spec;
                         });
                         
-                        this.setState({ resources: definitions, loadingDefinitions: false });
+                        this.setState({ resources: detailState, loadingDefinitions: false });
                         return;
                     }
                 }
@@ -239,18 +266,22 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     }
 
     private renderResourceCard(data) {
-        var logoUrl = "https://media-exp1.licdn.com/dms/image/C560BAQERNw3GMGLaoA/company-logo_200_200/0/1519856895092?e=2159024400&v=beta&t=wdo1GL0aCmBg-RMThc030aMoUk2ZgT7NFxlRlUPG_B0"
-        // TODO: Replace with logo URL either on website or on S3 bucket.
+        // Title, description, files
+        console.log("rendering Resource card, state follows",this.state)
         return (
             <Layout.Section oneThird>
             <Card title={this.capitalizeFirstLetter(data.mainType)} sectioned>
-                <Image
-                    source="https://polaris.shopify.com/bundles/bc7087219578918d62ac40bf4b4f99ce.png"
-                    alt="turtle illustration centered with body text and a button"
+                {
+                    (!data && data.files === []) ? <></> : <Image
+                    // source = {logoUrl}
+                    source={data.files[0].url}
+                    alt={data.files[0].name}
+                    style={{maxWidth:"100%",maxHeight:"100%"}}
                 />
-                <DisplayText>{data.name}</DisplayText>
-                <p>{this.capitalizeFirstLetter(data.type)}</p> 
-                <p>{data.description}</p>
+                }
+
+                <DisplayText>{data.title ? this.capitalizeFirstLetter(data.title) : "A resource!" }</DisplayText>
+                <p>{data.description ? this.capitalizeFirstLetter(data.description) : "" }</p>
             </Card>
             </Layout.Section>
         );

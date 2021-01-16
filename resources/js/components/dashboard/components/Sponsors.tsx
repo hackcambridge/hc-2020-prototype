@@ -73,14 +73,17 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
     private renderSponsorCard(data: ISponsor) {
         var payload = JSON.parse(data.payload);
         // "{"data":{"description":"Hi ","url":"www.companywebsite.com"},"files":[THIS HAS NAME and URL]}"
-        var logoUrl = payload.files.find((x:IAssetInformation)=> {x.name.toLowerCase().includes("logo")})
+        var logoUrl = payload.files.find((x:IAssetInformation)=> {x.name.toLowerCase().includes("logo")});
+        if (!logoUrl){
+            logoUrl = "https://images.pexels.com/photos/443383/pexels-photo-443383.jpeg";
+        }
         return (
             <Layout.Section oneThird>
             <MediaCard primaryAction={{
                     content: 'Learn more',
                     onAction: () => this.viewSponsor(data)
                 }} 
-                description="Testing description" 
+                description={payload.description} 
                 popoverActions={[{ content: 'Dismiss', onAction: () => {} }]} 
                 title={data.name} portrait={true}
                 key={data.id}>

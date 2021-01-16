@@ -165,7 +165,7 @@ class Sponsors extends Controller
                     $join->on('sponsors.id','=','sponsor_details.sponsor_id')
                         ->where('sponsor_details.type','=',$desired_type);
                 })
-                ->select('sponsors.id','name','tier','payload')
+                ->select('sponsors.id','name','tier','payload','slug')
                 ->get();
             return response()->json([
                 "success" => true,
@@ -527,6 +527,7 @@ class Sponsors extends Controller
         if($this->canContinue(["admin", "committee", "sponsor"], $r, ["sponsor_id", "sponsor_slug"])) {
             $id = $r->get("sponsor_id");
             $slug = $r->get("sponsor_slug");
+            $detail_type_list = $r->get("sponsor_details");
             $detail_type = $r->get("detail_type");
             $sponsor = Sponsor::where("id", $id)
                               ->where("slug", $slug)
@@ -535,6 +536,10 @@ class Sponsors extends Controller
             if ($sponsor) {
                 if($detail_type)
                     $details = $sponsor->details()->where("type", $detail_type)->get();
+                elseif($detail_type_list)
+                    $details = $sponsor->details()
+                                        ->whereIn("type",$detail_type_list)
+                                        ->get();
                 else
                     $details = $sponsor->details()->get();
 

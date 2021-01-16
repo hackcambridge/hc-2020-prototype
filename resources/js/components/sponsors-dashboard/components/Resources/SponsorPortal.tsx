@@ -35,7 +35,8 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
         fields: {
             data: {
                 ["description"]:"",
-                ["url"]:""
+                ["url"]:"",
+                ["discord_invite_link"]:"",
             },
             files: [],
         },
@@ -71,7 +72,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
             >
                 <Card sectioned>
                     <TextContainer>
-                        <Heading>Please upload the <strong>logo, website URL, description, and any other assets/fields.</strong></Heading>
+                        <Heading>Please upload the <strong>logo, website URL, description, Discord invite link, and any other assets/fields.</strong></Heading>
                         <p>
                             Ensure that the <strong>logo image is named "logo.png"</strong>.
                         </p>
