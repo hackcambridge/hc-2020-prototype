@@ -40,7 +40,7 @@ class TeamApplication extends Component<ITeamApplicationProps, ITeamApplicationS
             <Page title={"Team Information"}>
                 <Banner status="info">
                     {this.props.canEdit
-                        ? <p>You can change this information at any time before the application deadline.</p>
+                        ? <p>You can change this information at any time before the event.</p>
                         : <p>We are sorry, you can no longer edit your team information.</p>
                     }
                 </Banner>
