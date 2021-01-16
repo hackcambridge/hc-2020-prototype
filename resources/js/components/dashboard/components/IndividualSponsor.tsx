@@ -9,6 +9,8 @@ import md5 from 'md5';
 import { textFieldQuestions } from './Apply';
 import Linkify from 'linkifyjs/react';
 import { IAssetInformation, IResourceDefinition, ISponsorData } from '../../../interfaces/sponsors.interfaces';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 
 interface IIndividualSponsorProps {
     SponsorId: string,
@@ -44,9 +46,9 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         totalNo: 0, //for pagination purposes
         portalInfo: {
             data:{
-                description:"",
-                url:"",
-                discord_invite_link:""
+                ["description"]:"",
+                ["url"]:"",
+                ["discord invite link"]:"",
             },
             files:[],
         }, //for company main info purposes
@@ -58,8 +60,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
     componentDidMount() {
         const SponsorId = +this.props.SponsorId;
-        console.log("Mounting and next is state",this.state)
-        console.log("Mounting and next is props",this.props)
         if (Number.isNaN(SponsorId)) {
             this.setState({ loading: false });
         } else{
@@ -68,7 +68,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     }
 
     componentDidUpdate(){
-        console.log("Updating and next is state",this.state)
         if (this.state.Sponsor && this.state.loadingDefinitions === true){
             this.loadInformation();
         }
@@ -100,7 +99,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         const currentUrl = this.props.history.location.pathname;
         const base = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
         const currentSpons:string = currentUrl.substring(currentUrl.lastIndexOf('/')+1);
-        console.log(total,currentUrl,base,currentSpons);
         const nextSponsor = (currentSpons != null && !(currentSpons==="")) ? (parseInt(currentSpons) + 1)%total : parseInt(currentSpons)
         this.props.history.push(`${base}/${nextSponsor}`);
     }
@@ -116,6 +114,9 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
             </div>
         if(Sponsor) {
             const tier = Sponsor.tier;
+            const data = this.state.portalInfo.data;
+            const portalInfoImages = this.state.portalInfo.files.filter((x:IAssetInformation)=>{!x.name.toLowerCase().includes("logo")});
+            const app: ISponsor | undefined = Sponsor;
             const tier_badge = () => {
                 switch(tier.toLowerCase()) {
                     case "co-host":
@@ -130,12 +131,22 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         return undefined
                     default: return undefined
                 }
-              }
-            console.log("rendering stuff here!",user,Sponsor);
-            const app: ISponsor = Sponsor;
+            }
             const metadata = <>
                 {<Badge status={tier_badge()}>{this.capitalizeFirstLetter(tier)}</Badge>}
             </>;
+            const carouselDivs = portalInfoImages.map((p:IAssetInformation)=>{
+                <div>
+                    <img src={p.url} />
+                    <p className="legend">{p.name}</p>
+                </div>
+            })
+            const placeholderCarousel = (
+                <div>
+                    <img style={{width:"100%"}} id="image" src="https://www.unwork.com/wp-content/uploads/2019/08/case-study_body_image-marshall-wace2.jpg"></img>
+                    <p className="legend">An office</p>
+                </div>
+            )
             let logoUrl: string | undefined = this.state.portalInfo.files.find((x:IAssetInformation)=> {x.name.toLowerCase().includes("logo")});
             if (!logoUrl || logoUrl === undefined) {
                 // Use backup logo
@@ -159,7 +170,11 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         alt={`${app.name}`}
                     />}
                 >
-                    <img style={{width:"100%"}} id="image" src="https://www.unwork.com/wp-content/uploads/2019/08/case-study_body_image-marshall-wace2.jpg"></img>
+                    {/* <img style={{width:"100%"}} id="image" src="https://www.unwork.com/wp-content/uploads/2019/08/case-study_body_image-marshall-wace2.jpg"></img> */}
+                    <Carousel 
+                        renderThumbs={()=>{}}>
+                        {carouselDivs.length === 0 ? placeholderCarousel:placeholderCarousel}
+                    </Carousel>
                     <Layout>
                         <Layout.Section secondary>
                             <br />
@@ -172,8 +187,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                                     <TextContainer>
                                         <Heading>About</Heading>
                                         <p>
-                                            Some text about the company and what it'll be doing.
-                                            [SPONSORSHIP TEAM TO WRITE]
+                                            {data.description}
                                         </p>
                                     </TextContainer>
                                 </div>
@@ -182,16 +196,25 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         <Layout.Section>
                             <br />
                             <Card>
-                                {sponsorFields.map((value) => {
-                                    console.log(value);
-                                    return (<Linkify tagName="a" options={{ target: {url: '_blank'} }}>
-                                        <div style={{ padding: "1.4rem 2rem" }} key={value.id}>
-                                            <Heading>{value.title}</Heading>
-                                            <br style={{ lineHeight: "3px" }} />
-                                            <TextContainer>Test text</TextContainer>
-                                        </div>
-                                    </Linkify>);
-                                })}
+                                {
+                                    Object.keys(data).map((key, index) => {
+                                        if (key==="description"){
+                                            return
+                                        } else{
+                                            let value = data[key];
+                                            console.log("Rendering linkifies",key,value,index);
+                                            return ([
+                                                <Linkify tagName="a" options={{ target: {url: '_blank'} }}>
+                                                    <div style={{ padding: "1.4rem 2rem" }} key={index}>
+                                                        <Heading>{this.capitalizeFirstLetter(key)}</Heading>
+                                                        <br style={{ lineHeight: "3px" }} />
+                                                        <TextContainer>{value} hi</TextContainer>
+                                                    </div>
+                                                </Linkify>
+                                            ]);
+                                        }
+                                    })
+                                }
                             </Card>
                         </Layout.Section>
                     </Layout>
@@ -212,7 +235,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     }
 
     private loadInformation() {
-        console.log("Called loadInfo",this.state)
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
             sponsor_id: this.state.Sponsor.id,
             sponsor_slug: this.state.Sponsor.slug,
@@ -221,13 +243,12 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         }).then(res => {
             const status = res.status;
             var portalInfo = undefined;
-            console.log("Load info reso",res)
             if(status >= 200 && status < 300) {
                 const data = res.data;
                 if(data && "success" in data && data["success"]) {
                     const details = data["details"];
                     if(Array.isArray(details)) {
-                        const detailState = details.map(r => {
+                        const detailState = details.reduce((result,r)=>{
                             if (r.type==="portal-info"){
                                 const pInfo: {
                                     data: {[varName: string]:string},
@@ -248,10 +269,10 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                                     description: info.description,
                                     files: info.files,
                                 }
-                                return rInfo
+                                result.push(rInfo);
                             }
-                        });
-                        
+                            return result;
+                        },[])
                         this.setState({ resources: detailState, loadingDefinitions: false });
                         return;
                     }
@@ -267,12 +288,11 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
     private renderResourceCard(data) {
         // Title, description, files
-        console.log("rendering Resource card, state follows",this.state)
         return (
             <Layout.Section oneThird>
             <Card title={this.capitalizeFirstLetter(data.mainType)} sectioned>
                 {
-                    (!data && data.files === []) ? <></> : <Image
+                    (!data || data.files.length === 0) ? <></> : <Image
                     // source = {logoUrl}
                     source={data.files[0].url}
                     alt={data.files[0].name}
@@ -293,10 +313,8 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
     private retrieveSponsor = (SponsorId: number) => {
         this.setState({ loading: true });
-        console.log("retrieving Sponsor",SponsorId);
         axios.get(`/sponsors/dashboard-api/get-sponsors-reduced.json`).then(res => {
             const status = res.status;
-            console.log("Here",res)
             if(status >= 200 && status <= 300) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {

@@ -36,7 +36,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
             data: {
                 ["description"]:"",
                 ["url"]:"",
-                ["discord_invite_link"]:"",
+                ["discord invite link"]:"",
             },
             files: [],
         },
@@ -57,11 +57,6 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
             showDestructiveForm
         } = this.state;
         const { data, files} = fields;
-        const textFields = Object.entries(data).forEach(([key,value])=>{
-            console.log("in object foreach",key,value);
-            return(this.renderTextField(key,value,isLoading));
-        })
-        console.log("Showing data in sponsor portal",data);
         return (
             <Page
                 breadcrumbs={[{
@@ -79,15 +74,6 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
                     </TextContainer>
                     <br />
                     <>
-                    {textFields}
-                    
-                    {/* {
-                        Object.entries(data).forEach(([key,value])=>{
-                            console.log("in object foreach",key,value);
-
-                            return(this.renderTextField(key,value,isLoading));
-                        })
-                    } */}
                     <div>
                     {
                         Object.keys(data).map((key, index) => {
@@ -282,7 +268,6 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
             payload: JSON.stringify(payload),
         }).then(res => {
             const status = res.status;
-            console.log("REsult from add resource",res);
             if(status == 200 || status == 201) {
                 const payload = res.data;
                 if("success" in payload && payload["success"]) {
