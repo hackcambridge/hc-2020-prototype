@@ -215,7 +215,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         const applicationDetailRoutes = this.canSeeApplicationItems() ? [
             <Redirect key="apply" exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,
             <Route key="apply_individual" exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} applicationsOpen={this.props.canApply} />} />,
-            <Route key="apply_team" exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />,
+            <Route key="apply_team" exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen || (this.props.user.application ? !this.props.user.application.rejected : false)} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />,
             <Route key="apply_invitation" exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />,
         ] : [];
         return (
