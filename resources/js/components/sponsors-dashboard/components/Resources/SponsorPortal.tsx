@@ -1,4 +1,4 @@
-import { Avatar, TextContainer,TextField, TextStyle, Button, Card, Heading, Page, ResourceList, Stack } from "@shopify/polaris";
+import { Avatar, TextContainer,TextField, TextStyle, Button, Card, Heading, Page, ResourceList, Stack, Thumbnail } from "@shopify/polaris";
 import { AddMajor, AttachmentMajor } from "@shopify/polaris-icons";
 import axios from "axios";
 import React, { Component } from "react";
@@ -57,6 +57,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
             showDestructiveForm
         } = this.state;
         const { data, files} = fields;
+        // console.log("Rendering sponsor portal",fields);
         return (
             <Page
                 breadcrumbs={[{
@@ -134,15 +135,6 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
           );
     }
 
-    private renderTextField(key:string,value:string,isLoading:boolean){
-        return(
-            <>
-            <TextField label={this.capitalizeFirstLetter(key)} 
-                                value={value} onChange={(e)=>this.handleChange(key,value)} multiline={4} disabled={isLoading}/>
-                            <br />
-            </>
-        )
-    }
     private capitalizeFirstLetter(string: string) {
         return string[0].toUpperCase() + string.slice(1);
     }
@@ -155,7 +147,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
 
     renderAssetThumbnail = (item: IAssetInformation) => {
         const { name, url } = item;
-        // const thumbnail = <Thumbnail source={url} alt={name}></Thumbnail>;
+        const thumbnail = <Thumbnail source={url} alt={name}></Thumbnail>;
         const actions = [{
             content: 'Delete',
             onAction: () => this.deleteAsset(item)
@@ -163,7 +155,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
         return (
             <ResourceList.Item
                 id={name}
-                // media={thumbnail}
+                media={thumbnail}
                 onClick={() => {
                     var win = window.open(item.url, '_blank');
                     win.focus();
@@ -242,7 +234,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
                             isLoading: false,
                             detail_id: detail[0]["id"],
                             fields: {
-                                data: details.data,
+                                data: Object.assign({},this.state.fields.data,details.data),
                                 files: details.files,
                             }
                         });

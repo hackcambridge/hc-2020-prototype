@@ -11,6 +11,7 @@ import Linkify from 'linkifyjs/react';
 import { IAssetInformation, IResourceDefinition, ISponsorData } from '../../../interfaces/sponsors.interfaces';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+import { portal } from '@shopify/polaris/dist/types/latest/src/components/shared';
 
 interface IIndividualSponsorProps {
     SponsorId: string,
@@ -115,7 +116,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         if(Sponsor) {
             const tier = Sponsor.tier;
             const data = this.state.portalInfo.data;
-            const portalInfoImages = this.state.portalInfo.files.filter((x:IAssetInformation)=>{!x.name.toLowerCase().includes("logo")});
+            const portalInfoImages = this.state.portalInfo.files.filter((x:IAssetInformation)=>{return !x.name.toLowerCase().includes("logo")});
             const app: ISponsor | undefined = Sponsor;
             const tier_badge = () => {
                 switch(tier.toLowerCase()) {
@@ -136,22 +137,27 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                 {<Badge status={tier_badge()}>{this.capitalizeFirstLetter(tier)}</Badge>}
             </>;
             const carouselDivs = portalInfoImages.map((p:IAssetInformation)=>{
-                <div>
-                    <img src={p.url} />
-                    <p className="legend">{p.name}</p>
-                </div>
+                return(
+                    <div>
+                        <img src={p.url} />
+                        <p className="legend">{p.name}</p>
+                    </div>
+                )
             })
             const placeholderCarousel = (
                 <div>
-                    <img style={{width:"100%"}} id="image" src="https://www.unwork.com/wp-content/uploads/2019/08/case-study_body_image-marshall-wace2.jpg"></img>
+                    <img style={{width:"100%"}} id="image" src="https://s3.eu-west-2.amazonaws.com/hc-upload/sponsors/not-marhsll-wace/843eb30a-011e-4c42-a1c1-bde699b27f1d.jpg"></img>
                     <p className="legend">An office</p>
                 </div>
             )
-            let logoUrl: string | undefined = this.state.portalInfo.files.find((x:IAssetInformation)=> {x.name.toLowerCase().includes("logo")});
+            let logoUrl: string | undefined = this.state.portalInfo.files.find((x:IAssetInformation)=> {return x.name.toLowerCase().includes("logo")});
             if (!logoUrl || logoUrl === undefined) {
                 // Use backup logo
                 logoUrl = "https://www.pngfind.com/pngs/m/665-6659827_enterprise-comments-default-company-logo-png-transparent-png.png";
+            } else{
+                logoUrl = logoUrl.url;
             }
+            console.log("CarouselDivs",carouselDivs,this.state,portalInfoImages)
             return (
                 <Page 
                     breadcrumbs={[{content: 'Sponsors', url: '../sponsors'}]}
@@ -173,7 +179,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                     {/* <img style={{width:"100%"}} id="image" src="https://www.unwork.com/wp-content/uploads/2019/08/case-study_body_image-marshall-wace2.jpg"></img> */}
                     <Carousel 
                         renderThumbs={()=>{}}>
-                        {carouselDivs.length === 0 ? placeholderCarousel:placeholderCarousel}
+                        {carouselDivs.length === 0 ? placeholderCarousel:carouselDivs}
                     </Carousel>
                     <Layout>
                         <Layout.Section secondary>
@@ -202,7 +208,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                                             return
                                         } else{
                                             let value = data[key];
-                                            console.log("Rendering linkifies",key,value,index);
+                                            // console.log("Rendering linkifies",key,value,index);
                                             return ([
                                                 <Linkify tagName="a" options={{ target: {url: '_blank'} }}>
                                                     <div style={{ padding: "1.4rem 2rem" }} key={index}>
@@ -262,7 +268,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                                     files: IAssetInformation[]
                                 } = JSON.parse(r["payload"]);
                                 // I'm pretty sure there's a nicer way to do this but 
-                                // I didn't have time to look it up.
+                                // I didn't have time to look it up. Spread operator?
                                 const rInfo = {
                                     mainType: r.type,
                                     title: info.title,
@@ -273,7 +279,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                             }
                             return result;
                         },[])
-                        this.setState({ resources: detailState, loadingDefinitions: false });
+                        this.setState({ resources: detailState, portalInfo: portalInfo, loadingDefinitions: false });
                         return;
                     }
                 }
