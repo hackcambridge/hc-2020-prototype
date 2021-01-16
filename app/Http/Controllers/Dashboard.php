@@ -679,7 +679,11 @@ class Dashboard extends Controller
     public function getParticipantsOverview()
     {
         if ($this->canContinue(["hacker", "admin", "committee"], null)) {
-            $user_profiles = DB::table('users')->select("profile")->get();
+            $user_profiles = DB::table('users')
+                ->rightJoin("applications","users.id","=","applications.user_id")
+                ->where("applications.confirmed","=","1")
+                ->select("users.profile")
+                ->get();
             $raw_data = [];
             $raw_data["universities"] = [];
             $raw_data["levels"] = [];

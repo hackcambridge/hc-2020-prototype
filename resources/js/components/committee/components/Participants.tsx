@@ -46,9 +46,9 @@ class Participants extends Component<IParticipantsProps, IParticipantsState> {
                     <Card title={"Universities Leaderboard"}>
                         <div style={{ padding: "0 2rem" }}>
                             <DescriptionList
-                                items={overview.universities.sort((a, b) => (a.participants < b.participants) ? 1 : -1).map(u => {
+                                items={overview.universities ? overview.universities.sort((a, b) => (a.participants < b.participants) ? 1 : -1).map(u => {
                                     return { term: u.participants, description: u.name };
-                                })}
+                                }) : []}
                             />
                         </div>
                     </Card>
@@ -57,9 +57,9 @@ class Participants extends Component<IParticipantsProps, IParticipantsState> {
                     <Card title={"Majors Leaderboard"}>
                         <div style={{ padding: "0 2rem" }}>
                             <DescriptionList
-                                items={overview.majors.sort((a, b) => (a.participants < b.participants) ? 1 : -1).map(m => {
+                                items={overview.majors ? overview.majors.sort((a, b) => (a.participants < b.participants) ? 1 : -1).map(m => {
                                     return { term: m.participants, description: m.name };
-                                })}
+                                }) : []}
                             />
                         </div>
                     </Card>
@@ -68,9 +68,9 @@ class Participants extends Component<IParticipantsProps, IParticipantsState> {
                     <Card title={"Level of Study Leaderboard"}>
                         <div style={{ padding: "0 2rem" }}>
                             <DescriptionList
-                                items={overview.levels.sort((a, b) => (a.participants < b.participants) ? 1 : -1).map(l => {
+                                items={overview.levels ? overview.levels.sort((a, b) => (a.participants < b.participants) ? 1 : -1).map(l => {
                                     return { term: l.participants, description: l.name };
-                                })}
+                                }) : []}
                             />
                         </div>
                     </Card>
@@ -79,9 +79,9 @@ class Participants extends Component<IParticipantsProps, IParticipantsState> {
                     <Card title={"Profession Type Leaderboard"}>
                         <div style={{ padding: "0 2rem" }}>
                             <DescriptionList
-                                items={overview.professions.sort((a, b) => (a.participants < b.participants) ? 1 : -1).map(p => {
+                                items={overview.professions ? overview.professions.sort((a, b) => (a.participants < b.participants) ? 1 : -1).map(p => {
                                     return { term: p.participants, description: p.name };
-                                })}
+                                }) : []}
                             />
                         </div>
                     </Card>
