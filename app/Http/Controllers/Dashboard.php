@@ -573,7 +573,7 @@ class Dashboard extends Controller
             $matching = [];
             foreach ($hackers as $hacker) {
                 $application = Application::select("questionResponses")->where("user_id", "=", $hacker->id)->first();
-                if (!$application || !$application->invited) {
+                if (!$application || !$application->invited || !$application->confirmed) {
                     continue;
                 }
 
