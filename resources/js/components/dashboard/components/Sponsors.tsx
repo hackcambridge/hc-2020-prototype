@@ -117,7 +117,7 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                     }}
                     src={logoUrl}
                 />
-                <div style={{ padding: "1.5rem" }}>
+                <div style={{ padding: "1rem" }}>
                 {metadata}
                 </div>
             </MediaCard>
