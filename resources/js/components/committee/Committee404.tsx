@@ -7,7 +7,7 @@ class Committee404 extends Component {
         return (
             <EmptyState
                 heading="Well this is awkward..."
-                action={{content: 'Back Home', url: "/committee/admin/overview"}}
+                action={{ content: 'Back Home', url: "/committee/admin/overview" }}
                 // secondaryAction={{content: 'Learn more', url: 'https://help.shopify.com'}}
                 image="https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg"
             >

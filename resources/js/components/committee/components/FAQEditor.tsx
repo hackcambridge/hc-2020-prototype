@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Page, Card, ResourceList, TextStyle, Modal, Form, FormLayout, Layout, Checkbox, TextField, ButtonGroup, Button } from "@shopify/polaris";
+import { Page, Card, ResourceList, TextStyle, Modal, TextField } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { IFAQItem } from "../../../interfaces/dashboard.interfaces";
@@ -43,7 +43,7 @@ class FAQEditor extends Component<IFAQEditorProps, IFAQEditorState> {
     }
 
     render() {
-        const { 
+        const {
             faqs,
             modalShowing,
             live,
@@ -54,7 +54,7 @@ class FAQEditor extends Component<IFAQEditorProps, IFAQEditorState> {
             showDestructiveForm,
         } = this.state;
         return (
-            <Page 
+            <Page
                 title={"FAQs"}
                 primaryAction={{
                     loading: loading,
@@ -66,34 +66,34 @@ class FAQEditor extends Component<IFAQEditorProps, IFAQEditorState> {
                 secondaryActions={[{
                     content: "Force Save",
                     onAction: this.saveOutFile
-                },{
+                }, {
                     content: "New FAQ",
                     onAction: this.addNewFAQItem
                 }]}
             >
                 <Card>
-                <ResourceList
-                    resourceName={{singular: 'FAQ', plural: 'FAQs'}}
-                    items={faqs}
-                    loading={loading}
-                    renderItem={(faqsItem: IFAQItem) => {
-                        const shortcutActions = [
-                            { content: '↑', onAction: () => this.changeOrder(faqsItem, -1) },
-                            { content: '↓', onAction: () => this.changeOrder(faqsItem, 1) },
-                        ];
-                        return (<>
-                            <ResourceList.Item
-                                shortcutActions={shortcutActions}
-                                id={faqsItem.title}
-                                onClick={() => this.showModal(faqsItem)}
-                            >
-                                <h3>
-                                    <TextStyle variation="strong">{faqsItem.title}</TextStyle><br />
-                                </h3>
-                            </ResourceList.Item>
-                        </>);
-                    }}
-                />
+                    <ResourceList
+                        resourceName={{ singular: 'FAQ', plural: 'FAQs' }}
+                        items={faqs}
+                        loading={loading}
+                        renderItem={(faqsItem: IFAQItem) => {
+                            const shortcutActions = [
+                                { content: '↑', onAction: () => this.changeOrder(faqsItem, -1) },
+                                { content: '↓', onAction: () => this.changeOrder(faqsItem, 1) },
+                            ];
+                            return (<>
+                                <ResourceList.Item
+                                    shortcutActions={shortcutActions}
+                                    id={faqsItem.title}
+                                    onClick={() => this.showModal(faqsItem)}
+                                >
+                                    <h3>
+                                        <TextStyle variation="strong">{faqsItem.title}</TextStyle><br />
+                                    </h3>
+                                </ResourceList.Item>
+                            </>);
+                        }}
+                    />
                 </Card>
 
                 <Modal
@@ -155,8 +155,8 @@ class FAQEditor extends Component<IFAQEditorProps, IFAQEditorState> {
     }
 
     private deleteFAQItem(id: string) {
-        const destructor : JSX.Element = (
-            <DestructiveConfirmation 
+        const destructor: JSX.Element = (
+            <DestructiveConfirmation
                 title={`Are you sure you want to delete this?`}
                 onConfirm={() => {
                     const { faqs } = this.state;
@@ -179,7 +179,7 @@ class FAQEditor extends Component<IFAQEditorProps, IFAQEditorState> {
     private changeOrder(faqsItem: IFAQItem, by: number) {
         const { faqs } = this.state;
         const itemIndex = faqs.findIndex(c => c.id == faqsItem.id);
-        if(itemIndex > -1) {
+        if (itemIndex > -1) {
             const newIndex = Math.max(0, Math.min(faqs.length - 1, itemIndex + by));
 
             const mutable: (IFAQItem | undefined)[] = faqs;
@@ -203,7 +203,7 @@ class FAQEditor extends Component<IFAQEditorProps, IFAQEditorState> {
             modalContent_answer,
         } = this.state;
         const toUpdate = faqs.find(c => c.id == modalContent_id);
-        if(toUpdate) {
+        if (toUpdate) {
             toUpdate.title = modalContent_title;
             toUpdate.answer = modalContent_answer;
         }
@@ -212,9 +212,9 @@ class FAQEditor extends Component<IFAQEditorProps, IFAQEditorState> {
     }
 
     private showModal(item: IFAQItem) {
-        this.setState({ 
+        this.setState({
             modalShowing: true,
-            modalContent_id: item.id, 
+            modalContent_id: item.id,
             modalContent_title: item.title,
             modalContent_answer: item.answer,
         });
@@ -234,12 +234,12 @@ class FAQEditor extends Component<IFAQEditorProps, IFAQEditorState> {
             content: JSON.stringify({
                 live: live,
                 faqs: faqs
-            }), 
+            }),
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const newModifiedTime = payload["last_modified"];
                     this.setState({ loading: false, modalShowing: false, lastModified: newModifiedTime });
                     return;
@@ -261,11 +261,11 @@ class FAQEditor extends Component<IFAQEditorProps, IFAQEditorState> {
             file: "faqs.json"
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const faqsItemsJSON = JSON.parse(payload["content"]);
-                    if("faqs" in faqsItemsJSON) {
+                    if ("faqs" in faqsItemsJSON) {
                         const faqs: IFAQItem[] = faqsItemsJSON["faqs"];
                         this.setState({
                             lastModified: payload["last_modified"],
@@ -278,7 +278,7 @@ class FAQEditor extends Component<IFAQEditorProps, IFAQEditorState> {
                 } else {
                     toast.error(payload["message"]);
                     this.setState({ loading: false });
-                    return 
+                    return
                 }
             }
             toast.error("Failed to load data.");

@@ -57,7 +57,7 @@ export interface ISponsorChallenge {
     description: string,
     content: string,
     logoUrl: string,
-    slackChannel?: string   
+    slackChannel?: string
 }
 
 export interface IScheduleItem {
@@ -80,4 +80,11 @@ export interface IFAQItem {
     id: string,
     title: string,
     answer: string,
+}
+
+export interface IParticipantsOverview {
+    universities: { name: string, participants: number }[],
+    majors: { name: string, participants: number }[],
+    professions: { name: string, participants: number }[],
+    levels: { name: string, participants: number }[],
 }

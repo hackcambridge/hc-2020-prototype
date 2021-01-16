@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Page, Button, Card, ResourceList, Avatar, TextStyle, TextContainer, Heading, Filters, Stack, Layout, DescriptionList } from "@shopify/polaris";
+import { Page, Button, Card, Stack, Layout, DescriptionList } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { IAdminOverview } from '../../../interfaces/committee.interfaces';
@@ -36,7 +36,7 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
     }
 
     private renderLoadedContent(overview: IAdminOverview | undefined) {
-        if(!overview) {
+        if (!overview) {
             return <p>No data.</p>
         }
 
@@ -46,10 +46,11 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
                     <Card sectioned title={""}>
                         <Stack>
                             <Button monochrome outline>{`${overview.users}`} registrations</Button>
-                            <Button url={`applications`} monochrome outline>{`${overview.applications.total}`} applications</Button>
-                        </Stack>
-                        <br />
-                        <Stack>
+                            <Button monochrome outline>{`${overview.applications.total}`} applications</Button>
+                            <Button url={`applications`} monochrome outline>{`${overview.applications.submitted}`} submitted</Button>
+                            <div style={{color: '#0b6623'}}>
+                                <Button monochrome outline>{`${overview.applications.reviewed}`} reviewed</Button>
+                            </div>
                             <Button monochrome outline>{`${overview.applications.invited}`} invited</Button>
                             <Button monochrome outline>{`${overview.applications.invitations_pending}`} pending</Button>
                             <Button monochrome outline>{`${overview.applications.accepted}`} confirmed</Button>
@@ -68,6 +69,17 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
                         </div>
                     </Card>
                 </Layout.Section>
+                <Layout.Section oneHalf>
+                    <Card title={"Universities Leaderboard"}>
+                        <div style={{ padding: "0 2rem" }}>
+                            <DescriptionList
+                                items={overview.universities.sort((a, b) => (a.participants < b.participants) ? 1 : -1).map(u => {
+                                    return { term: u.participants, description: u.name };
+                                })}
+                            />
+                        </div>
+                    </Card>
+                </Layout.Section>
             </Layout>
         );
     }
@@ -76,12 +88,12 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
         this.setState({ isLoading: true });
         axios.get(`/committee/admin-api/admin-overview.json`).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const overview: IAdminOverview = payload["overview"];
                     console.log(overview);
-                    this.setState({ 
+                    this.setState({
                         overview: overview,
                         isLoading: false,
                     });
@@ -89,7 +101,6 @@ class Overview extends Component<IAdminOverviewProps, IAdminOverviewState> {
                 }
             }
             toast.error("Failed to load data.");
-            // console.log(status, res.data);
             this.setState({ isLoading: false });
         });
     }

@@ -30,7 +30,7 @@ class FAQs extends Component<IDashboardProps, IFAQsState> {
             <>
                 <div id={"faqs"}>
                     <Page title={"FAQs"}>
-                        {loaded 
+                        {loaded
                             ? this.renderFAQs()
                             : <Card sectioned><Heading>Loading FAQs...</Heading></Card>
                         }
@@ -43,11 +43,11 @@ class FAQs extends Component<IDashboardProps, IFAQsState> {
 
     private renderFAQs() {
         const { faqs, faqsLive } = this.state;
-        if(!faqsLive) {
-            return <Card sectioned><Heading>Details will be published soon!</Heading></Card>; 
+        if (!faqsLive) {
+            return <Card sectioned><Heading>Details will be published soon!</Heading></Card>;
         }
 
-        if(faqs.length == 0) {
+        if (faqs.length == 0) {
             return <Card sectioned><Heading>No FAQs to show.</Heading></Card>;
         }
 
@@ -70,7 +70,7 @@ class FAQs extends Component<IDashboardProps, IFAQsState> {
                 <Layout.Section>
                     <Card key={`${Math.random()}`}>
                         <div style={{ padding: "1.5rem" }}>
-                            <ReactMarkdown source={data.answer} className={"markdown-source markdown-body"} /> 
+                            <ReactMarkdown source={data.answer} className={"markdown-source markdown-body"} />
                         </div>
                     </Card>
                     <br />
@@ -83,9 +83,9 @@ class FAQs extends Component<IDashboardProps, IFAQsState> {
     private loadFAQs() {
         axios.get(this.dataUrl).then(res => {
             const status = res.status;
-            if(status >= 200 && status <= 300) {
+            if (status >= 200 && status <= 300) {
                 const payload = res.data;
-                if("faqs" in payload) {
+                if ("faqs" in payload) {
                     const faqs: IFAQItem[] = payload["faqs"];
                     this.setState({
                         faqs: faqs,
@@ -101,7 +101,7 @@ class FAQs extends Component<IDashboardProps, IFAQsState> {
     }
 }
 
-export default FAQs; 
+export default FAQs;
 
 
 

@@ -5,5 +5,5 @@
     @foreach ($content as $line)
         <p>{{ $line }}</p>
     @endforeach
-    <p class="signoff">{{ isset($signoff) ? $signoff : "All the best" }},<br/>The Hack Cambridge Team</p>
+    <p class="signoff">{{ isset($signoff) ? $signoff : "All the best" }},<br/>The Hex Cambridge Team</p>
 @endsection

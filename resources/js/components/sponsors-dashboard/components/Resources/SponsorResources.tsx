@@ -44,23 +44,23 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
     }
 
     render() {
-        const { 
-            resources, 
-            resourceFormShowing, 
-            editingResource, 
+        const {
+            resources,
+            resourceFormShowing,
+            editingResource,
             loadingDefinitions,
             showDestructiveForm
         } = this.state;
         return (
             <Page
                 breadcrumbs={[{
-                    content: this.props.sponsor.name, 
+                    content: this.props.sponsor.name,
                     url: this.props.baseSponsorPath
                 }]}
                 title={this.props.title}
-                // titleMetadata={<Badge status="attention">Outstanding</Badge>}
-                // primaryAction={{content: 'Save', disabled: false}}
-                // secondaryActions={[{content: 'Duplicate'}, {content: 'View on your store'}]}
+            // titleMetadata={<Badge status="attention">Outstanding</Badge>}
+            // primaryAction={{content: 'Save', disabled: false}}
+            // secondaryActions={[{content: 'Duplicate'}, {content: 'View on your store'}]}
             >
                 <Card>
                     {resources.length > 0 ?
@@ -71,17 +71,17 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
                             loading={loadingDefinitions}
                             resourceName={this.props.resourceNames}
                             alternateTool={
-                                <Button 
-                                    plain icon={AddMajor} 
+                                <Button
+                                    plain icon={AddMajor}
                                     onClick={() => this.setState({ resourceFormShowing: true })}>
                                 </Button>
                             }
                         />
                         :
                         <Card.Section>
-                            <Button 
+                            <Button
                                 loading={loadingDefinitions}
-                                icon={AddMajor} 
+                                icon={AddMajor}
                                 onClick={() => this.setState({ resourceFormShowing: true })}
                             >
                                 &nbsp;Add {this.props.resourceNames["singular"]}
@@ -89,8 +89,8 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
                         </Card.Section>
                     }
                 </Card>
-                {resourceFormShowing ? 
-                    <SponsorResourceForm 
+                {resourceFormShowing ?
+                    <SponsorResourceForm
                         onClose={() => this.setState({ resourceFormShowing: false, editingResource: undefined })}
                         onCreate={() => this.loadResources()}
                         item={editingResource}
@@ -102,13 +102,13 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
                 }
                 {showDestructiveForm || <></>}
             </Page>
-          );
+        );
     }
 
     renderRow = (item: IResourceDefinition) => {
-        const {id, urls, name, description} = item;
+        const { id, urls, name, description } = item;
         const media = <Avatar customer size="medium" name={name} />;
-    
+
         return (
             <ResourceList.Item
                 id={`${id}`}
@@ -117,11 +117,11 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
                 accessibilityLabel={`View details for ${name}`}
                 shortcutActions={[
                     {
-                        content: 'Edit', 
+                        content: 'Edit',
                         onAction: () => this.setState({ editingResource: item, resourceFormShowing: true })
                     },
                     {
-                        content: 'Delete', 
+                        content: 'Delete',
                         onAction: () => this.handleResourceDeletion(item)
                     },
                 ]}
@@ -142,7 +142,7 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
     };
 
     loadResources() {
-        if(!this.state.loadingDefinitions) {
+        if (!this.state.loadingDefinitions) {
             this.setState({ loadingDefinitions: true });
         }
 
@@ -152,11 +152,11 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
             detail_type: this.props.detailType
         }).then(res => {
             const status = res.status;
-            if(status >= 200 && status < 300) {
+            if (status >= 200 && status < 300) {
                 const data = res.data;
-                if("success" in data && data["success"]) {
+                if ("success" in data && data["success"]) {
                     const resources = data["details"];
-                    if(Array.isArray(resources)) {
+                    if (Array.isArray(resources)) {
                         const definitions = resources.map(r => {
                             const id: number = r["id"];
                             const payload = r["payload"];
@@ -170,7 +170,7 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
                             }
                             return spec;
                         });
-                        
+
                         this.setState({ resources: definitions, loadingDefinitions: false });
                         return;
                     }
@@ -182,8 +182,8 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
     }
 
     handleResourceDeletion = (resource: IResourceDefinition) => {
-        const destructor : JSX.Element = (
-            <DestructiveConfirmation 
+        const destructor: JSX.Element = (
+            <DestructiveConfirmation
                 onConfirm={() => this.actuallyDeleteResource(resource)}
                 onClose={() => this.setState({ showDestructiveForm: undefined })}
             />
@@ -193,7 +193,7 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
     }
 
     private actuallyDeleteResource(resource: IResourceDefinition) {
-        if(!this.state.loadingDefinitions) {
+        if (!this.state.loadingDefinitions) {
             this.setState({ loadingDefinitions: true });
         }
         axios.post(`/sponsors/dashboard-api/delete-resource.json`, {
@@ -203,9 +203,9 @@ class SponsorResources extends Component<ISponsorResourcesProps, ISponsorResourc
             detail_type: this.props.detailType,
         }).then(res => {
             const status = res.status;
-            if(status >= 200 && status < 300) {
+            if (status >= 200 && status < 300) {
                 const data = res.data;
-                if("success" in data && data["success"]) {
+                if ("success" in data && data["success"]) {
                     toast.success("Resource deleted");
                     this.loadResources();
                 }
