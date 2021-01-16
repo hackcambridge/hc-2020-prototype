@@ -151,7 +151,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/faqs`, label: `FAQs`, icon: QuestionMarkMajor });
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/teammates`, label: `Team Matching`, icon: TeamMajor });
+            // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/teammates`, label: `Team Matching`, icon: TeamMajor });
             // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/qrscan`, label: `Scan QR Code`, icon: ShopcodesMajor });
         }
 
