@@ -550,6 +550,10 @@ class Dashboard extends Controller
         }
     }
 
+    private static function descriptionsMatch($description, $target) {
+        return (strpos(strtolower($description), strtolower($target)) !== false) || (strpos(strtolower($target), strtolower($description)) !== false);
+    }
+
     public function findTeammates($r)
     {
         if ($this->canContinue(["hacker", "admin", "committee"], $r, ["keywords"])) {
@@ -572,7 +576,7 @@ class Dashboard extends Controller
 
             $matching = [];
             foreach ($hackers as $hacker) {
-                $application = Application::select("questionResponses")->where("user_id", "=", $hacker->id)->first();
+                $application = Application::where("user_id", "=", $hacker->id)->first();
                 if (!$application || !$application->invited || !$application->confirmed) {
                     continue;
                 }
@@ -583,7 +587,7 @@ class Dashboard extends Controller
                     # 1. Search in Hacker's descriptions
                     if (property_exists($eventDetails, "ideas")) {
                         foreach ($keywords as $keyword) {
-                            if (strpos($eventDetails->ideas, $keyword) !== false) {
+                            if ($this->descriptionsMatch($eventDetails->ideas, $keyword)) {
                                 $add = 1;
                                 break;
                             }
@@ -594,7 +598,7 @@ class Dashboard extends Controller
                     if (!$add && property_exists($eventDetails, "tags") && is_array($eventDetails->tags)) {
                         foreach ($keywords as $keyword) {
                             foreach ($eventDetails->tags as $tag) {
-                                if (strpos($tag, $keyword) !== false || strpos($keyword, $tag) !== false) {
+                                if ($this->descriptionsMatch($tag, $keyword)) {
                                     $add = 1;
                                     break;
                                 }
@@ -610,7 +614,7 @@ class Dashboard extends Controller
                 if (!$add) {
                     $responses = $application->getAttribute("questionResponses");
                     foreach ($keywords as $keyword) {
-                        if (strpos($responses, $keyword) !== false) {
+                        if ($this->descriptionsMatch($responses, $keyword)) {
                             $add = 1;
                             break;
                         }

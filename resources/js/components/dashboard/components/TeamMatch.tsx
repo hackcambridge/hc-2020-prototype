@@ -206,7 +206,7 @@ class TeamMatch extends Component<ITeamMatchProps, ITeamMatchState> {
                     <TextStyle variation="strong">{item.name}</TextStyle>
                 </h3>
                 <div>{item.email}</div>
-                <div>Discord nickname: {item.discord ? item.discord : "<i>(none)</i>"}</div>
+                <div>Discord nickname: {item.discord ? item.discord : <i>(none)</i> }</div>
             </ResourceList.Item>
         );
         return <h1></h1>
