@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { Component, ReactNode, SVGProps } from "react";
 import { withRouter, RouteComponentProps, Link, Switch, Route, Redirect } from "react-router-dom";
 import { IDashboardProps, IApplicationRecord } from "../../interfaces/dashboard.interfaces";
 import {
@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ShopcodesMajor, CustomersMajor, TeamMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, CustomersMajor, NoteMajor } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
@@ -107,7 +107,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             id: "logout",
             items: [
                 { content: 'Frontpage', url: "/", icon: HomeMajor },
-                { content: 'Profile', url: `${this.props.baseUrl}/profile`, icon: CustomersMajor},
+                { content: 'Profile', url: `${this.props.baseUrl}/profile`, icon: CustomersMajor },
                 { content: 'Logout', url: "/logout", icon: LogOutMinor },
             ],
         },
@@ -143,14 +143,51 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             applicationNavigationItems.push({ url: `${this.props.baseUrl}/apply/invitation`, label: `Invitation`, icon: ConfettiMajor });
         }
 
-        const dashboardNavigationItems = [
-            { url: `${this.props.baseUrl}/overview`, label: "Overview", icon: IqMajor }
-        ]
+        const dashboardNavigationItems: {
+            url: string,
+            label: string,
+            icon: React.SFC<SVGProps<SVGSVGElement>>,
+            badge: string | null,
+            new: boolean,
+        }[] = [
+                {
+                    url: `${this.props.baseUrl}/overview`,
+                    label: "Overview",
+                    icon: IqMajor,
+                    new: false,
+                    badge: null
+                }
+            ];
 
         if (this.allowedEventDetails()) {
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajor });
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajor });
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/faqs`, label: `FAQs`, icon: QuestionMarkMajor });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/challenges`,
+                label: `Challenges`,
+                icon: FlagMajor,
+                new: false,
+                badge: null
+            });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/schedule`,
+                label: `Schedule`,
+                icon: SocialAdMajor,
+                new: false,
+                badge: null
+            });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/faqs`,
+                label: `FAQs`,
+                icon: QuestionMarkMajor,
+                new: false,
+                badge: null
+            });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseStorageUrl}event-data/Hex+Cambridge+2021+Guide+v1.0.pdf`,
+                label: `Event Guide`,
+                icon: NoteMajor,
+                new: false,
+                badge: "New"
+            });
             // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/teammates`, label: `Team Matching`, icon: TeamMajor });
             // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/qrscan`, label: `Scan QR Code`, icon: ShopcodesMajor });
         }
@@ -229,7 +266,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             </Switch>
         );
     }
-    
+
     private renderApplicationBanner(): JSX.Element {
         const states: {
             [key: string]: {
