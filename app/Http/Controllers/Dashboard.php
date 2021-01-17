@@ -551,7 +551,7 @@ class Dashboard extends Controller
     }
 
     private static function descriptionsMatch($description, $target) {
-        return (strpos(strtolower($description), strtolower($target)) !== false) || (strpos(strtolower($target), strtolower($description)) !== false);
+        return str_contains(strtolower($description), strtolower($target)) || str_contains(strtolower($target), strtolower($description));
     }
 
     public function findTeammates($r)
