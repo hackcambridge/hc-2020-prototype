@@ -28,13 +28,6 @@ interface IIndividualSponsorState {
     portalInfo: undefined,
 }
 
-const sponsorFields: { id: string, title: string, placeholder: string }[] = [
-    { id: "1", title: "Industry", placeholder: "" },
-    { id: "2", title: "Homepage", placeholder: "Mention anything you want -- it doesn’t have to be technology-related!" },
-    { id: "3", title: "Description", placeholder: "" },
-    { id: "4", title: "Opportunities", placeholder: "For example GitHub, LinkedIn or your website. Put each link on a new line. " },
-]
-
 class IndividualSponsor extends Component<IIndividualSponsorProps & RouteComponentProps, IIndividualSponsorState> {
     
     state = {
@@ -55,10 +48,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         }, //for company main info purposes
     }
 
-    constructor(props: IIndividualSponsorProps & RouteComponentProps){
-        super(props);
-    }
-
     componentDidMount() {
         const SponsorId = +this.props.SponsorId;
         if (Number.isNaN(SponsorId)) {
@@ -69,7 +58,8 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     }
 
     componentDidUpdate(){
-        if (this.state.Sponsor && this.state.loadingDefinitions === true){
+        const {Sponsor, loadingDefinitions} = this.state;
+        if (Sponsor && loadingDefinitions === true){
             this.loadInformation();
         }
     }
@@ -99,8 +89,8 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         const total = this.state.totalNo;
         const currentUrl = this.props.history.location.pathname;
         const base = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-        const currentSpons:string = currentUrl.substring(currentUrl.lastIndexOf('/')+1);
-        const nextSponsor = (currentSpons != null && !(currentSpons==="")) ? (parseInt(currentSpons) + 1)%total : parseInt(currentSpons)
+        const currentSponsor:string = currentUrl.substring(currentUrl.lastIndexOf('/')+1);
+        const nextSponsor = (currentSponsor != null && !(currentSponsor==="")) ? (parseInt(currentSponsor) + 1)% (total+1) : parseInt(currentSponsor)
         this.props.history.push(`${base}/${nextSponsor}`);
     }
 
@@ -152,12 +142,10 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
             )
             let logoUrl: string | undefined = this.state.portalInfo.files.find((x:IAssetInformation)=> {return x.name.toLowerCase().includes("logo")});
             if (!logoUrl || logoUrl === undefined) {
-                // Use backup logo
                 logoUrl = "https://www.pngfind.com/pngs/m/665-6659827_enterprise-comments-default-company-logo-png-transparent-png.png";
             } else{
                 logoUrl = logoUrl.url;
             }
-            console.log("CarouselDivs",carouselDivs,this.state,portalInfoImages)
             return (
                 <Page 
                     breadcrumbs={[{content: 'Sponsors', url: '../sponsors'}]}
@@ -176,7 +164,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         alt={`${app.name}`}
                     />}
                 >
-                    {/* <img style={{width:"100%"}} id="image" src="https://www.unwork.com/wp-content/uploads/2019/08/case-study_body_image-marshall-wace2.jpg"></img> */}
                     <Carousel 
                         renderThumbs={()=>{}}>
                         {carouselDivs.length === 0 ? placeholderCarousel:carouselDivs}
@@ -208,7 +195,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                                             return
                                         } else{
                                             let value = data[key];
-                                            // console.log("Rendering linkifies",key,value,index);
                                             return ([
                                                 <Linkify tagName="a" options={{ target: {url: '_blank'} }}>
                                                     <div style={{ padding: "1.4rem 2rem" }} key={index}>
@@ -244,7 +230,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
             sponsor_id: this.state.Sponsor.id,
             sponsor_slug: this.state.Sponsor.slug,
-            // THIS IS WHERE I DETERMINE THE TYPES ALLOWED!
             sponsor_details: ["social-media","prizes","workshop","portal-info","demo-details"]
         }).then(res => {
             const status = res.status;
@@ -267,8 +252,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                                     description: string,
                                     files: IAssetInformation[]
                                 } = JSON.parse(r["payload"]);
-                                // I'm pretty sure there's a nicer way to do this but 
-                                // I didn't have time to look it up. Spread operator?
                                 const rInfo = {
                                     mainType: r.type,
                                     title: info.title,
@@ -293,13 +276,11 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     }
 
     private renderResourceCard(data) {
-        // Title, description, files
         return (
             <Layout.Section oneThird>
             <Card title={this.capitalizeFirstLetter(data.mainType)} sectioned>
                 {
                     (!data || data.files.length === 0) ? <></> : <Image
-                    // source = {logoUrl}
                     source={data.files[0].url}
                     alt={data.files[0].name}
                     style={{maxWidth:"100%",maxHeight:"100%"}}
@@ -334,10 +315,8 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         Sponsor: target,
                         totalNo: total,
                     });
-                    //{"id":2,"name":"Chuen","slug":"chuen","tier":"Chuen2","privileges":";swag;resources;workshop;social_media;mentors[42];recruiters[42]","created_at":"2020-10-31 15:27:29","updated_at":"2020-10-31 15:28:08"}
                     return;
                 } else {
-                    console.log(payload);
                     toast.error(payload["message"]);
                 }
             } else {
@@ -348,4 +327,4 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     }
 }
 
-export default withRouter(IndividualSponsor);
+export default IndividualSponsor;
