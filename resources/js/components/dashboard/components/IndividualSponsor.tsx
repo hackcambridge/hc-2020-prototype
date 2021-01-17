@@ -90,8 +90,8 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         const nextSponsor = this.state.nextSponsor;
         const currentUrl = this.props.history.location.pathname;
         const base = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-        await this.retrieveSponsor(nextSponsor);
-        await this.loadInformation();
+        await this.retrieveSponsor(nextSponsor,true);
+        // await this.loadInformation();
         this.props.history.push(`${base}/${nextSponsor}`);
     }
 
@@ -226,12 +226,13 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         return string[0].toUpperCase() + string.slice(1);
     }
 
-    private loadInformation() {
+    private async loadInformation() {
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
             sponsor_id: this.state.Sponsor.id,
             sponsor_slug: this.state.Sponsor.slug,
             sponsor_details: ["social-media", "prizes", "workshop", "portal-info", "demo-details"]
         }).then(res => {
+            console.log("loading info",this.state);
             const status = res.status;
             var portalInfo = undefined;
             if (status >= 200 && status < 300) {
@@ -300,8 +301,9 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         return (test);
     }
 
-    private retrieveSponsor = (SponsorId: number) => {
+    private retrieveSponsor = async (SponsorId: number, callback: boolean = false) => {
         this.setState({ loading: true });
+        var optionalCallback = callback ? this.loadInformation : () => {};
         axios.get(`/sponsors/dashboard-api/get-sponsors-reduced.json`).then(res => {
             const status = res.status;
             if (status >= 200 && status <= 300) {
@@ -320,7 +322,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         SponsorId: SponsorId,
                         Sponsor: target,
                         nextSponsor: nextId,
-                    });
+                    }, optionalCallback);
                     return;
                 } else {
                     toast.error(payload["message"]);
