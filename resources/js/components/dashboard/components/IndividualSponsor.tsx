@@ -169,7 +169,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         hasNext: true,
                         onNext: this.nextSponsor
                     }}
-                    primaryAction={{content: 'Speak To Them!', onAction: () => {window.open(this.state.portalInfo.data.discord_invite_link)}}}
+                    primaryAction={{content: 'Speak To Them!', onAction: () => {window.open(this.state.portalInfo.data["discord invite link"])}}}
                     thumbnail={<Thumbnail
                         source={logoUrl}
                         size="large"

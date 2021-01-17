@@ -27,7 +27,7 @@
     "dependencies": {
         "@babel/plugin-proposal-class-properties": "^7.5.5",
         "@babel/preset-typescript": "^7.3.3",
-        "@shopify/polaris": "^5.10.0",
+        "@shopify/polaris": "^5.9.1",
         "@shopify/polaris-icons": "^4.1.0",
         "@shopify/react-shopify-app-route-propagator": "^3.0.1",
         "@types/linkifyjs": "^2.1.3",

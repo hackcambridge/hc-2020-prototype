@@ -16,7 +16,6 @@ use App\Helpers\S3Management;
 use App\Helpers\Auth0Management;
 
 
-
 class Sponsors extends Controller
 {
     public function dashboard()
@@ -144,6 +143,7 @@ class Sponsors extends Controller
             ]);
         }
     }
+
     private function getSponsors() {
         if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee"])) {
             $sponsors = Sponsor::all();
@@ -157,14 +157,10 @@ class Sponsors extends Controller
     }
 
     private function getSponsorDisplay() {
-        // I also add on the SponsorDetail that includes the logo URL + description.
-        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee","sponsor","hacker"])) {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee","sponsor","hacker","sponsor-reviewer"])) {
             $sponsors = DB::table('sponsors')
-                ->leftJoin('sponsor_details',function($join) {
-                    $desired_type = "portal-info";
-                    $join->on('sponsors.id','=','sponsor_details.sponsor_id')
-                        ->where('sponsor_details.type','=',$desired_type);
-                })
+                ->leftJoin('sponsor_details', 'sponsors.id', '=', 'sponsor_details.sponsor_id')
+                ->where('sponsor_details.type','=','portal-info')
                 ->select('sponsors.id','name','tier','payload','slug')
                 ->get();
             return response()->json([
@@ -176,32 +172,27 @@ class Sponsors extends Controller
         }
     }
 
-    private function array_flatten($array) {
-        $return = array();
-        foreach ($array as $key => $value) {
-            if (is_array($value)){ $return = array_merge($return, array_flatten($value));}
-            else {$return[$key] = $value;}
-        }
-        return $return;
-     
-     }
-     
+    function array_flatten($array){
+        $it = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
+        return iterator_to_array($it, true);
+   }
+
     private function loadAllResources() {
         if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee","sponsor","hacker"])) {
             $sponsors = Sponsor::all();
             if ($sponsors) {
-                $all_details = array();
-                foreach ($sponsors as $s) {
-                    $tmp = $s->details()->get();
-                    if (!$tmp->isEmpty()){
-                        $all_details[] = $tmp;
+                $all_details = [];
+                foreach ($sponsors as $sponsor) {
+                    $sponsor_details = $sponsor->details()->get();
+                    if (!$sponsor_details->isEmpty()){
+                        $all_details[] = $sponsor_details;
                     }
                 }
                 if($all_details) {
-                    $flattened = array_flatten($all_details);
+                    $flattened_details = array_flatten($all_details);
                     return response()->json([
                         "success" => true,
-                        "all_details" => $flattened,
+                        "all_details" => $flattened_details,
                     ]);
                 } else {
                     return $this->fail("No details found");
