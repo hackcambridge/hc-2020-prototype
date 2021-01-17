@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router';
 import { Page, Card, SkeletonBodyText, Image, MediaCard, Thumbnail, Layout, Heading, TextContainer, DisplayText, Button, Badge, Modal, Stack, RangeSlider, KeyboardKey, Spinner } from '@shopify/polaris';
 import Dashboard404 from '../Dashboard404';
 import { ISponsor, IUserDetails } from '../../../interfaces/dashboard.interfaces';
@@ -85,13 +85,13 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         </Page>
     </>;
 
-    private nextSponsor = () => {
+    private nextSponsor = async () => {
         this.setState({ loading: true });
         const nextSponsor = this.state.nextSponsor;
         const currentUrl = this.props.history.location.pathname;
         const base = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-        this.retrieveSponsor(nextSponsor);
-        this.loadInformation();
+        await this.retrieveSponsor(nextSponsor);
+        await this.loadInformation();
         this.props.history.push(`${base}/${nextSponsor}`);
     }
 
@@ -292,20 +292,26 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     private invalidSponsor = () => {
         return <Dashboard404 />;
     };
+    
+    private onlyUnique(value, index, self) {
+        var test = index === self.findIndex(t => {
+            return (t.id === value.id)
+        });
+        return (test);
+    }
 
     private retrieveSponsor = (SponsorId: number) => {
         this.setState({ loading: true });
         axios.get(`/sponsors/dashboard-api/get-sponsors-reduced.json`).then(res => {
             const status = res.status;
-            console.log("Response from retrieving", res);
             if (status >= 200 && status <= 300) {
                 const payload = res.data;
                 if ("success" in payload && payload["success"]) {
                     var sortedSponsors = payload["data"].sort((a, b) => (a.name > b.name) ? 1 : -1);
+                    sortedSponsors = sortedSponsors.filter(this.onlyUnique);
                     var index = sortedSponsors.map(sponsor => { return sponsor.id }).indexOf(SponsorId);
-                    var nextSponsor = sortedSponsors.find(sponsor => {
-                        return sponsor.id === index
-                    });
+                    var nextSponsor = sortedSponsors[(index+1)%sortedSponsors.length];
+                    var nextId = nextSponsor === undefined ? SponsorId : nextSponsor.id;
                     const target: ISponsor = payload["data"].find(sponsor => {
                         return sponsor.id === SponsorId
                     })
@@ -313,7 +319,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         loading: false,
                         SponsorId: SponsorId,
                         Sponsor: target,
-                        nextSponsor: nextSponsor.id,
+                        nextSponsor: nextId,
                     });
                     return;
                 } else {

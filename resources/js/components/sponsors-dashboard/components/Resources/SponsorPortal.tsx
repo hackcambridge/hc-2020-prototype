@@ -5,7 +5,6 @@ import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { IResourceDefinition, IPortalDefinition, ISponsorData, IAssetInformation, SingleItemFormFields } from "../../../../interfaces/sponsors.interfaces";
 import DestructiveConfirmation from "../common/DestructiveConfirmation";
-import { extractHostname } from "../common/url_helpers";
 import UploadForm from "../common/UploadForm";
 import SponsorPortalForm from "./SponsorPortalForm";
 import { toast } from "react-toastify";
