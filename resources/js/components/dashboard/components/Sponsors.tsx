@@ -32,12 +32,12 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
     }
 
     render() {
-        const { loaded,resourceLoaded } = this.state;
-        var loading = 
-            <div style={{textAlign:"center"}}>
+        const { loaded, resourceLoaded } = this.state;
+        var loading =
+            <div style={{ textAlign: "center" }}>
                 <Card sectioned><Heading>Loading sponsors...</Heading></Card>
-                <div style={{marginTop:"1.5em"}}>
-                    <Spinner color="teal" /> 
+                <div style={{ marginTop: "1.5em" }}>
+                    <Spinner color="teal" />
                 </div>
             </div>
         return (
@@ -45,10 +45,10 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                 <div id={"sponsor-schedule"}>
                     <Page title={"Sponsor"}>
                         <Layout key={`${Math.random()}`}>
-                        {loaded  && resourceLoaded
-                            ? this.renderSponsor()
-                            : loading
-                        }
+                            {loaded && resourceLoaded
+                                ? this.renderSponsor()
+                                : loading
+                            }
                         </Layout>
                     </Page>
                 </div>
@@ -59,11 +59,11 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
 
     private renderSponsor() {
         const { sponsors, sponsorLive } = this.state;
-        if(!sponsorLive) {
-            return <Card sectioned><Heading>Details will be published soon!</Heading></Card>; 
+        if (!sponsorLive) {
+            return <Card sectioned><Heading>Details will be published soon!</Heading></Card>;
         }
 
-        if(sponsors.length == 0) {
+        if (sponsors.length == 0) {
             return <Card sectioned><Heading>No sponsor to show.</Heading></Card>;
         }
 
@@ -72,15 +72,14 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
 
     private renderSponsorCard(data: ISponsor) {
         var payload = JSON.parse(data.payload);
-        // "{"data":{"description":"Hi ","url":"www.companywebsite.com"},"files":[THIS HAS NAME and URL]}"
-        var logoUrl = (payload && payload.files !== undefined) ? payload.files.find((x:IAssetInformation)=> {return x.name.toLowerCase().includes("logo")}) : undefined;
-        if (!logoUrl){
-            logoUrl = "https://images.pexels.com/photos/443383/pexels-photo-443383.jpeg";
-        } else{
+        var logoUrl = (payload && payload.files !== undefined) ? payload.files.find((x: IAssetInformation) => { return x.name.toLowerCase().includes("logo") }) : undefined;
+        if (!logoUrl) {
+            logoUrl = "https://s3.eu-west-2.amazonaws.com/hc-upload-production/sponsors/hackcambridge-test/e5b28e6a-8d8b-4096-a1b9-301c50bd8264.jpeg";
+        } else {
             logoUrl = logoUrl.url;
         }
         const tier_badge = () => {
-            switch(data.tier.toLowerCase()) {
+            switch (data.tier.toLowerCase()) {
                 case "co-host":
                     return "info"
                 case "tera":
@@ -100,26 +99,26 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
         var description = (payload && payload.data) ? payload.data.description : "A valued sponsor."
         return (
             <Layout.Section oneThird>
-            <MediaCard primaryAction={{
+                <MediaCard primaryAction={{
                     content: 'Learn more',
                     onAction: () => this.viewSponsor(data)
-                }} 
-                description={description} 
-                title={data.name} portrait={true}
-                key={data.id}>
-                <img
-                    alt=""
-                    width="100%"
-                    style={{
-                    objectFit: "cover",
-                    objectPosition: "center"
-                    }}
-                    src={logoUrl}
-                />
-                <div style={{ padding: "1rem" }}>
-                {metadata}
-                </div>
-            </MediaCard>
+                }}
+                    description={description}
+                    title={data.name} portrait={true}
+                    key={data.id}>
+                    <img
+                        alt=""
+                        width="100%"
+                        style={{
+                            objectFit: "cover",
+                            objectPosition: "center"
+                        }}
+                        src={logoUrl}
+                    />
+                    <div style={{ padding: "1rem" }}>
+                        {metadata}
+                    </div>
+                </MediaCard>
             </Layout.Section>
         );
     }
@@ -135,22 +134,21 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
     }
 
     private onlyUnique(value, index, self) {
-        var test = index === self.findIndex(t=>{
-            return (t.id === value.id)// && t.name === value.name
+        var test = index === self.findIndex(t => {
+            return (t.id === value.id)
         });
         return (test);
-      }
+    }
 
     private loadAllSponsors() {
         axios.get(`/sponsors/dashboard-api/get-sponsors-reduced.json`).then(res => {
             const status = res.status;
-            // console.log("Here",res)
-            if(status >= 200 && status <= 300) {
+            if (status >= 200 && status <= 300) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     var sponsors: ISponsor[] = payload["data"];
                     sponsors = sponsors.filter(this.onlyUnique);
-                    this.setState({ 
+                    this.setState({
                         sponsors: sponsors.sort((a, b) => (a.name > b.name) ? 1 : -1),
                         sponsorLive: this.props.user.type == "admin",
                         loaded: true
@@ -167,17 +165,16 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
     }
 
     private loadResources() {
-        if(this.state.resourceLoaded) {
+        if (this.state.resourceLoaded) {
             this.setState({ resourceLoaded: false });
         }
         axios.get(`/sponsors/dashboard-api/get-resources.json`).then(res => {
             const status = res.status;
-            if(status >= 200 && status < 300) {
+            if (status >= 200 && status < 300) {
                 const data = res.data;
-                if("success" in data && data["success"]) {
+                if ("success" in data && data["success"]) {
                     const resources = data["all_details"];
-                    if(Array.isArray(resources)) {
-                        // console.log("Resources",resources)
+                    if (Array.isArray(resources)) {
                         const definitions = resources.map(r => {
                             const id: number = r["id"];
                             const payload = r["payload"];
@@ -191,7 +188,7 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                             }
                             return spec;
                         });
-                        
+
                         this.setState({ resources: definitions, resourceLoaded: true });
                         return;
                     }

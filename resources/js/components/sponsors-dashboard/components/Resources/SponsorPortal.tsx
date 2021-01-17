@@ -1,9 +1,9 @@
-import { Avatar, TextContainer,TextField, TextStyle, Button, Card, Heading, Page, ResourceList, Stack, Thumbnail } from "@shopify/polaris";
+import { Avatar, TextContainer, TextField, TextStyle, Button, Card, Heading, Page, ResourceList, Stack, Thumbnail } from "@shopify/polaris";
 import { AddMajor, AttachmentMajor } from "@shopify/polaris-icons";
 import axios from "axios";
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { IResourceDefinition, IPortalDefinition, ISponsorData, IAssetInformation, SingleItemFormFields} from "../../../../interfaces/sponsors.interfaces";
+import { IResourceDefinition, IPortalDefinition, ISponsorData, IAssetInformation, SingleItemFormFields } from "../../../../interfaces/sponsors.interfaces";
 import DestructiveConfirmation from "../common/DestructiveConfirmation";
 import { extractHostname } from "../common/url_helpers";
 import UploadForm from "../common/UploadForm";
@@ -34,9 +34,9 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
         uploadFormShowing: false,
         fields: {
             data: {
-                ["description"]:"",
-                ["url"]:"",
-                ["discord invite link"]:"",
+                ["description"]: "",
+                ["url"]: "",
+                ["discord invite link"]: "",
             },
             files: [],
         },
@@ -49,19 +49,18 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
     }
 
     render() {
-        const { 
-            resources, 
-            uploadFormShowing, 
+        const {
+            resources,
+            uploadFormShowing,
             fields,
             isLoading,
             showDestructiveForm
         } = this.state;
-        const { data, files} = fields;
-        // console.log("Rendering sponsor portal",fields);
+        const { data, files } = fields;
         return (
             <Page
                 breadcrumbs={[{
-                    content: this.props.sponsor.name, 
+                    content: this.props.sponsor.name,
                     url: this.props.baseSponsorPath
                 }]}
                 title={this.props.title}
@@ -75,55 +74,55 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
                     </TextContainer>
                     <br />
                     <>
-                    <div>
-                    {
-                        Object.keys(data).map((key, index) => {
-                            let value = data[key];
-                            return([ 
-                                <>
-                                <TextField label={this.capitalizeFirstLetter(key)} 
-                                                    value={value} onChange={(e)=>this.handleChange(key,e)} multiline={4} disabled={isLoading}/>
-                                                <br />
-                                </>
-                                // <p key={index}> this is my key {key} and this is my value {data[key]}</p> 
-                            ])})
-                    }
-                    </div>
+                        <div>
+                            {
+                                Object.keys(data).map((key, index) => {
+                                    let value = data[key];
+                                    return ([
+                                        <>
+                                            <TextField label={this.capitalizeFirstLetter(key)}
+                                                value={value} onChange={(e) => this.handleChange(key, e)} multiline={4} disabled={isLoading} />
+                                            <br />
+                                        </>
+                                    ])
+                                })
+                            }
+                        </div>
                     </>
-                    {files.length > 0 ? 
+                    {files.length > 0 ?
                         <ResourceList
-                            resourceName={{singular: 'asset', plural: 'assets'}}
+                            resourceName={{ singular: 'asset', plural: 'assets' }}
                             items={files}
                             renderItem={this.renderAssetThumbnail}
                             showHeader={true}
                             loading={isLoading}
                             alternateTool={
-                                <Button 
-                                    plain icon={AddMajor} 
+                                <Button
+                                    plain icon={AddMajor}
                                     onClick={() => this.setState({ uploadFormShowing: true })}>
                                 </Button>
                             }
                         />
-                    : <Button disabled={isLoading} icon={AttachmentMajor} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>}
+                        : <Button disabled={isLoading} icon={AttachmentMajor} onClick={() => this.setState({ uploadFormShowing: true })}>Add asset (20MB max.)</Button>}
 
                     <hr style={{ borderStyle: "solid", borderColor: "#dedede94", margin: "20px 0" }} />
                     <div style={{ textAlign: "right" }}>
-                        <Button 
-                            primary 
+                        <Button
+                            primary
                             loading={isLoading}
                             onClick={() => this.saveContent(false)}
-                            style={{ background: "#3D82FF"}}
+                            style={{ background: "#3D82FF" }}
                         >
                             Save
                         </Button>
                     </div>
                 </Card>
-                {uploadFormShowing ? <UploadForm 
+                {uploadFormShowing ? <UploadForm
                     sponsor={this.props.sponsor}
                     onClose={() => this.setState({ uploadFormShowing: false })}
                     onSubmit={(urls: IAssetInformation[]) => {
                         const newURLs: IAssetInformation[] = urls;
-                        const oldFiles: IAssetInformation[] = files; 
+                        const oldFiles: IAssetInformation[] = files;
                         const newFields = fields;
                         newFields.files = oldFiles.concat(newURLs);
                         this.setState({ fields: newFields });
@@ -132,17 +131,17 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
                 /> : <></>}
                 {showDestructiveForm || <></>}
             </Page>
-          );
+        );
     }
 
     private capitalizeFirstLetter(string: string) {
         return string[0].toUpperCase() + string.slice(1);
     }
-    
-    private handleChange(key:string,value:string){
+
+    private handleChange(key: string, value: string) {
         const newFields = this.state.fields;
         (newFields as IPortalDefinition).data[key] = value;
-        this.setState({fields:newFields});
+        this.setState({ fields: newFields });
     }
 
     renderAssetThumbnail = (item: IAssetInformation) => {
@@ -171,8 +170,8 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
     }
 
     deleteAsset(item: IAssetInformation) {
-        const destructor : JSX.Element = (
-            <DestructiveConfirmation 
+        const destructor: JSX.Element = (
+            <DestructiveConfirmation
                 onConfirm={() => this.actuallyDeleteAsset(item)}
                 onClose={() => this.setState({ showDestructiveForm: undefined })}
             />
@@ -182,19 +181,18 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
     }
 
     actuallyDeleteAsset(item: IAssetInformation) {
-        if(!this.state.isLoading) {
+        if (!this.state.isLoading) {
             this.setState({ isLoading: true });
         }
-        // console.log("Trying to delete");
         axios.post(`/sponsors/dashboard-api/remove-asset.json`, {
             sponsor_id: this.props.sponsor.id,
             sponsor_slug: this.props.sponsor.slug,
             asset_url: item.url
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const newFields = this.state.fields;
                     newFields.files = newFields.files.filter(f => f.url !== item.url)
                     this.setState({ fields: newFields });
@@ -211,7 +209,8 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
     }
 
     private loadContent() {
-        if(!this.state.isLoading) {
+        const { isLoading, fields } = this.state;
+        if (!isLoading) {
             this.setState({ isLoading: true });
         }
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
@@ -220,21 +219,21 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
             detail_type: this.props.detailType
         }).then(res => {
             const status = res.status;
-            if(status == 200) {
+            if (status == 200) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const detail = payload["details"];
-                    if(Array.isArray(detail) && detail.length > 0) {
+                    if (Array.isArray(detail) && detail.length > 0) {
                         const details: {
-                            data: {[varName: string]:string},
+                            data: { [varName: string]: string },
                             files: IAssetInformation[]
                         } = JSON.parse(detail[0]["payload"]);
 
-                        this.setState({ 
+                        this.setState({
                             isLoading: false,
                             detail_id: detail[0]["id"],
                             fields: {
-                                data: Object.assign({},this.state.fields.data,details.data),
+                                data: Object.assign({}, fields.data, details.data),
                                 files: details.files,
                             }
                         });
@@ -245,8 +244,8 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
         }).finally(() => this.setState({ isLoading: false }));
     }
 
-    private saveContent = (silent: boolean = false, then: () => void = () => {}) => {
-        if(!this.state.isLoading) {
+    private saveContent = (silent: boolean = false, then: () => void = () => { }) => {
+        if (!this.state.isLoading) {
             this.setState({ isLoading: true });
         }
 
@@ -260,23 +259,23 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
             payload: JSON.stringify(payload),
         }).then(res => {
             const status = res.status;
-            if(status == 200 || status == 201) {
+            if (status == 200 || status == 201) {
                 const payload = res.data;
-                if("success" in payload && payload["success"]) {
+                if ("success" in payload && payload["success"]) {
                     const detailData = payload["detail"];
                     const details: {
-                        data: {[varName: string]:string},
+                        data: { [varName: string]: string },
                         files: IAssetInformation[]
                     } = JSON.parse(detailData["payload"]);
-                    
-                    this.setState({ 
+
+                    this.setState({
                         isLoading: false,
                         fields: {
                             data: details.data,
                             files: details.files,
                         }
                     });
-                    if(!silent) {
+                    if (!silent) {
                         toast.success("Form saved");
                     }
                     then();

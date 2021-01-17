@@ -42,7 +42,7 @@ class SponsorOverview extends Component<ISponsorOverview> {
             <Page title={"Overview"}>
                 <Layout>
                     <Layout.Section>
-                        <Card title="Statuses_TEMP">
+                        <Card title="Statuses">
                             <Card.Section>
                                 <ResourceList resourceName={{ singular: 'status', plural: 'statuses' }}
                                     items={items}
