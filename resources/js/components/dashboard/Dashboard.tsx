@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, CustomersMajor, NoteMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, CustomersMajor, NoteMajor, ShopcodesMajor } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
@@ -24,6 +24,7 @@ import FAQs from "./components/FAQs";
 import Profile from "./components/Profile";
 import QRScanner from "./components/QRScanner"
 import TeamMatch from "./components/TeamMatch";
+import QRGenerate from "./components/QRGenerate";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -189,7 +190,25 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 badge: "New"
             });
             // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/teammates`, label: `Team Matching`, icon: TeamMajor });
-            // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/qrscan`, label: `Scan QR Code`, icon: ShopcodesMajor });
+        }
+
+        const allowedQRGenerate = ['admin', 'mentor', 'sponsor', 'sponsor-reviewer'];
+        if(allowedQRGenerate.includes(this.props.user.type)){
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/qrgen`,
+                label: `Generate QR Code`,
+                icon: ShopcodesMajor,
+                new: false,
+                badge: null
+            });
+        } else {
+            // dashboardNavigationItems.push({
+            //     url: `${this.props.baseUrl}/qrscan`,
+            //     label: `Scan QR Code`,
+            //     icon: ShopcodesMajor,
+            //     new: false,
+            //     badge: null
+            // });
         }
 
         const navigationMarkup = (
@@ -248,6 +267,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Route key="faqs" exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
             <Route key="teammates" exact path={`${this.props.baseUrl}/teammates`} render={(props) => <TeamMatch {...props} {...this.props} />} />,
             <Route key="qrscan" exact path={`${this.props.baseUrl}/qrscan`} render={(props) => <QRScanner {...props} {...this.props} />} />,
+            <Route key="qrgen" exact path={`${this.props.baseUrl}/qrgen`} render={(props) => <QRGenerate {...props} {...this.props} />} />,
         ] : [];
         const applicationDetailRoutes = this.canSeeApplicationItems() ? [
             <Redirect key="apply" exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,
