@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Card, Page, Modal, Heading } from "@shopify/polaris";
+import { Link, Layout, Card, Page, Modal, Heading } from "@shopify/polaris";
 import ReactMarkdown from "react-markdown";
 import { SocialPostMajor } from "@shopify/polaris-icons";
 import axios from 'axios';
@@ -10,6 +10,7 @@ import { IDashboardProps, ISponsorChallenge } from "../../../interfaces/dashboar
 interface IChallengesState {
     loaded: boolean,
     modalContent: string,
+    modalLink: string,
     modalShowing: boolean,
     modalTitle: string,
     challenges: ISponsorChallenge[],
@@ -18,11 +19,11 @@ interface IChallengesState {
 
 class Challenges extends Component<IDashboardProps, IChallengesState> {
 
-    // TODO: Update Slack channel
-    private slackWorkspaceBaseUrl = "https://hexcambridge.slack.com/app_redirect?channel=";
+    private discordWorkspaceBaseUrl = "https://discord.gg/";
     state = {
         loaded: false,
         modalContent: "",
+        modalLink: "",
         modalTitle: "",
         modalShowing: false,
         challenges: [],
@@ -34,37 +35,65 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
     }
 
     render() {
-        const { modalShowing, modalContent, modalTitle, loaded } = this.state;
-        return (
-            <>
-                <div id={"sponsor-challenges"}>
-                    <Page title={"Challenges"}>
-                        {loaded
-                            ? this.renderChallenges()
-                            : <Card sectioned><Heading>Loading challenges...</Heading></Card>
-                        }
-                    </Page>
-                </div>
+        const { modalShowing, modalContent, modalLink, modalTitle, loaded } = this.state;
+        if (modalLink){
+            return (
+                <>
+                    <div id={"sponsor-challenges"}>
+                        <Page title={"Challenges"}>
+                            {loaded
+                                ? this.renderChallenges()
+                                : <Card sectioned><Heading>Loading challenges...</Heading></Card>
+                            }
+                        </Page>
+                    </div>
 
-                <Modal
-                    open={modalShowing}
-                    onClose={() => this.setState({ modalShowing: false })}
-                    title={modalTitle}
-                >
-                    <Modal.Section>
-                        <ReactMarkdown source={modalContent} className={"markdown-source markdown-body"} />
-                        <br />
-                    </Modal.Section>
-                </Modal>
-            </>
-        );
+                    <Modal
+                        open={modalShowing}
+                        onClose={() => this.setState({ modalShowing: false })}
+                        title= {modalTitle}
+                    >
+                        <Modal.Section>
+                            <Link url={modalLink}>View Challenge Resource</Link>
+                            <br /><br/>
+                            <ReactMarkdown source={modalContent} className={"markdown-source markdown-body"} />
+                            <br />
+                        </Modal.Section>
+                    </Modal>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <div id={"sponsor-challenges"}>
+                        <Page title={"Challenges"}>
+                            {loaded
+                                ? this.renderChallenges()
+                                : <Card sectioned><Heading>Loading challenges...</Heading></Card>
+                            }
+                        </Page>
+                    </div>
+
+                    <Modal
+                        open={modalShowing}
+                        onClose={() => this.setState({ modalShowing: false })}
+                        title= {modalTitle}
+                    >
+                        <Modal.Section>
+                            <ReactMarkdown source={modalContent} className={"markdown-source markdown-body"} />
+                            <br />
+                        </Modal.Section>
+                    </Modal>
+                </>
+            );
+        }
     }
 
 
     private renderChallenges() {
         const { challenges, challengesLive } = this.state;
         if (!challengesLive) {
-            return <Card sectioned><Heading>Details will be published soon!</Heading></Card>;
+            return (<>{challenges.map(c => this.renderSponsorChallengeCardBeforeRelease(c))}</>);
         }
 
         if (challenges.length == 0) {
@@ -77,13 +106,40 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
     private renderSponsorChallengeCard(data: ISponsorChallenge) {
         return (
             <Card key={`${Math.random()}`} sectioned
-                secondaryFooterActions={data.slackChannel ? [{
-                    content: 'Slack Channel', icon: SocialPostMajor,
-                    onAction: () => window.open(`${this.slackWorkspaceBaseUrl}${data.slackChannel}`, '_blank')
+                secondaryFooterActions={data.discordChannel ? [{
+                    content: 'Discord Channel', icon: SocialPostMajor,
+                    onAction: () => window.open(`${this.discordWorkspaceBaseUrl}${data.discordChannel}`, '_blank')
                 }] : []}
                 primaryFooterAction={{
-                    content: 'Show Details',
-                    onAction: () => this.setState({ modalShowing: true, modalContent: data.content, modalTitle: data.title })
+                    content: 'Show Challenge Specifications',
+                    onAction: () => this.setState({ modalShowing: true, modalContent: data.content, modalLink: data.resourceLink, modalTitle: data.title })
+                }}
+            >
+                <Layout>
+                    <Layout.Section secondary>
+                        <div className={"sponsor-challenge-logo"}>
+                            <img src={data.logoUrl} />
+                        </div>
+                    </Layout.Section>
+                    <Layout.Section>
+                        <div className={"sponsor-challenge-content"}>
+                            <p>{data.description}</p>
+                        </div>
+                    </Layout.Section>
+                </Layout>
+            </Card>
+        );
+    }
+
+    private renderSponsorChallengeCardBeforeRelease(data: ISponsorChallenge) {
+        return (
+            <Card key={`${Math.random()}`} sectioned
+                secondaryFooterActions={data.discordChannel ? [{
+                    content: 'Discord Channel', icon: SocialPostMajor,
+                    onAction: () => window.open(`${this.discordWorkspaceBaseUrl}${data.discordChannel}`, '_blank')
+                }] : []}
+                primaryFooterAction={{
+                    content: 'Challenge Specifications to be Released'
                 }}
             >
                 <Layout>
@@ -112,7 +168,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                     const challenges: ISponsorChallenge[] = payload["challenges"];
                     this.setState({
                         challenges: challenges,
-                        challengesLive: payload["live"] || this.props.user.type == "admin",
+                        challengesLive: payload["live"], // || this.props.user.type == "admin",
                         loaded: true
                     });
                 }
@@ -125,8 +181,3 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
 }
 
 export default Challenges;
-
-
-
-
-

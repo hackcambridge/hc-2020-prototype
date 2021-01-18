@@ -50,7 +50,8 @@ export interface ISponsorChallenge {
     description: string,
     content: string,
     logoUrl: string,
-    slackChannel?: string
+    resourceLink: string,
+    discordChannel?: string
 }
 
 export interface IScheduleItem {

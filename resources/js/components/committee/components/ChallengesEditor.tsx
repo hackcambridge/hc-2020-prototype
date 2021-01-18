@@ -23,7 +23,8 @@ interface IChallengesEditorState {
     modalContent_title: string,
     modalContent_desc: string,
     modalContent_logoUrl: string,
-    modalContent_slackChannel: string,
+    modalContent_resourceLink: string,
+    modalContent_discordChannel: string,
     modalContent_content: string,
 }
 
@@ -40,7 +41,8 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
         modalContent_title: "",
         modalContent_desc: "",
         modalContent_logoUrl: "",
-        modalContent_slackChannel: "",
+        modalContent_resourceLink: "",
+        modalContent_discordChannel: "",
         modalContent_content: "",
     }
 
@@ -58,7 +60,8 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
             modalContent_title,
             modalContent_desc,
             modalContent_logoUrl,
-            modalContent_slackChannel,
+            modalContent_resourceLink,
+            modalContent_discordChannel,
             modalContent_content,
             showDestructiveForm,
         } = this.state;
@@ -144,9 +147,15 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
                         />
                         <br />
                         <TextField
-                            value={modalContent_slackChannel}
-                            onChange={(t) => this.setState({ modalContent_slackChannel: t })}
-                            label="Slack Channel (optional)"
+                            value={modalContent_resourceLink}
+                            onChange={(t) => this.setState({ modalContent_resourceLink: t })}
+                            label="Resource Link (Optional)" 
+                        />
+                        <br />
+                        <TextField
+                            value={modalContent_discordChannel}
+                            onChange={(t) => this.setState({ modalContent_discordChannel: t })}
+                            label="Discord Channel Invite Code(optional)"
                         />
                         <br />
                         <p>Full Content</p>
@@ -179,6 +188,7 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
             description: "",
             content: "",
             logoUrl: "",
+            resourceLink: ""
         }
         const { challenges } = this.state;
         challenges.push(challenge);
@@ -233,7 +243,8 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
             modalContent_title,
             modalContent_desc,
             modalContent_logoUrl,
-            modalContent_slackChannel,
+            modalContent_resourceLink,
+            modalContent_discordChannel,
             modalContent_content,
         } = this.state;
         const toUpdate = challenges.find(c => c.id == modalContent_id);
@@ -241,7 +252,8 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
             toUpdate.title = modalContent_title;
             toUpdate.description = modalContent_desc;
             toUpdate.logoUrl = modalContent_logoUrl;
-            toUpdate.slackChannel = modalContent_slackChannel;
+            toUpdate.resourceLink = modalContent_resourceLink;
+            toUpdate.discordChannel = modalContent_discordChannel;
             toUpdate.content = modalContent_content;
         }
 
@@ -256,7 +268,8 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
             modalContent_desc: challenge.description,
             modalContent_content: challenge.content,
             modalContent_logoUrl: challenge.logoUrl,
-            modalContent_slackChannel: challenge.slackChannel || "",
+            modalContent_resourceLink: challenge.resourceLink,
+            modalContent_discordChannel: challenge.discordChannel || "",
         });
     }
 
