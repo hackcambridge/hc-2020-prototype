@@ -7,7 +7,9 @@ use App\Models\Application;
 use App\Models\ApplicationReview;
 use App\Models\TeamMember;
 use App\Models\Checkin;
+use App\Models\Mentor;
 use App\Helpers\BatchMailer;
+use App\Helpers\Auth0Management;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -37,6 +39,8 @@ class Committee extends Controller
                 return $this->getApplicationsSummary();
             case 'get-members':
                 return $this->getMembers();
+            case 'get-mentors':
+                return $this->getMentors();
             case 'random-application-for-review':
                 return $this->getRandomApplicationToReview();
             case 'sync-review-scripts':
@@ -92,6 +96,10 @@ class Committee extends Controller
                 return $this->checkinUser($r);
             case 'uncheckin-application':
                 return $this->uncheckinUser($r);
+            case 'add-mentor':
+                return $this->addMentor($r);
+            case 'remove-mentor':
+                return $this->removeMentor($r);
             default:
                 return $this->fail("Route not found");
         }
@@ -272,6 +280,19 @@ class Committee extends Controller
         }
     }
 
+    private function getMentors()
+    {
+        if ($this->canContinue(null, [], true)) {
+            $mentors = Mentor::all();
+            return response()->json([
+                "success" => true,
+                "mentors" => $mentors,
+            ]);
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
     private function setAdmin($r)
     {
         if ($this->canContinue($r, ["id", "email"], true)) {
@@ -438,7 +459,7 @@ class Committee extends Controller
         }
     }
 
-    private function getOwnReview()
+    private function getOwnReview($r)
     {
         if ($this->canContinue($r, ["app_id"], false)) {
             $app_id = $r->get("app_id");
@@ -956,6 +977,74 @@ class Committee extends Controller
             }
         } else {
             return $this->fail("Checks failed.");
+        }
+    }
+
+    private function addMentor($r)
+    {
+        if ($this->canContinue($r, ["email", "name"])) {
+            $email = $r->get("email");
+            $name = $r->get("name");
+
+            $mentor = Mentor::where("email", $email)->first();
+            if (!$mentor) {
+                $new_mentor = new Mentor();
+                $new_mentor->setAttribute("name", $name);
+                $new_mentor->setAttribute("email", $email);
+
+                // Initialise Auth0
+                $auth0 = Auth0Management::addPasswordlessUser($email, $name);
+                if (!$auth0["success"]) return $auth0;
+                else $new_mentor->setAttribute("auth0_id", $auth0["message"]);
+
+                if ($new_mentor->save()) {
+                    return response()->json([
+                        "success" => true,
+                        "mentor" => $new_mentor
+                    ]);
+                } else {
+                    return $this->fail("Failed to save");
+                }
+            } else {
+                $mentor->setAttribute("name", $name ? $name : "");
+                if ($mentor->save()) {
+                    return response()->json([
+                        "success" => true,
+                        "mentor" => $mentor
+                    ]);
+                } else {
+                    return $this->fail("Failed to save existing");
+                }
+            }
+        } else {
+            return $this->fail("Checks failed.");
+        }
+    }
+
+    private function removeMentor($r)
+    {
+        if ($this->canContinue($r, ["email"])) {
+            $email = $r->get("email");
+
+            $mentor = Mentor::where("email", $email)->first();
+            if ($mentor) {
+
+                // Deinit from Auth0
+                if ($mentor->auth0_id) {
+                    $auth0 = Auth0Management::removePasswordlessUser($mentor->auth0_id);
+                    if (!$auth0["success"]) return $auth0;
+                }
+
+                if ($mentor->delete()) {
+                    return $this->success("Successfully deleted mentor");
+                } else {
+                    return $this->fail("Failed to delete mentor");
+                }
+            } else {
+                return $this->success("Mentor already doesn't exist");
+            }
+        } else {
+            $this->fail("Checks failed.");
         }
     }
 
