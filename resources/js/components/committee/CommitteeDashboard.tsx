@@ -7,7 +7,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, HomeMajor, PackageMajor, CustomersMajor, ProfileMajor, BillingStatementPoundMajor, SmileyJoyMajor, FilterMajor, CodeMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ChecklistMajor, EmailMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, HomeMajor, PackageMajor, CustomersMajor, ProfileMajor, BillingStatementPoundMajor, SmileyJoyMajor, FilterMajor, CodeMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ChecklistMajor, EmailMajor, CustomerPlusMajor } from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import CheckIn from "./components/CheckIn";
 import Overview from "./components/Overview";
@@ -24,6 +24,7 @@ import ScheduleEditor from "./components/ScheduleEditor";
 import FAQEditor from "./components/FAQEditor";
 import Mailing from "./components/Mailing";
 import Participants from "./components/Participants";
+import Mentors from "./components/Mentors";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {
@@ -165,6 +166,11 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                                 icon: ProfileMajor
                             },
                             {
+                                url: `${this.props.baseUrl}/mentors`,
+                                label: "Mentors",
+                                icon: CustomerPlusMajor
+                            },
+                            {
                                 url: `${this.props.baseUrl}/mailing`,
                                 label: "Mailing",
                                 icon: EmailMajor
@@ -248,6 +254,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         const showAdmin = this.props.user.type == "admin";
         const adminRoutes = showAdmin ? [
             <Route key="members" exact path={`${this.props.baseUrl}/members`} render={(props) => <MemberList {...props} {...this.props} />} />,
+            <Route key="mentors" exact path={`${this.props.baseUrl}/mentors`} render={(props) => <Mentors {...props} {...this.props} />} />,
             <Route key="mailing" exact path={`${this.props.baseUrl}/mailing`} render={(props) => <Mailing {...props} />} />,
             <Route key="omnitool" exact path={`${this.props.baseUrl}/omnitool`} render={(props) => <Omnitool {...props} />} />,
             <Route key="challenges" exact path={`${this.props.baseUrl}/challenges`} render={(props) => <ChallengesEditor {...props} />} />,
