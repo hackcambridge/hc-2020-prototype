@@ -864,7 +864,6 @@ class Committee extends Controller
         }
     }
 
-
     private function loadEventDataFile($r)
     {
         if ($this->canContinue($r, ["file"], true)) {
@@ -907,6 +906,7 @@ class Committee extends Controller
             if (Storage::disk("s3")->put($path, $content)) {
                 $last_modified = Storage::disk('s3')->lastModified($path);
                 return response()->json([
+                    "path" => $path,
                     "success" => true,
                     "last_modified" => $last_modified
                 ]);
@@ -917,7 +917,6 @@ class Committee extends Controller
             return $this->fail("Checks failed.");
         }
     }
-
 
     private function initCheckinTool()
     {
