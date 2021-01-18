@@ -19,7 +19,6 @@ interface IIndividualSponsorState {
     loading: boolean,
     Sponsor: ISponsor | undefined,
     user: IUserDetails | undefined,
-    loadingResources: boolean,
     resources: undefined,
     nextSponsor: number,
     portalInfo: undefined,
@@ -30,7 +29,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     state = {
         SponsorId: undefined,
         loading: true,
-        loadingResources: true,
         Sponsor: undefined,
         user: undefined,
         resources: undefined,
@@ -54,13 +52,13 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         if (Number.isNaN(SponsorId)) {
             this.setState({ loading: false });
         } else {
-            this.retrieveSponsor(SponsorId);
+            this.retrieveSponsor(SponsorId,true);
         }
     }
 
     componentDidUpdate() {
-        const { Sponsor, SponsorId, loading, loadingResources } = this.state;
-        if (Sponsor && loadingResources === true) {
+        const { Sponsor, SponsorId, loading } = this.state;
+        if (Sponsor && loading === true) {
             this.loadInformation();
         }
     }
@@ -226,13 +224,12 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         return string[0].toUpperCase() + string.slice(1);
     }
 
-    private async loadInformation() {
+    private loadInformation() {
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
             sponsor_id: this.state.Sponsor.id,
             sponsor_slug: this.state.Sponsor.slug,
             sponsor_details: ["social-media", "prizes", "workshop", "portal-info", "demo-details"]
         }).then(res => {
-            console.log("loading info",this.state);
             const status = res.status;
             var portalInfo = undefined;
             if (status >= 200 && status < 300) {
@@ -258,16 +255,16 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                             }
                             return result;
                         }, [])
-                        this.setState({ resources: portalInfoJSON, portalInfo: portalInfo, loadingResources: false });
+                        this.setState({ resources: portalInfoJSON, portalInfo: portalInfo, loading: false });
                         return;
                     }
                 }
             } else {
                 toast.error("Failed to load more information");
-                this.setState({ loadingResources: true });
+                this.setState({ loading: true });
             }
 
-            this.setState({ loadingResources: false });
+            this.setState({ loading: false });
         });
     }
 
@@ -318,7 +315,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         return sponsor.id === SponsorId
                     })
                     this.setState({
-                        loading: false,
+                        loading: callback,
                         SponsorId: SponsorId,
                         Sponsor: target,
                         nextSponsor: nextId,
