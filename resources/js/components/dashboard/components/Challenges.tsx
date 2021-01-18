@@ -77,7 +77,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                     <Modal
                         open={modalShowing}
                         onClose={() => this.setState({ modalShowing: false })}
-                        title= {modalTitle}
+                        title={modalTitle}
                     >
                         <Modal.Section>
                             <ReactMarkdown source={modalContent} className={"markdown-source markdown-body"} />
