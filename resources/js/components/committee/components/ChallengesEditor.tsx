@@ -149,13 +149,15 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
                         <TextField
                             value={modalContent_resourceLink}
                             onChange={(t) => this.setState({ modalContent_resourceLink: t })}
-                            label="Resource Link (Optional)" 
+                            label="Resource Link (Optional)"
+                            placeholder="https://example.com/sample-app or https://example.com/data.csv" 
                         />
                         <br />
                         <TextField
                             value={modalContent_discordChannel}
                             onChange={(t) => this.setState({ modalContent_discordChannel: t })}
                             label="Discord Channel Invite Code (Optional)"
+                            helpText="Just the invite code, we will automatically create the link https://discord.gg/{code}"
                         />
                         <br />
                         <p>Full Content</p>

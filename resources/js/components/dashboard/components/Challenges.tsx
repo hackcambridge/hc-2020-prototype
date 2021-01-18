@@ -54,7 +54,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                         title={modalTitle}
                     >
                         <Modal.Section>
-                            <Link external={true} url={modalLink}>View Challenge Resource</Link>
+                            <Link url={modalLink} external>View Challenge Resource</Link>
                             <br /><br/>
                             <ReactMarkdown source={modalContent} className={"markdown-source markdown-body"} />
                             <br />
