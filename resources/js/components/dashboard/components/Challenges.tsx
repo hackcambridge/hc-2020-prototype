@@ -168,7 +168,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                     const challenges: ISponsorChallenge[] = payload["challenges"];
                     this.setState({
                         challenges: challenges,
-                        challengesLive: payload["live"], // || this.props.user.type == "admin",
+                        challengesLive: payload["live"] || this.props.user.type == "admin",
                         loaded: true
                     });
                 }
