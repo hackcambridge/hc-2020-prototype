@@ -51,7 +51,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                     <Modal
                         open={modalShowing}
                         onClose={() => this.setState({ modalShowing: false })}
-                        title= {modalTitle}
+                        title={modalTitle}
                     >
                         <Modal.Section>
                             <Link url={modalLink}>View Challenge Resource</Link>
@@ -107,11 +107,11 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
         return (
             <Card key={`${Math.random()}`} sectioned
                 secondaryFooterActions={data.discordChannel ? [{
-                    content: 'Discord Channel', icon: SocialPostMajor,
+                    content: "Discord Channel", icon: SocialPostMajor,
                     onAction: () => window.open(`${this.discordWorkspaceBaseUrl}${data.discordChannel}`, '_blank')
                 }] : []}
                 primaryFooterAction={{
-                    content: 'Show Challenge Specifications',
+                    content: "Show Challenge Specifications",
                     onAction: () => this.setState({ modalShowing: true, modalContent: data.content, modalLink: data.resourceLink, modalTitle: data.title })
                 }}
             >
@@ -135,11 +135,11 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
         return (
             <Card key={`${Math.random()}`} sectioned
                 secondaryFooterActions={data.discordChannel ? [{
-                    content: 'Discord Channel', icon: SocialPostMajor,
+                    content: "Discord Channel", icon: SocialPostMajor,
                     onAction: () => window.open(`${this.discordWorkspaceBaseUrl}${data.discordChannel}`, '_blank')
                 }] : []}
                 primaryFooterAction={{
-                    content: 'Challenge Specifications to be Released'
+                    content: "Challenge Specifications to be Released"
                 }}
             >
                 <Layout>
