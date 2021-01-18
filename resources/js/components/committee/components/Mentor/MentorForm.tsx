@@ -1,49 +1,43 @@
 import { Modal, Stack, TextField } from "@shopify/polaris";
 import axios from "axios";
 import React, { Component } from "react";
-import { ISponsorAgent, ISponsorData } from "../../../../interfaces/sponsors.interfaces";
+import { IMentor } from "../../../../interfaces/committee.interfaces";
 
-interface ISponsorFormProps {
-    sponsor: ISponsorData,
-    editing?: ISponsorAgent,
+interface IMentorFormProps {
+    editing?: IMentor,
     active: boolean,
-    type?: string,
     onCreate: () => void,
     onFail: (error_text: string) => void,
     onClose: () => void,
 }
-interface ISponsorFormState {
+interface IMentorFormState {
     isActive: boolean;
     name: string;
     email: string;
-    type: string;
-    typeName: string;
     loading: boolean;
 }
 
-class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
+class MentorForm extends Component<IMentorFormProps, IMentorFormState> {
 
     node = null;
     state = {
         isActive: this.props.active,
         name: this.props.editing ? this.props.editing.name : "",
         email: this.props.editing ? this.props.editing.email : "",
-        type: this.props.type || "access",
-        typeName: this.props.editing ? this.props.editing.type : "sponsor agent",
         loading: false,
     }
 
     render() {
-        const { typeName, loading } = this.state;
+        const { loading } = this.state;
         return (
             <Modal
                 open={this.state.isActive}
                 onClose={this.toggleModal}
                 loading={loading}
-                title={this.props.editing ? `Edit ${typeName}` : `Add a new ${typeName}`}
+                title={this.props.editing ? `Edit mentor` : `Add a new mentor`}
                 primaryAction={{
                     content: this.props.editing ? "Amend" : "Add",
-                    onAction: this.createSponsorAgent,
+                    onAction: this.createMentor,
                 }}
             >
                 <Modal.Section>
@@ -72,16 +66,14 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
         );
     }
 
-    createSponsorAgent = () => {
+    createMentor = () => {
         const name = this.state.name;
         const email = this.state.email;
         this.setState({ loading: true });
         if (name.length > 0 && email.length > 0) {
-            axios.post(`/sponsors/dashboard-api/add-agent-${this.state.type}.json`, {
+            axios.post(`/committee/admin-api/add-mentor.json`, {
                 name: name,
                 email: email,
-                sponsor_id: this.props.sponsor.id,
-                sponsor_slug: this.props.sponsor.slug
             }).then(res => {
                 const status = res.status;
                 if (status >= 200 && status < 300) {
@@ -114,4 +106,4 @@ class SponsorAgentForm extends Component<ISponsorFormProps, ISponsorFormState> {
     };
 }
 
-export default SponsorAgentForm;
+export default MentorForm;

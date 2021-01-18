@@ -59,3 +59,9 @@ export interface IApplicationReview {
     review_details: string,
     review_total: number,
 }
+
+export interface IMentor {
+    id: number,
+    name: string,
+    email: string,
+}

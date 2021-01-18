@@ -8,6 +8,7 @@ import QrReader from "react-qr-scanner";
 
 interface QRScannerState {
     loaded: boolean,
+    secure: boolean,
     busy: boolean,
     delay: number,
     devices: MediaDeviceInfo[],
@@ -19,6 +20,7 @@ class QRScanner extends Component<IDashboardProps, QRScannerState> {
 
     state = {
         loaded: false,
+        secure: true,
         busy: false,
         delay: 1000,
         devices: [],
@@ -31,26 +33,32 @@ class QRScanner extends Component<IDashboardProps, QRScannerState> {
             loaded: false,
         });
 
-        navigator.mediaDevices.enumerateDevices()
-            .then((devices) => {
-                const videoSelect: MediaDeviceInfo[] = []
-                devices.forEach((device) => {
-                    if (device.kind === 'videoinput') {
-                        videoSelect.push(device)
-                    }
+        if (navigator.mediaDevices) {
+            navigator.mediaDevices.enumerateDevices()
+                .then((devices) => {
+                    const videoSelect: MediaDeviceInfo[] = []
+                    devices.forEach((device) => {
+                        if (device.kind === 'videoinput') {
+                            videoSelect.push(device)
+                        }
+                    })
+                    return videoSelect
                 })
-                return videoSelect
-            })
-            .then((devices) => {
-                this.setState({
-                    cameraID: devices[0].deviceId,
-                    devices: devices,
-                    loaded: true,
+                .then((devices) => {
+                    this.setState({
+                        cameraID: devices[0].deviceId,
+                        devices: devices,
+                        loaded: true,
+                    })
                 })
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+                .catch((error) => {
+                    console.log(error)
+                })
+        } else {
+            this.setState({
+                secure: false,
+            });
+        }
     }
 
     private handleScan = (data: string) => {
@@ -71,17 +79,19 @@ class QRScanner extends Component<IDashboardProps, QRScannerState> {
     }
 
     render() {
-        const { loaded, busy } = this.state;
+        const { loaded, secure, busy } = this.state;
 
         return (
             <>
                 <div id={"qrscanner"}>
                     <Page title={"QR Code Scanner"}>
-                        {loaded
-                            ? busy ? <Card sectioned><Heading>Scanner is busy.</Heading></Card> : ""
-                            : <Card sectioned><Heading>Loading QR Code Scanner</Heading></Card>
+                        {secure ?
+                            (loaded
+                                ? busy ? <Card sectioned><Heading>Scanner is busy.</Heading></Card> : ""
+                                : <Card sectioned><Heading>Loading QR Code Scanner</Heading></Card>)
+                            : <Card>QR code scanning works only on HTTPS</Card>
                         }
-                        {this.renderQRScanner()}
+                        {secure ? this.renderQRScanner() : <></>}
                     </Page>
                 </div>
             </>
