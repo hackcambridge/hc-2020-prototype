@@ -843,8 +843,6 @@ class Committee extends Controller
         }
     }
 
-
-    //Deployed Version
     private function loadEventDataFile($r)
     {
         if ($this->canContinue($r, ["file"], true)) {
@@ -870,33 +868,6 @@ class Committee extends Controller
         }
     }
 
-    /*Local Version
-    private function loadEventDataFile($r)
-    {
-        if ($this->canContinue($r, ["file"], true)) {
-            $name = $r->get("file");
-            $path = 'event-data/' . $name;
-            if (Storage::disk('local')->has($path)) {
-                $content = Storage::disk('local')->get($path);
-                $last_modified = Storage::disk('local')->lastModified($path);
-                return response()->json([
-                    "success" => true,
-                    "last_modified" => $last_modified,
-                    "content" => $content
-                ]);
-            } else {
-                // return $this->fail("File not found");
-                return response()->json([
-                    "success" => false,
-                    "file" => Storage::disk('local')->files("event-data")
-                ]);
-            }
-        } else {
-            return $this->fail("Checks failed.");
-        }
-    }*/
-
-    // Deployed Version
     private function saveEventDataFile($r)
     {
         if ($this->canContinue($r, ["file", "last_modified", "content"], true)) {
@@ -925,35 +896,6 @@ class Committee extends Controller
             return $this->fail("Checks failed.");
         }
     }
-
-    /*Local Version
-    private function saveEventDataFile($r)
-    {
-        if ($this->canContinue($r, ["file", "last_modified", "content"], true)) {
-            $name = $r->get("file");
-            $old_last_modified = $r->get("last_modified");
-            $content = $r->get("content");
-            $path = 'event-data/' . $name;
-            if (Storage::disk('local')->exists($path)) {
-                $last_modified = Storage::disk('local')->lastModified($path);
-                if ($old_last_modified != $last_modified) {
-                    return $this->fail("File has changed since you opened it.");
-                }
-            }
-
-            if (Storage::disk("local")->put($path, $content)) {
-                $last_modified = Storage::disk('local')->lastModified($path);
-                return response()->json([
-                    "success" => true,
-                    "last_modified" => $last_modified
-                ]);
-            } else {
-                return $this->fail("Failed to save new file.");
-            }
-        } else {
-            return $this->fail("Checks failed.");
-        }
-    }*/
 
     private function initCheckinTool()
     {

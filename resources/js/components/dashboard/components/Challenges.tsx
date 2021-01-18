@@ -181,3 +181,4 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
 }
 
 export default Challenges;
+
