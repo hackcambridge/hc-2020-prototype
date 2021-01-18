@@ -9,7 +9,8 @@ class CheckType
 {
 
     private $allowed = array(
-        "hacker" => ["hacker", "sponsor", "sponsor-reviewer", "committee", "admin"],
+        "hacker" => ["hacker", "mentor", "sponsor", "sponsor-reviewer", "committee", "admin"],
+        "mentor" => ["hacker", "mentor", "sponsor", "sponsor-reviewer", "committee", "admin"],
         "sponsor" => ["sponsor", "sponsor-reviewer", "committee", "admin"],
         "committee" => ["committee", "admin", "sponsor-reviewer"],
         "admin" => ["admin"],
@@ -40,6 +41,7 @@ class CheckType
     private function getRedirect($type) {
         switch ($type) {
             case "hacker": return redirect(route('dashboard_index'));
+            case "mentor": return redirect(route('dashboard_index'));
             case "sponsor": return redirect(route('sponsors_dashboard'));
             case "sponsor-reviewer": return redirect(route('sponsors_dashboard'));
             case "committee": return redirect(route('committee_dashboard'));
