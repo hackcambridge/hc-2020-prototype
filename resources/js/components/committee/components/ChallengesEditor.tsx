@@ -155,7 +155,7 @@ class ChallengesEditor extends Component<IChallengesEditorProps, IChallengesEdit
                         <TextField
                             value={modalContent_discordChannel}
                             onChange={(t) => this.setState({ modalContent_discordChannel: t })}
-                            label="Discord Channel Invite Code(optional)"
+                            label="Discord Channel Invite Code (Optional)"
                         />
                         <br />
                         <p>Full Content</p>

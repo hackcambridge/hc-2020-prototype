@@ -54,7 +54,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                         title={modalTitle}
                     >
                         <Modal.Section>
-                            <Link url={modalLink}>View Challenge Resource</Link>
+                            <Link external={true} url={modalLink}>View Challenge Resource</Link>
                             <br /><br/>
                             <ReactMarkdown source={modalContent} className={"markdown-source markdown-body"} />
                             <br />
@@ -133,13 +133,14 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
 
     private renderSponsorChallengeCardBeforeRelease(data: ISponsorChallenge) {
         return (
-            <Card key={`${Math.random()}`} sectioned
+            <Card key={`${data.title}`} sectioned
                 secondaryFooterActions={data.discordChannel ? [{
                     content: "Discord Channel", icon: SocialPostMajor,
                     onAction: () => window.open(`${this.discordWorkspaceBaseUrl}${data.discordChannel}`, '_blank')
                 }] : []}
                 primaryFooterAction={{
-                    content: "Challenge Specifications to be Released"
+                    content: "Challenge Specifications to be Released",
+                    disabled: true,
                 }}
             >
                 <Layout>

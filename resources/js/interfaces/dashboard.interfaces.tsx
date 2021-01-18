@@ -51,7 +51,7 @@ export interface ISponsorChallenge {
     content: string,
     logoUrl: string,
     resourceLink: string,
-    discordChannel?: string
+    discordChannel?: string,
 }
 
 export interface IScheduleItem {
