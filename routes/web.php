@@ -85,11 +85,9 @@ Route::middleware(['auth.check_staging'])->group(function() {
     Route::middleware(['auth.passwordless', 'type:mentor'])->group(function() {
 
         // React App
-        Route::get('/mentor/dashboard/{path?}', [
-            'uses' => 'Dashboard@index',
-            'as' => 'dashboard_index',
-            'where' => ['path' => '.*']
-        ]);
+        Route::get('/mentor/dashboard', function() {
+            return redirect('/dashboard');
+        });
     });
 
     Route::middleware(['auth.passwordless', 'type:sponsor'])->group(function() {
