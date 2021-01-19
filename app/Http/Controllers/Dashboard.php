@@ -18,22 +18,21 @@ class Dashboard extends Controller
 {
     private $maximum_team_size = 5;
     private static $accepting_applications = false;
-    # TODO: Update URL
-    private static $slack_invite_url = "https://join.slack.com/t/hexcambridge/shared_invite/enQtOTAyNTIxNjU2NTk2LTViOTM5MDFjMTRiZmRlMDgxZjVjNzExOThiYmI3NTUxMzZkNzZiZTIxMTM2MjFjMGY4Mzk2ZWE4ODI1MDZiMTI";
+    private static $discord_invite_url = "https://discord.gg/kBahBx4Vwa";
 
     public function index()
     {
         return view('dashboard/index');
     }
 
-    public function join_slack()
+    public function join_discord()
     {
         if (Auth::check()) {
             $application = Application::where("user_id", "=", Auth::user()->id)->first();
             if ($application) {
                 $is_attendee = $application->confirmed && !$application->rejected;
                 if ($is_attendee || in_array(Auth::user()->type, ["admin", "committee", "sponsor", "sponsor-reviewer"])) {
-                    return redirect(self::$slack_invite_url);
+                    return redirect(self::$discord_invite_url);
                 }
             }
         }

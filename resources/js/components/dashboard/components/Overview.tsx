@@ -99,13 +99,12 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
         }
 
         const longLinks = [
-            { text: "Join the Hex Cambridge Discord Workspace", link: "/dashboard/join-discord", internal: false },
-            { text: "Hackathon Devpost", link: "https://hexcambridge.devpost.com/", internal: false },
+            { text: "Join the Hex Cambridge Discord Channel", link: "/dashboard/join-discord", internal: false },
+            // { text: "Hackathon Devpost", link: "https://hexcambridge.devpost.com/", internal: false },
             { text: "View the challenges", link: "/dashboard/challenges", internal: true },
             { text: "What's happening when", link: "/dashboard/schedule", internal: true },
             // { text: "Find your way around", link: "/dashboard/map", internal: true },
-            // TODO: Maybe change to discord
-            { text: "Report a bug", link: "https://hackcambridge101.slack.com/app_redirect?channel=DS8NVDU0Z", internal: false },
+            { text: "Report a bug", link: "https://discord.gg/uVRG2NcS", internal: false },
         ];
         const { expoModalShowing, expoAssignments } = this.state;
         return <>
@@ -126,20 +125,20 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                             }}
                         />
                     </Card>
-                    <br />
+                    {/* <br />
                     <Card title={"Expo Layout"} actions={expoAssignments.length > 0 ? [{
                         content: "Team Allocations", 
                         onAction: () => this.setState({ expoModalShowing: true })
                     }] : []}>
                         {/* <img style={{ width: "100%" }} src={this.expoMapUrl} /> */}
-                    </Card>
+                    {/* </Card> */}
                 </Layout.Section>
                 <Layout.Section oneHalf>
                     <Card sectioned>{this.renderStats()}</Card><br />
                     {this.renderDatafileStats()}
                 </Layout.Section>
             </Layout>
-            <Modal title={"Expo Assignments"} open={expoModalShowing} onClose={() => this.setState({ expoModalShowing: false })}>
+            {/* <Modal title={"Expo Assignments"} open={expoModalShowing} onClose={() => this.setState({ expoModalShowing: false })}>
                 <Modal.Section>
                     {expoAssignments.length == 0
                         ? <Heading>Nothing here yet.</Heading>
@@ -153,7 +152,7 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                         </div>
                     }
                 </Modal.Section>
-            </Modal>
+            </Modal> */}
         </>;
     }
 

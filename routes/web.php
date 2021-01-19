@@ -66,7 +66,7 @@ Route::middleware(['auth.check_staging'])->group(function() {
     Route::middleware(['auth', 'type:hacker'])->group(function () {
 
         // Slack invite link
-        Route::get('/dashboard/join-slack', 'Dashboard@join_slack')->name("slack_invite");
+        Route::get('/dashboard/join-discord', 'Dashboard@join_discord')->name("discord_invite");
 
         // React App
         Route::get('/dashboard/{path?}', [

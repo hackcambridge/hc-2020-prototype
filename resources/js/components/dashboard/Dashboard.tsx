@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, CustomersMajor, NoteMajor, ShopcodesMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, CustomersMajor, NoteMajor, ShopcodesMajor, TeamMajor } from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
@@ -180,16 +180,22 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 label: `FAQs`,
                 icon: QuestionMarkMajor,
                 new: false,
-                badge: null
+                badge: null,
             });
             dashboardNavigationItems.push({
                 url: `${this.props.baseStorageUrl}event-data/Hex+Cambridge+2021+Hackers+Guide+v1.0.pdf`,
                 label: `Event Guide`,
                 icon: NoteMajor,
                 new: false,
-                badge: "New"
+                badge: "New",
             });
-            // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/teammates`, label: `Team Matching`, icon: TeamMajor });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/teammates`,
+                label: `Team Matching`,
+                icon: TeamMajor,
+                new: false,
+                badge: "New",
+            });
         }
 
         const allowedQRGenerate = ['admin', 'mentor', 'sponsor', 'sponsor-reviewer'];
@@ -202,13 +208,13 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 badge: null
             });
         } else {
-            // dashboardNavigationItems.push({
-            //     url: `${this.props.baseUrl}/qrscan`,
-            //     label: `Scan QR Code`,
-            //     icon: ShopcodesMajor,
-            //     new: false,
-            //     badge: null
-            // });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/qrscan`,
+                label: `Scan QR Code`,
+                icon: ShopcodesMajor,
+                new: false,
+                badge: null
+            });
         }
 
         const navigationMarkup = (
