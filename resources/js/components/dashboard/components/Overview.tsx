@@ -103,8 +103,9 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
             // { text: "Hackathon Devpost", link: "https://hexcambridge.devpost.com/", internal: false },
             { text: "View the challenges", link: "/dashboard/challenges", internal: true },
             { text: "What's happening when", link: "/dashboard/schedule", internal: true },
+            { text: "Hex Cambridge Gaming Sessions Sign-up", link: "https://forms.gle/Pj7wsvPQFRigEQBm9", internal: false },
             // { text: "Find your way around", link: "/dashboard/map", internal: true },
-            { text: "Report a bug", link: "https://discord.gg/uVRG2NcS", internal: false },
+            { text: "Report a bug", link: "https://discord.gg/XPw9wHhFQk", internal: false },
         ];
         const { expoModalShowing, expoAssignments } = this.state;
         return <>
