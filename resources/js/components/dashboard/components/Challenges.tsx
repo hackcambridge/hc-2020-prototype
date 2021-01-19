@@ -92,12 +92,13 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
 
     private renderChallenges() {
         const { challenges, challengesLive } = this.state;
-        if (!challengesLive) {
-            return (<>{challenges.map(c => this.renderSponsorChallengeCardBeforeRelease(c))}</>);
-        }
 
         if (challenges.length == 0) {
             return <Card sectioned><Heading>No challenges to show.</Heading></Card>;
+        }
+
+        if (!challengesLive) {
+            return (<>{challenges.map(c => this.renderSponsorChallengeCardBeforeRelease(c))}</>);
         }
 
         return (<>{challenges.map(c => this.renderSponsorChallengeCard(c))}</>);
