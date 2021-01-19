@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { withRouter, RouteComponentProps, Link, Switch, Route, Redirect } from "react-router-dom";
-import { Layout, Card, MediaCard, Spinner, Page, Heading, TextStyle, ResourceList, Thumbnail, Badge } from "@shopify/polaris";
+import { RouteComponentProps } from "react-router-dom";
+import { Layout, Card, MediaCard, Spinner, Page, Heading, Badge } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { IDashboardProps, ISponsor, } from "../../../interfaces/dashboard.interfaces";
@@ -44,11 +44,13 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
             <>
                 <div id={"sponsor-schedule"}>
                     <Page title={"Sponsor"}>
-                        <Layout key={`${Math.random()}`}>
+                        <Layout>
+                            <Layout.Section>
                             {loaded && resourceLoaded
                                 ? this.renderSponsor()
                                 : loading
                             }
+                            </Layout.Section>
                         </Layout>
                     </Page>
                 </div>
@@ -74,10 +76,11 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
         var payload = JSON.parse(data.payload);
         var logoUrl = (payload && payload.files !== undefined) ? payload.files.find((x: IAssetInformation) => { return x.name.toLowerCase().includes("logo") }) : undefined;
         if (!logoUrl) {
-            logoUrl = "https://s3.eu-west-2.amazonaws.com/hc-upload-production/sponsors/hackcambridge-test/e5b28e6a-8d8b-4096-a1b9-301c50bd8264.jpeg";
-        } else {
-            logoUrl = logoUrl.url;
+            logoUrl = "https://" + window.location.hostname + "/images/fancy-building.jpeg";
         }
+        //  else {
+        //     logoUrl = logoUrl.url;
+        // }
         const tier_badge = () => {
             switch (data.tier.toLowerCase()) {
                 case "co-host":
@@ -133,15 +136,15 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
         this.props.history.push(`${this.props.baseUrl}/sponsors/${sponsorId}`);
     }
 
-    private onlyUnique(value, index, self) {
-        var test = index === self.findIndex(t => {
+    private onlyUnique(value: ISponsor, index: number, self: any) {
+        var test = index === self.findIndex((t: ISponsor) => {
             return (t.id === value.id)
         });
         return (test);
     }
 
     private loadAllSponsors() {
-        axios.get(`/sponsors/dashboard-api/get-sponsors-reduced.json`).then(res => {
+        axios.get(`/sponsors/dashboard-api/get-sponsors-display.json`).then(res => {
             const status = res.status;
             if (status >= 200 && status <= 300) {
                 const payload = res.data;

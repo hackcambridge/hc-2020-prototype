@@ -52,6 +52,10 @@ export interface SingleItemFormFields {
 }
 
 export interface IPortalDefinition {
-    data: {[varName: string]:string},
+    data: {
+        description: string,
+        url: string,
+        "discord invite link": string,
+    },
     files: IAssetInformation[],
 }

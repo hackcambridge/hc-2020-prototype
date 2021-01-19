@@ -1,12 +1,11 @@
-import { Avatar, TextContainer, TextField, TextStyle, Button, Card, Heading, Page, ResourceList, Stack, Thumbnail } from "@shopify/polaris";
+import { TextContainer, TextField, TextStyle, Button, Card, Heading, Page, ResourceList, Thumbnail } from "@shopify/polaris";
 import { AddMajor, AttachmentMajor } from "@shopify/polaris-icons";
 import axios from "axios";
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { IResourceDefinition, IPortalDefinition, ISponsorData, IAssetInformation, SingleItemFormFields } from "../../../../interfaces/sponsors.interfaces";
+import { IResourceDefinition, IPortalDefinition, ISponsorData, IAssetInformation } from "../../../../interfaces/sponsors.interfaces";
 import DestructiveConfirmation from "../common/DestructiveConfirmation";
 import UploadForm from "../common/UploadForm";
-import SponsorPortalForm from "./SponsorPortalForm";
 import { toast } from "react-toastify";
 
 interface ISponsorPortalProps extends RouteComponentProps {
@@ -49,7 +48,6 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
 
     render() {
         const {
-            resources,
             uploadFormShowing,
             fields,
             isLoading,
@@ -66,7 +64,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
             >
                 <Card sectioned>
                     <TextContainer>
-                        <Heading>Please upload the <strong>logo, website URL, description, Discord invite link, and any other assets/fields.</strong></Heading>
+                        <Heading>Please upload your <strong>company logo, website URL, brief company description, Discord invite link, and any other assets/fields.</strong></Heading>
                         <p>
                             Ensure that the <strong>logo image is named "logo.png"</strong>.
                         </p>
@@ -75,12 +73,16 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
                     <>
                         <div>
                             {
-                                Object.keys(data).map((key, index) => {
+                                Object.keys(data).map((key) => {
                                     let value = data[key];
                                     return ([
                                         <>
-                                            <TextField label={this.capitalizeFirstLetter(key)}
-                                                value={value} onChange={(e) => this.handleChange(key, e)} multiline={4} disabled={isLoading} />
+                                            {key === 'url' ?
+                                                <TextField label={key}
+                                                    value={value} onChange={(e) => this.handleChange(key, e)} disabled={isLoading} /> :
+                                                <TextField label={this.capitalizeFirstLetter(key)}
+                                                    value={value} onChange={(e) => this.handleChange(key, e)} multiline={4} disabled={isLoading} />}
+
                                             <br />
                                         </>
                                     ])
@@ -110,7 +112,6 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
                             primary
                             loading={isLoading}
                             onClick={() => this.saveContent(false)}
-                            style={{ background: "#3D82FF" }}
                         >
                             Save
                         </Button>
@@ -275,7 +276,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
                         }
                     });
                     if (!silent) {
-                        toast.success("Form saved");
+                        toast.success("Information saved");
                     }
                     then();
                     return;

@@ -27,7 +27,7 @@ class Sponsors extends Controller
         switch ($path) {
             case "init": return $this->initSession();
             case 'get-sponsors': return $this->getSponsors();
-            case 'get-sponsors-reduced': return $this->getSponsorDisplay();
+            case 'get-sponsors-display': return $this->getSponsorDisplay();
             case 'get-resources': return $this->loadAllResources();
             default: return $this->fail("Route not found");
         }
@@ -78,7 +78,7 @@ class Sponsors extends Controller
     }
 
     private function canContinue($allowed = [], $r, $stringChecks = []) {
-        array_push($allowed, "committee", "admin"); // TODO "committee" temporary
+        array_push($allowed, "committee", "admin");
 
         // Check the request provides all required arguments.
         array_push($stringChecks, "sponsor_id", "sponsor_slug");
@@ -178,7 +178,7 @@ class Sponsors extends Controller
    }
 
     private function loadAllResources() {
-        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee","sponsor","hacker"])) {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee","sponsor","hacker","sponsor-reviewer"])) {
             $sponsors = Sponsor::all();
             if ($sponsors) {
                 $all_details = [];
