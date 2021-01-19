@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Card, Page, Heading } from "@shopify/polaris";
+import { Layout, Card, Page, Heading, Link } from "@shopify/polaris";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { IDashboardProps, IScheduleItem } from "../../../interfaces/dashboard.interfaces";
@@ -50,10 +50,10 @@ class Schedule extends Component<IDashboardProps, IScheduleState> {
             return <Card sectioned><Heading>No schedule to show.</Heading></Card>;
         }
 
-        return (<>{schedule.map(c => this.renderSponsorChallengeCard(c))}</>);
+        return (<>{schedule.map(c => this.renderScheduleItemCard(c))}</>);
     }
 
-    private renderSponsorChallengeCard(data: IScheduleItem) {
+    private renderScheduleItemCard(data: IScheduleItem) {
         return (
             <Layout key={data.id}>
                 <Layout.Section secondary>
@@ -75,18 +75,27 @@ class Schedule extends Component<IDashboardProps, IScheduleState> {
                         : <></>}
                 </Layout.Section>
                 <Layout.Section>
-                    <Card key={`${Math.random()}`}>
+                    <Card key={`${data.title}`}>
                         <div style={{ padding: "1.5rem" }}>
                             <Heading>{data.title}</Heading>
                             {data.desc.trim().length > 0
-                                ? <><p style={{ marginBottom: "1rem" }}><em>{data.location}</em></p><p>{data.desc}</p></>
-                                : <p><em>{data.location}</em></p>
+                                ? <><p style={{ marginBottom: "1rem" }}>{this.renderLocation(data.location)}</p><p>{data.desc}</p></>
+                                : <p>{this.renderLocation(data.location)}</p>
                             }
                         </div>
                     </Card>
                     <br />
                 </Layout.Section>
             </Layout>
+        );
+    }
+
+    private renderLocation = (location: string) => {
+        return (
+            (location.startsWith("http") ?
+                <Link url={location} external>{location}</Link>
+                : <em>{location}</em>
+            )
         );
     }
 
