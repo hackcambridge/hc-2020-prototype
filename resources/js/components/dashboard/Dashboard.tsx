@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, JobsMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, LocationMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor ,ShopcodesMajor, CustomersMajor, TeamMajor} from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, JobsMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, LocationMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor ,ShopcodesMajor, CustomersMajor, TeamMajor, NoteMajor} from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
@@ -163,13 +163,19 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             ];
 
         if (this.allowedEventDetails()) {
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/sponsors`, label: `Sponsors`, icon: JobsMajor });
             dashboardNavigationItems.push({
                 url: `${this.props.baseUrl}/challenges`,
                 label: `Challenges`,
                 icon: FlagMajor,
                 new: false,
                 badge: null
+            });
+            dashboardNavigationItems.push({ 
+                url: `${this.props.baseUrl}/sponsors`,
+                label: `Sponsors`,
+                icon: JobsMajor,
+                new: false,
+                badge: "New",
             });
             dashboardNavigationItems.push({
                 url: `${this.props.baseUrl}/schedule`,
