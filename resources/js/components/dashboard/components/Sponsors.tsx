@@ -132,8 +132,9 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
 
     private viewSponsor = (sponsorData: ISponsor) => {
         toast.info("Loading sponsor info...");
-        var sponsorId = sponsorData.id;
-        this.props.history.push(`${this.props.baseUrl}/sponsors/${sponsorId}`);
+        const sponsorId = sponsorData.id;
+        const sponsorSlug = sponsorData.slug;
+        this.props.history.push(`${this.props.baseUrl}/sponsors/${sponsorId}/${sponsorSlug}`);
     }
 
     private onlyUnique(value: ISponsor, index: number, self: any) {

@@ -16,7 +16,7 @@ interface ISponsorPortalProps extends RouteComponentProps {
 }
 
 interface ISponsorPortalState {
-    detail_id: number,
+    detail_id: string,
     resources: IResourceDefinition[],
     uploadFormShowing: boolean,
     fields: IPortalDefinition,
@@ -27,7 +27,7 @@ interface ISponsorPortalState {
 class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> {
 
     state = {
-        detail_id: -1,
+        detail_id: "",
         resources: [],
         uploadFormShowing: false,
         fields: {
@@ -78,9 +78,9 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
                                     return ([
                                         <>
                                             {key === 'url' ?
-                                                <TextField label={key}
+                                                <TextField key={key} label={key}
                                                     value={value} onChange={(e) => this.handleChange(key, e)} disabled={isLoading} /> :
-                                                <TextField label={this.capitalizeFirstLetter(key)}
+                                                <TextField key={key} label={this.capitalizeFirstLetter(key)}
                                                     value={value} onChange={(e) => this.handleChange(key, e)} multiline={4} disabled={isLoading} />}
 
                                             <br />
@@ -139,8 +139,8 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
     }
 
     private handleChange(key: string, value: string) {
-        const newFields = this.state.fields;
-        (newFields as IPortalDefinition).data[key] = value;
+        const newFields: IPortalDefinition = this.state.fields;
+        newFields.data[key] = value;
         this.setState({ fields: newFields });
     }
 
@@ -154,6 +154,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
         return (
             <ResourceList.Item
                 id={name}
+                key={name}
                 media={thumbnail}
                 onClick={() => {
                     var win = window.open(item.url, '_blank');
@@ -245,16 +246,18 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
     }
 
     private saveContent = (silent: boolean = false, then: () => void = () => { }) => {
-        if (!this.state.isLoading) {
+        const { isLoading, fields, detail_id } = this.state;
+
+        if (!isLoading) {
             this.setState({ isLoading: true });
         }
 
-        const payload = this.state.fields;
+        const payload = fields;
         axios.post(`/sponsors/dashboard-api/add-resource.json`, {
             sponsor_id: this.props.sponsor.id,
             sponsor_slug: this.props.sponsor.slug,
             detail_type: this.props.detailType,
-            detail_id: this.state.detail_id,
+            detail_id: detail_id,
             complete: "yes",
             payload: JSON.stringify(payload),
         }).then(res => {

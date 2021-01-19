@@ -226,7 +226,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Switch>
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props} />} />
-                <Route exact path={`${this.props.baseUrl}/sponsors/:id`} render={(props) => <IndividualSponsor SponsorId={props.match.params.id} {...props} />} />
+                <Route exact path={`${this.props.baseUrl}/sponsors/:id/:slug`} render={(props) => <IndividualSponsor sponsorId={props.match.params.id} sponsorSlug={props.match.params.slug} {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/profile`} render={(props) => <Profile {...props} {...this.props.user} />} />
                 {applicationDetailRoutes.map(i => i)}
                 {eventDetailRoutes.map(i => i)}

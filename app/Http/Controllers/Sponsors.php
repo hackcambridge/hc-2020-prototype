@@ -27,7 +27,7 @@ class Sponsors extends Controller
         switch ($path) {
             case "init": return $this->initSession();
             case 'get-sponsors': return $this->getSponsors();
-            case 'get-sponsors-display': return $this->getSponsorDisplay();
+            case 'get-sponsors-display': return $this->getSponsorsDisplay();
             case 'get-resources': return $this->loadAllResources();
             default: return $this->fail("Route not found");
         }
@@ -54,6 +54,7 @@ class Sponsors extends Controller
             case 'add-resource': return $this->addResource($r);
             case 'load-resources': return $this->loadResources($r);
             case 'delete-resource': return $this->deleteResource($r);
+            case 'get-sponsors-list': return $this->getSponsorsList($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -156,7 +157,7 @@ class Sponsors extends Controller
         }
     }
 
-    private function getSponsorDisplay() {
+    private function getSponsorsDisplay() {
         if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee","sponsor","hacker","sponsor-reviewer"])) {
             $sponsors = DB::table('sponsors')
                 ->leftJoin('sponsor_details', 'sponsors.id', '=', 'sponsor_details.sponsor_id')
@@ -166,6 +167,46 @@ class Sponsors extends Controller
             return response()->json([
                 "success" => true,
                 "data" => $sponsors
+            ]);
+        } else {
+            $this->fail("Unauthorised/unauthenticated.");
+        }
+    }
+    
+    private function getSponsorsList($r) {
+        if($this->canContinue(["admin", "sponsor-reviewer", "sponsor", "committee", "hacker"], $r, [])) {
+            $id = $r->get('sponsor_id');
+            $slug = $r->get('sponsor_slug');
+
+            $sponsor = DB::table('sponsors')
+                ->where("sponsors.id",'=',$id)
+                ->where("sponsors.slug",'=',$slug)
+                ->leftJoin('sponsor_details', 'sponsors.id', '=', 'sponsor_details.sponsor_id')
+                ->where('sponsor_details.type','=','portal-info')
+                ->select('sponsors.id','name','tier','payload','slug')
+                ->first();
+            $nextSponsor = DB::table('sponsors')
+                ->where("sponsors.id",'>',$id)
+                ->leftJoin('sponsor_details', 'sponsors.id', '=', 'sponsor_details.sponsor_id')
+                ->where('sponsor_details.type','=','portal-info')
+                ->select('sponsors.id','name','tier','payload','slug')
+                ->first();
+
+            $nextID = "";
+            $nextSlug = "";
+            if($nextSponsor) {
+                $nextID = $nextSponsor->id;
+                $nextSlug = $nextSponsor->slug;
+            }
+            return response()->json([
+                "success" => true,
+                "data" => [
+                    "sponsor" => $sponsor,
+                    "nextSponsor" => [
+                        "id" => $nextID,
+                        "slug" => $nextSlug,
+                    ]
+                ]
             ]);
         } else {
             $this->fail("Unauthorised/unauthenticated.");
