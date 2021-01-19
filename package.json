@@ -43,6 +43,7 @@
         "less-loader": "^7.0.2",
         "linkifyjs": "^2.1.8",
         "moize": "^5.4.4",
+        "qrcode.react": "^1.0.1",
         "react-ace": "^9.2.0",
         "react-json-view": "^1.19.1",
         "react-markdown": "^5.0.2",

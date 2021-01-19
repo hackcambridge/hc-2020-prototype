@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\UnauthorizedException;
 
 use Auth0\Login\Auth0User;
 use Auth0\Login\Auth0JWTUser;
@@ -32,11 +33,15 @@ class CustomUserRepository extends Auth0UserRepository
             $user->setAttribute('sub', $profile['sub']);
             $sub_parts = explode("|", $profile['sub']);
             $type = ($sub_parts[0] == "email") ? "sponsor" :
-                // (($sub_parts[1] == "MyMLH") ? "hacker" :
+                (($sub_parts[1] == "MyMLH") ? "hacker" :
                 (($sub_parts[0] == "google-apps" && strpos($sub_parts[1], "@hackcambridge.com") !== false)
-                    ? "committee" : "unknown");
+                    ? "committee" : "unknown"));
             $user->setAttribute('type', $type);
             $user->setAttribute('profile', '{}');
+
+            if($type == 'hacker') {
+                throw new UnauthorizedException("Applications have closed");
+            }
         }
 
         if ($user->type == "sponsor" || $user->type == "sponsor-reviewer") {

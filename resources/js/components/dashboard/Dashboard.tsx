@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { Component, ReactNode, SVGProps } from "react";
 import { withRouter, RouteComponentProps, Link, Switch, Route, Redirect } from "react-router-dom";
 import { IDashboardProps, IApplicationRecord } from "../../interfaces/dashboard.interfaces";
 import {
@@ -26,6 +26,7 @@ import IndividualSponsor from "./components/IndividualSponsor";
 import Profile from "./components/Profile";
 import QRScanner from "./components/QRScanner"
 import TeamMatch from "./components/TeamMatch";
+import QRGenerate from "./components/QRGenerate";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -109,7 +110,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             id: "logout",
             items: [
                 { content: 'Frontpage', url: "/", icon: HomeMajor },
-                { content: 'Profile', url: `${this.props.baseUrl}/profile`, icon: CustomersMajor},
+                { content: 'Profile', url: `${this.props.baseUrl}/profile`, icon: CustomersMajor },
                 { content: 'Logout', url: "/logout", icon: LogOutMinor },
             ],
         },
@@ -145,17 +146,78 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             applicationNavigationItems.push({ url: `${this.props.baseUrl}/apply/invitation`, label: `Invitation`, icon: ConfettiMajor });
         }
 
-        const dashboardNavigationItems = [
-            { url: `${this.props.baseUrl}/overview`, label: "Overview", icon: IqMajor }
-        ]
+        const dashboardNavigationItems: {
+            url: string,
+            label: string,
+            icon: React.SFC<SVGProps<SVGSVGElement>>,
+            badge: string | null,
+            new: boolean,
+        }[] = [
+                {
+                    url: `${this.props.baseUrl}/overview`,
+                    label: "Overview",
+                    icon: IqMajor,
+                    new: false,
+                    badge: null
+                }
+            ];
 
         if (this.allowedEventDetails()) {
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/challenges`, label: `Challenges`, icon: FlagMajor });
             dashboardNavigationItems.push({ url: `${this.props.baseUrl}/sponsors`, label: `Sponsors`, icon: JobsMajor });
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/schedule`, label: `Schedule`, icon: SocialAdMajor });
-            dashboardNavigationItems.push({ url: `${this.props.baseUrl}/faqs`, label: `FAQs`, icon: QuestionMarkMajor });
-            // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/teammates`, label: `Team Matching`, icon: TeamMajor });
-            // dashboardNavigationItems.push({ url: `${this.props.baseUrl}/qrscan`, label: `Scan QR Code`, icon: ShopcodesMajor });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/challenges`,
+                label: `Challenges`,
+                icon: FlagMajor,
+                new: false,
+                badge: null
+            });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/schedule`,
+                label: `Schedule`,
+                icon: SocialAdMajor,
+                new: false,
+                badge: null
+            });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/faqs`,
+                label: `FAQs`,
+                icon: QuestionMarkMajor,
+                new: false,
+                badge: null,
+            });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseStorageUrl}event-data/Hex+Cambridge+2021+Hackers+Guide+v1.0.pdf`,
+                label: `Event Guide`,
+                icon: NoteMajor,
+                new: false,
+                badge: "New",
+            });
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/teammates`,
+                label: `Team Matching`,
+                icon: TeamMajor,
+                new: false,
+                badge: "New",
+            });
+        }
+
+        const allowedQRGenerate = ['admin', 'mentor', 'sponsor', 'sponsor-reviewer'];
+        if(allowedQRGenerate.includes(this.props.user.type)){
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/qrgen`,
+                label: `Generate QR Code`,
+                icon: ShopcodesMajor,
+                new: false,
+                badge: null
+            });
+        } else {
+            dashboardNavigationItems.push({
+                url: `${this.props.baseUrl}/qrscan`,
+                label: `Scan QR Code`,
+                icon: ShopcodesMajor,
+                new: false,
+                badge: null
+            });
         }
 
         const navigationMarkup = (
@@ -215,11 +277,12 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Route key="faqs" exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
             <Route key="teammates" exact path={`${this.props.baseUrl}/teammates`} render={(props) => <TeamMatch {...props} {...this.props} />} />,
             <Route key="qrscan" exact path={`${this.props.baseUrl}/qrscan`} render={(props) => <QRScanner {...props} {...this.props} />} />,
+            <Route key="qrgen" exact path={`${this.props.baseUrl}/qrgen`} render={(props) => <QRGenerate {...props} {...this.props} />} />,
         ] : [];
         const applicationDetailRoutes = this.canSeeApplicationItems() ? [
             <Redirect key="apply" exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,
             <Route key="apply_individual" exact path={`${this.props.baseUrl}/apply/individual`} render={(_) => <Apply canEdit={applicationOpen} updateApplication={this.updateApplicationRecord} initialRecord={this.props.user.application} applicationsOpen={this.props.canApply} />} />,
-            <Route key="apply_team" exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen} isSubmitted={this.props.user.application ? this.props.user.application.isSubmitted : false} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />,
+            <Route key="apply_team" exact path={`${this.props.baseUrl}/apply/team`} render={(_) => <TeamApplication canEdit={applicationOpen || (this.props.user.application ? !this.props.user.application.rejected : false)} teamID={this.props.user.team.id} teamMembers={this.props.user.team.members} teamOwner={this.props.user.team.owner} />} />,
             <Route key="apply_invitation" exact path={`${this.props.baseUrl}/apply/invitation`} render={(_) => <Invitation application={this.props.user.application} updateApplication={this.updateApplicationRecord} />} />,
         ] : [];
         return (
@@ -234,7 +297,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             </Switch>
         );
     }
-    
+
     private renderApplicationBanner(): JSX.Element {
         const states: {
             [key: string]: {

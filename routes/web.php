@@ -66,7 +66,7 @@ Route::middleware(['auth.check_staging'])->group(function() {
     Route::middleware(['auth', 'type:hacker'])->group(function () {
 
         // Slack invite link
-        Route::get('/dashboard/join-slack', 'Dashboard@join_slack')->name("slack_invite");
+        Route::get('/dashboard/join-discord', 'Dashboard@join_discord')->name("discord_invite");
 
         // React App
         Route::get('/dashboard/{path?}', [
@@ -81,7 +81,14 @@ Route::middleware(['auth.check_staging'])->group(function() {
             ->post('/dashboard-api/{path}.json', 'Dashboard@api_post')
             ->name('dashboard_api_post');
     });
+    
+    Route::middleware(['auth.passwordless', 'type:mentor'])->group(function() {
 
+        // React App
+        Route::get('/mentor/dashboard', function() {
+            return redirect('/dashboard');
+        });
+    });
 
     Route::middleware(['auth.passwordless', 'type:sponsor'])->group(function() {
 
@@ -98,7 +105,7 @@ Route::middleware(['auth.check_staging'])->group(function() {
             ->post('/sponsors/dashboard-api/{path}.json', 'Sponsors@api_post')
             ->name('sponsors_api_post');
     });
-
+    
     Route::middleware(['auth.committee', 'type:committee'])->group(function() {
 
         // React App

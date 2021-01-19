@@ -6,7 +6,6 @@ use \RecursiveIteratorIterator,RecursiveArrayIterator;
 use App\Models\Sponsor;
 use App\Models\SponsorAgent;
 use App\Models\SponsorDetail;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
