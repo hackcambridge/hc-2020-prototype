@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { ISponsorData, IAssetInformation, SingleItemFormFields } from "../../../../interfaces/sponsors.interfaces";
-import { Button, Page, Card, Heading, TextField, ResourceList, Thumbnail, TextStyle, Badge } from "@shopify/polaris";
+import { Heading, TextContainer, Button, Page, Card, TextField, ResourceList, Thumbnail, TextStyle, Badge } from "@shopify/polaris";
 import { AddMajor, AttachmentMajor } from "@shopify/polaris-icons";
 import UploadForm from "./UploadForm";
 import DestructiveConfirmation from "./DestructiveConfirmation";
