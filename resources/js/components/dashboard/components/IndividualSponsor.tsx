@@ -281,7 +281,8 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         />
                     }
 
-                    <DisplayText>{data.title ? this.capitalizeAndOnlyAlphaNumeric(data.title) : "An untitled resource"}</DisplayText>
+                    {data.title ? <DisplayText> this.capitalizeAndOnlyAlphaNumeric(data.title)</DisplayText> : <></>}
+                    <br />
                     <p>{data.description ? this.capitalizeAndOnlyAlphaNumeric(data.description) : ""}</p>
                 </Card>
             </Layout.Section>
