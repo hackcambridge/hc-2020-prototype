@@ -87,7 +87,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
         this.setState({ loadingSponsor: true, loadingResources: true });
         const currentUrl = this.props.history.location.pathname;
-        const base = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
+        const base = currentUrl.substring(0, currentUrl.lastIndexOf('/', currentUrl.lastIndexOf('/')-1));
         if (nextSponsor.id) {
             this.props.history.push(`${base}/${nextSponsor.id}/${nextSponsor.slug}`);
             this.loadInformation(nextSponsor.id, nextSponsor.slug);
@@ -142,7 +142,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                     <p className="legend">An office</p>
                 </div>
             )
-            let logoUrl: string | undefined = portalInfo.files.find((x: IAssetInformation) => { return x.name.toLowerCase().includes("logo") });
+            let logoUrl: IAssetInformation = portalInfo.files.find((x: IAssetInformation) => { return x.name.toLowerCase().includes("logo") });
             if (!logoUrl || logoUrl === undefined) {
                 logoUrl = "https://" + window.location.hostname + "/images/no-logo-sponsor.png";
             } else {
@@ -156,7 +156,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                     subtitle={`Sponsor #${actual_sponsor.id}`}
                     pagination={{
                         hasPrevious: false,
-                        hasNext: nextSponsor.id.length > 0,
+                        hasNext: Number.isInteger(nextSponsor.id),
                         onNext: this.nextSponsor
                     }}
                     primaryAction={{ content: 'Speak To Them!', onAction: () => { window.open(portalInfo.data["discord invite link"]) } }}

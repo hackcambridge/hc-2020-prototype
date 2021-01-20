@@ -23,7 +23,7 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
         resourceLoaded: true,
         resources: [],
         sponsors: [],
-        sponsorLive: false,
+        sponsorLive: true,
     }
 
     componentDidMount() {
@@ -153,7 +153,7 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                     sponsors = sponsors.filter(this.onlyUnique);
                     this.setState({
                         sponsors: sponsors.sort((a, b) => (a.name > b.name) ? 1 : -1),
-                        sponsorLive: this.props.user.type == "admin",
+                        sponsorLive: this.props.user.type != "admin",
                         loaded: true
                     });
                     return;
