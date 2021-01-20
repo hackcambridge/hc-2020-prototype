@@ -29,11 +29,12 @@ class Dashboard extends Controller
     {
         if (Auth::check()) {
             $application = Application::where("user_id", "=", Auth::user()->id)->first();
+            $is_attendee = false;
             if ($application) {
                 $is_attendee = $application->confirmed && !$application->rejected;
-                if ($is_attendee || in_array(Auth::user()->type, ["admin", "committee", "sponsor", "sponsor-reviewer"])) {
-                    return redirect(self::$discord_invite_url);
-                }
+            }
+            if ($is_attendee || in_array(Auth::user()->type, ["admin", "committee", "sponsor", "sponsor-reviewer"])) {
+                return redirect(self::$discord_invite_url);
             }
         }
         return redirect()->route('dashboard_index');
@@ -549,14 +550,15 @@ class Dashboard extends Controller
         }
     }
 
-    private static function descriptionsMatch($description, $target) {
+    private static function descriptionsMatch($description, $target)
+    {
         return str_contains(strtolower($description), strtolower($target)) || str_contains(strtolower($target), strtolower($description));
     }
 
     public function findTeammates($r)
     {
         if ($this->canContinue(["hacker", "admin", "committee"], $r, ["keywords"])) {
-            $hackers = User::where("type","=","hacker")->select("name", "id", "email", "eventDetails")->get();
+            $hackers = User::where("type", "=", "hacker")->select("name", "id", "email", "eventDetails")->get();
             $keywords = $r->get("keywords");
 
             $teams_obj = TeamMember::select('team_id', DB::raw("count(*) as members"), DB::raw('group_concat(user_id) as members'))
@@ -683,8 +685,8 @@ class Dashboard extends Controller
     {
         if ($this->canContinue(["hacker", "admin", "committee"], null)) {
             $user_profiles = DB::table('users')
-                ->rightJoin("applications","users.id","=","applications.user_id")
-                ->where("applications.confirmed","=","1")
+                ->rightJoin("applications", "users.id", "=", "applications.user_id")
+                ->where("applications.confirmed", "=", "1")
                 ->select("users.profile")
                 ->get();
             $raw_data = [];
@@ -694,20 +696,20 @@ class Dashboard extends Controller
             $raw_data["professions"] = [];
             foreach ($user_profiles as $profile) {
                 $profile_data = json_decode($profile->profile);
-                if (property_exists($profile_data, "school")) {
+                if (property_exists($profile_data, "school") && strlen($profile_data->school->name) > 0) {
                     $raw_data["universities"][] = $profile_data->school->name;
                 }
-                if (property_exists($profile_data, "level_of_study")) {
+                if (property_exists($profile_data, "level_of_study") && strlen($profile_data->level_of_study) > 0) {
                     $raw_data["levels"][] = $profile_data->level_of_study;
                 }
-                if (property_exists($profile_data, "major")) {
+                if (property_exists($profile_data, "major") && strlen($profile_data->major) > 0) {
                     $raw_data["majors"][] = $profile_data->major;
                 }
-                if (property_exists($profile_data, "profession_type")) {
+                if (property_exists($profile_data, "profession_type") && strlen($profile_data->profession_type) > 0) {
                     $raw_data["professions"][] = $profile_data->profession_type;
                 }
             }
-            $data_keys = ["universities","levels","majors","professions"];
+            $data_keys = ["universities", "levels", "majors", "professions"];
             $data = [];
             foreach ($data_keys as $key) {
                 $names = array_unique($raw_data[$key]);

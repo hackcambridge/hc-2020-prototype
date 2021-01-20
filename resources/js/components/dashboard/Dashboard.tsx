@@ -207,7 +207,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             });
         }
 
-        const allowedQRGenerate = ['admin', 'mentor', 'sponsor', 'sponsor-reviewer'];
+        const allowedQRGenerate = ['admin', 'mentor', 'sponsor', 'sponsor-reviewer', 'committee'];
         if(allowedQRGenerate.includes(this.props.user.type)){
             dashboardNavigationItems.push({
                 url: `${this.props.baseUrl}/qrgen`,
@@ -216,7 +216,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 new: false,
                 badge: null
             });
-        } else {
+        }
+
+        if(this.props.user.type == "admin" || this.props.user.type == "hacker") {
             dashboardNavigationItems.push({
                 url: `${this.props.baseUrl}/qrscan`,
                 label: `Scan QR Code`,

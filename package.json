@@ -52,6 +52,7 @@
         "react-responsive-pinch-zoom-pan": "^0.3.0",
         "react-router-dom": "^5.0.1",
         "react-toastify": "^6.0.9",
+        "remark-gfm": "^1.0.0",
         "serialize-javascript": "^5.0.1",
         "source-map-loader": "^1.1.2",
         "tslint": "^6.1.3",

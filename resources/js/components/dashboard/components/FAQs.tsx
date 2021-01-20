@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 import { IDashboardProps, IFAQItem } from "../../../interfaces/dashboard.interfaces";
 import ReactMarkdown from "react-markdown";
+import gfm from 'remark-gfm';
 
 
 interface IFAQsState {
@@ -70,7 +71,7 @@ class FAQs extends Component<IDashboardProps, IFAQsState> {
                 <Layout.Section>
                     <Card key={`${Math.random()}`}>
                         <div style={{ padding: "1.5rem" }}>
-                            <ReactMarkdown source={data.answer} className={"markdown-source markdown-body"} />
+                            <ReactMarkdown plugins={[gfm]} allowDangerousHtml={true} source={data.answer} className={"markdown-source markdown-body"} />
                         </div>
                     </Card>
                     <br />
