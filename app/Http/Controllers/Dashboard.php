@@ -694,16 +694,16 @@ class Dashboard extends Controller
             $raw_data["professions"] = [];
             foreach ($user_profiles as $profile) {
                 $profile_data = json_decode($profile->profile);
-                if (property_exists($profile_data, "school")) {
+                if (property_exists($profile_data, "school") && strlen($profile_data->school->name) > 0) {
                     $raw_data["universities"][] = $profile_data->school->name;
                 }
-                if (property_exists($profile_data, "level_of_study")) {
+                if (property_exists($profile_data, "level_of_study") && strlen($profile_data->level_of_study) > 0) {
                     $raw_data["levels"][] = $profile_data->level_of_study;
                 }
-                if (property_exists($profile_data, "major")) {
+                if (property_exists($profile_data, "major") && strlen($profile_data->major) > 0) {
                     $raw_data["majors"][] = $profile_data->major;
                 }
-                if (property_exists($profile_data, "profession_type")) {
+                if (property_exists($profile_data, "profession_type") && strlen($profile_data->profession_type) > 0) {
                     $raw_data["professions"][] = $profile_data->profession_type;
                 }
             }

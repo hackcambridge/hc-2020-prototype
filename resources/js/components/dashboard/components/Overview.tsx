@@ -30,7 +30,7 @@ interface IExpoAssigments {
 }
 
 class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
-    private detailsReady = false;
+    private detailsReady = true;
     // private teamAllocationsUrl = "https://assets.hackcambridge.com/team_assignments.json";
 
     state = {
@@ -54,9 +54,9 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
     render() {
         return (
             <>
-                {/* <img src="/images/HC-HackerHeader-bg.png" alt="Hacker Header picture" style={{ position: "absolute", width: "100%", marginTop: "-30px", zIndex: -1000 }} /> */}
+                <img src="/images/HC-HackerHeader-bg.png" alt="Hacker Header picture" style={{ position: "absolute", width: "100%", marginTop: "-30px", zIndex: -1000 }} />
                 <Page title={""}>
-                    {/* <img id="hacker-header-fg" src="/images/HC-HackerHeader-fgv2.png" alt="Hacker Header picture" /> */}
+                    <img id="hacker-header-fg" src="/images/HC-HackerHeader-fgv2.png" alt="Hacker Header picture" />
                     {this.renderStartApplicationBanner()}
                     {this.renderMoreComingSoonBanner()}
                     {this.renderEventOverview()}
@@ -135,7 +135,7 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                     {/* </Card> */}
                 </Layout.Section>
                 <Layout.Section oneHalf>
-                    <Card sectioned>{this.renderStats()}</Card><br />
+                    {/* <Card sectioned>{this.renderStats()}</Card><br /> */}
                     {this.renderDatafileStats()}
                 </Layout.Section>
             </Layout>
@@ -238,16 +238,16 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
     }
 
     private loadDatafile() {
-        axios.get("/assets/data/public-stats.json").then(res => {
+        axios.get("/dashboard-api/participants-overview.json").then(res => {
             const status = res.status;
             if (status == 200) {
-                const payload = res.data;
-                const majorsDict: { [key: string]: number } = payload["major"];
-                const majors = Object.keys(majorsDict).map(k => { return { id: k, count: +majorsDict[k] } }).sort((a, b) => b.count - a.count);
-                const universitiesDict: { [key: string]: number } = payload["school/name"];
-                const universities = Object.keys(universitiesDict).map(k => { return { id: k, count: +universitiesDict[k] } }).sort((a, b) => b.count - a.count);
-                const studyLevelsDict: { [key: string]: number } = payload["level_of_study"];
-                const studyLevels = Object.keys(studyLevelsDict).map(k => { return { id: k, count: +studyLevelsDict[k] } }).sort((a, b) => b.count - a.count);
+                const payload = res.data["overview"];
+                const majorsDict: [ {name: string, participants: number }] = payload["majors"];
+                const majors = majorsDict.map(k => { return { id: k.name, count: k.participants } }).sort((a, b) => b.count - a.count);
+                const universitiesDict: [ {name: string, participants: number } ] = payload["universities"];
+                const universities = universitiesDict.map(k => { return { id: k.name, count: k.participants } }).sort((a, b) => b.count - a.count);
+                const studyLevelsDict: [ {name: string, participants: number } ] = payload["levels"];
+                const studyLevels = studyLevelsDict.map(k => { return { id: k.name, count: k.participants } }).sort((a, b) => b.count - a.count);
 
                 this.setState({
                     majors: majors,
