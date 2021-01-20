@@ -26,6 +26,10 @@ interface IIndividualSponsorState {
         id: string,
         slug: string,
     },
+    prevSponsor: {
+        id: string,
+        slug: string,
+    },
     portalInfo: IPortalDefinition | undefined,
 }
 
@@ -39,6 +43,10 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         user: undefined,
         resources: [],
         nextSponsor: {
+            id: "",
+            slug: "",
+        },
+        prevSponsor: {
             id: "",
             slug: "",
         },
@@ -95,8 +103,21 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         }
     }
 
+    private prevSponsor = async () => {
+        const { prevSponsor } = this.state;
+
+        this.setState({ loadingSponsor: true, loadingResources: true });
+        const currentUrl = this.props.history.location.pathname;
+        const base = currentUrl.substring(0, currentUrl.lastIndexOf('/', currentUrl.lastIndexOf('/')-1));
+        if (prevSponsor.id) {
+            this.props.history.push(`${base}/${prevSponsor.id}/${prevSponsor.slug}`);
+            this.loadInformation(prevSponsor.id, prevSponsor.slug);
+            this.retrieveSponsor(prevSponsor.id, prevSponsor.slug);
+        }
+    }
+
     private renderSponsor = () => {
-        const { sponsor, resources, portalInfo, nextSponsor } = this.state;
+        const { sponsor, resources, portalInfo, nextSponsor, prevSponsor } = this.state;
         var loading =
             (<div style={{ textAlign: "center", marginTop: "3em" }}>
                 <Card sectioned><Heading>Loading more info.....</Heading></Card>
@@ -155,9 +176,10 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                     titleMetadata={metadata}
                     subtitle={`Sponsor #${actual_sponsor.id}`}
                     pagination={{
-                        hasPrevious: false,
-                        hasNext: Number.isInteger(nextSponsor.id),
-                        onNext: this.nextSponsor
+                        hasPrevious: Number.isInteger(prevSponsor.id) || prevSponsor.id.length > 0,
+                        hasNext: Number.isInteger(nextSponsor.id) || nextSponsor.id.length > 0,
+                        onNext: this.nextSponsor,
+                        onPrevious: this.prevSponsor
                     }}
                     primaryAction={{ content: 'Speak To Them!', onAction: () => { window.open(portalInfo.data["discord invite link"]) } }}
                     thumbnail={<Thumbnail
@@ -304,12 +326,14 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                 const payload = res.data;
                 if ("success" in payload && payload["success"]) {
                     const nextSponsor: { id: string, slug: string } = payload["data"]["nextSponsor"];
+                    const prevSponsor: { id: string, slug: string } = payload["data"]["prevSponsor"];
                     const sponsor: ISponsor = payload["data"]["sponsor"];
                     this.setState({
                         loadingSponsor: false,
                         sponsorId: sponsorId,
                         sponsor: sponsor,
                         nextSponsor: nextSponsor,
+                        prevSponsor: prevSponsor,
                     });
                     return;
                 } else {
