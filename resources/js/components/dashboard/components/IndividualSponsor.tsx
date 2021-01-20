@@ -303,7 +303,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         />
                     }
 
-                    {data.title ? <DisplayText> this.capitalizeAndOnlyAlphaNumeric(data.title)</DisplayText> : <></>}
+                    {data.title ? <DisplayText> {this.capitalizeAndOnlyAlphaNumeric(data.title)}</DisplayText> : <></>}
                     <br />
                     <p>{data.description ? this.capitalizeAndOnlyAlphaNumeric(data.description) : ""}</p>
                 </Card>
