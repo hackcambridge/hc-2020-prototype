@@ -26,6 +26,10 @@ interface IIndividualSponsorState {
         id: string,
         slug: string,
     },
+    prevSponsor: {
+        id: string,
+        slug: string,
+    },
     portalInfo: IPortalDefinition | undefined,
 }
 
@@ -39,6 +43,10 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         user: undefined,
         resources: [],
         nextSponsor: {
+            id: "",
+            slug: "",
+        },
+        prevSponsor: {
             id: "",
             slug: "",
         },
@@ -87,7 +95,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
         this.setState({ loadingSponsor: true, loadingResources: true });
         const currentUrl = this.props.history.location.pathname;
-        const base = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
+        const base = currentUrl.substring(0, currentUrl.lastIndexOf('/', currentUrl.lastIndexOf('/')-1));
         if (nextSponsor.id) {
             this.props.history.push(`${base}/${nextSponsor.id}/${nextSponsor.slug}`);
             this.loadInformation(nextSponsor.id, nextSponsor.slug);
@@ -95,8 +103,21 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         }
     }
 
+    private prevSponsor = async () => {
+        const { prevSponsor } = this.state;
+
+        this.setState({ loadingSponsor: true, loadingResources: true });
+        const currentUrl = this.props.history.location.pathname;
+        const base = currentUrl.substring(0, currentUrl.lastIndexOf('/', currentUrl.lastIndexOf('/')-1));
+        if (prevSponsor.id) {
+            this.props.history.push(`${base}/${prevSponsor.id}/${prevSponsor.slug}`);
+            this.loadInformation(prevSponsor.id, prevSponsor.slug);
+            this.retrieveSponsor(prevSponsor.id, prevSponsor.slug);
+        }
+    }
+
     private renderSponsor = () => {
-        const { sponsor, resources, portalInfo, nextSponsor } = this.state;
+        const { sponsor, resources, portalInfo, nextSponsor, prevSponsor } = this.state;
         var loading =
             (<div style={{ textAlign: "center", marginTop: "3em" }}>
                 <Card sectioned><Heading>Loading more info.....</Heading></Card>
@@ -126,7 +147,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                 }
             }
             const metadata = <>
-                {<Badge status={tier_badge()}>{this.capitalizeFirstLetter(tier)}</Badge>}
+                {<Badge status={tier_badge()}>{this.capitalizeAndOnlyAlphaNumeric(tier)}</Badge>}
             </>;
             const carouselDivs = portalInfoImages.map((p: IAssetInformation) => {
                 return (
@@ -142,23 +163,23 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                     <p className="legend">An office</p>
                 </div>
             )
-            let logoUrl: string | undefined = portalInfo.files.find((x: IAssetInformation) => { return x.name.toLowerCase().includes("logo") });
+            let logoUrl: IAssetInformation = portalInfo.files.find((x: IAssetInformation) => { return x.name.toLowerCase().includes("logo") });
             if (!logoUrl || logoUrl === undefined) {
                 logoUrl = "https://" + window.location.hostname + "/images/no-logo-sponsor.png";
+            } else {
+                logoUrl = logoUrl.url;
             }
-            // } else {
-            //     logoUrl = logoUrl.url;
-            // }
             return (
                 <Page
-                    breadcrumbs={[{ content: 'Sponsors', url: '../sponsors' }]}
+                    breadcrumbs={[{ content: 'Sponsors', url: '..' }]}
                     title={`${actual_sponsor.name}`}
                     titleMetadata={metadata}
                     subtitle={`Sponsor #${actual_sponsor.id}`}
                     pagination={{
-                        hasPrevious: false,
-                        hasNext: nextSponsor.id.length > 0,
-                        onNext: this.nextSponsor
+                        hasPrevious: Number.isInteger(prevSponsor.id) || prevSponsor.id.length > 0,
+                        hasNext: Number.isInteger(nextSponsor.id) || nextSponsor.id.length > 0,
+                        onNext: this.nextSponsor,
+                        onPrevious: this.prevSponsor
                     }}
                     primaryAction={{ content: 'Speak To Them!', onAction: () => { window.open(portalInfo.data["discord invite link"]) } }}
                     thumbnail={<Thumbnail
@@ -181,6 +202,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                                         {actual_sponsor.name}
                                     </DisplayText>
                                     <TextContainer>
+                                        <br />
                                         <Heading>About</Heading>
                                         <p>
                                             {data.description}
@@ -201,7 +223,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                                             return ([
                                                 <Linkify key={key} tagName="a" options={{ target: { url: '_blank' } }}>
                                                     <div style={{ padding: "1.4rem 2rem" }} key={index}>
-                                                        <Heading>{this.capitalizeFirstLetter(key)}</Heading>
+                                                        <Heading>{this.capitalizeAndOnlyAlphaNumeric(key)}</Heading>
                                                         <br style={{ lineHeight: "3px" }} />
                                                         <TextContainer>{value}</TextContainer>
                                                     </div>
@@ -225,8 +247,10 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         }
     };
 
-    private capitalizeFirstLetter(string: string) {
-        return (string == "url") ? "URL" : string[0].toUpperCase() + string.slice(1);
+    private capitalizeAndOnlyAlphaNumeric(string: string) {
+        let firstLetterCapital = (string == "url") ? "URL" : string[0].toUpperCase() + string.slice(1);
+        let replaceNonAlphaNumeric = firstLetterCapital.replace(/[^a-z0-9]/gi,' ');
+        return replaceNonAlphaNumeric
     }
 
     private loadInformation(sponsorId: string, sponsorSlug: string) {
@@ -234,7 +258,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
             sponsor_id: sponsorId,
             sponsor_slug: sponsorSlug,
-            sponsor_details: ["social-media", "prizes", "workshop", "portal-info", "demo-details"]
+            sponsor_details: ["social_media", "prizes", "workshop", "portal-info", "demo"]
         }).then(res => {
             const status = res.status;
             var portalInfo = undefined;
@@ -270,7 +294,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
     private renderResourceCard(data: IResourceCard) {
         return (
             <Layout.Section oneThird>
-                <Card title={this.capitalizeFirstLetter(data.mainType)} sectioned>
+                <Card title={this.capitalizeAndOnlyAlphaNumeric(data.mainType)} sectioned>
                     {
                         (!data || data.files.length === 0) ? <></> : <Image
                             source={data.files[0].url}
@@ -279,8 +303,9 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         />
                     }
 
-                    <DisplayText>{data.title ? this.capitalizeFirstLetter(data.title) : "An untitled resource"}</DisplayText>
-                    <p>{data.description ? this.capitalizeFirstLetter(data.description) : ""}</p>
+                    {data.title ? <DisplayText> this.capitalizeAndOnlyAlphaNumeric(data.title)</DisplayText> : <></>}
+                    <br />
+                    <p>{data.description ? this.capitalizeAndOnlyAlphaNumeric(data.description) : ""}</p>
                 </Card>
             </Layout.Section>
         );
@@ -301,12 +326,14 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                 const payload = res.data;
                 if ("success" in payload && payload["success"]) {
                     const nextSponsor: { id: string, slug: string } = payload["data"]["nextSponsor"];
+                    const prevSponsor: { id: string, slug: string } = payload["data"]["prevSponsor"];
                     const sponsor: ISponsor = payload["data"]["sponsor"];
                     this.setState({
                         loadingSponsor: false,
                         sponsorId: sponsorId,
                         sponsor: sponsor,
                         nextSponsor: nextSponsor,
+                        prevSponsor: prevSponsor,
                     });
                     return;
                 } else {

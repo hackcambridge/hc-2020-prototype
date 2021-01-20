@@ -16,7 +16,7 @@ interface ISponsorPortalProps extends RouteComponentProps {
 }
 
 interface ISponsorPortalState {
-    detail_id: string,
+    detail_id: number,
     resources: IResourceDefinition[],
     uploadFormShowing: boolean,
     fields: IPortalDefinition,
@@ -27,7 +27,7 @@ interface ISponsorPortalState {
 class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> {
 
     state = {
-        detail_id: "",
+        detail_id: -1,
         resources: [],
         uploadFormShowing: false,
         fields: {
@@ -78,7 +78,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
                                     return ([
                                         <>
                                             {key === 'url' ?
-                                                <TextField key={key} label={key}
+                                                <TextField key={key} label={"URL"}
                                                     value={value} onChange={(e) => this.handleChange(key, e)} disabled={isLoading} /> :
                                                 <TextField key={key} label={this.capitalizeFirstLetter(key)}
                                                     value={value} onChange={(e) => this.handleChange(key, e)} multiline={4} disabled={isLoading} />}

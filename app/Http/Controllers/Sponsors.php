@@ -190,12 +190,25 @@ class Sponsors extends Controller
                 ->where('sponsor_details.type','=','portal-info')
                 ->select('sponsors.id','name','tier','payload','slug')
                 ->first();
+            $prevSponsor = DB::table('sponsors')
+                ->where("sponsors.id",'<',$id)
+                ->leftJoin('sponsor_details', 'sponsors.id', '=', 'sponsor_details.sponsor_id')
+                ->where('sponsor_details.type','=','portal-info')
+                ->select('sponsors.id','name','tier','payload','slug')
+                ->latest('sponsors.created_at')
+                ->first();
 
             $nextID = "";
             $nextSlug = "";
             if($nextSponsor) {
                 $nextID = $nextSponsor->id;
                 $nextSlug = $nextSponsor->slug;
+            }
+            $prevID = "";
+            $prevSlug = "";
+            if($prevSponsor) {
+                $prevID = $prevSponsor->id;
+                $prevSlug = $prevSponsor->slug;
             }
             return response()->json([
                 "success" => true,
@@ -204,6 +217,10 @@ class Sponsors extends Controller
                     "nextSponsor" => [
                         "id" => $nextID,
                         "slug" => $nextSlug,
+                    ],
+                    "prevSponsor" => [
+                        "id" => $prevID,
+                        "slug" => $prevSlug,
                     ]
                 ]
             ]);

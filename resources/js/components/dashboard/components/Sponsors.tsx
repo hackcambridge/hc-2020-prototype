@@ -23,7 +23,7 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
         resourceLoaded: true,
         resources: [],
         sponsors: [],
-        sponsorLive: false,
+        sponsorLive: true,
     }
 
     componentDidMount() {
@@ -77,10 +77,9 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
         var logoUrl = (payload && payload.files !== undefined) ? payload.files.find((x: IAssetInformation) => { return x.name.toLowerCase().includes("logo") }) : undefined;
         if (!logoUrl) {
             logoUrl = "https://" + window.location.hostname + "/images/fancy-building.jpeg";
+        } else {
+            logoUrl = logoUrl.url;
         }
-        //  else {
-        //     logoUrl = logoUrl.url;
-        // }
         const tier_badge = () => {
             switch (data.tier.toLowerCase()) {
                 case "co-host":
@@ -154,7 +153,7 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                     sponsors = sponsors.filter(this.onlyUnique);
                     this.setState({
                         sponsors: sponsors.sort((a, b) => (a.name > b.name) ? 1 : -1),
-                        sponsorLive: this.props.user.type == "admin",
+                        sponsorLive: this.props.user.type != "admin",
                         loaded: true
                     });
                     return;
