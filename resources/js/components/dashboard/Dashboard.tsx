@@ -8,7 +8,7 @@ import {
     Navigation,
     Banner,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, AddCodeMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, CustomersMajor, NoteMajor, ShopcodesMajor, TeamMajor } from '@shopify/polaris-icons';
+import { LogOutMinor, IqMajor, AddCodeMajor, JobsMajor, CustomerPlusMajor, HomeMajor, ConfettiMajor, LocationMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor ,ShopcodesMajor, CustomersMajor, TeamMajor, NoteMajor} from '@shopify/polaris-icons';
 import Dashboard404 from "./Dashboard404";
 import Overview from "./components/Overview";
 import Apply from "./components/Apply";
@@ -20,7 +20,9 @@ import md5 from "md5";
 import Invitation from "./components/Invitation";
 import Challenges from "./components/Challenges";
 import Schedule from "./components/Schedule";
+import Sponsors from "./components/Sponsors";
 import FAQs from "./components/FAQs";
+import IndividualSponsor from "./components/IndividualSponsor";
 import Profile from "./components/Profile";
 import QRScanner from "./components/QRScanner"
 import TeamMatch from "./components/TeamMatch";
@@ -168,6 +170,13 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 new: false,
                 badge: null
             });
+            dashboardNavigationItems.push({ 
+                url: `${this.props.baseUrl}/sponsors`,
+                label: `Sponsors`,
+                icon: JobsMajor,
+                new: false,
+                badge: "New",
+            });
             dashboardNavigationItems.push({
                 url: `${this.props.baseUrl}/schedule`,
                 label: `Schedule`,
@@ -272,6 +281,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         const eventDetailRoutes = this.allowedEventDetails() ? [
             <Route key="challenges" exact path={`${this.props.baseUrl}/challenges`} render={(props) => <Challenges {...props} {...this.props} />} />,
             <Route key="schedule" exact path={`${this.props.baseUrl}/schedule`} render={(props) => <Schedule {...props} {...this.props} />} />,
+            <Route key="sponsors" exact path={`${this.props.baseUrl}/sponsors`} render={(props) => <Sponsors {...props} {...this.props} />} />,
             <Route key="faqs" exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
             <Route key="teammates" exact path={`${this.props.baseUrl}/teammates`} render={(props) => <TeamMatch {...props} {...this.props} />} />,
             <Route key="qrscan" exact path={`${this.props.baseUrl}/qrscan`} render={(props) => <QRScanner {...props} {...this.props} />} />,
@@ -287,6 +297,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Switch>
                 <Redirect exact path={`${this.props.baseUrl}`} to={`${this.props.baseUrl}/overview`} />
                 <Route exact path={`${this.props.baseUrl}/overview`} render={(props) => <Overview {...props} {...this.props} />} />
+                <Route exact path={`${this.props.baseUrl}/sponsors/:id/:slug`} render={(props) => <IndividualSponsor sponsorId={props.match.params.id} sponsorSlug={props.match.params.slug} {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/profile`} render={(props) => <Profile {...props} {...this.props.user} />} />
                 {applicationDetailRoutes.map(i => i)}
                 {eventDetailRoutes.map(i => i)}

@@ -14,6 +14,7 @@ export interface ISponsorData {
     slug: string,
     tier: string,
     privileges: string,
+    image: string,
 }
 
 export interface ISponsorAgent {
@@ -47,5 +48,14 @@ export interface IAssetInformation {
 export interface SingleItemFormFields {
     title: string,
     description: string,
+    files: IAssetInformation[],
+}
+
+export interface IPortalDefinition {
+    data: {
+        description: string,
+        url: string,
+        "discord invite link": string,
+    },
     files: IAssetInformation[],
 }

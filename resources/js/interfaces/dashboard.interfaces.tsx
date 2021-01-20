@@ -1,3 +1,5 @@
+import { IAssetInformation } from "./sponsors.interfaces";
+
 export interface IDashboardProps {
     baseUrl: string,
     baseStorageUrl: string,
@@ -13,6 +15,13 @@ export interface IDashboardProps {
             owner: boolean,
         }
     }
+}
+
+export interface IUserDetails {
+    name: string,
+    email: string,
+    type: string,
+    profile: string,
 }
 
 export interface IApplicationRecord extends IApplicationRecordContent {
@@ -63,6 +72,14 @@ export interface IScheduleItem {
     logoUrl: string,
 }
 
+export interface ISponsor {
+    id: string,
+    name: string,
+    tier: string,
+    payload: string,
+    slug: string,
+}
+
 export interface IFAQItem {
     id: string,
     title: string,
@@ -74,4 +91,11 @@ export interface IParticipantsOverview {
     majors: { name: string, participants: number }[],
     professions: { name: string, participants: number }[],
     levels: { name: string, participants: number }[],
+}
+
+export interface IResourceCard {
+    title: string,
+    description: string,
+    files: IAssetInformation[],
+    mainType: string,
 }
