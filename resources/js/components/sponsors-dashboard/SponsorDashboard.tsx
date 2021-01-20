@@ -5,7 +5,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import { DnsSettingsMajor, HomeMajor, EnvelopeMajor, CirclePlusOutlineMinor, SmileyJoyMajor, MentionMajor, ConfettiMajor, CodeMajor, DataVisualizationMajor, SandboxMajor, GamesConsoleMajor, LogOutMinor, TransferWithinShopifyMajor, LockMajor, IqMajor } from '@shopify/polaris-icons';
+import {DnsSettingsMajor, HomeMajor,EnvelopeMajor, CirclePlusOutlineMinor, SmileyJoyMajor, MentionMajor, ConfettiMajor, CodeMajor, DataVisualizationMajor, SandboxMajor, GamesConsoleMajor, LogOutMinor, MobileChevronMajor, TransferWithinShopifyMajor, LockMajor, IqMajor, FlagMajor} from '@shopify/polaris-icons';
 import { Link, withRouter, RouteComponentProps, Redirect } from "react-router-dom";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
 import Sponsor404 from "./Sponsor404";
@@ -324,6 +324,11 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
                 url: `${this.props.baseUrl}/${sponsorSlug}/presentation`
             });
         }
+
+        sections.push({
+            label: 'Portal Info', icon: FlagMajor,
+            url: `${this.props.baseUrl}/${sponsorSlug}/portal-info`
+        });
 
         return sections;
     }
