@@ -13,8 +13,9 @@ interface ISponsorState {
     resources: IResourceDefinition[],
     resourceLoaded: boolean,
     sponsors: ISponsor[],
-    sponsorLive: boolean,
 }
+
+const showSponsorsLive = true
 
 class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
 
@@ -23,7 +24,6 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
         resourceLoaded: true,
         resources: [],
         sponsors: [],
-        sponsorLive: true,
     }
 
     componentDidMount() {
@@ -60,8 +60,8 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
 
 
     private renderSponsor() {
-        const { sponsors, sponsorLive } = this.state;
-        if (!sponsorLive) {
+        const { sponsors } = this.state;
+        if (!showSponsorsLive && this.props.user.type != "admin") {
             return <Card sectioned><Heading>Details will be published soon!</Heading></Card>;
         }
 
@@ -153,7 +153,6 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
                     sponsors = sponsors.filter(this.onlyUnique);
                     this.setState({
                         sponsors: sponsors.sort((a, b) => (a.name > b.name) ? 1 : -1),
-                        sponsorLive: this.props.user.type != "admin",
                         loaded: true
                     });
                     return;
