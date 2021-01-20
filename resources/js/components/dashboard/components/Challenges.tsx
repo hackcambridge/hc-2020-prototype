@@ -5,6 +5,7 @@ import { SocialPostMajor } from "@shopify/polaris-icons";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { IDashboardProps, ISponsorChallenge } from "../../../interfaces/dashboard.interfaces";
+import gfm from 'remark-gfm';
 
 
 interface IChallengesState {
@@ -56,7 +57,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                         <Modal.Section>
                             <Link url={modalLink} external>View Challenge Resource</Link>
                             <br /><br/>
-                            <ReactMarkdown source={modalContent} className={"markdown-source markdown-body"} />
+                            <ReactMarkdown plugins={[gfm]} source={modalContent} className={"markdown-source markdown-body"} />
                             <br />
                         </Modal.Section>
                     </Modal>
@@ -80,7 +81,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                         title={modalTitle}
                     >
                         <Modal.Section>
-                            <ReactMarkdown source={modalContent} className={"markdown-source markdown-body"} />
+                            <ReactMarkdown plugins={[gfm]} source={modalContent} className={"markdown-source markdown-body"} />
                             <br />
                         </Modal.Section>
                     </Modal>
