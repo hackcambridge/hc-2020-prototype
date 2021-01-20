@@ -57,7 +57,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                         <Modal.Section>
                             <Link url={modalLink} external>View Challenge Resource</Link>
                             <br /><br/>
-                            <ReactMarkdown plugins={[gfm]} source={modalContent} className={"markdown-source markdown-body"} />
+                            <ReactMarkdown plugins={[gfm]} allowDangerousHtml={true} source={modalContent} className={"markdown-source markdown-body"} />
                             <br />
                         </Modal.Section>
                     </Modal>
@@ -81,7 +81,7 @@ class Challenges extends Component<IDashboardProps, IChallengesState> {
                         title={modalTitle}
                     >
                         <Modal.Section>
-                            <ReactMarkdown plugins={[gfm]} source={modalContent} className={"markdown-source markdown-body"} />
+                            <ReactMarkdown plugins={[gfm]} allowDangerousHtml={true} source={modalContent} className={"markdown-source markdown-body"} />
                             <br />
                         </Modal.Section>
                     </Modal>
