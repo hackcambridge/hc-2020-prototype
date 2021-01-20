@@ -148,7 +148,6 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
             } else {
                 logoUrl = logoUrl.url;
             }
-            console.log("portal info images",portalInfoImages,portalInfoImages.length===0);
             return (
                 <Page
                     breadcrumbs={[{ content: 'Sponsors', url: '..' }]}

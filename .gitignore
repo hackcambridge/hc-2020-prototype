@@ -121,3 +121,5 @@ fabric.properties
 
 # VS-Code files
 .vs-code
+
+package-lock.json

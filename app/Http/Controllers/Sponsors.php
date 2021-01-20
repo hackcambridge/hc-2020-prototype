@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use \RecursiveIteratorIterator,RecursiveArrayIterator;
 use App\Models\Sponsor;
 use App\Models\SponsorAgent;
 use App\Models\SponsorDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\Sponsor as SponsorResource;
 use App\Helpers\S3Management;
 use App\Helpers\Auth0Management;
@@ -23,6 +26,8 @@ class Sponsors extends Controller
         switch ($path) {
             case "init": return $this->initSession();
             case 'get-sponsors': return $this->getSponsors();
+            case 'get-sponsors-display': return $this->getSponsorsDisplay();
+            case 'get-resources': return $this->loadAllResources();
             default: return $this->fail("Route not found");
         }
 
@@ -48,6 +53,7 @@ class Sponsors extends Controller
             case 'add-resource': return $this->addResource($r);
             case 'load-resources': return $this->loadResources($r);
             case 'delete-resource': return $this->deleteResource($r);
+            case 'get-sponsors-list': return $this->getSponsorsList($r);
             default: return $this->fail("Route not found");
         }
     }
@@ -72,7 +78,7 @@ class Sponsors extends Controller
     }
 
     private function canContinue($allowed = [], $r, $stringChecks = []) {
-        array_push($allowed, "committee", "admin"); // TODO "committee" temporary
+        array_push($allowed, "committee", "admin");
 
         // Check the request provides all required arguments.
         array_push($stringChecks, "sponsor_id", "sponsor_slug");
@@ -147,6 +153,95 @@ class Sponsors extends Controller
             ]);
         } else {
             $this->fail("Unauthorised/unauthenticated.");
+        }
+    }
+
+    private function getSponsorsDisplay() {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee","sponsor","hacker","sponsor-reviewer"])) {
+            $sponsors = DB::table('sponsors')
+                ->leftJoin('sponsor_details', 'sponsors.id', '=', 'sponsor_details.sponsor_id')
+                ->where('sponsor_details.type','=','portal-info')
+                ->select('sponsors.id','name','tier','payload','slug')
+                ->get();
+            return response()->json([
+                "success" => true,
+                "data" => $sponsors
+            ]);
+        } else {
+            $this->fail("Unauthorised/unauthenticated.");
+        }
+    }
+    
+    private function getSponsorsList($r) {
+        if($this->canContinue(["admin", "sponsor-reviewer", "sponsor", "committee", "hacker"], $r, [])) {
+            $id = $r->get('sponsor_id');
+            $slug = $r->get('sponsor_slug');
+
+            $sponsor = DB::table('sponsors')
+                ->where("sponsors.id",'=',$id)
+                ->where("sponsors.slug",'=',$slug)
+                ->leftJoin('sponsor_details', 'sponsors.id', '=', 'sponsor_details.sponsor_id')
+                ->where('sponsor_details.type','=','portal-info')
+                ->select('sponsors.id','name','tier','payload','slug')
+                ->first();
+            $nextSponsor = DB::table('sponsors')
+                ->where("sponsors.id",'>',$id)
+                ->leftJoin('sponsor_details', 'sponsors.id', '=', 'sponsor_details.sponsor_id')
+                ->where('sponsor_details.type','=','portal-info')
+                ->select('sponsors.id','name','tier','payload','slug')
+                ->first();
+
+            $nextID = "";
+            $nextSlug = "";
+            if($nextSponsor) {
+                $nextID = $nextSponsor->id;
+                $nextSlug = $nextSponsor->slug;
+            }
+            return response()->json([
+                "success" => true,
+                "data" => [
+                    "sponsor" => $sponsor,
+                    "nextSponsor" => [
+                        "id" => $nextID,
+                        "slug" => $nextSlug,
+                    ]
+                ]
+            ]);
+        } else {
+            $this->fail("Unauthorised/unauthenticated.");
+        }
+    }
+
+    function array_flatten($array){
+        $it = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
+        return iterator_to_array($it, true);
+   }
+
+    private function loadAllResources() {
+        if(Auth::check() && in_array(Auth::user()->type, ["admin", "committee","sponsor","hacker","sponsor-reviewer"])) {
+            $sponsors = Sponsor::all();
+            if ($sponsors) {
+                $all_details = [];
+                foreach ($sponsors as $sponsor) {
+                    $sponsor_details = $sponsor->details()->get();
+                    if (!$sponsor_details->isEmpty()){
+                        $all_details[] = $sponsor_details;
+                    }
+                }
+                if($all_details) {
+                    $flattened_details = array_flatten($all_details);
+                    return response()->json([
+                        "success" => true,
+                        "all_details" => $flattened_details,
+                    ]);
+                } else {
+                    return $this->fail("No details found");
+                }
+            } else {
+                return $this->fail("Sponsor not found");
+            }
+        } else {
+            $this->fail("Checks failed");
         }
     }
 
@@ -463,6 +558,7 @@ class Sponsors extends Controller
         if($this->canContinue(["admin", "committee", "sponsor-reviewer", "sponsor"], $r, ["sponsor_id", "sponsor_slug"])) {
             $id = $r->get("sponsor_id");
             $slug = $r->get("sponsor_slug");
+            $detail_type_list = $r->get("sponsor_details");
             $detail_type = $r->get("detail_type");
             $sponsor = Sponsor::where("id", $id)
                               ->where("slug", $slug)
@@ -471,6 +567,10 @@ class Sponsors extends Controller
             if ($sponsor) {
                 if($detail_type)
                     $details = $sponsor->details()->where("type", $detail_type)->get();
+                elseif($detail_type_list)
+                    $details = $sponsor->details()
+                                        ->whereIn("type",$detail_type_list)
+                                        ->get();
                 else
                     $details = $sponsor->details()->get();
 

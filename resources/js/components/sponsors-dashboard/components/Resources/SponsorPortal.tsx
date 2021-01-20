@@ -27,7 +27,7 @@ interface ISponsorPortalState {
 class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> {
 
     state = {
-        detail_id: 42,
+        detail_id: -1,
         resources: [],
         uploadFormShowing: false,
         fields: {
@@ -232,7 +232,7 @@ class SponsorPortal extends Component<ISponsorPortalProps, ISponsorPortalState> 
 
                         this.setState({
                             isLoading: false,
-                            detail_id:detail[0]["id"],
+                            detail_id: detail[0]["id"],
                             fields: {
                                 data: Object.assign({}, fields.data, details.data),
                                 files: details.files,
