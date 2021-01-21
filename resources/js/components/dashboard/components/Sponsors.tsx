@@ -143,7 +143,6 @@ class Sponsors extends Component<IDashboardPropsWithRouter, ISponsorState> {
         return (test);
     }
 
-    // Triger redeploy
     private loadAllSponsors() {
         axios.get(`/sponsors/dashboard-api/get-sponsors-display.json`).then(res => {
             const status = res.status;
