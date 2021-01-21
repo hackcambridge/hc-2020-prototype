@@ -9,9 +9,10 @@ class CheckType
 {
 
     private $allowed = array(
-        "hacker" => ["hacker", "mentor", "sponsor", "sponsor-reviewer", "committee", "admin"],
-        "mentor" => ["hacker", "mentor", "sponsor", "sponsor-reviewer", "committee", "admin"],
-        "sponsor" => ["sponsor", "sponsor-reviewer", "committee", "admin"],
+        "hacker"  => ["hacker", "mentor", "sponsor", "sponsor-reviewer", "committee", "admin"],
+        "mentor"  => ["hacker", "mentor", "sponsor", "sponsor-reviewer", "committee", "admin"],
+        // TODO - adding Hackers and Mentors for the Dashboard Sponsors pane
+        "sponsor" => ["hacker", "mentor", "sponsor", "sponsor-reviewer", "committee", "admin"],
         "committee" => ["committee", "admin", "sponsor-reviewer"],
         "admin" => ["admin"],
     );
