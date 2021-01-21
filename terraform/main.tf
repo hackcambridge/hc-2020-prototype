@@ -64,7 +64,7 @@ module "hc-prod-instance" {
 module "hc-prod-cluster" {
   source           = "./modules/hc-cluster"
   name             = "hc-prod"
-  desired_capacity = 4
+  desired_capacity = 6
   launch_template  = module.hc-prod-instance.id
   vpc              = "${aws_default_vpc.default.id}"
   subnets          = ["${aws_default_subnet.default_A.id}", "${aws_default_subnet.default_B.id}"]
