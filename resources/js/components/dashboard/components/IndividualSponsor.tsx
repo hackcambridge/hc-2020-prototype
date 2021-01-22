@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Page, Card, SkeletonBodyText, Image, Thumbnail, Layout, Heading, TextContainer, DisplayText, Badge, Spinner, Link } from '@shopify/polaris';
+import { Page, Card, SkeletonBodyText, Image, Avatar, Layout, Heading, TextContainer, DisplayText, Badge, Spinner, Link } from '@shopify/polaris';
 import Dashboard404 from '../Dashboard404';
 import { IResourceCard, ISponsor, IUserDetails } from '../../../interfaces/dashboard.interfaces';
 import axios from 'axios';
@@ -153,14 +153,12 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                 return (
                     <div key={p.url}>
                         <img src={p.url} />
-                        <p className="legend">{p.name}</p>
                     </div>
                 )
             })
             const placeholderCarousel = (
                 <div>
                     <img style={{ width: "100%" }} id="image" src={"https://" + window.location.hostname + "/images/office-background.jpg"}></img>
-                    <p className="legend">An office</p>
                 </div>
             )
             let logoUrl: IAssetInformation = portalInfo.files.find((x: IAssetInformation) => { return x.name.toLowerCase().includes("logo") });
@@ -182,14 +180,16 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                         onPrevious: this.prevSponsor
                     }}
                     primaryAction={{ content: 'Speak To Them!', onAction: () => { window.open(portalInfo.data["discord invite link"]) } }}
-                    thumbnail={<Thumbnail
+                    thumbnail={
+                        <Avatar
                         source={logoUrl}
                         size="large"
-                        alt={`${actual_sponsor.name}`}
+                        name={`${actual_sponsor.name}`}
                     />}
                 >
                     <Carousel
-                        renderThumbs={() => { }}>
+                        showIndicators={false}
+                        showThumbs={false} >
                         {carouselDivs.length === 0 ? placeholderCarousel : carouselDivs}
                     </Carousel>
                     <Layout>
@@ -253,6 +253,13 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
         return replaceNonAlphaNumeric
     }
 
+    private onlyUnique(value: ISponsor, index: number, self: any) {
+        var test = index === self.findIndex((t: ISponsor) => {
+            return (t.type === value.type)
+        });
+        return (test);
+    }
+
     private loadInformation(sponsorId: string, sponsorSlug: string) {
         this.setState({ loadingResources: true });
         axios.post(`/sponsors/dashboard-api/load-resources.json`, {
@@ -267,7 +274,9 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
                 if (data && "success" in data && data["success"]) {
                     const details = data["details"];
                     if (Array.isArray(details)) {
-                        const portalInfoJSON = details.reduce((result, r) => {
+                        const sorted_by_updated = details.sort((a, b) => (a.updated_at < b.updated_at) ? 1 : -1);
+                        const duplicates_removed = sorted_by_updated.filter(this.onlyUnique);
+                        const portalInfoJSON = duplicates_removed.reduce((result, r) => {
                             if (r.type === "portal-info") {
                                 const pInfo: IPortalDefinition = JSON.parse(r["payload"]);
                                 portalInfo = pInfo;
@@ -306,7 +315,7 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
 
                     {data.title ? <DisplayText> {this.capitalizeAndOnlyAlphaNumeric(data.title)}</DisplayText> : <></>}
                     <br />
-                    <p>{data.description ? this.capitalizeAndOnlyAlphaNumeric(data.description) : ""}</p>
+                    <p>{data.description ? data.description : ""}</p>
                 </Card>
             </Layout.Section>
         );
