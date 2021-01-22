@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Page, Card, SkeletonBodyText, Image, Thumbnail, Layout, Heading, TextContainer, DisplayText, Badge, Spinner } from '@shopify/polaris';
+import { Page, Card, SkeletonBodyText, Image, Thumbnail, Layout, Heading, TextContainer, DisplayText, Badge, Spinner, Link } from '@shopify/polaris';
 import Dashboard404 from '../Dashboard404';
 import { IResourceCard, ISponsor, IUserDetails } from '../../../interfaces/dashboard.interfaces';
 import axios from 'axios';
@@ -296,11 +296,12 @@ class IndividualSponsor extends Component<IIndividualSponsorProps & RouteCompone
             <Layout.Section oneThird>
                 <Card title={this.capitalizeAndOnlyAlphaNumeric(data.mainType)} sectioned>
                     {
-                        (!data || data.files.length === 0) ? <></> : <Image
+                        (!data || data.files.length === 0) ? <></> : 
+                        ( (data.files[0].url.endsWith(".png") || data.files[0].url.endsWith(".jpg") || data.files[0].url.endsWith(".jpeg")) ? <Image
                             source={data.files[0].url}
                             alt={data.files[0].name}
                             style={{ maxWidth: "100%", maxHeight: "100%" }}
-                        />
+                        /> : <Link url={data.files[0].url} external>{data.files[0].name}</Link>)
                     }
 
                     {data.title ? <DisplayText> {this.capitalizeAndOnlyAlphaNumeric(data.title)}</DisplayText> : <></>}

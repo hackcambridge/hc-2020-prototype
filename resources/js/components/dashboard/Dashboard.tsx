@@ -170,13 +170,13 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 new: false,
                 badge: null
             });
-            // dashboardNavigationItems.push({ 
-            //     url: `${this.props.baseUrl}/sponsors`,
-            //     label: `Sponsors`,
-            //     icon: JobsMajor,
-            //     new: false,
-            //     badge: "New",
-            // });
+            dashboardNavigationItems.push({ 
+                url: `${this.props.baseUrl}/sponsors`,
+                label: `Sponsors`,
+                icon: JobsMajor,
+                new: false,
+                badge: "New",
+            });
             dashboardNavigationItems.push({
                 url: `${this.props.baseUrl}/schedule`,
                 label: `Schedule`,

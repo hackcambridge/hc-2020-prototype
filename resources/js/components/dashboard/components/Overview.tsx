@@ -100,7 +100,7 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
 
         const longLinks = [
             { text: "Join the Hex Cambridge Discord Channel", link: "/dashboard/join-discord", internal: false },
-            // { text: "Hackathon Devpost", link: "https://hexcambridge.devpost.com/", internal: false },
+            { text: "Hackathon Devpost", link: "https://hex-cambridge.devpost.com/", internal: false },
             { text: "View the challenges", link: "/dashboard/challenges", internal: true },
             { text: "What's happening when", link: "/dashboard/schedule", internal: true },
             { text: "Hex Cambridge Gaming Sessions Sign-up", link: "https://forms.gle/Pj7wsvPQFRigEQBm9", internal: false },
