@@ -64,7 +64,7 @@ class QRScanner extends Component<IDashboardProps, QRScannerState> {
     private handleScan = (data: string) => {
         if (data != null) {
             let decoded = window.atob(data);
-            const regex = new RegExp("^[a-zA-Z0-9]+\/[a-zA-Z0-9]+$");
+            const regex = new RegExp("^[a-zA-Z0-9]+\/[a-zA-Z0-9-_]+$");
             if (regex.test(decoded)) {
                 toast.success("Code found sending to server...");
                 this.sendCode(data);
