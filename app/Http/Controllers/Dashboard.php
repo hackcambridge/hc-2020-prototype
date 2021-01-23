@@ -649,7 +649,7 @@ class Dashboard extends Controller
         if ($this->canContinue(["hacker", "admin", "committee"], $r, ['qrcode'])) {
             $workshopName = base64_decode($r->get("qrcode"), true);
             $token_start = "/^hexcambridge\//";
-            $token_pattern = "/^hexcambridge\/[a-zA-Z0-9-_]+$/";
+            $token_pattern = "/^hexcambridge\/[a-zA-Z0-9-_\s]+$/";
             if (preg_match($token_pattern, $workshopName)) {
                 $workshopName = preg_replace($token_start, "", $workshopName);
                 $user = User::where("id", Auth::user()->id)->first();
