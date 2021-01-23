@@ -101,7 +101,7 @@ class Sponsors extends Controller
             ->first();
 
         if($sponsor) {
-            if(in_array(Auth::user()->type, ["admin", "committee"])) return true;
+            if(in_array(Auth::user()->type, ["admin", "committee", "hacker", "sponsor", "sponsor-reviewer", "mentor"])) return true;
 
             // Try to find agent record.
             $agent = $sponsor->agents()
