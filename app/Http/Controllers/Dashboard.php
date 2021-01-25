@@ -122,16 +122,14 @@ class Dashboard extends Controller
 
     private function canContinue($allowed = [], $r, $stringChecks = [])
     {
-        array_push($allowed, "committee", "admin"); // TODO "committee" temporary
-
+        array_push($allowed, "committee", "admin");
+        
         // Check the request provides all required arguments.
-        // array_push($stringChecks, "sponsor_id", "sponsor_slug");
         if (Auth::check() && in_array(Auth::user()->type, $allowed)) {
             if ($r) {
                 foreach ($stringChecks as $param) {
                     $val = $r->get($param);
                     if (!$r->has($param)) return false;
-                    // if(!$val || strlen($val) == 0) return false;
                 }
             }
             return true;
