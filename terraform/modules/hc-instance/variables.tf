@@ -5,7 +5,7 @@ variable "name" {
 
 variable "instance_type" {
   description = "The type of the instance to launch"
-  default     = "t2.medium"
+  default     = "t2.micro"
 }
 
 variable "security_group" {
