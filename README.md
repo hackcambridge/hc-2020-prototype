@@ -19,8 +19,8 @@ The React apps use [Shopify Polaris](https://polaris.shopify.com/) as the base U
 Follow the instructions on the "Development > Setting Up the Development Environment" page on the Hack Cambridge Notion. Basic usage is as follows.
 
 ```bash
-git clone git@github.com:hackcambridge/hc2020-prototype.git
-./hc2020-prototype/.hackcambridge/hc-dev-install.sh
+git clone git@github.com:hackcambridge/hackaestus.git
+./hackaestus/.hackcambridge/hc-dev-install.sh
 ```
 
 Whenever pulling a new version you recompile the React apps and migrate the database (as shown below).
