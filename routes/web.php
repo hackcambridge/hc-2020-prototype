@@ -6,6 +6,7 @@ use App\Http\Resources\Sponsor as SponsorResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Helpers\BatchMailer;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,7 +82,7 @@ Route::middleware(['auth.check_staging'])->group(function() {
             ->post('/dashboard-api/{path}.json', 'Dashboard@api_post')
             ->name('dashboard_api_post');
     });
-    
+
     Route::middleware(['auth.passwordless', 'type:mentor'])->group(function() {
 
         // React App
@@ -105,7 +106,7 @@ Route::middleware(['auth.check_staging'])->group(function() {
             ->post('/sponsors/dashboard-api/{path}.json', 'Sponsors@api_post')
             ->name('sponsors_api_post');
     });
-    
+
     Route::middleware(['auth.committee', 'type:committee'])->group(function() {
 
         // React App
