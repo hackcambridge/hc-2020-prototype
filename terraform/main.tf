@@ -74,21 +74,6 @@ module "hc-prod-cluster" {
 # ---------- DATABASE -----------
 # -------------------------------
 
-module "hc-rds-instance" {
-  source         = "./modules/hc-rds-instance"
-  name           = "hc-rds-instance"
-  cluster_id     =  module.hc-rds-cluster.id
-}
-
-module "hc-rds-cluster" {
-  source           = "./modules/hc-rds-cluster"
-  name             = "hc-rds"
-  database_name    = "hc_staging"
-  security_group   = "${aws_security_group.aurora-security-group.id}"
-  DB_USERNAME      = "${var.DB_USERNAME}"
-  DB_PASSWORD      = "${var.DB_PASSWORD}"
-}
-
 module "hc-2022-rds-instance" {
     source         = "./modules/hc-rds-instance"
     name           = "hc-2022-rds-instance"

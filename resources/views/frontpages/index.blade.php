@@ -14,7 +14,7 @@
         <div id="intro-description">
             <p>January&nbsp;23-24th 2021</p>
             <p class="normal-text description">Cambridge's biggest <strong>36h</strong> hackathon is back for it's sixth iteration and this year we're going fully virtual! We're very excited to present a brand new experience to all of you at Hex Cambridge 2021.</p>
-            <a href="{{ route('dashboard_index') }}"><button class="btn btn-lg btn-primary disabled normal-text"><strong>Applications have closed</strong></button></a> <br>
+            <a href="{{-- route('dashboard_index') --}}"><button class="btn btn-lg btn-primary disabled normal-text"><strong>Applications have closed</strong></button></a> <br>
             <!-- <button class="btn btn-primary normal-text" onclick='window.location.href="#about"'>Learn more</button> -->
         </div>
         <img id="top-logo" src="{{ asset('images/logo.svg') }}" />
@@ -198,7 +198,7 @@
         </div>
         <div class="text-space">
             <div class="diagonal-text">
-                
+
                 <span class="full-email">Got any other questions? Ask us at <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>.</span>
                 <span class="short-email">Contact us <a href="mailto:team@hackcambridge.com">here</a>.</span>
             </div>
