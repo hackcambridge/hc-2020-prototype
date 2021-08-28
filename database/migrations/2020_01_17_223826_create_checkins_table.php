@@ -18,6 +18,7 @@ class CreateCheckinsTable extends Migration
             $table->unsignedInteger('application_id');
             $table->timestamps();
         });
+        // TODO create foreign key constraint
     }
 
     /**

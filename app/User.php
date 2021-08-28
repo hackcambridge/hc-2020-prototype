@@ -36,4 +36,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // TODO Implement eloquent relationships back to TeamMember; ApplicationReview; Application; Checkin
 }
