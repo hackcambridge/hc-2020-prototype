@@ -7,5 +7,5 @@ output "staging-domain-name" {
 }
 
 output "rds-domain-name" {
-  value = module.hc-rds-cluster.endpoint
+  value = module.hc-2022-rds-cluster.endpoint
 }
