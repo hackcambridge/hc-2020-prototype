@@ -20,6 +20,8 @@ class CreateMentorsTable extends Migration
             $table->string("auth0_id")->nullable();
             $table->timestamps();
         });
+
+        // TODO add sponsor_id fk.
     }
 
     /**

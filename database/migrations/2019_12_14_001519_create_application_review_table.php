@@ -21,6 +21,8 @@ class CreateApplicationReviewTable extends Migration
             $table->integer("review_total")->default(0);
             $table->timestamps();
         });
+
+        // TODO add foreign key constraint
     }
 
     /**
