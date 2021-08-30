@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^7.3",
         "auth0/login": "~5.0",
         "bogardo/mailgun": "^5.2",
         "doctrine/dbal": "^2.9",
