@@ -8,13 +8,13 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.3",
         "auth0/login": "~5.0",
         "bogardo/mailgun": "^5.2",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.5",
-        "laravel/framework": "^5.8.38",
+        "laravel/framework": "^6.20.26",
         "laravel/tinker": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
         "php-http/guzzle6-adapter": "1.1.1"

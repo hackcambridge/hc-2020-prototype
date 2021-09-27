@@ -234,7 +234,7 @@ body {
     & .btn.btn-lg {
         font-size: 1.2rem;
         height: 3rem;
-        padding: .5rem 0.75rem; 
+        padding: .5rem 0.75rem;
     }
     & #top-logo-solo {
         margin: -26px auto -1.5rem;
@@ -1042,11 +1042,57 @@ body {
 }
 
 #background-particles {
+    background-color: black;
     position: fixed;
     z-index: -1;
     width: 100%;
     height: 100%;
 }
+
+#hc-coming-soon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    font-family: industry, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#hc-coming-soon h1 {
+    font-weight: 700;
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid #3b4351; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    max-width: fit-content;
+    letter-spacing: .15em; /* Adjust as needed */
+    animation:
+        typing 6s steps(40, end) infinite,
+        blink-caret .75s step-end infinite;
+    @media screen and (max-width: 600px) {
+        font-size: xx-large;
+    }
+    @media screen and (max-width: 468px) {
+        font-size: large;
+    }
+}
+
+/* The typing effect */
+@keyframes typing {
+    from { width: 0 }
+    60% {width: 100%}
+    to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #3b4351; }
+}
+
 
 #header-bottom-card {
     --card-horizontal-padding: 30px;
@@ -1071,13 +1117,6 @@ body {
             width: var(--card-logo-width);
         }
     }
-}
-
-#background-particles {
-    position: fixed;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
 }
 
 #header-bottom-card {
