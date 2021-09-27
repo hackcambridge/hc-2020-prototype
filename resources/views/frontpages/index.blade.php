@@ -1,5 +1,7 @@
 @extends('layouts.home')
-@section('title', 'Hex Cambridge — The Official University of Cambridge Hackathon')
+{{--@section('title', 'Hex Cambridge — The Official University of Cambridge Hackathon')--}}
+{{--TMP TITLE--}}
+@section('title', 'Hack Cambridge Atlas — The Official University of Cambridge Hackathon')
 
 @section('header-content')
 <div id="intro-container">

@@ -18,7 +18,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ mix('assets/css/home.css') }}" />
-    <link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+{{--    <link rel="shortcut icon" type="image/png" href="/images/favicon.png" />--}}
+{{--    TMP landing page--}}
+    <link rel="shortcut icon" type="image/png" href="/images/hcf-logo-black.png" />
+    <link rel="stylesheet" href="https://use.typekit.net/iag0xbk.css">
 </head>
 
 <body>
@@ -31,84 +34,91 @@
     <div class="env-banner" style="background-color: #bd0000;">DEVELOPMENT</div>
     @endenv
 
-    <!-- <div id="background-particles"></div> -->
-    <section id="header-section" class="section-diagonal-bottom">
-        <div class="container grid-xl" style="padding-bottom: 5vh">
-            <header id="top-menu" class="navbar">
-                <section>
-                    <a href="/">
-                        <div id="logo" style="background-image: url({{ asset('images/logo.svg') }})"></div>
-                    </a>
-                    <a href="/" class="navbar-brand mr-2">
-                        Hex Cambridge
-                    </a>
-                </section>
-                <section class="navbar-section">
-                    <div class="section-full">
-                        <a class="options" href="/#about">About</a>
-                        <a class="options" href="/#faq">FAQs</a>
-                        <a class="options" href="/#sponsors">Sponsors</a>
-                    </div>
-                    <div class="section-menu">
-                        <div class="popover popover-bottom">
-                            <button class="btn btn-primary" aria-label="Mobile menu">
-                                <i class="icon icon-menu"></i>
-                            </button>
-                            <div class="popover-container">
-                                <a class="options" href="/#about">About</a>
-                                <br/><hr/>
-                                <a class="options" href="/#faq">FAQs</a>
-                                <br/><hr/>
-                                <a class="options" href="/#sponsors">Sponsors</a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!-- <li class="breadcrumb-item">
-                    <a href="{{ route('apply') }}">Apply</a>
-                </li>
-                <li class="breadcrumb-item">
-                    @if (Auth::check())
-                    <a href="{{ route('dashboard_index') }}">Dashboard</a>
-                    @else
-                    <a href="{{ route('dashboard_index') }}">Login</a>
-                    @endif
-                </li> -->
-            </header>
+    {{--TMP landing page--}}
+    <div id="background-particles"></div>
+    <div id="hc-coming-soon">
+        <h1>Hack Cambridge Atlas</h1>
+        <h2>Coming soon</h2>
+    </div>
+{{--    <section id="header-section" class="section-diagonal-bottom">--}}
+{{--        <div class="container grid-xl" style="padding-bottom: 5vh">--}}
+{{--            <header id="top-menu" class="navbar">--}}
+{{--                <section>--}}
+{{--                    <a href="/">--}}
+{{--                        <div id="logo" style="background-image: url({{ asset('images/logo.svg') }})"></div>--}}
+{{--                    </a>--}}
+{{--                    <a href="/" class="navbar-brand mr-2">--}}
+{{--                        Hex Cambridge--}}
+{{--                    </a>--}}
+{{--                </section>--}}
+{{--                <section class="navbar-section">--}}
+{{--                    <div class="section-full">--}}
+{{--                        <a class="options" href="/#about">About</a>--}}
+{{--                        <a class="options" href="/#faq">FAQs</a>--}}
+{{--                        <a class="options" href="/#sponsors">Sponsors</a>--}}
+{{--                    </div>--}}
+{{--                    <div class="section-menu">--}}
+{{--                        <div class="popover popover-bottom">--}}
+{{--                            <button class="btn btn-primary" aria-label="Mobile menu">--}}
+{{--                                <i class="icon icon-menu"></i>--}}
+{{--                            </button>--}}
+{{--                            <div class="popover-container">--}}
+{{--                                <a class="options" href="/#about">About</a>--}}
+{{--                                <br/><hr/>--}}
+{{--                                <a class="options" href="/#faq">FAQs</a>--}}
+{{--                                <br/><hr/>--}}
+{{--                                <a class="options" href="/#sponsors">Sponsors</a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </section>--}}
+{{--                <!-- <li class="breadcrumb-item">--}}
+{{--                    <a href="{{ route('apply') }}">Apply</a>--}}
+{{--                </li>--}}
+{{--                <li class="breadcrumb-item">--}}
+{{--                    @if (Auth::check())--}}
+{{--                    <a href="{{ route('dashboard_index') }}">Dashboard</a>--}}
+{{--                    @else--}}
+{{--                    <a href="{{ route('dashboard_index') }}">Login</a>--}}
+{{--                    @endif--}}
+{{--                </li> -->--}}
+{{--            </header>--}}
 
-            @yield('header-content')
-        </div>
-    </section>
+{{--            @yield('header-content')--}}
+{{--        </div>--}}
+{{--    </section>--}}
 
-    @yield('content')
+{{--    @yield('content')--}}
 
-    <section id="footer-section">
-        <div class="container">
-            <div class="columns col-gapless">
-                <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-copyright">
-                    HexCambridge&nbsp;©&nbsp;2021
-                </div>
-                <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-email">
-                    <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>
-                </div>
-                <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-thumbnails">
-                    <a href="https://www.facebook.com/hackcambridge" target="_blank"><i class="fab fa-facebook-square"></i></a>
-                    <a href="https://twitter.com/hack_cambridge" target="_blank"><i class="fab fa-twitter-square"></i></a>
-                    <a href="https://www.instagram.com/hack_cambridge" target="_blank"><i class="fab fa-instagram-square"></i></a>
-                    <a href="https://www.linkedin.com/company/hack-cambridge/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-            <!-- <p id="copyright">Hack Cambridge is UK registered charity #1177223.</p> -->
-        </div>
-    </section>
+{{--    <section id="footer-section">--}}
+{{--        <div class="container">--}}
+{{--            <div class="columns col-gapless">--}}
+{{--                <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-copyright">--}}
+{{--                    HexCambridge&nbsp;©&nbsp;2021--}}
+{{--                </div>--}}
+{{--                <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-email">--}}
+{{--                    <a href="mailto:team@hackcambridge.com">team@hackcambridge.com</a>--}}
+{{--                </div>--}}
+{{--                <div class="column col-sm-12 col-md-6 col-4 footer-element" id="footer-thumbnails">--}}
+{{--                    <a href="https://www.facebook.com/hackcambridge" target="_blank"><i class="fab fa-facebook-square"></i></a>--}}
+{{--                    <a href="https://twitter.com/hack_cambridge" target="_blank"><i class="fab fa-twitter-square"></i></a>--}}
+{{--                    <a href="https://www.instagram.com/hack_cambridge" target="_blank"><i class="fab fa-instagram-square"></i></a>--}}
+{{--                    <a href="https://www.linkedin.com/company/hack-cambridge/" target="_blank"><i class="fab fa-linkedin"></i></a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <!-- <p id="copyright">Hack Cambridge is UK registered charity #1177223.</p> -->--}}
+{{--        </div>--}}
+{{--    </section>--}}
 
-    <!-- MLH Banner -->
-    <a id="mlh-trust-badge" style="display:block;max-width:80px;min-width:60px;position:fixed;right:30px;top:0;width:10%;z-index:10000" href="https://mlh.io/seasons/2021/events?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2021-season&utm_content=black" target="_blank"><img src="https://s3.amazonaws.com/logged-assets/trust-badge/2021/mlh-trust-badge-2021-black.svg" alt="Major League Hacking 2021 Hackathon Season" style="width:100%"></a>
+{{--    <!-- MLH Banner -->--}}
+{{--    <a id="mlh-trust-badge" style="display:block;max-width:80px;min-width:60px;position:fixed;right:30px;top:0;width:10%;z-index:10000" href="https://mlh.io/seasons/2021/events?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2021-season&utm_content=black" target="_blank"><img src="https://s3.amazonaws.com/logged-assets/trust-badge/2021/mlh-trust-badge-2021-black.svg" alt="Major League Hacking 2021 Hackathon Season" style="width:100%"></a>--}}
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
     <script>
-        // particlesJS.load('background-particles', "{{ asset('assets/js/particlesjs-config.json') }}", function() {
-        //     //console.log('callback - particles.js config loaded');
-        // });
+        particlesJS.load('background-particles', "{{ asset('assets/js/particlesjs-config.json') }}", function() {
+            console.log('callback - particles.js config loaded');
+        });
 
         var gradients = [
             [
