@@ -33,7 +33,7 @@
     @elseenv('development')
     <div class="env-banner" style="background-color: #bd0000;">DEVELOPMENT</div>
     @endenv
-
+    {{--TODO: Change this to main landing page and Integrate in my react app--}}
     {{--TMP landing page--}}
     <div id="background-particles"></div>
     <div id="hc-coming-soon">

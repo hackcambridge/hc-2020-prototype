@@ -29,11 +29,12 @@ module "hc-staging-instance" {
 }
 
 module "hc-staging-cluster" {
-  source          = "./modules/hc-cluster"
-  name            = "hc-staging"
-  launch_template = module.hc-staging-instance.id
-  vpc             = "${aws_default_vpc.default.id}"
-  subnets         = ["${aws_default_subnet.default_A.id}", "${aws_default_subnet.default_B.id}"]
+  source           = "./modules/hc-cluster"
+  name             = "hc-staging"
+  launch_template  = module.hc-staging-instance.id
+  vpc              = "${aws_default_vpc.default.id}"
+  subnets          = ["${aws_default_subnet.default_A.id}", "${aws_default_subnet.default_B.id}"]
+  desired_capacity = 1
 }
 
 # -------------------------------
@@ -64,7 +65,7 @@ module "hc-prod-instance" {
 module "hc-prod-cluster" {
   source           = "./modules/hc-cluster"
   name             = "hc-prod"
-  desired_capacity = 4
+  desired_capacity = 1
   launch_template  = module.hc-prod-instance.id
   vpc              = "${aws_default_vpc.default.id}"
   subnets          = ["${aws_default_subnet.default_A.id}", "${aws_default_subnet.default_B.id}"]
