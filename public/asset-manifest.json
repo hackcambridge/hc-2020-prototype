@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.e9f5aa1d.chunk.css",
-    "main.js": "/static/js/main.8f45bb11.chunk.js",
-    "main.js.map": "/static/js/main.8f45bb11.chunk.js.map",
+    "main.css": "/static/css/main.b25314e7.chunk.css",
+    "main.js": "/static/js/main.de99ff77.chunk.js",
+    "main.js.map": "/static/js/main.de99ff77.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.b3374806.js",
     "runtime-main.js.map": "/static/js/runtime-main.b3374806.js.map",
     "static/js/2.b153bd95.chunk.js": "/static/js/2.b153bd95.chunk.js",
@@ -10,7 +10,7 @@
     "static/js/3.d6477765.chunk.js": "/static/js/3.d6477765.chunk.js",
     "static/js/3.d6477765.chunk.js.map": "/static/js/3.d6477765.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.e9f5aa1d.chunk.css.map": "/static/css/main.e9f5aa1d.chunk.css.map",
+    "static/css/main.b25314e7.chunk.css.map": "/static/css/main.b25314e7.chunk.css.map",
     "static/js/2.b153bd95.chunk.js.LICENSE.txt": "/static/js/2.b153bd95.chunk.js.LICENSE.txt",
     "static/media/001-idea.6c18b9f8.svg": "/static/media/001-idea.6c18b9f8.svg",
     "static/media/PastPhotoItem.scss": "/static/media/001-idea.758af702.png",
@@ -54,7 +54,7 @@
   "entrypoints": [
     "static/js/runtime-main.b3374806.js",
     "static/js/2.b153bd95.chunk.js",
-    "static/css/main.e9f5aa1d.chunk.css",
-    "static/js/main.8f45bb11.chunk.js"
+    "static/css/main.b25314e7.chunk.css",
+    "static/js/main.de99ff77.chunk.js"
   ]
 }
