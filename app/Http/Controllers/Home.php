@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Auth;
 class Home extends Controller
 {
     public function index() {
-        return view('frontpages/index');
+        // return view('frontpages/index');
+        return view('new-frontpages.index');
     }
 
     public function apply() {

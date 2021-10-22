@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW Home & Student X7 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="320mm" height="100mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 32000 10000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil0 {fill:#16A64C}
+    .fil1 {fill:#004E59}
+   ]]>
+  </style>
+ </defs>
+ <g id="Ebene_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <path class="fil0" d="M8178 1184c-432,0 -781,350 -781,782 0,431 349,780 781,780 430,0 780,-349 780,-780 0,-432 -350,-782 -780,-782z"/>
+  <path class="fil0" d="M6465 4470l976 -1285c50,-65 54,-155 10,-225l-414 -665c-37,-58 -101,-94 -170,-93l-1788 12 -981 0c-77,0 -111,96 -51,144l275 222c38,31 84,52 133,61l1703 321 -2107 2264 -2772 394c-96,13 -137,130 -71,200l271 291c53,57 129,89 207,88l2677 -44c99,-2 196,-30 281,-81l641 -391 1353 1075c54,42 89,103 98,171l257 1897c12,89 89,156 179,156l138 0c99,0 180,-80 180,-180l8 -2105c1,-109 -34,-215 -99,-302l-1181 -1592 247 -333z"/>
+  <path class="fil1" d="M13303 3964c0,-388 -303,-627 -698,-627l-1056 0 0 1268 1056 0c395,0 698,-240 698,-641zm-99 3191l-923 -1670 -732 0 0 1670 -1001 0 0 -4699 2198 0c979,0 1585,641 1585,1515 0,824 -528,1275 -1035,1394l1063 1790 -1155 0z"/>
+  <polygon class="fil1" points="15078,7155 15078,2456 18402,2456 18402,3337 16078,3337 16078,4323 18353,4323 18353,5203 16078,5203 16078,6274 18402,6274 18402,7155 "/>
+  <path class="fil1" d="M21938 3971c0,-395 -302,-634 -697,-634l-1057 0 0 1261 1057 0c395,0 697,-240 697,-627zm-2754 3184l0 -4699 2198 0c1021,0 1578,690 1578,1515 0,817 -564,1507 -1578,1507l-1198 0 0 1677 -1000 0z"/>
+  <polygon class="fil1" points="23544,7155 23544,2456 24552,2456 24552,6274 26538,6274 26538,7155 "/>
+  <polygon class="fil1" points="27630,7155 27630,5232 25827,2456 26968,2456 28130,4337 29292,2456 30427,2456 28630,5232 28630,7155 "/>
+ </g>
+</svg>
