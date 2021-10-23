@@ -35,6 +35,7 @@
     @endenv
     {{--TODO: Change this to main landing page and Integrate in my react app--}}
     {{--TMP landing page--}}
+    {{-- Now deprecated, left here for future reference--}}
     <div id="background-particles"></div>
     <div id="hc-coming-soon">
         <h1>Hack Cambridge Atlas</h1>
