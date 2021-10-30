@@ -102,9 +102,9 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         },
         logo: {
             width: 65,
-            topBarSource: '/images/logo_white.png',
+            topBarSource: '/images/Atlas_White.png',
             url: `${this.props.baseUrl}/`,
-            accessibilityLabel: 'Hex Cambridge',
+            accessibilityLabel: 'Hack Cambridge Atlas',
         },
     };
 

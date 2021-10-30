@@ -75,9 +75,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         },
         logo: {
             width: 40,
-            topBarSource: '/images/logo_white.png',
+            topBarSource: '/images/Atlas_White.png',
             url: `${this.props.baseUrl}/`,
-            accessibilityLabel: 'Hex Cambridge',
+            accessibilityLabel: 'Hack Cambridge Atlas',
         },
     };
 
@@ -170,7 +170,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 new: false,
                 badge: null
             });
-            dashboardNavigationItems.push({ 
+            dashboardNavigationItems.push({
                 url: `${this.props.baseUrl}/sponsors`,
                 label: `Sponsors`,
                 icon: JobsMajor,

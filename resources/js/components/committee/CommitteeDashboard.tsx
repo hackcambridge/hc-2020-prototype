@@ -63,9 +63,9 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
         },
         logo: {
             width: 65,
-            topBarSource: '/images/logo_white.png',
+            topBarSource: '/images/Atlas_White.png',
             url: `${this.props.baseUrl}/`,
-            accessibilityLabel: 'Hex Cambridge',
+            accessibilityLabel: 'Hack Cambridge Atlas',
         },
     };
 
@@ -200,7 +200,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                     : <></>}
 
                 {/* {this.sponsorSectionsNavMarkup(navSection)} */}
-                {/* {this.props.sponsors.length > 1 ? 
+                {/* {this.props.sponsors.length > 1 ?
                 <Navigation.Section
                     title="Sponsors"
                     items={sponsorItems}
