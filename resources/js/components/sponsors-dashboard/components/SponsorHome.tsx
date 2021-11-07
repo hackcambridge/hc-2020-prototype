@@ -43,11 +43,11 @@ class SponsorHome extends Component<ISponsorAdminProps, ISponsorAdminState> {
                 <Layout>
                     <Layout.Section>
                         <Card sectioned>
-                            <DisplayText size="small"><TextStyle variation="strong">Welcome to Hex Cambridge!</TextStyle></DisplayText>
+                            <DisplayText size="small"><TextStyle variation="strong">Welcome to Hack Cambridge Atlas!</TextStyle></DisplayText>
                             <br style={{ lineHeight: "0.8rem" }} />
-                            <p>We are extremely delighted to have <strong>{this.props.sponsor.name}</strong> onboard with Hex Cambridge this year.</p>
+                            <p>We are extremely delighted to have <strong>{this.props.sponsor.name}</strong> onboard with Hack Cambridge Atlas this year.</p>
                             <br style={{ lineHeight: "0.8rem" }} />
-                            <p>In this portal, you will be able to provide all of the information that we need in order for us to run Hex Cambridge smoothly. This would include information about your attending recruiters and mentors, details about your API, the swag that you would like to distribute, and other crucial pieces of information.</p>
+                            <p>In this portal, you will be able to provide all of the information that we need in order for us to run Hack Cambridge Atlas smoothly. This would include information about your attending recruiters and mentors, details about your API, the swag that you would like to distribute, and other crucial pieces of information.</p>
                             <br style={{ lineHeight: "0.8rem" }} />
                             <p>Please do take your time to explore our Sponsors Portal, and fill in all the relevant details to the best of your knowledge.<br></br>The more information that you can provide, the better it is for us!<br />Do send us an email if you have any issues or questions regarding our portal.</p>
                         </Card>
