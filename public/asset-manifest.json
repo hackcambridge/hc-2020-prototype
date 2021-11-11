@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.b25314e7.chunk.css",
-    "main.js": "/static/js/main.216cc544.chunk.js",
-    "main.js.map": "/static/js/main.216cc544.chunk.js.map",
+    "main.js": "/static/js/main.ebc000c2.chunk.js",
+    "main.js.map": "/static/js/main.ebc000c2.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.b3374806.js",
     "runtime-main.js.map": "/static/js/runtime-main.b3374806.js.map",
     "static/js/2.b153bd95.chunk.js": "/static/js/2.b153bd95.chunk.js",
@@ -32,6 +32,7 @@
     "static/media/cone.00bf44be.png": "/static/media/cone.00bf44be.png",
     "static/media/email.bd9ac138.png": "/static/media/email.bd9ac138.png",
     "static/media/facebook.4f037d96.png": "/static/media/facebook.4f037d96.png",
+    "static/media/featurespace2.fffe76b7.png": "/static/media/featurespace2.fffe76b7.png",
     "static/media/hc-2016-1.87dd3f1f.jpg": "/static/media/hc-2016-1.87dd3f1f.jpg",
     "static/media/hc-2017-1.3a62da6c.jpg": "/static/media/hc-2017-1.3a62da6c.jpg",
     "static/media/hc-2018-1.971ce084.jpg": "/static/media/hc-2018-1.971ce084.jpg",
@@ -56,6 +57,6 @@
     "static/js/runtime-main.b3374806.js",
     "static/js/2.b153bd95.chunk.js",
     "static/css/main.b25314e7.chunk.css",
-    "static/js/main.216cc544.chunk.js"
+    "static/js/main.ebc000c2.chunk.js"
   ]
 }
