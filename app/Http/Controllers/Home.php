@@ -17,7 +17,7 @@ class Home extends Controller
             $dashboard_url = route("dashboard_index", array(), false);
             return redirect($dashboard_url . "/apply/individual");
         }
-        return view('frontpages/apply', ['open' => Dashboard::areApplicationsOpen()]);
+//        return view('frontpages/apply', ['open' => Dashboard::areApplicationsOpen()]);
     }
 
     public function conduct() {
