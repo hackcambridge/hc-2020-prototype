@@ -62,27 +62,17 @@ class SponsorSpecialReq extends Component<ISponsorSpecialReqProps, ISponsorSpeci
             >
                 <Card sectioned>
                     <TextContainer>
-                        <Heading>Please specify any special requirements here: <strong>power supply, network, and other requirements</strong></Heading>
+                        <Heading>Please specify any special requirement you have regarding the actual event booth setup (power supply  and network), or any extra information that we should know.</Heading>
                     </TextContainer>
                     <br />
                     <>
                         <div>
-                            {
-                                Object.keys(fields).map((key) => {
-                                    let value = fields[key];
-                                    return ([
-                                        <>
-                                            {key === 'powerSupply'?
-                                                <TextField key={key} label={"Power Supply"}
-                                                           value={value} onChange={(e) => this.handleChange(key, e)} multiline={4} disabled={isLoading} /> :
-                                                <TextField key={key} label={this.capitalizeFirstLetter(key)}
-                                                           value={value} onChange={(e) => this.handleChange(key, e)} multiline={4} disabled={isLoading} />
-                                            }
-                                            <br />
-                                        </>
-                                    ])
-                                })
-                            }
+                                <TextField key={"powerSupply"} label={"Power Supply"} placeholder={"Do you have any special requirement regarding the power supply at your booth? (e.g. Large number of socket, etc.)"}
+                                    value={fields["powerSupply"]} onChange={(e) => this.handleChange("powerSupply", e)} multiline={4} disabled={isLoading} />
+                                <TextField key={"network"} label={"Network"} placeholder="Do you have any special requirement regarding the network connection at your booth? (e.g. Dedicated wire etc.)"
+                                value={fields["network"]} onChange={(e) => this.handleChange("network", e)} multiline={4} disabled={isLoading} />
+                                <TextField key={"other"} label={"Other requirements"} placeholder={"Anything else that we should know? (e.g. When do you plan to arrive for booth setup?)"}
+                                value={fields["other"]} onChange={(e) => this.handleChange("other", e)} multiline={4} disabled={isLoading} />
                         </div>
                     </>
 

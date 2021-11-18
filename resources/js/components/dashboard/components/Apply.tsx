@@ -197,7 +197,9 @@ class Apply extends Component<IApplyProps, IApplyState> {
         ]
 
         const mlhConduct = "https://static.mlh.io/docs/mlh-code-of-conduct.pdf";
-        const hcTerms = "/terms";
+        const hcTerms = "";
+        const hcCodeOfConduct="";
+        const hackathonUK = "";
         const mlhPrivacy = "https://mlh.io/privacy";
         const mlhTC = "https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md";
         const hcPrivacy = "/privacy";
@@ -364,7 +366,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
                         />
                         <Checkbox
                             disabled={!this.props.canEdit}
-                            label={<span>I have read and agreed to Hex Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link>.</span>}
+                            label={<span>I have read and agreed to Hack Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link> and <Link external onClick={() => this.openInNewTab(hcCodeOfConduct)}>Code of Conduct</Link>.</span>}
                             checked={agreedToTerms}
                             onChange={(val) => this.setState({ agreedToTerms: val })}
                         />
