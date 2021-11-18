@@ -10,6 +10,7 @@ import SponsorHome from "./components/SponsorHome";
 import SponsorOverview from "./components/SponsorOverview";
 import SponsorLoading from "./SponsorLoading";
 import SingleItemForm from "./components/common/SingleItemForm";
+import SponsorSpecialReq from "./components/Resources/SponsorSpecialReq";
 
 interface ISponsorContextProps extends RouteComponentProps, ISponsorDashboardProps {
     sponsor: ISponsorData,
@@ -129,17 +130,27 @@ class SponsorContext extends Component<ISponsorContextProps> {
                             detailType={"presentation"}
                             {...this.props} {...props}
                         />
-                    } />            
-                    <Route exact path={`${sponsorBaseUrl}portal-info`} render={(props) => 
-                        <SponsorPortal 
+                    } />
+                    <Route exact path={`${sponsorBaseUrl}portal-info`} render={(props) =>
+                        <SponsorPortal
                             key={"portal-info"}
-                            baseSponsorPath={sponsorBaseUrl} 
-                            sponsor={this.props.sponsor} 
+                            baseSponsorPath={sponsorBaseUrl}
+                            sponsor={this.props.sponsor}
                             title={"Information for Hackers Portal"}
                             detailType={"portal-info"}
                             {...this.props} {...props}
                         />
-                    } />            
+                    } />
+                    <Route exact path={`${sponsorBaseUrl}special-req`} render={(props) =>
+                        <SponsorSpecialReq
+                            key={"special-req"}
+                            baseSponsorPath={sponsorBaseUrl}
+                            sponsor={this.props.sponsor}
+                            title={"Special Requirements"}
+                            detailType={"special-req"}
+                            {...this.props} {...props}
+                        />
+                    } />
                     <Route component={SponsorLoading} />
                 </Switch>
             </div>

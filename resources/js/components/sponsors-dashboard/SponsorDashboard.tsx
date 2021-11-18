@@ -5,7 +5,7 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import {DnsSettingsMajor, HomeMajor,EnvelopeMajor, CirclePlusOutlineMinor, SmileyJoyMajor, MentionMajor, ConfettiMajor, CodeMajor, DataVisualizationMajor, SandboxMajor, GamesConsoleMajor, LogOutMinor, MobileChevronMajor, TransferWithinShopifyMajor, LockMajor, IqMajor, FlagMajor} from '@shopify/polaris-icons';
+import {ChecklistMajor, DnsSettingsMajor, HomeMajor,EnvelopeMajor, CirclePlusOutlineMinor, SmileyJoyMajor, MentionMajor, ConfettiMajor, CodeMajor, DataVisualizationMajor, SandboxMajor, GamesConsoleMajor, LogOutMinor, MobileChevronMajor, TransferWithinShopifyMajor, LockMajor, IqMajor, FlagMajor} from '@shopify/polaris-icons';
 import { Link, withRouter, RouteComponentProps, Redirect } from "react-router-dom";
 import { ISponsorDashboardProps, ISponsorData } from "../../interfaces/sponsors.interfaces";
 import Sponsor404 from "./Sponsor404";
@@ -267,6 +267,9 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
                 label: 'Invoice details', icon: EnvelopeMajor,
                 url: `${this.props.baseUrl}/${sponsorSlug}/invoice`
             });
+            sections.push({
+                label: 'Special Requirements', icon:ChecklistMajor, url: `${this.props.baseUrl}/${sponsorSlug}/special-req`
+            })
         }
 
         if (privileges.includes("mentors") || privileges.includes("recruiters")) {

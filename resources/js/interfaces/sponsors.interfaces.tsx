@@ -59,3 +59,9 @@ export interface IPortalDefinition {
     },
     files: IAssetInformation[],
 }
+
+export interface ISpecialReqDefinition {
+    powerSupply: string,
+    network: string,
+    other: string
+}
