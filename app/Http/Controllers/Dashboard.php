@@ -17,7 +17,7 @@ use App\Http\Resources\TeamMember as TeamMemberResource;
 class Dashboard extends Controller
 {
     private $maximum_team_size = 5;
-    private static $accepting_applications = false;
+    private static $accepting_applications = true;
     private static $discord_invite_url = "https://discord.gg/kBahBx4Vwa";
 
     public function index()
@@ -123,7 +123,7 @@ class Dashboard extends Controller
     private function canContinue($allowed = [], $r, $stringChecks = [])
     {
         array_push($allowed, "committee", "admin");
-        
+
         // Check the request provides all required arguments.
         if (Auth::check() && in_array(Auth::user()->type, $allowed)) {
             if ($r) {
