@@ -30,7 +30,7 @@ interface IExpoAssigments {
 }
 
 class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
-    private detailsReady = true;
+    private detailsReady = false;
     // private teamAllocationsUrl = "https://assets.hackcambridge.com/team_assignments.json";
 
     state = {
@@ -112,7 +112,7 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
             <Layout>
                 <Layout.Section oneHalf>
                     <Card>
-                        <ResourceList 
+                        <ResourceList
                             items={longLinks}
                             renderItem={(item) => {
                                 return (
@@ -120,7 +120,7 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                                         if(item.internal) { this.props.history.push(item.link); }
                                         else { window.open(item.link, "_blank"); }
                                     }}>
-                                        <Heading>{item.text} →</Heading> 
+                                        <Heading>{item.text} →</Heading>
                                     </ResourceList.Item>
                                 );
                             }}
@@ -128,7 +128,7 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                     </Card>
                     {/* <br />
                     <Card title={"Expo Layout"} actions={expoAssignments.length > 0 ? [{
-                        content: "Team Allocations", 
+                        content: "Team Allocations",
                         onAction: () => this.setState({ expoModalShowing: true })
                     }] : []}>
                         {/* <img style={{ width: "100%" }} src={this.expoMapUrl} /> */}
@@ -161,7 +161,7 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
         const { loading, stats } = this.state;
         if(loading) { return <Heading>Loading stats...</Heading>; }
         else if(!stats) { return <Heading>Nothing here right now!</Heading>; }
-        
+
         const statistics: IOverviewStats = stats!;
         return (<>
             <div style={{ textAlign: "center", fontSize: "1.8rem" }}>
@@ -193,11 +193,11 @@ class Overview extends Component<IDashboardPropsWithRouter, IOverviewState> {
                 const amOpen = modalKey == modalShowing;
                 const subset = amOpen ? set : set.slice(0,3);
                 return <>
-                    <Card 
+                    <Card
                         sectioned
-                        title={title} 
-                        actions={[{ 
-                            content: (!amOpen ? "All" : "Collapse"), 
+                        title={title}
+                        actions={[{
+                            content: (!amOpen ? "All" : "Collapse"),
                             onAction: () => this.setState({ modalShowing: (!amOpen ? modalKey : "") })
                         }]}
                     >

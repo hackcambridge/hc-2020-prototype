@@ -197,12 +197,12 @@ class Apply extends Component<IApplyProps, IApplyState> {
         ]
 
         const mlhConduct = "https://static.mlh.io/docs/mlh-code-of-conduct.pdf";
-        const hcTerms = "";
-        const hcCodeOfConduct="";
-        const hackathonUK = "";
+        const hcTerms = "https://github.com/hackcambridge/hc2020-prototype/blob/master/_terms/TermsAndConditions_HackCambridgeAtlas.pdf";
+        const hcCodeOfConduct="https://github.com/hackcambridge/hc2020-prototype/blob/master/_terms/CodeOfConduct_HackCambridgeAtlas_Updated.pdf";
+        const hackathonUKPrivacy = "https://hackathons.org.uk/privacy-policy";
         const mlhPrivacy = "https://mlh.io/privacy";
         const mlhTC = "https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md";
-        const hcPrivacy = "/privacy";
+        const hcPrivacy = "https://github.com/hackcambridge/hc2020-prototype/blob/master/_terms/Privacy_HackCambridgeAtlas.pdf";
         return (
             <Page title={"Apply for Hack Cambridge"}>
                 <Banner status="info">
@@ -360,19 +360,19 @@ class Apply extends Component<IApplyProps, IApplyState> {
                     <FormLayout>
                         <Checkbox
                             disabled={!this.props.canEdit}
-                            label={<span>I have read and agreed to <Link external onClick={() => this.openInNewTab(mlhConduct)}>MLH's Code of Conduct</Link>.</span>}
+                            label={<span>I have read and agreed to {/*<Link external onClick={() => this.openInNewTab(mlhConduct)}>MLH's Code of Conduct</Link>*/} Hack Cambridge's <Link external onClick={() => this.openInNewTab(hcCodeOfConduct)}>Code of Conduct</Link>.</span>}
                             checked={agreedToConduct}
                             onChange={(val) => this.setState({ agreedToConduct: val })}
                         />
                         <Checkbox
                             disabled={!this.props.canEdit}
-                            label={<span>I have read and agreed to Hack Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link> and <Link external onClick={() => this.openInNewTab(hcCodeOfConduct)}>Code of Conduct</Link>.</span>}
+                            label={<span>I have read and agreed to Hack Cambridge's own <Link external onClick={() => this.openInNewTab(hcTerms)}>Terms &#038; Conditions</Link>.</span>}
                             checked={agreedToTerms}
                             onChange={(val) => this.setState({ agreedToTerms: val })}
                         />
                         <Checkbox
                             disabled={!this.props.canEdit}
-                            label={<span>I authorise you to share my application/registration information for event administration, ranking, MLH administration, pre- and post- event informational emails, and occasional emails about hackathons in line with <Link external onClick={() => this.openInNewTab(mlhPrivacy)}>MLH's Privacy Policy</Link>. I further agree to the terms in both the <Link external onClick={() => this.openInNewTab(mlhTC)}>MLH Contest Terms and Conditions</Link>, the <Link external onClick={() => this.openInNewTab(mlhPrivacy)}>MLH Privacy Policy</Link>, and <Link external onClick={() => this.openInNewTab(hcPrivacy)}>Hack Cambridge's own Privacy Policy</Link>.</span>}
+                            label={<span>I authorise you to share my application/registration information for event administration, ranking, MLH administration, pre- and post- event informational emails, and occasional emails about hackathons in line with <Link external onClick={() => this.openInNewTab(mlhPrivacy)}>MLH's Privacy Policy</Link>. I further agree to the terms in the <Link external onClick={() => this.openInNewTab(mlhTC)}>MLH Contest Terms and Conditions</Link>, the <Link external onClick={() => this.openInNewTab(mlhPrivacy)}>MLH Privacy Policy</Link>, <Link external onClick={() => this.openInNewTab(hackathonUKPrivacy)}>Hackathon UK's Privacy Policy</Link> and <Link external onClick={() => this.openInNewTab(hcPrivacy)}>Hack Cambridge's own Privacy Policy</Link>.</span>}
                             checked={agreedToPrivacy}
                             onChange={(val) => this.setState({ agreedToPrivacy: val })}
                         />

@@ -218,7 +218,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             });
         }
 
-        if(this.props.user.type == "admin" || this.props.user.type == "hacker") {
+        if(this.props.user.type === "admin" /*|| this.props.user.type == "hacker"*/) {
             dashboardNavigationItems.push({
                 url: `${this.props.baseUrl}/qrscan`,
                 label: `Scan QR Code`,
