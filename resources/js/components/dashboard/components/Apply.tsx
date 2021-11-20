@@ -197,12 +197,12 @@ class Apply extends Component<IApplyProps, IApplyState> {
         ]
 
         const mlhConduct = "https://static.mlh.io/docs/mlh-code-of-conduct.pdf";
-        const hcTerms = "https://github.com/hackcambridge/hc2022-shared-files/blob/master/_terms/TermsAndConditions_HackCambridgeAtlas.pdf";
-        const hcCodeOfConduct="https://github.com/hackcambridge/hc2022-shared-files/blob/master/_terms/CodeOfConduct_HackCambridgeAtlas_Updated.pdf";
+        const hcTerms = "https://github.com/hackcambridge/hc2022-shared-files/blob/master/TermsAndConditions_HackCambridgeAtlas.pdf";
+        const hcCodeOfConduct="https://github.com/hackcambridge/hc2022-shared-files/blob/master/CodeOfConduct_HackCambridgeAtlas_Updated.pdf";
         const hackathonUKPrivacy = "https://hackathons.org.uk/privacy-policy";
         const mlhPrivacy = "https://mlh.io/privacy";
         const mlhTC = "https://github.com/MLH/mlh-policies/blob/master/prize-terms-and-conditions/contest-terms.md";
-        const hcPrivacy = "https://github.com/hackcambridge/hc2022-shared-files/blob/master/_terms/Privacy_HackCambridgeAtlas.pdf";
+        const hcPrivacy = "https://github.com/hackcambridge/hc2022-shared-files/blob/master/Privacy_HackCambridgeAtlas.pdf";
         return (
             <Page title={"Apply for Hack Cambridge"}>
                 <Banner status="info">
