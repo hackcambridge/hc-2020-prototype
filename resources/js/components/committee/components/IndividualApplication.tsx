@@ -206,7 +206,9 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                             return <></>;
                                         }
                                         // @ts-ignore
-                                        const answer: string = preferenceInPersonOrOnline.find((preference) => preference.value===questions[value.id]).label;
+                                        // This is for 6.
+                                        const answerOptional = preferenceInPersonOrOnline.find((preference) => preference.value===questions[value.id]);
+                                        const answer: string = answerOptional && answerOptional.label !== ""? answerOptional.label: value.default_choice;
                                         const answerMarkup = answer.length > 0 ? answer.split('\n').map(i => {
                                             return <TextContainer key={i.length}>{i}</TextContainer>
                                         }) : <TextContainer>(Blank)</TextContainer>;
