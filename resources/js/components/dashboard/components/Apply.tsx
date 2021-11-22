@@ -50,6 +50,19 @@ export const raceEthnicitiesMLH: { label: string, value: string }[] = [
     { label: "Prefer not to answer", value: "prefer_no_answer" },
 ]
 
+export const preferenceInPersonOrOnline: {label: string, value: string}[] = [
+    { label: "I will only attend if I can do so in person", value: "in_person_only" },
+    { label: "I prefer in person but am ok with doing it online", value: "in_person_preferred" },
+    { label: "No preference/Neutral", value: "neutral" },
+    { label: "I prefer online but am ok with doing it in person", value: "online_preferred" },
+    { label: "I will only attend if I can do so online", value: "online_only" }
+];
+
+export const multipleChoiceQuestions: {id: string, title: string, choices: {label:string, value: string}[], default_choice: string}[] = [
+    {id: "5", title: "Race/ethnicity:", choices: raceEthnicitiesMLH, default_choice: "americanindian_alaskannative"},
+    {id: "6", title: "In Person or Online: please indicate your preference here", choices: preferenceInPersonOrOnline, default_choice: "neutral"}
+]
+
 class Apply extends Component<IApplyProps, IApplyState> {
 
     state = {
@@ -58,7 +71,7 @@ class Apply extends Component<IApplyProps, IApplyState> {
         showingVisaDateSelector: false,
         uploadedFileName: this.props.initialRecord ? (this.props.initialRecord.cvFilename || "") : "",
         uploadedFileURL: this.props.initialRecord ? (this.props.initialRecord.cvUrl || "") : "",
-        questionValues: (this.props.initialRecord ? JSON.parse(this.props.initialRecord.questionResponses) : {}) as { [key: string]: string },
+        questionValues: (this.props.initialRecord ? JSON.parse(this.props.initialRecord.questionResponses) : Apply.constructDefaultChoices()) as { [key: string]: string },
         isSubmitted: this.props.initialRecord ? this.props.initialRecord.isSubmitted : false,
         countrySelection: this.props.initialRecord ? this.props.initialRecord.country : "GB",
         // visaRequired: this.props.initialRecord ? this.props.initialRecord.visaRequired : false,
@@ -75,6 +88,14 @@ class Apply extends Component<IApplyProps, IApplyState> {
         reviewed: false,
     }
 
+    private static constructDefaultChoices() {
+        const ret = {};
+        for (const q of multipleChoiceQuestions) {
+            // @ts-ignore
+            ret[q.id] = q.default_choice;
+        }
+        return ret;
+    }
 
     private buildFileSelector() {
         const fileSelector = document.createElement('input');
@@ -289,23 +310,26 @@ class Apply extends Component<IApplyProps, IApplyState> {
                             </div>
                         );
                     })}
-                    <div key="5">
-                        <div style={{ paddingBottom: "12px", paddingTop: "20px" }}>
-                            <Heading>Race/ethnicity:</Heading>
+
+                    {multipleChoiceQuestions.map(q => (
+                        <div key={q.id}>
+                            <div style={{ paddingBottom: "12px", paddingTop: "20px" }}>
+                                <Heading>{q.title}</Heading>
+                            </div>
+                            <Select
+                                id={q.id}
+                                label=""
+                                options={q.choices}
+                                onChange={(value) => {
+                                    const newValues = questionValues;
+                                    newValues[q.id] = value;
+                                    this.setState({ questionValues: newValues });
+                                }}
+                                value={q.id in questionValues ? questionValues[q.id] : q.default_choice}
+                                disabled={!this.props.canEdit}
+                            />
                         </div>
-                        <Select
-                            id="5"
-                            label=""
-                            options={raceEthnicitiesMLH}
-                            onChange={(value) => {
-                                const newValues = questionValues;
-                                newValues["5"] = value;
-                                this.setState({ questionValues: newValues });
-                            }}
-                            value={"5" in questionValues ? questionValues["5"] : ""}
-                            disabled={!this.props.canEdit}
-                        />
-                    </div>
+                    ))}
                 </Card>
 
                 {/* <Card sectioned title={"Visas"}>
@@ -441,9 +465,12 @@ class Apply extends Component<IApplyProps, IApplyState> {
             questions[q.id] = q.id in questionValues ? questionValues[q.id] : ""
         });
         questions["0"] = "0" in questionValues ? questionValues["0"] : "";
-        questions["5"] = "5" in questionValues ? questionValues["5"] : "";
+        multipleChoiceQuestions.forEach(q => {
+           questions[q.id] = q.id in questionValues ? questionValues[q.id] : q.default_choice;
+        });
 
-        let formData = new FormData();
+
+        const formData = new FormData();
         formData.append('questionResponses', JSON.stringify(questions));
         formData.append('country', this.state.countrySelection);
         // formData.append('visaRequired', this.state.visaRequired ? "true" : "false");

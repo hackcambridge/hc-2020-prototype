@@ -6,7 +6,11 @@ import { IApplicationDetail, IUserDetails, IApplicationReview } from '../../../i
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import md5 from 'md5';
-import { textFieldQuestions } from '../../dashboard/components/Apply';
+import {
+    multipleChoiceQuestions,
+    preferenceInPersonOrOnline,
+    textFieldQuestions
+} from '../../dashboard/components/Apply';
 import Linkify from 'linkifyjs/react';
 
 interface IIndividualApplicationProps {
@@ -196,6 +200,25 @@ class IndividualApplication extends Component<IIndividualApplicationProps & Rout
                                         </div>
                                     </Linkify>);
                                 })}
+                                {
+                                    multipleChoiceQuestions.map((value) => {
+                                        if (value.id === "5") {
+                                            return <></>;
+                                        }
+                                        // @ts-ignore
+                                        const answer: string = preferenceInPersonOrOnline.find((preference) => preference.value===questions[value.id]).label;
+                                        const answerMarkup = answer.length > 0 ? answer.split('\n').map(i => {
+                                            return <TextContainer key={i.length}>{i}</TextContainer>
+                                        }) : <TextContainer>(Blank)</TextContainer>;
+                                        return (<Linkify tagName="a" options={{ target: { url: '_blank' } }} key={value.id}>
+                                            <div style={{ padding: "1.4rem 2rem" }}>
+                                                <Heading>{value.title}</Heading>
+                                                <br style={{ lineHeight: "3px" }} />
+                                                {answerMarkup}
+                                            </div>
+                                        </Linkify>);
+                                    })
+                                }
                             </Card>
                         </Layout.Section>
                     </Layout>
