@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.c83857a3.chunk.css",
-    "main.js": "/static/js/main.b26c90fb.chunk.js",
-    "main.js.map": "/static/js/main.b26c90fb.chunk.js.map",
+    "main.js": "/static/js/main.d96657d1.chunk.js",
+    "main.js.map": "/static/js/main.d96657d1.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.b3374806.js",
     "runtime-main.js.map": "/static/js/runtime-main.b3374806.js.map",
     "static/js/2.b153bd95.chunk.js": "/static/js/2.b153bd95.chunk.js",
@@ -46,6 +46,7 @@
     "static/media/hc-2020-1.199c05b5.jpg": "/static/media/hc-2020-1.199c05b5.jpg",
     "static/media/hc-2020-2.3d77efcc.jpg": "/static/media/hc-2020-2.3d77efcc.jpg",
     "static/media/hc-2021-1.eb955096.png": "/static/media/hc-2021-1.eb955096.png",
+    "static/media/huawei2.c259df3e.png": "/static/media/huawei2.c259df3e.png",
     "static/media/instagram.cd1bed26.png": "/static/media/instagram.cd1bed26.png",
     "static/media/janestreet.4b5c1b43.png": "/static/media/janestreet.4b5c1b43.png",
     "static/media/linkedin.6892b3ae.png": "/static/media/linkedin.6892b3ae.png",
@@ -60,6 +61,6 @@
     "static/js/runtime-main.b3374806.js",
     "static/js/2.b153bd95.chunk.js",
     "static/css/main.c83857a3.chunk.css",
-    "static/js/main.b26c90fb.chunk.js"
+    "static/js/main.d96657d1.chunk.js"
   ]
 }
