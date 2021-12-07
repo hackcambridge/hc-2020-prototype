@@ -1,11 +1,5 @@
 <?php
 
-use App\User;
-use App\Http\Resources\User as UserResource;
-use App\Http\Resources\Sponsor as SponsorResource;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use App\Helpers\BatchMailer;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,7 +50,8 @@ Route::get('/logout', 'Auth\Auth0IndexController@logout')->name('logout')->middl
 Route::get('/login/{driver?}', 'Auth\Auth0IndexController@login')->name('login');
 
 Route::middleware(['auth.check_staging'])->group(function() {
-    Route::get('/', 'Home@index')->name('home');
+//    Route::get('/', 'Home@index')->name('home');
+    Route::get('/', 'MailchimpTemp@index')->name('home');
 //    Route::get('/apply', 'Home@apply');
 //    Route::get('/conduct', 'Home@conduct')->name('conduct');
 //    Route::get('/privacy', 'Home@privacy')->name('privacy');

@@ -2,9 +2,12 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Application;
+use App\Models\ApplicationReview;
+use App\Models\Checkin;
+use App\Models\TeamMember;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -37,5 +40,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // TODO Implement eloquent relationships back to TeamMember; ApplicationReview; Application; Checkin
+    public function team() {
+        return $this->hasOne(TeamMember::class);
+    }
+
+    public function reviews() {
+        return $this->hasMany(ApplicationReview::class);
+    }
+
+    public function application() {
+        return $this->hasOne(Application::class);
+    }
+
+    public function checkIn() {
+        return $this->hasOneThrough(Checkin::class, Application::class);
+    }
+
+    // DONE (@Theo pls check) TODO Implement eloquent relationships back to TeamMember; ApplicationReview; Application; Checkin
 }
