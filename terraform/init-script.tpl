@@ -29,6 +29,11 @@ echo "export AUTH0_DOMAIN=\"${AUTH0_DOMAIN}\"" >> /etc/profile.d/hc-deployment-v
 echo "export AUTH0_CLIENT_ID=\"${AUTH0_CLIENT_ID}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export AUTH0_CLIENT_SECRET=\"${AUTH0_CLIENT_SECRET}\"" >> /etc/profile.d/hc-deployment-vars.sh
 echo "export MAILGUN_SECRET=\"${MAILGUN_SECRET}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export MAILCHIMP_KEY=\"${MAILCHIMP_KEY}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export MAILCHIMP_DOMAIN=\"${MAILCHIMP_DOMAIN}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export MAILCHIMP_APPLICANT_LIST=\"${MAILCHIMP_APPLICANT_LIST}\"" >> /etc/profile.d/hc-deployment-vars.sh
+echo "export MAILCHIMP_PARTICIPANT_LIST=\"${MAILCHIMP_PARTICIPANT_LIST}\"" >> /etc/profile.d/hc-deployment-vars.sh
+
 
 # Set htpasswd file.
 # touch /etc/profile.d/.htpasswd

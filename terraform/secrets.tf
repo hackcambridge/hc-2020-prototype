@@ -34,3 +34,22 @@ variable "AUTH0_CLIENT_SECRET" {
 variable "MAILGUN_SECRET" {
   default = ""
 }
+variable "MAILCHIMP_KEY" {
+    default=""
+}
+variable "MAILCHIMP_DOMAIN" {
+    default=""
+}
+variable "MAILCHIMP_APPLICANT_LIST_STAGING" {
+    default=""
+}
+variable "MAILCHIMP_PARTICIPANT_LIST_STAGING" {
+    default=""
+}
+variable "MAILCHIMP_APPLICANT_LIST_PROD" {
+    default=""
+}
+variable "MAILCHIMP_PARTICIPANT_LIST_PROD" {
+    default=""
+}
+
