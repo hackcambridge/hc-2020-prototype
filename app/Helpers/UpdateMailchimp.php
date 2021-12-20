@@ -79,25 +79,27 @@ class UpdateMailchimp
                 ]);
             }
             # 2. Update tags
-            $ntags_applicants = [
-                ['name' => 'Registered', 'status' => $hasRegistered ? 'active' : 'inactive'],
-                ['name' => 'Started_Application', 'status' => $startedApp ? 'active' : 'inactive'],
-                ['name' => 'Submitted', 'status' => $hasSubmitted ? 'active' : 'inactive'],
-            ];
-            $ntags_participants = [
-                ['name' => 'Invited', 'status' => $wasInvited ? 'active' : 'inactive'],
-                ['name' => 'Responded', 'status' => $responded ? 'active' : 'inactive'],
-                ['name' => 'Confirmed', 'status' => $confirmed ? 'active' : 'inactive']
-            ];
-            $mailchimp->lists->updateListMemberTags($APPLICANTS_AUDIENCE_ID, self::emailToId($user->email), [
-                "tags" => $ntags_applicants
-            ]);
-            $mailchimp->lists->updateListMemberTags($PARTICIPANTS_AUDIENCE_ID, self::emailToId($user->email), [
-                "tags" => $ntags_participants
-            ]);
+            if ($hackerStatus) {
+                $ntags_applicants = [
+                    ['name' => 'Registered', 'status' => $hasRegistered ? 'active' : 'inactive'],
+                    ['name' => 'Started_Application', 'status' => $startedApp ? 'active' : 'inactive'],
+                    ['name' => 'Submitted', 'status' => $hasSubmitted ? 'active' : 'inactive'],
+                ];
+                $ntags_participants = [
+                    ['name' => 'Invited', 'status' => $wasInvited ? 'active' : 'inactive'],
+                    ['name' => 'Responded', 'status' => $responded ? 'active' : 'inactive'],
+                    ['name' => 'Confirmed', 'status' => $confirmed ? 'active' : 'inactive']
+                ];
+                $mailchimp->lists->updateListMemberTags($APPLICANTS_AUDIENCE_ID, self::emailToId($user->email), [
+                    "tags" => $ntags_applicants
+                ]);
+                $mailchimp->lists->updateListMemberTags($PARTICIPANTS_AUDIENCE_ID, self::emailToId($user->email), [
+                    "tags" => $ntags_participants
+                ]);
+            }
         } catch (ClientException $e) {
             echo $e->getMessage();
-            dd($e->getMessage());
+            dd($e->getMessage(), $user);
             // todo: Not sure what's the general way to deal with exceptions in this codebase...
         }
     }
