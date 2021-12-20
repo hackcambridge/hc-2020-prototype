@@ -5,11 +5,13 @@ namespace App\Helpers;
 use App\User;
 use GuzzleHttp\Exception\ClientException;
 use MailchimpMarketing\ApiClient;
-
 // get all users, and add them to list.
 // if confirmed, tag="Participant"
 // otherwise, tag="Registered"
 // if user is deleted, archive them from list.
+
+// TODO: Check if everything works properly
+
 class UpdateMailchimp
 {
     private static function emailToId($email): string
