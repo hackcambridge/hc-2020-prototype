@@ -6,6 +6,7 @@
 #  value = module.hc-staging-cluster.domain-name
 #}
 
+
 output "rds-domain-name" {
   value = module.hc-2022-rds-cluster.endpoint
 }
