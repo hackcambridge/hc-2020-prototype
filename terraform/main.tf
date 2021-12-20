@@ -6,7 +6,7 @@ provider "aws" {
 # -------------------------------
 # ----------- STAGING -----------
 # -------------------------------
-#
+
 #module "hc-staging-instance" {
 #  source                = "./modules/hc-instance"
 #  name                  = "hc-staging-instance"
