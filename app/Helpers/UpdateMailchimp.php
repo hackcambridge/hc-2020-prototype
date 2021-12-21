@@ -98,7 +98,6 @@ class UpdateMailchimp
                 ]);
             }
         } catch (ClientException $e) {
-            echo $e->getMessage();
             dd($e->getMessage(), $user);
             // todo: Not sure what's the general way to deal with exceptions in this codebase...
         }
@@ -152,5 +151,10 @@ class UpdateMailchimp
         foreach ($allUsers as $user) {
             self::upsertUserToMailingList($mailchimp, $APPLICANTS_AUDIENCE_ID, $PARTICIPANTS_AUDIENCE_ID, $user);
         }
+        echo 'success';
+    }
+    public function __invoke()
+    {
+        $this->main();
     }
 }
