@@ -58,6 +58,7 @@ class UpdateMailchimp
             $confirmed = $hackerStatus && $user->application && $user->application->confirmed;
             // TODO: Add things for confirmed online or in person
             # 1. Upsert
+            # 2. Update tags
             if ($hackerStatus) {
                 $mailchimp->lists->setListMember($APPLICANTS_AUDIENCE_ID, self::emailToId($user->email), [
                     'email_address' => $user->email,
@@ -66,6 +67,14 @@ class UpdateMailchimp
                         'FNAME' => $user->name,  // todo: Consider changing DB schema s.t. User stores First and Last name, instead of a combined 'name': so when we email ppl, we can say Dear '<first name>' instead of Dear '<full name>'?
                         'LNAME' => ''
                     ]
+                ]);
+                $ntags_applicants = [
+                    ['name' => 'Registered', 'status' => $hasRegistered ? 'active' : 'inactive'],
+                    ['name' => 'Started_Application', 'status' => $startedApp ? 'active' : 'inactive'],
+                    ['name' => 'Submitted', 'status' => $hasSubmitted ? 'active' : 'inactive'],
+                ];
+                $mailchimp->lists->updateListMemberTags($APPLICANTS_AUDIENCE_ID, self::emailToId($user->email), [
+                    "tags" => $ntags_applicants
                 ]);
             }
             if ($wasInvited || $responded || $confirmed) {
@@ -77,26 +86,16 @@ class UpdateMailchimp
                         'LNAME' => ''
                     ]
                 ]);
-            }
-            # 2. Update tags
-            if ($hackerStatus) {
-                $ntags_applicants = [
-                    ['name' => 'Registered', 'status' => $hasRegistered ? 'active' : 'inactive'],
-                    ['name' => 'Started_Application', 'status' => $startedApp ? 'active' : 'inactive'],
-                    ['name' => 'Submitted', 'status' => $hasSubmitted ? 'active' : 'inactive'],
-                ];
                 $ntags_participants = [
                     ['name' => 'Invited', 'status' => $wasInvited ? 'active' : 'inactive'],
                     ['name' => 'Responded', 'status' => $responded ? 'active' : 'inactive'],
                     ['name' => 'Confirmed', 'status' => $confirmed ? 'active' : 'inactive']
                 ];
-                $mailchimp->lists->updateListMemberTags($APPLICANTS_AUDIENCE_ID, self::emailToId($user->email), [
-                    "tags" => $ntags_applicants
-                ]);
                 $mailchimp->lists->updateListMemberTags($PARTICIPANTS_AUDIENCE_ID, self::emailToId($user->email), [
                     "tags" => $ntags_participants
                 ]);
             }
+
         } catch (ClientException $e) {
             dd($e->getMessage(), $user);
             // todo: Not sure what's the general way to deal with exceptions in this codebase...
