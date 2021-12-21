@@ -10,10 +10,10 @@ variable "DB_USERNAME" {
 variable "DB_PASSWORD" {
   default = "secret"
 }
-variable "AWS_ACCESS_KEY_ID" {
+variable "S3_AWS_ACCESS_KEY_ID" {
   default = ""
 }
-variable "AWS_SECRET_ACCESS_KEY" {
+variable "S3_AWS_SECRET_ACCESS_KEY" {
   default = ""
 }
 variable "STAGING_AWS_BUCKET" {
@@ -34,3 +34,22 @@ variable "AUTH0_CLIENT_SECRET" {
 variable "MAILGUN_SECRET" {
   default = ""
 }
+variable "MAILCHIMP_KEY" {
+    default=""
+}
+variable "MAILCHIMP_DOMAIN" {
+    default=""
+}
+variable "MAILCHIMP_APPLICANT_LIST_STAGING" {
+    default=""
+}
+variable "MAILCHIMP_PARTICIPANT_LIST_STAGING" {
+    default=""
+}
+variable "MAILCHIMP_APPLICANT_LIST_PROD" {
+    default=""
+}
+variable "MAILCHIMP_PARTICIPANT_LIST_PROD" {
+    default=""
+}
+

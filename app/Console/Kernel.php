@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Helpers\UpdateMailchimp;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->call(new UpdateMailchimp())->twiceDaily(6, 18);
     }
 
     /**
