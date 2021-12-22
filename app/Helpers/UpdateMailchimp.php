@@ -161,7 +161,7 @@ class UpdateMailchimp
         foreach ($allUsers as $user) {
             self::upsertUserToMailingList($mailchimp, $APPLICANTS_AUDIENCE_ID, $PARTICIPANTS_AUDIENCE_ID, $user);
         }
-        echo 'success';
+        echo 'success\n';
     }
     public function __invoke()
     {
