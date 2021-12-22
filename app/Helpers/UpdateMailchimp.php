@@ -108,7 +108,7 @@ class UpdateMailchimp
             }
 
         } catch (ClientException $e) {
-            dd($e->getMessage(), $user);
+            echo $e->getMessage();
             // todo: Not sure what's the general way to deal with exceptions in this codebase...
         }
     }
