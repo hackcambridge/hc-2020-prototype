@@ -91,7 +91,10 @@ fi
 echo "Completed database migration."
 echo "--------------------"
 
-
+# Setup mailing list thing
+echo "* * * * * php /home/bitnami/htdocs/artisan schedule:run >> /dev/null 2>&1" > /etc/cron.d/mailing-list-update
+echo "Cron entry set up done"
+echo "--------------------"
 
 # Restart Apache.
 sudo /opt/bitnami/ctlscript.sh restart apache

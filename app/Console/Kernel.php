@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->call(new UpdateMailchimp())->twiceDaily(6, 18);
+        $schedule->call(new UpdateMailchimp())->hourly()->withoutOverlapping();
     }
 
     /**
