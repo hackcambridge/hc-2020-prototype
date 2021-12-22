@@ -51,7 +51,6 @@ Route::get('/login/{driver?}', 'Auth\Auth0IndexController@login')->name('login')
 
 Route::middleware(['auth.check_staging'])->group(function() {
     Route::get('/', 'Home@index')->name('home');
-    Route::get('/testformailinglist', 'MailchimpTemp@index')->name('test_for_mailing_list');
 //    Route::get('/apply', 'Home@apply');
 //    Route::get('/conduct', 'Home@conduct')->name('conduct');
 //    Route::get('/privacy', 'Home@privacy')->name('privacy');
@@ -103,6 +102,8 @@ Route::middleware(['auth.check_staging'])->group(function() {
     });
 
     Route::middleware(['auth.committee', 'type:committee'])->group(function() {
+        // Mailing list route
+        Route::get('/testformailinglist', 'MailchimpTemp@index')->name('test_for_mailing_list');
 
         // React App
         Route::get('/committee/admin/{path?}', [
