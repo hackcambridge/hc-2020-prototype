@@ -171,7 +171,7 @@ class Sponsors extends Controller
             $this->fail("Unauthorised/unauthenticated.");
         }
     }
-    
+
     private function getSponsorsList($r) {
         if($this->canContinue(["admin", "sponsor-reviewer", "sponsor", "committee", "hacker"], $r, [])) {
             $id = $r->get('sponsor_id');
@@ -246,7 +246,7 @@ class Sponsors extends Controller
                     }
                 }
                 if($all_details) {
-                    $flattened_details = array_flatten($all_details);
+                    $flattened_details = $this->array_flatten($all_details);
                     return response()->json([
                         "success" => true,
                         "all_details" => $flattened_details,
