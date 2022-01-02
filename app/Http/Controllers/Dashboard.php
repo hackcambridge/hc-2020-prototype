@@ -17,7 +17,7 @@ use App\Http\Resources\TeamMember as TeamMemberResource;
 class Dashboard extends Controller
 {
     private $maximum_team_size = 5;
-    private static $accepting_applications = true;
+    private static $accepting_applications = false;
     private static $discord_invite_url = "https://discord.gg/kBahBx4Vwa";
 
     public function index()
