@@ -1,50 +1,68 @@
 
 import React, { Component } from "react";
 import { Card, Page, Heading, TextField, Button } from "@shopify/polaris";
-import { IDashboardProps } from "../../../interfaces/dashboard.interfaces";
+// @ts-ignore
 import QRCode from "qrcode.react";
+import {ICommitteeProps} from "../../interfaces/committee.interfaces";
+import axios from "axios";
 
 interface QRGenerateState {
-    value: string,
+    description: string;
+    value: string;
+    error: string;
 }
 
-class QRGenerate extends Component<IDashboardProps, QRGenerateState> {
+class QRGenerate extends Component<ICommitteeProps, QRGenerateState> {
 
     state = {
+        description: "",
         value: "",
+        error: ""
     }
 
     private encode(value: string) {
-        return window.btoa("hexcambridge/" + value);
+        return window.location.host + "/dashboard/qrcode/" + value;
     }
 
     private handleValueChange = (newValue: string) => {
-        this.setState({ value: newValue });
+        this.setState({ description: newValue });
     }
 
     private downloadImage = () => {
-        const { value } = this.state;
+        const { description } = this.state;
         const canvas: any = document.querySelector('#qrcode > canvas');
         const a = document.createElement("a");
-        a.download = value + ".png";
+        a.download = "qrcode.png";
         a.href = canvas.toDataURL("image/png");
         a.click();
     }
 
+    private handleSubmitClick = async () => {
+        const res = await axios.post("/committee/admin-api/get-qr-code.json", {"description": this.state.description});
+        if (res.data) {
+            this.setState({error: "", value: res.data.message});
+        } else {
+            this.setState({error: "Failed to get QR Code"});
+        }
+    }
+
     render() {
-        const { value } = this.state;
+        const { value, description, error } = this.state;
 
         return (
             <>
                 <div id={"qrgenerator"}>
                     <Page title={"QR Code Generator"}>
-                        <TextField label="Code value" value={value} onChange={this.handleValueChange} />
+                        <TextField label="Description of event" value={description} onChange={this.handleValueChange} />
+                        <Button onClick={this.handleSubmitClick}>Get QR Code</Button>
+                        <br/>
+                        {error && <p>Error: {error}</p>}
                         <br />
                         <Card sectioned>
                             <Heading>QR Code</Heading>
                             {this.renderQRGenerator()}
                             <br />
-                            <Button disabled={value.length == 0} onClick={this.downloadImage}>Save image</Button>
+                            <Button disabled={value.length === 0} onClick={this.downloadImage}>Save image</Button>
                         </Card>
                     </Page>
                 </div>
@@ -54,7 +72,7 @@ class QRGenerate extends Component<IDashboardProps, QRGenerateState> {
 
     private renderQRGenerator() {
         const { value } = this.state;
-        
+
         return (
             <>
                 <div id="qrcode">

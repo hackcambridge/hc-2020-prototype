@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Qrcode;
 use App\User;
 use App\Models\Application;
 use App\Models\ApplicationReview;
@@ -74,6 +75,8 @@ class Committee extends Controller
                 return $this->saveReviewScript($r);
             case 'run-review-script':
                 return $this->runReviewScript($r);
+            case 'get-qr-code':
+                return $this->getQrCode($r);
             case 'load-review-script':
                 return $this->loadReviewScript($r);
             case 'delete-review-script':
@@ -1043,9 +1046,21 @@ class Committee extends Controller
                 return $this->success("Mentor already doesn't exist");
             }
         } else {
-            $this->fail("Checks failed.");
+            return $this->fail("Checks failed.");
         }
     }
+
+    public function getQrCode($r) {
+        if ($this->canContinue($r, ["description"], false)) {
+            $qrcode = new Qrcode();
+            $qrcode->setAttribute("description", $r->get("description"));
+            $qrcode->save();
+            return $this->success($qrcode->getAttribute("id"));
+        } else {
+            return $this->fail("Checks failed");
+        }
+    }
+
 
     private static function slugify($text)
     {

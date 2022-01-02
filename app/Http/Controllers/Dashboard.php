@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\S3Management;
 use App\Models\Application;
 use App\Models\ApplicationReview;
+use App\Models\Qrcode;
 use App\Models\TeamMember;
 use App\Models\Checkin;
 use App\User;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Resources\TeamMember as TeamMemberResource;
+use Illuminate\Validation\UnauthorizedException;
 
 class Dashboard extends Controller
 {
@@ -38,6 +40,31 @@ class Dashboard extends Controller
             }
         }
         return redirect()->route('dashboard_index');
+    }
+
+    public function qrcode(Request $request, $code) {
+        // Check if the code is valid
+        $qrcodeRecord = Qrcode::where('id', '=', $code)->first();
+        if (!$qrcodeRecord) {
+            return $this->fail("Bad QRCode");
+        }
+        // Check if the user has this code
+        $user = User::where("id", Auth::user()->id)->first();
+        $alreadyScannedList = json_decode($user->scannedQRCodes);
+        if ($alreadyScannedList && in_array($code, $alreadyScannedList)) {
+            return $this->fail("Already scanned this QR code.");
+        } else {
+            // Change user
+            $nList = $alreadyScannedList;
+            if (!$alreadyScannedList) {
+                $nList = [$code];
+            } else {
+                array_push($nList, $code);
+            }
+            $user->scannedQRCodes = json_encode($nList);
+            $user->save();
+            return $this->success("Added QRCode to user's scanned list");
+        }
     }
 
     public static function areApplicationsOpen()

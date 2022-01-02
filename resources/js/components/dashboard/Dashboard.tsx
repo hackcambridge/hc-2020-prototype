@@ -26,7 +26,7 @@ import IndividualSponsor from "./components/IndividualSponsor";
 import Profile from "./components/Profile";
 import QRScanner from "./components/QRScanner"
 import TeamMatch from "./components/TeamMatch";
-import QRGenerate from "./components/QRGenerate";
+import QRGenerate from "../committee/QRGenerate";
 
 type IDashboardPropsWithRouter = RouteComponentProps & IDashboardProps;
 interface IDashboardState {
@@ -207,26 +207,26 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             });
         }
 
-        const allowedQRGenerate = ['admin', 'mentor', 'sponsor', 'sponsor-reviewer', 'committee'];
-        if(allowedQRGenerate.includes(this.props.user.type)){
-            dashboardNavigationItems.push({
-                url: `${this.props.baseUrl}/qrgen`,
-                label: `Generate QR Code`,
-                icon: ShopcodesMajor,
-                new: false,
-                badge: null
-            });
-        }
+        // const allowedQRGenerate = ['admin', 'mentor', 'sponsor', 'sponsor-reviewer', 'committee'];
+        // if(allowedQRGenerate.includes(this.props.user.type)){
+        //     dashboardNavigationItems.push({
+        //         url: `${this.props.baseUrl}/qrgen`,
+        //         label: `Generate QR Code`,
+        //         icon: ShopcodesMajor,
+        //         new: false,
+        //         badge: null
+        //     });
+        // }
 
-        if(this.props.user.type === "admin" /*|| this.props.user.type == "hacker"*/) {
-            dashboardNavigationItems.push({
-                url: `${this.props.baseUrl}/qrscan`,
-                label: `Scan QR Code`,
-                icon: ShopcodesMajor,
-                new: false,
-                badge: null
-            });
-        }
+        // if(this.props.user.type === "admin" /*|| this.props.user.type == "hacker"*/) {
+        //     dashboardNavigationItems.push({
+        //         url: `${this.props.baseUrl}/qrscan`,
+        //         label: `Scan QR Code`,
+        //         icon: ShopcodesMajor,
+        //         new: false,
+        //         badge: null
+        //     });
+        // }
 
         const navigationMarkup = (
             <Navigation location={`${this.props.location.pathname}`}>
@@ -284,8 +284,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
             <Route key="sponsors" exact path={`${this.props.baseUrl}/sponsors`} render={(props) => <Sponsors {...props} {...this.props} />} />,
             <Route key="faqs" exact path={`${this.props.baseUrl}/faqs`} render={(props) => <FAQs {...props} {...this.props} />} />,
             <Route key="teammates" exact path={`${this.props.baseUrl}/teammates`} render={(props) => <TeamMatch {...props} {...this.props} />} />,
-            <Route key="qrscan" exact path={`${this.props.baseUrl}/qrscan`} render={(props) => <QRScanner {...props} {...this.props} />} />,
-            <Route key="qrgen" exact path={`${this.props.baseUrl}/qrgen`} render={(props) => <QRGenerate {...props} {...this.props} />} />,
+            // <Route key="qrscan" exact path={`${this.props.baseUrl}/qrscan`} render={(props) => <QRScanner {...props} {...this.props} />} />,
+            // <Route key="qrgen" exact path={`${this.props.baseUrl}/qrgen`} render={(props) => <QRGenerate {...props} {...this.props} />} />,
         ] : [];
         const applicationDetailRoutes = this.canSeeApplicationItems() ? [
             <Redirect key="apply" exact path={`${this.props.baseUrl}/apply`} to={`${this.props.baseUrl}/apply/individual`} />,

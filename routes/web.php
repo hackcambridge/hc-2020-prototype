@@ -63,6 +63,8 @@ Route::middleware(['auth.check_staging'])->group(function() {
         // Slack invite link
         Route::get('/dashboard/join-discord', 'Dashboard@join_discord')->name("discord_invite");
 
+        Route::get('/dashboard/qrcode/{code}', 'Dashboard@qrcode');
+
         // React App
         Route::get('/dashboard/{path?}', [
             'uses' => 'Dashboard@index',

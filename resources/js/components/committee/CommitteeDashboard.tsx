@@ -7,7 +7,25 @@ import {
     TopBar,
     Navigation,
 } from "@shopify/polaris";
-import { LogOutMinor, IqMajor, HomeMajor, PackageMajor, CustomersMajor, ProfileMajor, BillingStatementPoundMajor, SmileyJoyMajor, FilterMajor, CodeMajor, FlagMajor, SocialAdMajor, QuestionMarkMajor, ChecklistMajor, EmailMajor, CustomerPlusMajor } from '@shopify/polaris-icons';
+import {
+    LogOutMinor,
+    IqMajor,
+    HomeMajor,
+    PackageMajor,
+    CustomersMajor,
+    ProfileMajor,
+    BillingStatementPoundMajor,
+    SmileyJoyMajor,
+    FilterMajor,
+    CodeMajor,
+    FlagMajor,
+    SocialAdMajor,
+    QuestionMarkMajor,
+    ChecklistMajor,
+    EmailMajor,
+    CustomerPlusMajor,
+    ShopcodesMajor
+} from '@shopify/polaris-icons';
 import Applications from "./components/Applications";
 import CheckIn from "./components/CheckIn";
 import Overview from "./components/Overview";
@@ -25,6 +43,7 @@ import FAQEditor from "./components/FAQEditor";
 import Mailing from "./components/Mailing";
 import Participants from "./components/Participants";
 import Mentors from "./components/Mentors";
+import QRGenerate from "./QRGenerate";
 
 type IDashboardPropsWithRouter = RouteComponentProps & ICommitteeProps;
 interface IDashboardState {
@@ -155,9 +174,14 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                             label: "Start Reviewing",
                             icon: FilterMajor
                         },
+                        {
+                            url: `${this.props.baseUrl}/qrgen`,
+                            label: 'QR Code Generator',
+                            icon: ShopcodesMajor
+                        }
                     ]}
                 />
-                {this.props.user.type == "admin" ?
+                {this.props.user.type === "admin" ?
                     <Navigation.Section title="Admin"
                         items={[
                             {
@@ -269,6 +293,7 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 <Route exact path={`${this.props.baseUrl}/participants`} render={(props) => <Participants {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/checkin`} render={(props) => <CheckIn {...props} />} />
                 <Route exact path={`${this.props.baseUrl}/applications/:id`} render={(props) => <IndividualApplication applicationId={props.match.params.id} {...props} />} />
+                <Route exact path={`${this.props.baseUrl}/qrgen`} render={(props) => <QRGenerate {...props} {...this.props} />} />
                 {adminRoutes.map(i => i)}
                 <Route component={Committee404}></Route>
             </Switch>
