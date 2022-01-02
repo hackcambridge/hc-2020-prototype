@@ -1,5 +1,3 @@
-# Hack Cambridge -- updated 26/11/19.
+# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow: /dashboard/
-Disallow: /sponsors/dashboard/
-Disallow: /committee/admin/
+Disallow:
