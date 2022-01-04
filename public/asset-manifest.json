@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.e6503db5.chunk.css",
-    "main.js": "/static/js/main.55c45a00.chunk.js",
-    "main.js.map": "/static/js/main.55c45a00.chunk.js.map",
+    "main.js": "/static/js/main.fd9dec20.chunk.js",
+    "main.js.map": "/static/js/main.fd9dec20.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.008a21b2.js",
     "runtime-main.js.map": "/static/js/runtime-main.008a21b2.js.map",
     "static/js/2.bb243787.chunk.js": "/static/js/2.bb243787.chunk.js",
@@ -19,6 +19,7 @@
     "static/media/Bigpay.6a0392dd.svg": "/static/media/Bigpay.6a0392dd.svg",
     "static/media/Colour-updated.a1176a5f.png": "/static/media/Colour-updated.a1176a5f.png",
     "static/media/HRT.043a7c14.svg": "/static/media/HRT.043a7c14.svg",
+    "static/media/HackathonUK.e9078bf3.svg": "/static/media/HackathonUK.e9078bf3.svg",
     "static/media/Holly.aadc32e2.jpg": "/static/media/Holly.aadc32e2.jpg",
     "static/media/Jacky.91368b12.jpeg": "/static/media/Jacky.91368b12.jpeg",
     "static/media/Jonathan.3b8acaed.jpg": "/static/media/Jonathan.3b8acaed.jpg",
@@ -53,6 +54,7 @@
     "static/media/janestreet.4b5c1b43.png": "/static/media/janestreet.4b5c1b43.png",
     "static/media/linkedin.6892b3ae.png": "/static/media/linkedin.6892b3ae.png",
     "static/media/marshall_wace_blue.2b7e3d79.png": "/static/media/marshall_wace_blue.2b7e3d79.png",
+    "static/media/mlh-logo-color.d48e27dc.svg": "/static/media/mlh-logo-color.d48e27dc.svg",
     "static/media/reply_logo.507a7a9f.svg": "/static/media/reply_logo.507a7a9f.svg",
     "static/media/rocket.7526c4d6.png": "/static/media/rocket.7526c4d6.png",
     "static/media/SponsorShowcase.scss": "/static/media/slick.c94f7671.ttf",
@@ -65,6 +67,6 @@
     "static/js/runtime-main.008a21b2.js",
     "static/js/2.bb243787.chunk.js",
     "static/css/main.e6503db5.chunk.css",
-    "static/js/main.55c45a00.chunk.js"
+    "static/js/main.fd9dec20.chunk.js"
   ]
 }
