@@ -39,10 +39,10 @@ class CustomUserRepository extends Auth0UserRepository
             $user->setAttribute('type', $type);
             $user->setAttribute('profile', '{}');
 
-            if($type == 'hacker') {
-                throw new UnauthorizedException("Applications have closed");
-                // TODO: Add user to the mailing list
-            }
+//            if($type == 'hacker') {
+//                throw new UnauthorizedException("Applications have closed");
+//                // TODO: Add user to the mailing list
+//            }
         }
 
         if ($user->type == "sponsor" || $user->type == "sponsor-reviewer") {
