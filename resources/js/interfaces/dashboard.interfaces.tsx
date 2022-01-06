@@ -29,6 +29,7 @@ export interface IApplicationRecord extends IApplicationRecordContent {
     invited: boolean,
     confirmed: boolean,
     rejected: boolean,
+    isInPerson: boolean
 }
 
 export interface IApplicationRecordContent {
