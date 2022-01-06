@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.e6503db5.chunk.css",
-    "main.js": "/static/js/main.fd9dec20.chunk.js",
-    "main.js.map": "/static/js/main.fd9dec20.chunk.js.map",
+    "main.css": "/static/css/main.41ee05bd.chunk.css",
+    "main.js": "/static/js/main.9797dd84.chunk.js",
+    "main.js.map": "/static/js/main.9797dd84.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.008a21b2.js",
     "runtime-main.js.map": "/static/js/runtime-main.008a21b2.js.map",
-    "static/js/2.bb243787.chunk.js": "/static/js/2.bb243787.chunk.js",
-    "static/js/2.bb243787.chunk.js.map": "/static/js/2.bb243787.chunk.js.map",
+    "static/js/2.cf6206d6.chunk.js": "/static/js/2.cf6206d6.chunk.js",
+    "static/js/2.cf6206d6.chunk.js.map": "/static/js/2.cf6206d6.chunk.js.map",
     "static/js/3.1c9c54fe.chunk.js": "/static/js/3.1c9c54fe.chunk.js",
     "static/js/3.1c9c54fe.chunk.js.map": "/static/js/3.1c9c54fe.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.e6503db5.chunk.css.map": "/static/css/main.e6503db5.chunk.css.map",
-    "static/js/2.bb243787.chunk.js.LICENSE.txt": "/static/js/2.bb243787.chunk.js.LICENSE.txt",
+    "static/css/main.41ee05bd.chunk.css.map": "/static/css/main.41ee05bd.chunk.css.map",
+    "static/js/2.cf6206d6.chunk.js.LICENSE.txt": "/static/js/2.cf6206d6.chunk.js.LICENSE.txt",
     "static/media/001-idea.6c18b9f8.svg": "/static/media/001-idea.6c18b9f8.svg",
     "static/media/PastPhotoItem.scss": "/static/media/001-idea.758af702.png",
     "static/media/Ayush.0b082b33.jpg": "/static/media/Ayush.0b082b33.jpg",
@@ -35,7 +35,7 @@
     "static/media/Xinyu.99a35a55.jpg": "/static/media/Xinyu.99a35a55.jpg",
     "static/media/Zoey.561c94a7.jpg": "/static/media/Zoey.561c94a7.jpg",
     "static/media/cone.00bf44be.png": "/static/media/cone.00bf44be.png",
-    "static/media/deepgram.ed98b54a.svg": "/static/media/deepgram.ed98b54a.svg",
+    "static/media/deepgram2.696bf545.svg": "/static/media/deepgram2.696bf545.svg",
     "static/media/email.bd9ac138.png": "/static/media/email.bd9ac138.png",
     "static/media/facebook.4f037d96.png": "/static/media/facebook.4f037d96.png",
     "static/media/featurespace3.104c078f.png": "/static/media/featurespace3.104c078f.png",
@@ -55,7 +55,7 @@
     "static/media/linkedin.6892b3ae.png": "/static/media/linkedin.6892b3ae.png",
     "static/media/marshall_wace_blue.2b7e3d79.png": "/static/media/marshall_wace_blue.2b7e3d79.png",
     "static/media/mlh-logo-color.d48e27dc.svg": "/static/media/mlh-logo-color.d48e27dc.svg",
-    "static/media/reply_logo.507a7a9f.svg": "/static/media/reply_logo.507a7a9f.svg",
+    "static/media/reply_logo.cfdafdb7.svg": "/static/media/reply_logo.cfdafdb7.svg",
     "static/media/rocket.7526c4d6.png": "/static/media/rocket.7526c4d6.png",
     "static/media/SponsorShowcase.scss": "/static/media/slick.c94f7671.ttf",
     "static/media/sphere.ded7487d.png": "/static/media/sphere.ded7487d.png",
@@ -65,8 +65,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.008a21b2.js",
-    "static/js/2.bb243787.chunk.js",
-    "static/css/main.e6503db5.chunk.css",
-    "static/js/main.fd9dec20.chunk.js"
+    "static/js/2.cf6206d6.chunk.js",
+    "static/css/main.41ee05bd.chunk.css",
+    "static/js/main.9797dd84.chunk.js"
   ]
 }

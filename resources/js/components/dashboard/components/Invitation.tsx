@@ -71,11 +71,12 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
             expirationBlock = <><p>Expiration: <strong>{new Date(expiration).toLocaleString()}</strong></p><br /></>;
         }
         const hackathonsUKPolicy = "https://hackathons.org.uk/privacy-policy";
+        const inPersonStatus = (this.props.application && this.props.application.isInPerson)? "IN PERSON" : "ONLINE";
         return (<>
-            <Card sectioned title="RSVP for Hex Cambridge &nbsp; 🥳">
-                <p>We're delighted to offer you a place at Hex Cambridge this year. The standard of applications this year was higher than ever, and you made the cut. Please accept the invite below — it will expire {this.expires_after} days after it was sent, so be sure to let us know if you can participate as soon as possible. We can't wait to meet all of you on 23rd!</p>
+            <Card sectioned title={`RSVP for Hack Cambridge Atlas ${inPersonStatus} &nbsp; 🥳`}>
+                <p>We're delighted to offer you a place to attend Hack Cambridge Atlas <strong>{inPersonStatus}</strong> this year. The standard of applications this year was higher than ever, and you made the cut. Please accept the invite below — it will expire {this.expires_after} days after it was sent, so be sure to let us know if you can participate as soon as possible. We can't wait to meet all of you on 22nd!</p>
                 <br />
-                <p>The event will take place on the weekend of the <strong>23-24th January 2021 virtually</strong>. No worries if you can't now participate, but please let us know so we can invite someone else to come along and enjoy the event instead.</p>
+                <p>The event will take place on the weekend of the <strong>22-23th January 2022</strong>. No worries if you can't now participate, but please let us know so we can invite someone else to come along and enjoy the event instead.</p>
                 <br />
                 {attending !== true ? expirationBlock : <></>}
                 {attending == undefined ? <Card sectioned title={"Small Legal Bit"}>
@@ -102,7 +103,7 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
             </Card>
         </>);
     }
-    
+
     private openInNewTab(url: string) {
         var w = window.open(url, '_blank');
         if (w) w.focus();
