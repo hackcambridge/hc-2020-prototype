@@ -78,8 +78,10 @@ class Invitation extends Component<IInvitationProps, IInvitationState> {
                 <br />
                 <p>The event will take place on the weekend of the <strong>22-23th January 2022</strong>. No worries if you can't participate, but please let us know so we can invite someone else to come along and enjoy the event instead.</p>
                 <br />
-                <p>Also, please do let us know if you want to participate online instead, via email team@hackcambridge.com</p>
-                <br />
+                {inPersonStatus==="IN PERSON" &&
+                <><p>Also, please do let us know if you want to participate online instead, via email team@hackcambridge.com</p>
+                    <br /></>
+                }
                 {attending !== true ? expirationBlock : <></>}
                 {attending == undefined ? <Card sectioned title={"Small Legal Bit"}>
                     Before deciding we kindly ask you to accept the following terms and conditions by our partners:
