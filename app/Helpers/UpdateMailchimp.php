@@ -86,7 +86,7 @@ class UpdateMailchimp
             }
             if ($wasInvited || $responded || $confirmed) {
                 try {
-                    $mailchimp->lists->getListMember($APPLICANTS_AUDIENCE_ID, $email);
+                    $mailchimp->lists->getListMember($PARTICIPANTS_AUDIENCE_ID, $email);
                 } catch (ClientException $e) {
                     // New member
                     $mailchimp->lists->setListMember($PARTICIPANTS_AUDIENCE_ID, $email, [
