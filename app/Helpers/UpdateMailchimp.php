@@ -57,6 +57,7 @@ class UpdateMailchimp
             $responded = $hackerStatus && $user->application &&
                 ($user->application->confirmed || $user->application->rejected);
             $confirmed = $hackerStatus && $user->application && $user->application->confirmed;
+            $rejected = $hackerStatus && $user->application && $user->application->rejected;
             $isInPerson = $hackerStatus && $user->application && $user->application->isInPerson;
             // TODO: Add things for confirmed online or in person
             # 1. Upsert
@@ -102,7 +103,9 @@ class UpdateMailchimp
                     ['name' => 'Invited', 'status' => $wasInvited ? 'active' : 'inactive'],
                     ['name' => 'Responded', 'status' => $responded ? 'active' : 'inactive'],
                     ['name' => 'Confirmed', 'status' => $confirmed ? 'active' : 'inactive'],
-                    ['name' => 'IsInPerson', 'status' => $isInPerson ? 'active': 'inactive']
+                    ['name' => 'Rejected', 'status' => $rejected ? 'active' : 'inactive'],
+                    ['name' => 'IsInPerson', 'status' => $isInPerson ? 'active': 'inactive'],
+                    ['name' => 'isOnline', 'status' => $isInPerson ? 'inactive': 'active']
                 ];
                 $mailchimp->lists->updateListMemberTags($PARTICIPANTS_AUDIENCE_ID, $email, [
                     "tags" => $ntags_participants
