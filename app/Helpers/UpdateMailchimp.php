@@ -101,6 +101,7 @@ class UpdateMailchimp
                 }
                 $ntags_participants = [
                     ['name' => 'Invited', 'status' => $wasInvited ? 'active' : 'inactive'],
+                    ['name' => 'HasNotResponded', 'status' => $responded ? 'inactive' : 'active'],
                     ['name' => 'Responded', 'status' => $responded ? 'active' : 'inactive'],
                     ['name' => 'Confirmed', 'status' => $confirmed ? 'active' : 'inactive'],
                     ['name' => 'Rejected', 'status' => $rejected ? 'active' : 'inactive'],
