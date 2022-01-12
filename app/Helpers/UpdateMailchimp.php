@@ -49,7 +49,6 @@ class UpdateMailchimp
         try {
             $email = self::emailToId($user->email);
             $hackerStatus = $user->type === 'hacker';
-//            $committeeStatus = $user->type === 'committee';  // todo: add all possible user types
             $hasRegistered = $hackerStatus && !$user->application;
             $startedApp = $hackerStatus && $user->application && !$user->application->isSubmitted;
             $hasSubmitted = $hackerStatus && $user->application && $user->application->isSubmitted;
@@ -59,7 +58,7 @@ class UpdateMailchimp
             $confirmed = $hackerStatus && $user->application && $user->application->confirmed;
             $rejected = $hackerStatus && $user->application && $user->application->rejected;
             $isInPerson = $hackerStatus && $user->application && $user->application->isInPerson;
-            // TODO: Add things for confirmed online or in person
+            $isSecondBatch = $wasInvited && ($user->application->invited_on > "2022-01-12 16:50:00");
             # 1. Upsert
             # 2. Update tags
             if ($hackerStatus) {
@@ -106,7 +105,8 @@ class UpdateMailchimp
                     ['name' => 'Confirmed', 'status' => $confirmed ? 'active' : 'inactive'],
                     ['name' => 'Rejected', 'status' => $rejected ? 'active' : 'inactive'],
                     ['name' => 'IsInPerson', 'status' => $isInPerson ? 'active': 'inactive'],
-                    ['name' => 'isOnline', 'status' => $isInPerson ? 'inactive': 'active']
+                    ['name' => 'isOnline', 'status' => $isInPerson ? 'inactive': 'active'],
+                    ['name' => 'secondBatch', 'status'=>$isSecondBatch? 'active': 'inactive']
                 ];
                 $mailchimp->lists->updateListMemberTags($PARTICIPANTS_AUDIENCE_ID, $email, [
                     "tags" => $ntags_participants
