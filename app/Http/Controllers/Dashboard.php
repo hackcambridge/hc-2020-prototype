@@ -18,7 +18,8 @@ use Illuminate\Validation\UnauthorizedException;
 
 class Dashboard extends Controller
 {
-    private $maximum_team_size = 5;
+    private $maximum_team_size = 4;
+    private $team_for_random_allocation = "VV65LLWCA";
     private static $accepting_applications = true;
     private static $discord_invite_url = "https://discord.gg/kBahBx4Vwa";
 
@@ -344,7 +345,7 @@ class Dashboard extends Controller
             // Check that team exists and isn't full.
             $num_existing_members = TeamMember::where("team_id", $team_id)->count();
             if ($num_existing_members == 0) return $this->fail("Team doesn't exist.");
-            else if ($num_existing_members >= $this->maximum_team_size) return $this->fail("Team is full.");
+            else if ($num_existing_members >= $this->maximum_team_size && $team_id != $this->team_for_random_allocation) return $this->fail("Team is full.");
 
             $team = TeamMember::where("user_id", Auth::user()->id)->first();
             if (!$team || ($team && $team->team_id != $team_id)) {
