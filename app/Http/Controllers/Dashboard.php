@@ -19,7 +19,7 @@ use Illuminate\Validation\UnauthorizedException;
 class Dashboard extends Controller
 {
     private $maximum_team_size = 4;
-    private $team_for_random_allocation = "VV65LLWCA";
+    private $team_for_random_allocation = "V65LLWCA";
     private static $accepting_applications = true;
     private static $discord_invite_url = "https://discord.gg/kBahBx4Vwa";
 
