@@ -21,7 +21,7 @@ interface IInvitationState {
 
 class Invitation extends Component<IInvitationProps, IInvitationState> {
 
-    private expires_after = 5; // days
+    private expires_after = 8; // days
     state = {
         attending: undefined,
         loading: false,
