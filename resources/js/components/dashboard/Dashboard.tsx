@@ -192,8 +192,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 badge: null,
             });
             dashboardNavigationItems.push({
-                url: `${this.props.baseStorageUrl}event-data/Hex+Cambridge+2021+Hackers+Guide+v2.0.pdf`,
-                label: `Event Guide v2.0`,
+                url: `https://drive.google.com/file/d/1HNtLMlG2lgpgt6dQbT2OrfUNbFMc7jFz/view`,
+                label: `Event Guide`,
                 icon: NoteMajor,
                 new: false,
                 badge: "New",
