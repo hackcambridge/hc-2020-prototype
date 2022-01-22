@@ -192,8 +192,8 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
                 badge: null,
             });
             dashboardNavigationItems.push({
-                url: `https://drive.google.com/file/d/1HNtLMlG2lgpgt6dQbT2OrfUNbFMc7jFz/view`,
-                label: `Event Guide`,
+                url: `https://hc-upload-production.s3.eu-west-2.amazonaws.com/event-data/Event+Guide+V2.pdf`,
+                label: `Event Guide V2`,
                 icon: NoteMajor,
                 new: false,
                 badge: "New",
