@@ -12,7 +12,7 @@ module "hc-staging-instance" {
   name                  = "hc-staging-instance"
   security_group        = "${aws_security_group.hc-instance-security-group.id}"
   APP_URL               = "https://canary.hackcambridge.com"
-  APP_DEBUG             = "true"
+  APP_DEBUG             = "false"
   APP_ENV               = "staging"
   DB_PREFIX             = "staging_"
   DB_HOST               = module.hc-2022-rds-cluster.endpoint
