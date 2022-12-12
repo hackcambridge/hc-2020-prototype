@@ -8,7 +8,7 @@
         "watch-poll": "npm run watch -- --watch-poll",
         "hot": "cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
-        "production": "cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=production node_modules/webpack/bin/webpack.js --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "production": "cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "hot-legacy": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch-poll-legacy": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js --watch --watch-poll"
     },
@@ -17,7 +17,6 @@
         "@types/country-list": "^2.1.0",
         "axios": "^0.21.1",
         "cross-env": "^7.0.2",
-        "jquery": "^3.6.1",
         "laravel-mix": "^5.0.7",
         "lodash": "^4.17.21",
         "react": "^16.9.0",
@@ -25,15 +24,12 @@
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.28.0",
         "sass-loader": "^10.0.4",
-        "ts-loader": "^8.0.7",
-        "webpack": "^5.0.0",
-        "webpack-cli": "^5.0.1"
+        "ts-loader": "^8.0.7"
     },
     "dependencies": {
         "@babel/core": "^7.0.0-0",
-        "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+        ""
         "@babel/plugin-proposal-class-properties": "^7.5.5",
-        "@babel/plugin-proposal-object-rest-spread": "^7.20.2",
         "@babel/preset-typescript": "^7.3.3",
         "@shopify/app-bridge": "^1.0.0",
         "@shopify/polaris": "^5.9.1",
@@ -52,7 +48,6 @@
         "less-loader": "^7.0.2",
         "linkifyjs": "^2.1.8",
         "moize": "^5.4.4",
-        "node": "^10.23.0",
         "qrcode.react": "^1.0.1",
         "react-ace": "^9.2.0",
         "react-json-view": "^1.19.1",
