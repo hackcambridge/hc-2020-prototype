@@ -3,21 +3,19 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
-        "development": "npx cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "npm run development -- --watch",
-        "watch-poll": "npm run watch -- --watch-poll",
-        "hot": "npx cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch--options-poll=1000",
+        "hot": "mix watch --hot",
         "prod": "npm run production",
-        "production": "npx cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "hot-legacy": "npx cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch-poll-legacy": "npx cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js --watch --watch-poll"
+        "production": "mix --production"
     },
     "devDependencies": {
         "@babel/preset-react": "^7.0.0",
         "@types/country-list": "^2.1.0",
         "axios": "^0.21.1",
         "cross-env": "^7.0.2",
-        "laravel-mix": "^5.0.7",
+        "laravel-mix": "^6.0.6",
         "lodash": "^4.17.21",
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
