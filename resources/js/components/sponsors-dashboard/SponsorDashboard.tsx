@@ -93,18 +93,18 @@ class SponsorDashboard extends Component<ISponsorDashboardAppendedProps, ISponso
         colors: {
             topBar: {
                 // background: linear-gradient(45deg, rgba(255, 122, 98, 1) 0%, rgba(211, 104, 182, 1) 100%);
-                background: '#3D82FF',
-                backgroundLighter: '#c52e2f',
+                background: '#FFF1E1',
+                backgroundLighter: '#FFF1E1',
                 // background: '#2e0058',
                 // backgroundLighter: '#461571',
-                color: '#FFFFFF',
+                color: '#48484D',
             },
         },
         logo: {
             width: 65,
-            topBarSource: '/images/Atlas_White.png',
+            topBarSource: '/images/logo.png',
             url: `${this.props.baseUrl}/`,
-            accessibilityLabel: 'Hack Cambridge Atlas',
+            accessibilityLabel: 'Hack Cambridge Spyder',
         },
     };
 

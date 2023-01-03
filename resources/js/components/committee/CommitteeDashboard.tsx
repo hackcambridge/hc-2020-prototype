@@ -75,16 +75,16 @@ class Dashboard extends Component<IDashboardPropsWithRouter, IDashboardState> {
     private theme = {
         colors: {
             topBar: {
-                background: '#000',
-                backgroundLighter: '#000',
-                color: '#FFFFFF',
+                background: '#FFF1E1',
+                backgroundLighter: '#FFF1E1',
+                color: '#48484D',
             },
         },
         logo: {
             width: 65,
-            topBarSource: '/images/Atlas_White.png',
+            topBarSource: '/images/logo.png',
             url: `${this.props.baseUrl}/`,
-            accessibilityLabel: 'Hack Cambridge Atlas',
+            accessibilityLabel: 'Hack Cambridge Spyder',
         },
     };
 
