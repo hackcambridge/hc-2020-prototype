@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ mix('assets/css/home.css') }}" />
 {{--    <link rel="shortcut icon" type="image/png" href="/images/favicon.png" />--}}
 {{--    TMP landing page--}}
-    <link rel="shortcut icon" type="image/png" href="/images/hcf-logo-black.png" />
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
     <link rel="stylesheet" href="https://use.typekit.net/iag0xbk.css">
 </head>
 
