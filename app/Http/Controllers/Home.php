@@ -21,11 +21,11 @@ class Home extends Controller
     }
 
     public function conduct() {
-        return view('frontpages/conduct');
+        return view('new-frontpages/conduct');
     }
 
     public function privacy() {
-        return view('frontpages/privacy');
+        return view('new-frontpages/privacy');
     }
 
     public function terms() {
