@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.44063bee.chunk.css",
-    "main.js": "/static/js/main.f50f89e6.chunk.js",
-    "main.js.map": "/static/js/main.f50f89e6.chunk.js.map",
+    "main.js": "/static/js/main.43cfdac4.chunk.js",
+    "main.js.map": "/static/js/main.43cfdac4.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.59689824.js",
     "runtime-main.js.map": "/static/js/runtime-main.59689824.js.map",
     "static/js/2.dfb2d3db.chunk.js": "/static/js/2.dfb2d3db.chunk.js",
@@ -24,12 +24,13 @@
     "static/media/hc-2020-1.199c05b5.jpg": "/static/media/hc-2020-1.199c05b5.jpg",
     "static/media/hc-2020-2.3d77efcc.jpg": "/static/media/hc-2020-2.3d77efcc.jpg",
     "static/media/hc-2021-1.eb955096.png": "/static/media/hc-2021-1.eb955096.png",
-    "static/media/logo.3fa6c0cc.svg": "/static/media/logo.3fa6c0cc.svg"
+    "static/media/logo.3fa6c0cc.svg": "/static/media/logo.3fa6c0cc.svg",
+    "static/media/privacy-policy.a3ee13b7.pdf": "/static/media/privacy-policy.a3ee13b7.pdf"
   },
   "entrypoints": [
     "static/js/runtime-main.59689824.js",
     "static/js/2.dfb2d3db.chunk.js",
     "static/css/main.44063bee.chunk.css",
-    "static/js/main.f50f89e6.chunk.js"
+    "static/js/main.43cfdac4.chunk.js"
   ]
 }
