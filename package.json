@@ -5,7 +5,7 @@
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch--options-poll=1000",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
         "production": "mix --production"
@@ -52,7 +52,6 @@
         "less-loader": "^7.0.2",
         "linkifyjs": "^2.1.8",
         "moize": "^5.4.4",
-        "node": "^12.14.0",
         "postcss": "^8.2.15",
         "qrcode.react": "^1.0.1",
         "react-ace": "^9.2.0",
